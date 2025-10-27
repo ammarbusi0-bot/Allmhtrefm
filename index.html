@@ -6,6 +6,7 @@
 <title>💡 تحدي المعرفة الإسلامية - فقه وأسئلة متنوعة</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <style>
 /* كود التصميم CSS */
 body {font-family:'Amiri',serif;background:linear-gradient(to bottom,#0d1b1e,#0c2c24);color:#f8f9fa;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:1.5rem;}
@@ -43,11 +44,11 @@ body {font-family:'Amiri',serif;background:linear-gradient(to bottom,#0d1b1e,#0c
 }
 
 /* ************************************ */
-/* ** كود CSS مضاف لقسم التواصل الفاخر ** */
+/* ** كود CSS مضاف لقسم التواصل الفاخر والمحدث ** */
 /* ************************************ */
 .contact-section {
     background: linear-gradient(135deg, #1f4037, #0c2c24); 
-    padding: 2.5rem 1.5rem;
+    padding: 2.5rem 1.5rem 1.5rem; 
     margin-top: 3rem;
     border-radius: 1.5rem;
     border: 1px solid #eab308;
@@ -56,34 +57,44 @@ body {font-family:'Amiri',serif;background:linear-gradient(to bottom,#0d1b1e,#0c
     width: 100%;
     text-align: center;
 }
+.contact-links-grid {
+    display: flex; 
+    justify-content: center;
+    gap: 1.5rem; 
+    margin-top: 1rem;
+}
 .contact-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.3s ease;
+    text-decoration: none;
+    color: #f8f9fa;
+    font-size: 0.85rem; 
+}
+.contact-link:hover {
+    transform: translateY(-5px) scale(1.1);
+}
+.contact-icon {
+    font-size: 2.2rem; 
+    width: 3.5rem;
+    height: 3.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.75rem;
-    font-weight: bold;
-    margin: 0.5rem 0;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    text-decoration: none;
-    color: #f8f9fa;
-    white-space: nowrap;
+    border-radius: 50%; 
+    margin-bottom: 0.3rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
-.contact-link:hover {
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
-}
-.whatsapp-btn { background-color: #25D366; }
-.telegram-btn { background-color: #0088CC; }
-.tiktok-btn { background-color: #000000; border: 1px solid #f8f9fa; }
-.email-btn { background-color: #ea4335; }
-.icon {
-    font-size: 1.5rem;
-    margin-left: 0.75rem;
-    line-height: 1;
-}
+.whatsapp-icon { background-color: #25D366; }
+.telegram-icon { background-color: #0088CC; }
+.tiktok-icon { background-color: #000000; }
+.email-icon { background-color: #ea4335; }
+
+
 /* ************************************ */
-/* ** كود CSS مضاف لشاشة تسجيل الدخول ** */
+/* ** كود CSS مضاف لشاشة الدخول المبسطة ** */
 /* ************************************ */
 #login-screen {
     background: linear-gradient(160deg, #1c3d3a, #0d1b1e);
@@ -108,10 +119,10 @@ body {font-family:'Amiri',serif;background:linear-gradient(to bottom,#0d1b1e,#0c
     background-color: rgba(255, 255, 255, 0.1);
     color: white;
 }
-.action-buttons button {
-    width: 48%;
-    padding: 0.75rem;
-    font-size: 1.1rem;
+.start-btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 1.2rem;
+    width: 100%;
 }
 </style>
 </head>
@@ -145,27 +156,23 @@ body {font-family:'Amiri',serif;background:linear-gradient(to bottom,#0d1b1e,#0c
 
 <main id="quiz" class="container">
     <div id="login-screen" class="question-card mt-6 p-8 hidden" style="opacity:1; transform:translateY(0);">
-        <p class="text-3xl font-extrabold text-yellow-300 mb-4">مرحباً بك في التحدي!</p>
-        <p class="text-lg text-gray-300 mb-6">الرجاء تسجيل الدخول أو إنشاء حساب جديد.</p>
+        <p class="text-3xl font-extrabold text-yellow-300 mb-4">أهلاً بك أيها المنافس!</p>
+        <p class="text-lg text-gray-300 mb-6 font-bold">الرجاء إدخال اسمك ورمز سري لحفظ تقدمك.</p>
         
         <div class="input-group text-right">
             <label for="username">اسم اللاعب:</label>
-            <input type="text" id="username" placeholder="أدخل اسمك المميز" required />
+            <input type="text" id="username" placeholder="اسمك المميز (يظهر في لوحة النتائج)" required />
         </div>
         
         <div class="input-group text-right">
-            <label for="password">كلمة المرور:</label>
-            <input type="password" id="password" placeholder="أدخل كلمة المرور" required />
+            <label for="password">رمز الدخول السري (كلمة مرور):</label>
+            <input type="password" id="password" placeholder="رمزك السري (4 أرقام/أحرف على الأقل)" required />
+            <p class="text-right text-sm text-gray-400 mt-[-10px] mb-4">هذا الرمز والاسم سيحفظان في متصفحك. استخدمهما دائماً للعودة لنفس الإنجازات.</p>
         </div>
         
-        <div class="action-buttons flex justify-between">
-            <button id="login-btn" class="bg-green-600 hover:bg-green-500 text-white font-bold rounded-xl transition shadow-lg">
-                تسجيل الدخول 🔑
-            </button>
-            <button id="register-btn" class="bg-yellow-600 hover:bg-yellow-500 text-gray-900 font-bold rounded-xl transition shadow-lg">
-                إنشاء حساب جديد ✨
-            </button>
-        </div>
+        <button id="login-btn" class="start-btn bg-yellow-600 hover:bg-yellow-500 text-gray-900 font-bold rounded-xl transition shadow-lg">
+            ابدأ التحدي باسمك 🚀
+        </button>
         <p id="auth-message" class="mt-4 text-sm font-semibold text-red-400 hidden"></p>
     </div>
 
@@ -190,28 +197,36 @@ body {font-family:'Amiri',serif;background:linear-gradient(to bottom,#0d1b1e,#0c
 <audio id="sound-timeup" src="https://actions.google.com/sounds/v1/cartoon/pop.ogg"></audio>
 
 <footer class="contact-section mx-auto">
-    <h3 class="text-3xl font-extrabold text-yellow-300 mb-6">🔑 تواصل مع القائمين على التحدي</h3>
+    <h3 class="text-3xl font-extrabold text-yellow-300 mb-6">🔑 تواصل معنا</h3>
     <p class="text-gray-300 text-lg mb-6">للاستفسارات، الشراكات، أو إضافة تحديات جديدة.. نحن في خدمتكم.</p>
     
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <a href="https://wa.me/905510651347" target="_blank" class="contact-link whatsapp-btn shadow-lg hover:shadow-green-700/50">
-            <span class="icon">💬</span>
-            تواصل فوري عبر **WhatsApp**
+    <div class="contact-links-grid">
+        <a href="https://wa.me/905510651347" target="_blank" class="contact-link">
+            <div class="contact-icon whatsapp-icon">
+                <i class="fab fa-whatsapp"></i>
+            </div>
+            <span>WhatsApp</span>
         </a>
         
-        <a href="https://t.me/bootcadid" target="_blank" class="contact-link telegram-btn shadow-lg hover:shadow-blue-700/50">
-            <span class="icon">🚀</span>
-            قناتنا الفخمة على **Telegram**
+        <a href="https://t.me/bootcadid" target="_blank" class="contact-link">
+            <div class="contact-icon telegram-icon">
+                <i class="fab fa-telegram-plane"></i>
+            </div>
+            <span>Telegram</span>
         </a>
         
-        <a href="https://www.tiktok.com/@allmhtref" target="_blank" class="contact-link tiktok-btn shadow-lg hover:shadow-gray-700/50">
-            <span class="icon">🎬</span>
-            تابعنا على **TikTok** الآن
+        <a href="https://www.tiktok.com/@allmhtref" target="_blank" class="contact-link">
+            <div class="contact-icon tiktok-icon">
+                <i class="fab fa-tiktok"></i>
+            </div>
+            <span>TikTok</span>
         </a>
 
-        <a href="mailto:ammarbusi338@gmail.com" class="contact-link email-btn shadow-lg hover:shadow-red-700/50">
-            <span class="icon">📧</span>
-            إرسال استفسار عبر **الإيميل**
+        <a href="mailto:ammarbusi338@gmail.com" class="contact-link">
+            <div class="contact-icon email-icon">
+                <i class="fas fa-envelope"></i>
+            </div>
+            <span>الإيميل</span>
         </a>
     </div>
 </footer>
@@ -237,62 +252,60 @@ const soundCorrect=document.getElementById('sound-correct'),
 const backgroundMusic=document.getElementById('background-music'),
       musicToggleButton=document.getElementById('music-toggle-btn');
       
-// عناصر شاشات الدخول والترحيب الجديدة
+// عناصر شاشات الدخول والترحيب
 const loginScreen=document.getElementById('login-screen'),
       usernameInput=document.getElementById('username'),
       passwordInput=document.getElementById('password'),
       loginButton=document.getElementById('login-btn'),
-      registerButton=document.getElementById('register-btn'),
-      authMessage=document.getElementById('auth-message'),
       welcomeScreen=document.getElementById('welcome-screen'), 
-      startButton=document.getElementById('start-quiz-btn'); 
+      startButton=document.getElementById('start-quiz-btn'),
+      authMessage=document.getElementById('auth-message'); // رسالة التوثيق
 
 let allQuestions=[], selectedQuestions=[], currentQuestionIndex=0, score=0, answered=false, questionTimer, questionCountdown;
 let currentUsername = ''; // لتخزين اسم اللاعب الحالي
 
-// *** 1. دوال إدارة حساب اللاعب ***
-
-function handleRegister() {
-    const user = usernameInput.value.trim();
-    const pass = passwordInput.value.trim();
-
-    if (user.length < 3 || pass.length < 4) {
-        showMessage('الاسم يجب أن يكون 3 أحرف والكلمة 4 كحد أدنى.', 'red');
-        return;
-    }
-
-    if (localStorage.getItem('user_' + user)) {
-        showMessage('اسم المستخدم هذا موجود بالفعل!', 'red');
-        return;
-    }
-
-    // حفظ بيانات اللاعب
-    localStorage.setItem('user_' + user, pass);
-    showMessage(`تم إنشاء حساب باسم ${user} بنجاح! يمكنك الآن تسجيل الدخول.`, 'green');
-    passwordInput.value = '';
-}
+// *** 1. دوال إدارة حساب اللاعب (المبسطة) ***
 
 function handleLogin() {
     const user = usernameInput.value.trim();
     const pass = passwordInput.value.trim();
+
+    if (user.length < 3 || pass.length < 4) {
+        showMessage('الاسم يجب أن يكون 3 أحرف والرمز 4 كحد أدنى.', 'red');
+        return;
+    }
+
     const storedPass = localStorage.getItem('user_' + user);
 
-    if (storedPass === pass) {
-        currentUsername = user;
-        localStorage.setItem('lastLoggedInUser', user); // حفظ الاسم لسهولة الدخول لاحقاً
-        showMessage(`أهلاً بك يا **${currentUsername}**! جاري التحويل...`, 'green');
-        
-        // الانتقال إلى شاشة الترحيب بعد ثانيتين
-        setTimeout(() => {
-            loginScreen.classList.add('hidden');
-            welcomeScreen.classList.remove('hidden');
-            // تحديث رسالة الترحيب باسم اللاعب
-            document.querySelector('#welcome-screen p:first-child').textContent = `أهلاً بك يا ${currentUsername} في التحدي!`;
-        }, 1500);
-        
+    if (storedPass) {
+        // حالة: اللاعب يعود مجدداً
+        if (storedPass === pass) {
+            currentUsername = user;
+            showMessage(`أهلاً بعودتك يا **${currentUsername}**! جاري التحميل...`, 'green');
+            
+        } else {
+            // حالة: اسم اللاعب موجود لكن الرمز خاطئ
+            showMessage(`اسم اللاعب **${user}** موجود بالفعل. الرمز السري الذي أدخلته غير صحيح.`, 'red');
+            return;
+        }
+
     } else {
-        showMessage('اسم المستخدم أو كلمة المرور غير صحيحة.', 'red');
+        // حالة: اللاعب جديد - حفظ بياناته
+        localStorage.setItem('user_' + user, pass);
+        currentUsername = user;
+        showMessage(`تم حفظ اسمك ورمزك. مرحباً بك يا **${currentUsername}**!`, 'green');
     }
+    
+    // حفظ آخر اسم مستخدم تم الدخول به
+    localStorage.setItem('lastLoggedInUser', user);
+
+    // الانتقال إلى شاشة الترحيب بعد ثانيتين
+    setTimeout(() => {
+        loginScreen.classList.add('hidden');
+        welcomeScreen.classList.remove('hidden');
+        // تحديث رسالة الترحيب باسم اللاعب
+        document.querySelector('#welcome-screen p:first-child').textContent = `أهلاً بك يا ${currentUsername} في التحدي!`;
+    }, 1500);
 }
 
 function showMessage(text, color) {
@@ -502,9 +515,8 @@ function toggleMusic(){
 
 // *** 6. معالجات الأحداث والبدء ***
 
-// أحداث شاشة تسجيل الدخول
+// حدث زر "ابدأ التحدي باسمك"
 loginButton.addEventListener('click', handleLogin);
-registerButton.addEventListener('click', handleRegister);
 
 nextButton.addEventListener('click',()=>{
     if(currentQuestionIndex>=selectedQuestions.length){
@@ -518,7 +530,7 @@ nextButton.addEventListener('click',()=>{
     }
 });
 
-// تشغيل الاختبار بعد النقر على زر البدء
+// تشغيل الاختبار بعد النقر على زر البدء في شاشة الترحيب
 startButton.addEventListener('click', () => {
     welcomeScreen.classList.add('hidden'); 
     loadingMessage.classList.remove('hidden'); 
@@ -532,7 +544,7 @@ musicToggleButton.addEventListener('click',toggleMusic);
 document.addEventListener('DOMContentLoaded', () => {
     backgroundMusic.play().catch(() => {});
     
-    // إخفاء شاشة الترحيب وإظهار شاشة تسجيل الدخول
+    // إخفاء شاشة الترحيب وإظهار شاشة إدخال الاسم
     welcomeScreen.classList.add('hidden');
     loginScreen.classList.remove('hidden');
 
