@@ -6,6 +6,7 @@
 <title>💡 تحدي المعرفة الإسلامية - فقه وأسئلة متنوعة</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 /* كود التصميم CSS */
 body {font-family:'Amiri',serif;background:linear-gradient(to bottom,#0d1b1e,#0c2c24);color:#f8f9fa;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:1.5rem;}
@@ -24,24 +25,13 @@ body {font-family:'Amiri',serif;background:linear-gradient(to bottom,#0d1b1e,#0c
 #timer {margin-top:0.5rem;}
 #timer-number {font-weight:bold;}
 #info-box {background:rgba(255, 255, 255, 0.1); padding:1rem; border-radius:1rem; margin-top:1rem; text-align:right;}
+.video-container {display: flex;justify-content: center;margin-bottom: 2rem;padding: 0 1rem;max-width: 100%;}
+.video-container video {max-width: 100%;height: auto;border-radius: 1rem;box-shadow: 0 4px 20px rgba(255,215,0,0.3);}
 
-/* ************************************ */
-/* ** كود CSS مضاف لمشغل الفيديو المباشر (وسم <video>) ** */
-/* ************************************ */
-.video-container {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 2rem;
-    padding: 0 1rem;
-    max-width: 100%; /* لضمان التجاوب */
-}
-.video-container video {
-    max-width: 100%;
-    height: auto;
-    border-radius: 1rem; /* لجعل حواف الفيديو دائرية */
-    box-shadow: 0 4px 20px rgba(255,215,0,0.3); /* ظل جميل */
-}
-/* ************************************ */
+/* تصميم زر المساعدة 50/50 */
+#fifty-fifty-btn:not(:disabled) {background-color:#8B5CF6;transition:background-color 0.3s, transform 0.2s;}
+#fifty-fifty-btn:not(:disabled):hover {background-color:#7C3AED;transform:scale(1.03);}
+#fifty-fifty-btn:disabled {background-color:#4B5563;cursor:not-allowed;}
 </style>
 </head>
 <body class="text-center">
@@ -50,21 +40,10 @@ body {font-family:'Amiri',serif;background:linear-gradient(to bottom,#0d1b1e,#0c
 <h1 class="text-4xl md:text-5xl font-extrabold text-yellow-300 mb-2">💡 تحدي المعرفة الإسلامية</h1>
 <p class="text-gray-300 text-lg">اختبر معلوماتك الدينية والفقهية — 10 أسئلة جديدة كل جولة</p>
 
-<div class="video-container mx-auto mt-6 w-full max-w-xl">
-    <video 
-        class="rounded-xl shadow-2xl w-full"
-        controls 
-        preload="metadata"> 
-        
-        <source src="VID_20251027_220735_527.mp4" type="video/mp4">
-        
-        <p>متصفحك لا يدعم تشغيل الفيديو.</p>
-    </video>
-</div>
 <audio id="background-music" src="https://assets.mixkit.co/sfx/preview/mixkit-lo-fi-hip-hop-loop-803.mp3" loop autoplay></audio> 
 <button id="music-toggle-btn" class="mt-3 text-sm font-semibold text-gray-300 hover:text-yellow-400 transition flex items-center justify-center mx-auto">
-    <span id="music-icon">🎵</span>
-    <span id="music-status" class="mr-2">إيقاف</span>
+    <span id="music-icon" class="ml-1">🎵</span>
+    <span id="music-status">إيقاف</span>
 </button>
 </header>
 
@@ -74,9 +53,19 @@ body {font-family:'Amiri',serif;background:linear-gradient(to bottom,#0d1b1e,#0c
 
 <main id="quiz" class="container">
     <div id="welcome-screen" class="question-card mt-6 p-8" style="opacity:1; transform:translateY(0);">
-        <p class="text-3xl font-extrabold text-yellow-300 mb-4">أهلاً بك في تحدي المعرفة الإسلامية!</p>
-        <p class="text-xl text-gray-200 mb-8">اختبر معلوماتك في الفقه والتاريخ الإسلامي بـ 10 أسئلة سريعة.</p>
-        <p class="text-lg text-red-300 mb-8">لديك 15 ثانية للإجابة على كل سؤال. استعد جيداً!</p>
+        <p id="welcome-message-text" class="text-3xl font-extrabold text-yellow-300 mb-4">أهلاً بك في تحدي المعرفة الإسلامية!</p>
+        <p class="text-xl text-gray-200 mb-6">اختبر معلوماتك في الفقه والتاريخ الإسلامي.</p>
+
+        <div id="login-form">
+            <input type="text" id="player-name-input" placeholder="أدخل اسمك الكريم" 
+                   class="w-full p-3 mb-4 text-lg text-gray-900 bg-gray-200 rounded-lg border border-gray-400 text-right focus:outline-none focus:ring-2 focus:ring-yellow-500" dir="rtl">
+            
+            <input type="password" id="player-pass-input" placeholder="كلمة المرور (اختياري - 1234)" 
+                   class="w-full p-3 mb-6 text-lg text-gray-900 bg-gray-200 rounded-lg border border-gray-400 text-right focus:outline-none focus:ring-2 focus:ring-yellow-500" dir="rtl">
+            
+            <p id="error-message" class="text-red-400 mb-4 hidden">الرجاء إدخال اسم اللاعب.</p>
+        </div>
+
         <button id="start-quiz-btn" class="bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold py-3 px-8 rounded-full text-xl transition shadow-lg">
             ابدأ التحدي الآن ✨
         </button>
@@ -85,18 +74,125 @@ body {font-family:'Amiri',serif;background:linear-gradient(to bottom,#0d1b1e,#0c
 </main>
 <div id="result" class="mt-6 text-2xl md:text-3xl font-bold hidden p-4 rounded-xl shadow-2xl"></div>
 <button id="next-btn" class="mt-6 hidden bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold py-3 px-6 rounded-full text-xl transition shadow-lg">السؤال التالي ➡️</button>
-<div id="timer" class="text-gray-300 text-sm hidden">
-  <p>الأسئلة ستتجدد تلقائياً</p>
-  <p>وقت السؤال: <span id="timer-number">15</span> ثانية</p>
+
+<div id="quiz-controls" class="w-full max-w-4xl flex justify-between items-center mt-4">
+    <div id="timer" class="text-gray-300 text-sm hidden">
+      <p>وقت السؤال: <span id="timer-number">15</span> ثانية</p>
+    </div>
+    <button id="fifty-fifty-btn" class="hidden text-white font-bold py-2 px-4 rounded-full text-md transition shadow-lg flex items-center">
+        <span id="fifty-fifty-count" class="ml-1 text-lg font-extrabold">1</span>
+        <i class="fas fa-magic"></i>
+        <span class="mr-2">50/50</span>
+    </button>
 </div>
+
 <audio id="sound-correct" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"></audio>
 <audio id="sound-wrong" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"></audio>
 <audio id="sound-timeup" src="https://actions.google.com/sounds/v1/cartoon/pop.ogg"></audio>
 
+<footer class="mt-12 w-full max-w-4xl border-t border-gray-700 pt-8">
+    <h3 class="text-2xl font-bold text-yellow-300 mb-6">تواصل معنا وتابع جديدنا</h3>
+    
+    <div class="flex flex-wrap justify-center gap-6">
+        
+        <a href="https://wa.me/905510651347" target="_blank" 
+           class="flex items-center space-x-2 space-x-reverse bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-full transition shadow-lg w-full sm:w-auto justify-center">
+            <i class="fab fa-whatsapp text-2xl"></i>
+            <span class="text-lg">تواصل واتساب (تركيا)</span>
+        </a>
+        
+        <a href="https://t.me/bootcadid" target="_blank" 
+           class="flex items-center space-x-2 space-x-reverse bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-full transition shadow-lg w-full sm:w-auto justify-center">
+            <i class="fab fa-telegram-plane text-2xl"></i>
+            <span class="text-lg">قناة التلجرام للمتابعة</span>
+        </a>
+        
+        <a href="https://tiktok.com/@allmhtref" target="_blank" 
+           class="flex items-center space-x-2 space-x-reverse bg-gray-800 hover:bg-gray-900 text-white font-semibold py-3 px-6 rounded-full transition shadow-lg w-full sm:w-auto justify-center">
+            <i class="fab fa-tiktok text-2xl"></i>
+            <span class="text-lg">تابعنا على تيك توك</span>
+        </a>
+        
+        <a href="mailto:ammarbusi338@gmail.com"
+           class="flex items-center space-x-2 space-x-reverse bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-full transition shadow-lg w-full sm:w-auto justify-center">
+            <i class="fas fa-envelope text-2xl"></i>
+            <span class="text-lg">للتواصل عبر الإيميل</span>
+        </a>
+        
+    </div>
+    
+    <button onclick="localStorage.removeItem('playerName'); window.location.reload();" class="mt-6 text-md text-red-400 hover:text-red-200 block mx-auto">تسجيل الخروج من الملف الحالي</button>
+</footer>
+
+
 <script>
 // *** إعدادات الاختبار ***
 const QUIZ_LENGTH=10, TIME_PER_QUESTION=15; 
-const QUESTIONS_FILE = 'questions.json';
+
+// 🔥 تم دمج الأسئلة مباشرة داخل الكود (Questions Array)
+const ALL_QUESTIONS = [
+    {
+        "q": "ما هي أول غزوة خاضها المسلمون في الإسلام؟",
+        "a": ["غزوة أحد", "غزوة بدر الكبرى", "غزوة الخندق", "غزوة تبوك"],
+        "correct": 1,
+        "info": "أول غزوة كبرى فاصلة كانت غزوة بدر الكبرى في 17 رمضان، السنة الثانية للهجرة."
+    },
+    {
+        "q": "ما هو أقل عدد ركعات لصلاة الوتر عند جمهور الفقهاء؟",
+        "a": ["ثلاث ركعات", "خمس ركعات", "ركعة واحدة", "ركعتان"],
+        "correct": 2,
+        "info": "يجوز أن يصلي الوتر بركعة واحدة، وهي الركعة التي يختم بها صلاة الليل."
+    },
+    {
+        "q": "من هو الصحابي الجليل الذي لقب بسيد القراء؟",
+        "a": ["عبدالله بن مسعود", "أبي بن كعب", "معاذ بن جبل", "سعد بن أبي وقاص"],
+        "correct": 1,
+        "info": "أبي بن كعب رضي الله عنه هو سيد القراء، وكان من كتبة الوحي."
+    },
+    {
+        "q": "متى يجوز للمسافر أن يقصر الصلاة الرباعية؟",
+        "a": ["بعد أن يقطع 10 كم", "بعد مفارقة حدود بلدته", "بمجرد نية السفر", "لا يجوز له القصر إلا في السفر الطويل جداً"],
+        "correct": 1,
+        "info": "يبدأ القصر والجمع بعد مفارقة العامر من البلدة، ولا يشترط في كل المذاهب مسافة محددة للبدء."
+    },
+    {
+        "q": "من هو أول خليفة أموي؟",
+        "a": ["معاوية بن أبي سفيان", "عبد الملك بن مروان", "الوليد بن عبد الملك", "عمر بن عبد العزيز"],
+        "correct": 0,
+        "info": "هو معاوية بن أبي سفيان رضي الله عنه، مؤسس الدولة الأموية بعد تنازل الحسن بن علي عن الخلافة."
+    },
+    {
+        "q": "كم عدد أركان الإيمان؟",
+        "a": ["ثلاثة", "خمسة", "سبعة", "ستة"],
+        "correct": 3,
+        "info": "أركان الإيمان هي ستة: الإيمان بالله، وملائكته، وكتبه، ورسله، واليوم الآخر، وبالقدر خيره وشره."
+    },
+    {
+        "q": "ما هو الاسم الآخر لسورة (الدهر)؟",
+        "a": ["سورة الإنسان", "سورة المدثر", "سورة القيامة", "سورة القارعة"],
+        "correct": 0,
+        "info": "سورة الدهر هي نفسها سورة الإنسان، وتسمى أيضاً 'هل أتى'."
+    },
+    {
+        "q": "ما هو المصطلح الفقهي الذي يعني عدم وجود الماء الكافي للطهارة؟",
+        "a": ["الحيض", "الجنابة", "فقد الطهورين", "الحدث الأصغر"],
+        "correct": 2,
+        "info": "فقد الطهورين (الماء والتراب) هو الحالة التي لا يجد فيها المسلم ماء ولا تراباً."
+    },
+    {
+        "q": "ما هي أول عاصمة إسلامية؟",
+        "a": ["المدينة المنورة", "مكة المكرمة", "دمشق", "بغداد"],
+        "correct": 0,
+        "info": "المدينة المنورة (يثرب سابقاً) هي أول عاصمة للمسلمين بعد الهجرة النبوية."
+    },
+    {
+        "q": "أين يقع المسجد الأقصى؟",
+        "a": ["المدينة المنورة", "القدس", "مكة المكرمة", "الخليل"],
+        "correct": 1,
+        "info": "يقع المسجد الأقصى في البلدة القديمة بالقدس الشريف، وهو أولى القبلتين وثالث الحرمين."
+    }
+];
+// نهاية مصفوفة الأسئلة المدمجة
 
 // *** عناصر الواجهة والأصوات ***
 const quizContainer=document.getElementById('quiz'),
@@ -112,43 +208,54 @@ const soundCorrect=document.getElementById('sound-correct'),
       soundTimeUp=document.getElementById('sound-timeup');
 
 const backgroundMusic=document.getElementById('background-music'),
-      musicToggleButton=document.getElementById('music-toggle-btn');
+      musicToggleButton=document.getElementById('music-toggle-btn'),
+      musicIcon=document.getElementById('music-icon'),
+      musicStatus=document.getElementById('music-status');
       
 // عناصر شاشة الترحيب الجديدة
 const welcomeScreen=document.getElementById('welcome-screen'), 
       startButton=document.getElementById('start-quiz-btn'); 
+      
+// عناصر شاشة الدخول والتحدي الجديدة
+const playerNameInput = document.getElementById('player-name-input'),
+      playerPassInput = document.getElementById('player-pass-input'),
+      welcomeMessageText = document.getElementById('welcome-message-text'),
+      loginForm = document.getElementById('login-form'),
+      errorMessage = document.getElementById('error-message');
+      
+// عناصر نظام المساعدة
+const fiftyFiftyButton = document.getElementById('fifty-fifty-btn'),
+      fiftyFiftyCount = document.getElementById('fifty-fifty-count');
 
 // *** متغيرات حالة الاختبار ***
-let allQuestions=[], selectedQuestions=[], currentQuestionIndex=0, score=0, answered=false, questionTimer, questionCountdown;
+let selectedQuestions=[], currentQuestionIndex=0, score=0, answered=false, questionTimer, questionCountdown;
+let playerName = 'زائر'; 
+let fiftyFiftyUses = 1; 
 
-// *** 1. جلب الأسئلة ***
-async function fetchQuestions() {
-    try {
-        const response = await fetch(QUESTIONS_FILE);
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        allQuestions = await response.json();
-        loadingMessage.classList.add('hidden');
-        initializeQuestions();
-    } catch (error) {
-        quizContainer.innerHTML = `<div class="text-red-500 text-xl mt-12"><p>❌ حدث خطأ في تحميل الأسئلة. تأكد من وجود ملف <b>questions.json</b>.</p></div>`;
-        console.error('Error fetching questions:', error);
-    }
+// *** 1. جلب الأسئلة (تم تعديل الدالة لعدم الاعتماد على ملف خارجي) ***
+function fetchQuestions() {
+    // إعادة تعيين عدد استخدامات المساعدة لكل جولة جديدة
+    fiftyFiftyUses = 1; 
+    fiftyFiftyCount.textContent = fiftyFiftyUses;
+    fiftyFiftyButton.disabled = false;
+
+    loadingMessage.classList.add('hidden');
+    initializeQuestions();
 }
 
-// *** 2. تهيئة واختيار 10 أسئلة عشوائية ***
+
+// *** 2. تهيئة واختيار 10 أسئلة عشوائية (الكود لم يتغير إلا مصدر allQuestions) ***
 function initializeQuestions() {
-    if(allQuestions.length < QUIZ_LENGTH){
-        quizContainer.innerHTML = `<p class="text-red-500 text-xl mt-12">لا توجد أسئلة كافية في ملف ${QUESTIONS_FILE}.</p>`;
+    if(ALL_QUESTIONS.length < QUIZ_LENGTH){
+        quizContainer.innerHTML = `<p class="text-red-500 text-xl mt-12">لا توجد أسئلة كافية في المصفوفة.</p>`;
         return;
     }
     
-    // استخدام قيمة عشوائية (Random Seed) لخلط الأسئلة
+    // 🔥 تم تغيير allQuestions إلى ALL_QUESTIONS
     const seed = Math.floor(Math.random() * 1000000); 
-
     function seededShuffle(array, currentSeed) {
         let arr = [...array], i = arr.length, j, temp;
         while(i){
-            // توليد رقم عشوائي يعتمد على الـ seed
             j = (currentSeed + i) % i;
             i--;
             temp = arr[i];
@@ -158,12 +265,11 @@ function initializeQuestions() {
         return arr;
     }
 
-    const shuffledQuestions = seededShuffle(allQuestions, seed);
+    const shuffledQuestions = seededShuffle(ALL_QUESTIONS, seed);
     selectedQuestions = shuffledQuestions.slice(0, QUIZ_LENGTH).map((q, index) => {
-        const answerSeed = seed * 10 + index; // Seed مختلف لترتيب الإجابات
+        const answerSeed = seed * 10 + index; 
         const answers = q.a.map((text,i)=>({text,isCorrect:i===q.correct}));
 
-        // خلط الإجابات
         let ansArr=[...answers], c=ansArr.length, r, t;
         while(c){
             r=(answerSeed+c)%c;
@@ -184,10 +290,11 @@ function initializeQuestions() {
     currentQuestionIndex=0; score=0;
     result.classList.add('hidden'); 
     timerElement.classList.remove('hidden');
+    fiftyFiftyButton.classList.remove('hidden'); 
     startQuiz();
 }
 
-// *** 3. دوال تشغيل الاختبار ***
+// *** 3. دوال تشغيل الاختبار (لم تتغير) ***
 
 function startQuiz(){loadQuestion();}
 
@@ -214,9 +321,41 @@ function loadQuestion(){
         </div>
     `;
     document.querySelectorAll('.answer-btn').forEach(btn=>btn.addEventListener('click',checkAnswer));
+    fiftyFiftyButton.disabled = fiftyFiftyUses <= 0 || answered;
     updateProgress();
     startQuestionTimer();
 }
+
+// دالة نظام المساعدة (50/50)
+function useFiftyFifty() {
+    if (answered || fiftyFiftyUses <= 0) return;
+
+    fiftyFiftyUses--;
+    fiftyFiftyCount.textContent = fiftyFiftyUses;
+    fiftyFiftyButton.disabled = true;
+
+    const q = selectedQuestions[currentQuestionIndex];
+    const answers = document.querySelectorAll('.answer-btn');
+    const wrongIndices = [];
+    
+    answers.forEach((btn, index) => {
+        if (index !== q.correct) {
+            wrongIndices.push(index);
+        }
+    });
+
+    let eliminatedCount = 0;
+    while (eliminatedCount < 2 && wrongIndices.length > 0) {
+        const randomIndex = Math.floor(Math.random() * wrongIndices.length);
+        const indexToEliminate = wrongIndices.splice(randomIndex, 1)[0];
+        
+        document.querySelector(`.answer-btn[data-index="${indexToEliminate}"]`).style.opacity = '0.3';
+        document.querySelector(`.answer-btn[data-index="${indexToEliminate}"]`).style.pointerEvents = 'none';
+        
+        eliminatedCount++;
+    }
+}
+
 
 function startQuestionTimer(){
     let timeLeft=TIME_PER_QUESTION;
@@ -237,6 +376,7 @@ function handleTimeUp(){
     if(!answered){
         soundTimeUp.play().catch(()=>{});
         answered=true;
+        fiftyFiftyButton.disabled = true;
         const q=selectedQuestions[currentQuestionIndex];
         document.querySelector(`.answer-btn[data-index="${q.correct}"]`).classList.add('correct');
         const infoBox=document.getElementById('info-box');
@@ -253,6 +393,7 @@ function checkAnswer(event){
     if(answered) return;
     answered=true;
     clearInterval(questionTimer);
+    fiftyFiftyButton.disabled = true;
     const selectedButton=event.target;
     const selectedIndex=parseInt(selectedButton.dataset.index);
     const q=selectedQuestions[currentQuestionIndex];
@@ -283,16 +424,18 @@ function updateProgress(){
 function showFinalResult(){
     progressFill.style.width='100%';
     quizContainer.innerHTML='';
+    fiftyFiftyButton.classList.add('hidden'); 
 
     let bestScore=parseInt(localStorage.getItem('bestScore')||'0'), isNewRecord=false;
     if(score>bestScore){bestScore=score; localStorage.setItem('bestScore',bestScore); isNewRecord=true;}
 
     const percentage=(score/selectedQuestions.length)*100;
     let message='';
-    if(isNewRecord) message="🏆 رقم قياسي جديد! تهانينا! 💯";
-    else if(percentage===100) message="مبارك! 👑 الدرجة الكاملة! 💯";
-    else if(percentage>=70) message=`نتيجة ممتازة! ✨ ${score} من ${selectedQuestions.length}.`;
-    else message=`نتيجتك هي: ${score} من ${selectedQuestions.length}. تحتاج إلى مراجعة بسيطة. 📚`;
+    
+    if(isNewRecord) message=`🏆 رقم قياسي جديد يا ${playerName}! تهانينا! 💯`;
+    else if(percentage===100) message=`مبارك، ${playerName}! 👑 الدرجة الكاملة! 💯`;
+    else if(percentage>=70) message=`نتيجة ممتازة يا ${playerName}! ✨ ${score} من ${selectedQuestions.length}.`;
+    else message=`نتيجتك يا ${playerName} هي: ${score} من ${selectedQuestions.length}. تحتاج إلى مراجعة بسيطة. 📚`;
 
     result.innerHTML=`<p class="text-3xl md:text-4xl mb-4">انتهى الاختبار!</p>
         <p class="text-xl md:text-2xl font-bold mb-4">${message}</p>
@@ -308,10 +451,9 @@ function showFinalResult(){
 
 // *** 4. وظيفة تشغيل الموسيقى/إيقافها ***
 function toggleMusic(){
-    const musicIcon=document.getElementById('music-icon'),musicStatus=document.getElementById('music-status');
     if(backgroundMusic.paused){
         backgroundMusic.play().catch(()=>{
-             alert('الرجاء الضغط على أي مكان في الشاشة لتشغيل الموسيقى.');
+             console.log('Music autoplay failed.');
         });
         musicIcon.textContent='🎵'; 
         musicStatus.textContent='إيقاف';
@@ -319,8 +461,28 @@ function toggleMusic(){
     else{backgroundMusic.pause(); musicIcon.textContent='🔇'; musicStatus.textContent='تشغيل';}
 }
 
+// دالة التحقق من التخزين المحلي والترحيب
+function checkLocalStorage() {
+    const savedName = localStorage.getItem('playerName');
+    
+    if (savedName) {
+        playerName = savedName; 
+        
+        welcomeMessageText.textContent = `أهلاً بعودتك، ${playerName}!`;
+        
+        playerNameInput.value = savedName;
+        playerPassInput.classList.add('hidden'); 
+        errorMessage.classList.add('hidden');
+        
+    } else {
+        welcomeMessageText.textContent = 'أهلاً بك في تحدي المعرفة الإسلامية!';
+        playerPassInput.classList.remove('hidden');
+    }
+}
+
 // *** 5. معالجات الأحداث والبدء ***
 musicToggleButton.addEventListener('click',toggleMusic);
+fiftyFiftyButton.addEventListener('click', useFiftyFifty); 
 
 nextButton.addEventListener('click',()=>{
     if(currentQuestionIndex>=selectedQuestions.length){
@@ -336,21 +498,37 @@ nextButton.addEventListener('click',()=>{
 
 // تشغيل الاختبار بعد النقر على زر البدء
 startButton.addEventListener('click', () => {
-    // إخفاء شاشة الترحيب وإظهار رسالة التحميل
+    const name = playerNameInput.value.trim();
+    const password = playerPassInput.value.trim();
+    
+    if (name === '') {
+        errorMessage.textContent = 'الرجاء إدخال اسم اللاعب.';
+        errorMessage.classList.remove('hidden');
+        return;
+    }
+    
+    if (!playerPassInput.classList.contains('hidden') && password !== '' && password !== '1234') {
+        errorMessage.textContent = 'كلمة المرور غير صحيحة (استخدم 1234 إذا أردت).';
+        errorMessage.classList.remove('hidden');
+        return;
+    }
+    
+    playerName = name;
+    localStorage.setItem('playerName', name);
+    
     welcomeScreen.classList.add('hidden'); 
     loadingMessage.classList.remove('hidden'); 
     
-    // محاولة تشغيل الموسيقى
     backgroundMusic.play().catch(() => {
         console.log("Music play requested by user click.");
     });
     
-    // جلب الأسئلة
+    // استدعاء جلب الأسئلة المدمجة
     fetchQuestions();
 });
 
-// محاولة تشغيل الموسيقى عند تحميل الصفحة (للاستعداد)
 document.addEventListener('DOMContentLoaded', () => {
+    checkLocalStorage(); 
     backgroundMusic.play().catch(() => {
         console.log("Autoplay failed.");
     });
