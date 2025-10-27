@@ -200,7 +200,6 @@ const quizContainer=document.getElementById('quiz'),
       progressFill=document.getElementById('progress-fill'),
       timerElement=document.getElementById('timer'),
       timerNumber=document.getElementById('timer-number');
-      // تم إزالة loadingMessage لعدم الحاجة إليه
 
 const soundCorrect=document.getElementById('sound-correct'),
       soundWrong=document.getElementById('sound-wrong'),
@@ -502,7 +501,7 @@ startButton.addEventListener('click', () => {
         return;
     }
     
-    // 🔥 تم تعديل هذا الشرط: يسمح بكلمة مرور فارغة أو صحيحة (1234)
+    // يسمح بكلمة مرور فارغة أو صحيحة (1234)
     if (password !== '' && password !== '1234') {
         errorMessage.textContent = 'كلمة المرور غير صحيحة (استخدم 1234 إذا أردت).';
         errorMessage.classList.remove('hidden');
@@ -512,14 +511,18 @@ startButton.addEventListener('click', () => {
     playerName = name;
     localStorage.setItem('playerName', name);
     
-    // الانتقال الفوري بدون انتظار تحميل
+    // إخفاء شاشة الترحيب
     welcomeScreen.classList.add('hidden'); 
     
+    // 💡 ضمان أن حاوية الاختبار مرئية (على الرغم من أنها يجب أن تكون كذلك افتراضياً)
+    quizContainer.classList.remove('hidden'); 
+
+    // تشغيل الموسيقى (إذا لم تكن مشغلة)
     backgroundMusic.play().catch(() => {
         console.log("Music play requested by user click.");
     });
     
-    fetchQuestions();
+    fetchQuestions(); // تبدأ تحميل الأسئلة
 });
 
 document.addEventListener('DOMContentLoaded', () => {
