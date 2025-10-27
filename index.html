@@ -73,7 +73,15 @@ body {font-family:'Amiri',serif;background:linear-gradient(to bottom,#0d1b1e,#0c
 </div>
 
 <main id="quiz" class="container">
-    <div id="loading-message" class="text-xl mt-12 text-yellow-300">جاري تحميل الأسئلة... ⏳</div>
+    <div id="welcome-screen" class="question-card mt-6 p-8" style="opacity:1; transform:translateY(0);">
+        <p class="text-3xl font-extrabold text-yellow-300 mb-4">أهلاً بك في تحدي المعرفة الإسلامية!</p>
+        <p class="text-xl text-gray-200 mb-8">اختبر معلوماتك في الفقه والتاريخ الإسلامي بـ 10 أسئلة سريعة.</p>
+        <p class="text-lg text-red-300 mb-8">لديك 15 ثانية للإجابة على كل سؤال. استعد جيداً!</p>
+        <button id="start-quiz-btn" class="bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold py-3 px-8 rounded-full text-xl transition shadow-lg">
+            ابدأ التحدي الآن ✨
+        </button>
+    </div>
+    <div id="loading-message" class="text-xl mt-12 text-yellow-300 hidden">جاري تحميل الأسئلة... ⏳</div>
 </main>
 <div id="result" class="mt-6 text-2xl md:text-3xl font-bold hidden p-4 rounded-xl shadow-2xl"></div>
 <button id="next-btn" class="mt-6 hidden bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold py-3 px-6 rounded-full text-xl transition shadow-lg">السؤال التالي ➡️</button>
@@ -87,7 +95,6 @@ body {font-family:'Amiri',serif;background:linear-gradient(to bottom,#0d1b1e,#0c
 
 <script>
 // *** إعدادات الاختبار ***
-// تم إبقاء QUIZ_LENGTH=10 (عشرة أسئلة)
 const QUIZ_LENGTH=10, TIME_PER_QUESTION=15; 
 const QUESTIONS_FILE = 'questions.json';
 
@@ -106,6 +113,10 @@ const soundCorrect=document.getElementById('sound-correct'),
 
 const backgroundMusic=document.getElementById('background-music'),
       musicToggleButton=document.getElementById('music-toggle-btn');
+      
+// عناصر شاشة الترحيب الجديدة
+const welcomeScreen=document.getElementById('welcome-screen'), 
+      startButton=document.getElementById('start-quiz-btn'); 
 
 // *** متغيرات حالة الاختبار ***
 let allQuestions=[], selectedQuestions=[], currentQuestionIndex=0, score=0, answered=false, questionTimer, questionCountdown;
@@ -219,7 +230,7 @@ function startQuestionTimer(){
         questionCountdown--;
         timerNumber.textContent=questionCountdown;
         if(questionCountdown<=0){clearInterval(questionTimer);handleTimeUp();}
-    },1000);
+    } ,1000);
 }
 
 function handleTimeUp(){
@@ -308,11 +319,10 @@ function toggleMusic(){
     else{backgroundMusic.pause(); musicIcon.textContent='🔇'; musicStatus.textContent='تشغيل';}
 }
 
-// *** 5. معالجات الأحداث ***
+// *** 5. معالجات الأحداث والبدء ***
 musicToggleButton.addEventListener('click',toggleMusic);
 
 nextButton.addEventListener('click',()=>{
-    // الانتقال للسؤال التالي (بدون صوت تصفير)
     if(currentQuestionIndex>=selectedQuestions.length){
         fetchQuestions(); 
         nextButton.textContent='السؤال التالي ➡️';
@@ -324,10 +334,24 @@ nextButton.addEventListener('click',()=>{
     }
 });
 
-// *** 6. بدء التشغيل التلقائي ***
-document.addEventListener('DOMContentLoaded', fetchQuestions);
-document.addEventListener('DOMContentLoaded',()=>{
-    backgroundMusic.play().catch(()=>{
+// تشغيل الاختبار بعد النقر على زر البدء
+startButton.addEventListener('click', () => {
+    // إخفاء شاشة الترحيب وإظهار رسالة التحميل
+    welcomeScreen.classList.add('hidden'); 
+    loadingMessage.classList.remove('hidden'); 
+    
+    // محاولة تشغيل الموسيقى
+    backgroundMusic.play().catch(() => {
+        console.log("Music play requested by user click.");
+    });
+    
+    // جلب الأسئلة
+    fetchQuestions();
+});
+
+// محاولة تشغيل الموسيقى عند تحميل الصفحة (للاستعداد)
+document.addEventListener('DOMContentLoaded', () => {
+    backgroundMusic.play().catch(() => {
         console.log("Autoplay failed.");
     });
 });
