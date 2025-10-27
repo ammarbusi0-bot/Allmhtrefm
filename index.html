@@ -24,21 +24,6 @@ body {font-family:'Amiri',serif;background:linear-gradient(to bottom,#0d1b1e,#0c
 #timer {margin-top:0.5rem;}
 #timer-number {font-weight:bold;}
 #info-box {background:rgba(255, 255, 255, 0.1); padding:1rem; border-radius:1rem; margin-top:1rem; text-align:right;}
-
-/* كود إضافي لتوسيط وعرض مشغل الفيديو بشكل جيد */
-.video-container {
-    display: flex;
-    justify-content: center; /* لتوسيط الفيديو */
-    margin-top: 1.5rem; /* مسافة أعلى وأسفل */
-    margin-bottom: 2rem;
-    width: 100%;
-    /* لضمان العرض الصحيح على الأجهزة الصغيرة والكبيرة */
-    max-width: 325px; 
-    max-height: 575px;
-    overflow: hidden;
-    border-radius: 1rem;
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
-}
 </style>
 </head>
 <body class="text-center">
@@ -46,17 +31,6 @@ body {font-family:'Amiri',serif;background:linear-gradient(to bottom,#0d1b1e,#0c
 <header class="mb-8 w-full max-w-4xl">
 <h1 class="text-4xl md:text-5xl font-extrabold text-yellow-300 mb-2">💡 تحدي المعرفة الإسلامية</h1>
 <p class="text-gray-300 text-lg">اختبر معلوماتك الدينية والفقهية — 10 أسئلة جديدة كل جولة</p>
-
-<div class="video-container mx-auto">
-    <iframe 
-        width="325" 
-        height="575" 
-        src="https://www.tiktok.com/embed/7414343135546252549" 
-        frameborder="0" 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-        allowfullscreen>
-    </iframe>
-</div>
 <audio id="background-music" src="https://assets.mixkit.co/sfx/preview/mixkit-lo-fi-hip-hop-loop-803.mp3" loop autoplay></audio> 
 <button id="music-toggle-btn" class="mt-3 text-sm font-semibold text-gray-300 hover:text-yellow-400 transition flex items-center justify-center mx-auto">
     <span id="music-icon">🎵</span>
@@ -69,7 +43,7 @@ body {font-family:'Amiri',serif;background:linear-gradient(to bottom,#0d1b1e,#0c
 </div>
 
 <main id="quiz" class="container">
-<div id="loading-message" class="text-xl mt-12 text-yellow-300">جاري تحميل الأسئلة... ⏳</div>
+    <div id="loading-message" class="text-xl mt-12 text-yellow-300">جاري تحميل الأسئلة... ⏳</div>
 </main>
 <div id="result" class="mt-6 text-2xl md:text-3xl font-bold hidden p-4 rounded-xl shadow-2xl"></div>
 <button id="next-btn" class="mt-6 hidden bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold py-3 px-6 rounded-full text-xl transition shadow-lg">السؤال التالي ➡️</button>
@@ -82,7 +56,7 @@ body {font-family:'Amiri',serif;background:linear-gradient(to bottom,#0d1b1e,#0c
 <audio id="sound-timeup" src="https://actions.google.com/sounds/v1/cartoon/pop.ogg"></audio>
 
 <script>
-// *** جميع أكواد JavaScript لم تتغير ***
+// *** إعدادات الاختبار ***
 // تم إبقاء QUIZ_LENGTH=10 (عشرة أسئلة)
 const QUIZ_LENGTH=10, TIME_PER_QUESTION=15; 
 const QUESTIONS_FILE = 'questions.json';
