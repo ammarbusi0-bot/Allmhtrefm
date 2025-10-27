@@ -70,8 +70,7 @@ body {font-family:'Amiri',serif;background:linear-gradient(to bottom,#0d1b1e,#0c
             ابدأ التحدي الآن ✨
         </button>
     </div>
-    <div id="loading-message" class="text-xl mt-12 text-yellow-300 hidden">جاري تحميل الأسئلة... ⏳</div>
-</main>
+    </main>
 <div id="result" class="mt-6 text-2xl md:text-3xl font-bold hidden p-4 rounded-xl shadow-2xl"></div>
 <button id="next-btn" class="mt-6 hidden bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold py-3 px-6 rounded-full text-xl transition shadow-lg">السؤال التالي ➡️</button>
 
@@ -129,7 +128,7 @@ body {font-family:'Amiri',serif;background:linear-gradient(to bottom,#0d1b1e,#0c
 // *** إعدادات الاختبار ***
 const QUIZ_LENGTH=10, TIME_PER_QUESTION=15; 
 
-// 🔥 تم دمج الأسئلة مباشرة داخل الكود (Questions Array)
+// 🔥 مصفوفة الأسئلة المدمجة 🔥
 const ALL_QUESTIONS = [
     {
         "q": "ما هي أول غزوة خاضها المسلمون في الإسلام؟",
@@ -200,8 +199,8 @@ const quizContainer=document.getElementById('quiz'),
       nextButton=document.getElementById('next-btn'),
       progressFill=document.getElementById('progress-fill'),
       timerElement=document.getElementById('timer'),
-      timerNumber=document.getElementById('timer-number'),
-      loadingMessage=document.getElementById('loading-message');
+      timerNumber=document.getElementById('timer-number');
+      // تم إزالة loadingMessage لعدم الحاجة إليه
 
 const soundCorrect=document.getElementById('sound-correct'),
       soundWrong=document.getElementById('sound-wrong'),
@@ -232,26 +231,25 @@ let selectedQuestions=[], currentQuestionIndex=0, score=0, answered=false, quest
 let playerName = 'زائر'; 
 let fiftyFiftyUses = 1; 
 
-// *** 1. جلب الأسئلة (تم تعديل الدالة لعدم الاعتماد على ملف خارجي) ***
+// *** 1. جلب الأسئلة (تم تعديل الدالة لتبدأ مباشرة) ***
 function fetchQuestions() {
     // إعادة تعيين عدد استخدامات المساعدة لكل جولة جديدة
     fiftyFiftyUses = 1; 
     fiftyFiftyCount.textContent = fiftyFiftyUses;
     fiftyFiftyButton.disabled = false;
 
-    loadingMessage.classList.add('hidden');
+    // تم حذف خطوة إخفاء رسالة التحميل
     initializeQuestions();
 }
 
 
-// *** 2. تهيئة واختيار 10 أسئلة عشوائية (الكود لم يتغير إلا مصدر allQuestions) ***
+// *** 2. تهيئة واختيار 10 أسئلة عشوائية ***
 function initializeQuestions() {
     if(ALL_QUESTIONS.length < QUIZ_LENGTH){
         quizContainer.innerHTML = `<p class="text-red-500 text-xl mt-12">لا توجد أسئلة كافية في المصفوفة.</p>`;
         return;
     }
     
-    // 🔥 تم تغيير allQuestions إلى ALL_QUESTIONS
     const seed = Math.floor(Math.random() * 1000000); 
     function seededShuffle(array, currentSeed) {
         let arr = [...array], i = arr.length, j, temp;
@@ -294,7 +292,7 @@ function initializeQuestions() {
     startQuiz();
 }
 
-// *** 3. دوال تشغيل الاختبار (لم تتغير) ***
+// *** 3. دوال تشغيل الاختبار والباقي (لم يتم تغيير منطقها) ***
 
 function startQuiz(){loadQuestion();}
 
@@ -326,7 +324,6 @@ function loadQuestion(){
     startQuestionTimer();
 }
 
-// دالة نظام المساعدة (50/50)
 function useFiftyFifty() {
     if (answered || fiftyFiftyUses <= 0) return;
 
@@ -516,14 +513,13 @@ startButton.addEventListener('click', () => {
     playerName = name;
     localStorage.setItem('playerName', name);
     
+    // 🔥 الانتقال الفوري بدون انتظار تحميل
     welcomeScreen.classList.add('hidden'); 
-    loadingMessage.classList.remove('hidden'); 
     
     backgroundMusic.play().catch(() => {
         console.log("Music play requested by user click.");
     });
     
-    // استدعاء جلب الأسئلة المدمجة
     fetchQuestions();
 });
 
