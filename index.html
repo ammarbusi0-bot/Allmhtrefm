@@ -1,25 +1,74 @@
-const allQuestions=[
-{q:"من أول من أسلم من الرجال الأحرار؟",a:["أبو بكر الصديق","علي بن أبي طالب","عثمان بن عفان"],correct:0, info:"أبو بكر الصديق رضي الله عنه هو أول من أسلم من الرجال الأحرار."},
-{q:"ما هي السورة التي تُسمى قلب القرآن؟",a:["يس","الرحمن","الكهف"],correct:0, info:"سورة يس تُسمى قلب القرآن لما ورد عن النبي ﷺ."},
-{q:"كم عدد أركان الإسلام؟",a:["خمسة","ستة","سبعة"],correct:0, info:"أركان الإسلام خمسة: الشهادتان، الصلاة، الزكاة، الصوم، والحج."},
-{q:"ما أول ما نزل من القرآن؟",a:["اقرأ باسم ربك","الفاتحة","المدثر"],correct:0, info:"أول ما نزل من القرآن الكريم هي الآيات الأولى من سورة العلق."},
-{q:"ما اسم والدة النبي محمد ﷺ؟",a:["آمنة بنت وهب","خديجة بنت خويلد","حليمة السعدية"],correct:0, info:"والدة النبي ﷺ هي آمنة بنت وهب."},
-{q:"كم عدد سور القرآن الكريم؟",a:["114","112","116"],correct:0, info:"يبلغ عدد سور القرآن الكريم 114 سورة."},
-{q:"في أي عام كانت غزوة بدر الكبرى؟",a:["السنة الثانية للهجرة","الأولى للهجرة","الثالثة للهجرة"],correct:0, info:"وقعت غزوة بدر الكبرى في السنة الثانية للهجرة."},
-{q:"من هو سيف الله المسلول؟",a:["خالد بن الوليد","حمزة بن عبد المطلب","أبو عبيدة بن الجراح"],correct:0, info:"خالد بن الوليد رضي الله عنه، لقبه النبي ﷺ بـ سيف الله المسلول."},
-{q:"من النبي الذي ابتلعه الحوت؟",a:["يونس عليه السلام","إبراهيم عليه السلام","أيوب عليه السلام"],correct:0, info:"النبي يونس عليه السلام ابتلعه الحوت وبقي في بطنه فترة ثم نجاه الله."},
-{q:"ما هي أطول سورة في القرآن الكريم؟",a:["البقرة","النساء","آل عمران"],correct:0, info:"أطول سورة في القرآن هي البقرة."}
-];
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>💡 تحدي المعرفة الإسلامية - فقه وأسئلة متنوعة</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ... (كود التصميم CSS) ... */
+body {font-family:'Amiri',serif;background:linear-gradient(to bottom,#0d1b1e,#0c2c24);color:#f8f9fa;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:1.5rem;}
+.container {max-width:48rem;width:100%;margin-top:1rem;}
+.question-card {background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);border-radius:1.5rem;box-shadow:0 4px 20px rgba(255,215,0,0.2);transition:transform 0.3s ease, box-shadow 0.3s ease,opacity 0.4s ease;opacity:0;animation:fadeIn 0.5s forwards;padding:1.5rem;}
+@keyframes fadeIn {from {opacity:0; transform:translateY(20px);} to {opacity:1; transform:translateY(0);}}
+.answer-btn {transition:all 0.3s ease;text-align:center;border:2px solid transparent;white-space:normal;line-height:1.3;min-height:50px;display:flex;align-items:center;justify-content:center;background-color:#059669;}
+.answer-btn:not(.correct):not(.wrong):hover {background-color:#047857;transform:scale(1.02);}
+.correct {background-color:#10B981!important;border-color:#059669!important;pointer-events:none;}
+.wrong {background-color:#EF4444!important;border-color:#DC2626!important;pointer-events:none;}
+.answered {pointer-events:none;}
+.progress-bar {height:8px;background:rgba(255,255,255,0.2);border-radius:4px;overflow:hidden;margin:1rem 0;}
+.progress-fill {height:100%;background:linear-gradient(to right,#f59e0b,#eab308);transition:width 0.5s ease;}
+.timer-bar {height:8px;background:#FEE715;border-radius:4px;overflow:hidden;margin-bottom:0.5rem;box-shadow:0 0 10px rgba(255,255,255,0.3);}
+.timer-fill {height:100%;background:#F97316;width:100%;transition:width 15s linear;}
+#timer {margin-top:0.5rem;}
+#timer-number {font-weight:bold;}
+#info-box {background:rgba(255, 255, 255, 0.1); padding:1rem; border-radius:1rem; margin-top:1rem; text-align:right;}
+</style>
+</head>
+<body class="text-center">
 
-// ** تم تعديل REFRESH_INTERVAL إلى 10 دقائق **
-const QUIZ_LENGTH=10,REFRESH_INTERVAL=10*60*1000,TIME_PER_QUESTION=15;
+<header class="mb-8 w-full max-w-4xl">
+<h1 class="text-4xl md:text-5xl font-extrabold text-yellow-300 mb-2">💡 تحدي المعرفة الإسلامية</h1>
+<p class="text-gray-300 text-lg">اختبر معلوماتك الدينية والفقهية — 10 أسئلة جديدة كل 10 دقائق</p>
+<audio id="background-music" src="https://assets.mixkit.co/sfx/preview/mixkit-lo-fi-hip-hop-loop-803.mp3" loop></audio> 
+<button id="music-toggle-btn" class="mt-3 text-sm font-semibold text-gray-300 hover:text-yellow-400 transition flex items-center justify-center mx-auto">
+    <span id="music-icon">🎵</span>
+    <span id="music-status" class="mr-2">تشغيل الموسيقى</span>
+</button>
+</header>
+
+<div class="progress-bar w-full max-w-4xl">
+<div id="progress-fill" class="progress-fill" style="width: 0%"></div>
+</div>
+
+<main id="quiz" class="container">
+    <div id="loading-message" class="text-xl mt-12 text-yellow-300">جاري تحميل الأسئلة... ⏳</div>
+</main>
+<div id="result" class="mt-6 text-2xl md:text-3xl font-bold hidden p-4 rounded-xl shadow-2xl"></div>
+<button id="next-btn" class="mt-6 hidden bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold py-3 px-6 rounded-full text-xl transition shadow-lg">السؤال التالي ➡️</button>
+<div id="timer" class="text-gray-300 text-sm hidden">
+  <p>الأسئلة ستتجدد في: <span id="timer-value"></span></p>
+  <p>وقت السؤال: <span id="timer-number">15</span> ثانية</p>
+</div>
+<audio id="sound-correct" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"></audio>
+<audio id="sound-wrong" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"></audio>
+<audio id="sound-next" src="https://actions.google.com/sounds/v1/cartoon/slide_whistle.ogg"></audio>
+<audio id="sound-timeup" src="https://actions.google.com/sounds/v1/cartoon/pop.ogg"></audio>
+
+<script>
+// *** الثوابت المعدلة ***
+const QUIZ_LENGTH=10,REFRESH_INTERVAL=10*60*1000,TIME_PER_QUESTION=15; 
+const QUESTIONS_FILE = 'questions.json'; // الملف الذي سيتم جلب الأسئلة منه
+
 const quizContainer=document.getElementById('quiz'),
       result=document.getElementById('result'),
       nextButton=document.getElementById('next-btn'),
       progressFill=document.getElementById('progress-fill'),
       timerElement=document.getElementById('timer'),
       timerValue=document.getElementById('timer-value'),
-      timerNumber=document.getElementById('timer-number');
+      timerNumber=document.getElementById('timer-number'),
+      loadingMessage=document.getElementById('loading-message');
 
 const soundCorrect=document.getElementById('sound-correct'),
       soundWrong=document.getElementById('sound-wrong'),
@@ -27,63 +76,98 @@ const soundCorrect=document.getElementById('sound-correct'),
       soundTimeUp=document.getElementById('sound-timeup');
 
 const backgroundMusic=document.getElementById('background-music'),
-      musicToggleButton=document.getElementById('music-toggle-btn'),
-      musicIcon=document.getElementById('music-icon'),
-      musicStatus=document.getElementById('music-status');
+      musicToggleButton=document.getElementById('music-toggle-btn');
 
-let isMusicPlaying=false,selectedQuestions,currentQuestionIndex=0,score=0,answered=false,timerInterval,questionTimer,questionCountdown;
+let allQuestions=[], selectedQuestions,currentQuestionIndex=0,score=0,answered=false,timerInterval,questionTimer,questionCountdown;
 
-musicToggleButton.addEventListener('click',()=>{toggleMusic();});
-
-function toggleMusic(){
-    if(isMusicPlaying){backgroundMusic.pause();isMusicPlaying=false;musicIcon.textContent='🔇';musicStatus.textContent='تشغيل الموسيقى';}
-    else{backgroundMusic.play().catch(()=>{});isMusicPlaying=true;musicIcon.textContent='🎵';musicStatus.textContent='إيقاف الموسيقى';}
+// *** الدالة الجديدة لجلب الأسئلة من ملف questions.json ***
+async function fetchQuestions() {
+    try {
+        const response = await fetch(QUESTIONS_FILE);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        allQuestions = await response.json();
+        console.log(`تم تحميل ${allQuestions.length} سؤال.`);
+        loadingMessage.classList.add('hidden');
+        initializeQuestions();
+    } catch (error) {
+        quizContainer.innerHTML = `<div class="text-red-500 text-xl mt-12"><p>❌ حدث خطأ في تحميل الأسئلة.</p><p>تأكد من وجود ملف <b>questions.json</b> في نفس المجلد.</p></div>`;
+        console.error('Error fetching questions:', error);
+    }
 }
 
+// *** منطق تهيئة الاختبار بالكامل ***
 function initializeQuestions(){
-    // المنطق المضاف لاختيار مجموعة أسئلة ثابتة بناءً على الفترة الزمنية
+    if (allQuestions.length < QUIZ_LENGTH) {
+        quizContainer.innerHTML = `<p class="text-red-500 text-xl mt-12">لا توجد أسئلة كافية في ملف ${QUESTIONS_FILE}.</p>`;
+        return;
+    }
+
     const now = Date.now();
     const intervalSeed = Math.floor(now / REFRESH_INTERVAL);
     
-    // خوارزمية Fisher-Yates shuffle لخلط الأسئلة بـ "بذرة" ثابتة في كل فترة
     function seededShuffle(array, seed) {
         let currentIndex = array.length, temporaryValue, randomIndex;
+        const arrayToShuffle = [...array]; 
         while (0 !== currentIndex) {
-            randomIndex = (seed + currentIndex) % currentIndex;
+            randomIndex = (seed + currentIndex) % currentIndex; 
             currentIndex -= 1;
-            temporaryValue = array[currentIndex];
-            array[currentIndex] = array[randomIndex];
-            array[randomIndex] = temporaryValue;
+            temporaryValue = arrayToShuffle[currentIndex];
+            arrayToShuffle[currentIndex] = arrayToShuffle[randomIndex];
+            arrayToShuffle[randomIndex] = temporaryValue;
         }
-        return array;
+        return arrayToShuffle;
     }
 
-    // نسخ وخلط جميع الأسئلة ثم اختيار أول 10
-    const shuffledQuestions = seededShuffle([...allQuestions], intervalSeed);
+    // 1. خلط الأسئلة الكلية واختيار أول 10
+    const shuffledQuestions = seededShuffle(allQuestions, intervalSeed);
     selectedQuestions = shuffledQuestions.slice(0, QUIZ_LENGTH);
     
+    // 2. خلط الإجابات داخل الأسئلة المختارة لضمان عدم ثبات ترتيب الإجابات
+    selectedQuestions = selectedQuestions.map((q, index) => {
+        const answerSeed = intervalSeed * 10 + index; 
+        const answers = q.a.map((text, i) => ({ text, isCorrect: i === q.correct }));
+        
+        let answerArray = [...answers];
+        let currentIndex = answerArray.length, temporaryValue, randomIndex;
+        
+        while (0 !== currentIndex) {
+            randomIndex = (answerSeed + currentIndex) % currentIndex;
+            currentIndex -= 1;
+            temporaryValue = answerArray[currentIndex];
+            answerArray[currentIndex] = answerArray[randomIndex];
+            answerArray[randomIndex] = temporaryValue;
+        }
+
+        const newCorrectIndex = answerArray.findIndex(ans => ans.isCorrect);
+        
+        return {
+            q: q.q,
+            a: answerArray.map(ans => ans.text),
+            correct: newCorrectIndex,
+            info: q.info
+        };
+    });
+
     currentQuestionIndex = 0;
     score = 0;
     result.classList.add('hidden');
     timerElement.classList.remove('hidden');
+    
     startQuiz();
     updateRefreshTimer(now);
 }
 
-function startQuiz() {
-    loadQuestion();
-}
+// *** دوال تشغيل الاختبار (لم تتغير) ***
+function startQuiz() {loadQuestion();}
 
 function loadQuestion() {
-    // إيقاف أي مؤقت سابق وتفعيل زر التالي
     clearInterval(questionTimer);
     nextButton.classList.add('hidden');
     answered = false;
     
-    if (currentQuestionIndex >= selectedQuestions.length) {
-        showFinalResult();
-        return;
-    }
+    if (currentQuestionIndex >= selectedQuestions.length) {showFinalResult();return;}
 
     const q = selectedQuestions[currentQuestionIndex];
     quizContainer.innerHTML = `
@@ -92,7 +176,7 @@ function loadQuestion() {
             <h2 class="text-2xl md:text-3xl font-extrabold mb-8">${q.q}</h2>
             <div id="answers-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 ${q.a.map((answer, index) => `
-                    <button class="answer-btn bg-teal-700 text-white p-3 rounded-xl shadow-lg hover:bg-teal-600" data-index="${index}">${answer}</button>
+                    <button class="answer-btn bg-emerald-700 text-white p-3 rounded-xl shadow-lg hover:bg-emerald-600" data-index="${index}">${answer}</button>
                 `).join('')}
             </div>
             <div id="info-box" class="hidden text-sm mt-4"></div>
@@ -102,10 +186,7 @@ function loadQuestion() {
         </div>
     `;
 
-    document.querySelectorAll('.answer-btn').forEach(btn => {
-        btn.addEventListener('click', checkAnswer);
-    });
-    
+    document.querySelectorAll('.answer-btn').forEach(btn => {btn.addEventListener('click', checkAnswer);});
     updateProgress();
     startQuestionTimer();
 }
@@ -114,15 +195,10 @@ function startQuestionTimer() {
     let timeLeft = TIME_PER_QUESTION;
     const timerFill = document.getElementById('timer-fill');
     timerNumber.textContent = timeLeft;
-
     questionCountdown = timeLeft;
-
     timerFill.style.width = '100%';
     timerFill.style.transition = `width ${TIME_PER_QUESTION}s linear`;
-    
-    // إعادة تشغيل الأنميشن
     void timerFill.offsetWidth; 
-
     questionTimer = setInterval(() => {
         questionCountdown--;
         timerNumber.textContent = questionCountdown;
@@ -138,21 +214,13 @@ function handleTimeUp() {
         soundTimeUp.play().catch(()=>{});
         answered = true;
         const q = selectedQuestions[currentQuestionIndex];
-        const answersContainer = document.getElementById('answers-container');
-        answersContainer.classList.add('answered');
-        
-        // تظليل الإجابة الصحيحة
         document.querySelector(`.answer-btn[data-index="${q.correct}"]`).classList.add('correct');
-        
-        // عرض المعلومات
         const infoBox = document.getElementById('info-box');
-        infoBox.textContent = q.info;
+        infoBox.innerHTML = `**✨ معلومة إضافية:** ${q.info}`;
         infoBox.classList.remove('hidden');
-
-        result.textContent = 'انتهى الوقت! ⏳ لم تحصل على نقطة.';
+        result.textContent = '⌛ انتهى الوقت! لم تحصل على نقطة.';
         result.className = 'mt-6 text-2xl md:text-3xl font-bold p-4 rounded-xl shadow-2xl bg-red-800 text-white';
         result.classList.remove('hidden');
-        
         nextButton.classList.remove('hidden');
     }
 }
@@ -167,10 +235,7 @@ function checkAnswer(event) {
     const q = selectedQuestions[currentQuestionIndex];
     const isCorrect = selectedIndex === q.correct;
     
-    const answersContainer = document.getElementById('answers-container');
-    answersContainer.classList.add('answered');
-    
-    // تظليل الإجابات
+    const infoBox = document.getElementById('info-box');
     document.querySelectorAll('.answer-btn').forEach(btn => {
         if (parseInt(btn.dataset.index) === q.correct) {
             btn.classList.add('correct');
@@ -180,19 +245,17 @@ function checkAnswer(event) {
         btn.classList.add('answered');
     });
     
-    // عرض المعلومات
-    const infoBox = document.getElementById('info-box');
-    infoBox.textContent = q.info;
+    infoBox.innerHTML = `**✨ معلومة إضافية:** ${q.info}`;
     infoBox.classList.remove('hidden');
 
     if (isCorrect) {
         score++;
         soundCorrect.play().catch(()=>{});
-        result.textContent = 'إجابة صحيحة! 🎉';
+        result.textContent = '✅ إجابة صحيحة!';
         result.className = 'mt-6 text-2xl md:text-3xl font-bold p-4 rounded-xl shadow-2xl bg-green-800 text-white';
     } else {
         soundWrong.play().catch(()=>{});
-        result.textContent = 'إجابة خاطئة! 😔';
+        result.textContent = `❌ إجابة خاطئة. الصحيحة: ${q.a[q.correct]}`;
         result.className = 'mt-6 text-2xl md:text-3xl font-bold p-4 rounded-xl shadow-2xl bg-red-800 text-white';
     }
     
@@ -208,23 +271,44 @@ function updateProgress() {
 function showFinalResult() {
     progressFill.style.width = '100%';
     quizContainer.innerHTML = '';
-    result.textContent = `انتهى الاختبار! 🎉 لقد حصلت على ${score} من ${QUIZ_LENGTH} نقاط.`;
-    result.className = 'mt-6 text-3xl font-bold p-6 rounded-xl shadow-2xl bg-yellow-600 text-gray-900';
+    
+    let bestScore = parseInt(localStorage.getItem('bestScore') || '0');
+    let isNewRecord = false;
+    
+    if (score > bestScore) {
+        bestScore = score;
+        localStorage.setItem('bestScore', bestScore);
+        isNewRecord = true;
+    }
+    
+    const percentage=(score/selectedQuestions.length)*100;
+    let message='';
+    
+    if(isNewRecord) message="🏆 رقم قياسي جديد! تهانينا! 💯";
+    else if(percentage===100) message="مبارك! 👑 الدرجة الكاملة! 💯";
+    else if(percentage>=70) message=`نتيجة ممتازة! ✨ ${score} من ${selectedQuestions.length}.`;
+    else message=`نتيجتك هي: ${score} من ${selectedQuestions.length}. تحتاج إلى مراجعة بسيطة. 📚`;
+
+
+    result.innerHTML=`<p class="text-3xl md:text-4xl mb-4">انتهى الاختبار!</p><p class="text-xl md:text-2xl font-bold mb-4">${message}</p>
+    <p class="text-lg mb-2">نسبة النجاح: ${percentage.toFixed(2)}%</p>
+    <p class="text-yellow-300 text-lg font-bold mb-4">أعلى نتيجة لديك: ${bestScore} من ${selectedQuestions.length} </p>
+    <button onclick="fetchQuestions()" class="mt-4 bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold py-2 px-4 rounded-full text-lg transition">ابدأ اختبار جديد</button>`;
+    
     result.classList.remove('hidden');
-    nextButton.textContent = 'بدء اختبار جديد 🔄';
-    nextButton.classList.remove('hidden');
+    nextButton.classList.add('hidden'); 
     timerElement.classList.add('hidden');
 }
 
 function updateRefreshTimer(startTime) {
+    if(timerInterval) clearInterval(timerInterval);
     const nextRefresh = startTime + REFRESH_INTERVAL;
     
-    setInterval(() => {
+    timerInterval = setInterval(() => {
         const now = Date.now();
         const remaining = nextRefresh - now;
         
         if (remaining <= 0) {
-            // إعادة تحميل الصفحة للحصول على أسئلة جديدة
             location.reload(); 
             return;
         }
@@ -232,15 +316,23 @@ function updateRefreshTimer(startTime) {
         const seconds = Math.floor((remaining / 1000) % 60);
         const minutes = Math.floor((remaining / 1000 / 60) % 60);
         
-        timerValue.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        timerValue.textContent = `${minutes.toString().padStart(2, '0')} د و ${seconds.toString().padStart(2, '0')} ث`;
     }, 1000);
 }
 
-// معالج زر "السؤال التالي"
+function toggleMusic(){
+    const musicIcon=document.getElementById('music-icon'),musicStatus=document.getElementById('music-status');
+    if(backgroundMusic.paused){backgroundMusic.play().catch(()=>{});musicIcon.textContent='🎵';musicStatus.textContent='إيقاف الموسيقى';}
+    else{backgroundMusic.pause();musicIcon.textContent='🔇';musicStatus.textContent='تشغيل الموسيقى';}
+}
+
+
+// *** معالجات الأحداث ***
+musicToggleButton.addEventListener('click',toggleMusic);
+
 nextButton.addEventListener('click', () => {
     if (currentQuestionIndex >= selectedQuestions.length) {
-        // إذا كان الزر يعرض "بدء اختبار جديد"
-        initializeQuestions();
+        fetchQuestions();
         nextButton.textContent = 'السؤال التالي ➡️';
     } else {
         soundNext.play().catch(()=>{});
@@ -250,5 +342,10 @@ nextButton.addEventListener('click', () => {
     }
 });
 
-// بدء التشغيل
-initializeQuestions();
+
+// *** بدء التشغيل ***
+document.addEventListener('DOMContentLoaded', fetchQuestions);
+
+</script>
+</body>
+</html>
