@@ -31,10 +31,9 @@ body {font-family:'Amiri',serif;background:linear-gradient(to bottom,#0d1b1e,#0c
 <header class="mb-8 w-full max-w-4xl">
 <h1 class="text-4xl md:text-5xl font-extrabold text-yellow-300 mb-2">💡 تحدي المعرفة الإسلامية</h1>
 <p class="text-gray-300 text-lg">اختبر معلوماتك الدينية والفقهية — 10 أسئلة جديدة كل 10 دقائق</p>
-<audio id="background-music" src="https://assets.mixkit.co/sfx/preview/mixkit-lo-fi-hip-hop-loop-803.mp3" loop></audio> 
-<button id="music-toggle-btn" class="mt-3 text-sm font-semibold text-gray-300 hover:text-yellow-400 transition flex items-center justify-center mx-auto">
+<audio id="background-music" src="https://assets.mixkit.co/sfx/preview/mixkit-lo-fi-hip-hop-loop-803.mp3" loop autoplay></audio> <button id="music-toggle-btn" class="mt-3 text-sm font-semibold text-gray-300 hover:text-yellow-400 transition flex items-center justify-center mx-auto">
     <span id="music-icon">🎵</span>
-    <span id="music-status" class="mr-2">تشغيل الموسيقى</span>
+    <span id="music-status" class="mr-2">إيقاف</span>
 </button>
 </header>
 
@@ -53,9 +52,7 @@ body {font-family:'Amiri',serif;background:linear-gradient(to bottom,#0d1b1e,#0c
 </div>
 <audio id="sound-correct" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"></audio>
 <audio id="sound-wrong" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"></audio>
-<audio id="sound-next" src="https://actions.google.com/sounds/v1/cartoon/slide_whistle.ogg"></audio>
 <audio id="sound-timeup" src="https://actions.google.com/sounds/v1/cartoon/pop.ogg"></audio>
-
 <script>
 // *** الثوابت المعدلة ***
 const QUIZ_LENGTH=10,REFRESH_INTERVAL=10*60*1000,TIME_PER_QUESTION=15; 
@@ -72,7 +69,6 @@ const quizContainer=document.getElementById('quiz'),
 
 const soundCorrect=document.getElementById('sound-correct'),
       soundWrong=document.getElementById('sound-wrong'),
-      soundNext=document.getElementById('sound-next'),
       soundTimeUp=document.getElementById('sound-timeup');
 
 const backgroundMusic=document.getElementById('background-music'),
@@ -322,8 +318,20 @@ function updateRefreshTimer(startTime) {
 
 function toggleMusic(){
     const musicIcon=document.getElementById('music-icon'),musicStatus=document.getElementById('music-status');
-    if(backgroundMusic.paused){backgroundMusic.play().catch(()=>{});musicIcon.textContent='🎵';musicStatus.textContent='إيقاف الموسيقى';}
-    else{backgroundMusic.pause();musicIcon.textContent='🔇';musicStatus.textContent='تشغيل الموسيقى';}
+    // إذا كانت الموسيقى متوقفة، قم بتشغيلها وغير أيقونة الزر
+    if(backgroundMusic.paused){
+        backgroundMusic.play().catch((error)=>{
+            console.error("Autoplay failed, user needs to interact first.", error);
+        });
+        musicIcon.textContent='🎵';
+        musicStatus.textContent='إيقاف';
+    }
+    // إذا كانت الموسيقى تعمل، قم بإيقافها
+    else{
+        backgroundMusic.pause();
+        musicIcon.textContent='🔇';
+        musicStatus.textContent='تشغيل';
+    }
 }
 
 
@@ -335,7 +343,7 @@ nextButton.addEventListener('click', () => {
         fetchQuestions();
         nextButton.textContent = 'السؤال التالي ➡️';
     } else {
-        soundNext.play().catch(()=>{});
+        // soundNext.play().catch(()=>{}); <--- تم حذف سطر صوت التصفير هنا
         currentQuestionIndex++;
         result.classList.add('hidden');
         loadQuestion();
@@ -346,6 +354,13 @@ nextButton.addEventListener('click', () => {
 // *** بدء التشغيل ***
 document.addEventListener('DOMContentLoaded', fetchQuestions);
 
+// محاولة التشغيل التلقائي للموسيقى (قد تحتاج إلى نقرة أولى من المستخدم حسب متصفحه)
+document.addEventListener('DOMContentLoaded', () => {
+    backgroundMusic.play().catch((error) => {
+        // يتم طباعة هذا الخطأ إذا فشل التشغيل التلقائي (وهو أمر شائع)
+        console.log("Autoplay failed, awaiting user interaction.");
+    });
+});
 </script>
 </body>
 </html>
