@@ -7,6 +7,7 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
 <style>
+/* كود التصميم CSS */
 body {font-family:'Amiri',serif;background:linear-gradient(to bottom,#0d1b1e,#0c2c24);color:#f8f9fa;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:1.5rem;}
 .container {max-width:48rem;width:100%;margin-top:1rem;}
 .question-card {background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);border-radius:1.5rem;box-shadow:0 4px 20px rgba(255,215,0,0.2);transition:transform 0.3s ease, box-shadow 0.3s ease,opacity 0.4s ease;opacity:0;animation:fadeIn 0.5s forwards;padding:1.5rem;}
@@ -29,7 +30,7 @@ body {font-family:'Amiri',serif;background:linear-gradient(to bottom,#0d1b1e,#0c
 
 <header class="mb-8 w-full max-w-4xl">
 <h1 class="text-4xl md:text-5xl font-extrabold text-yellow-300 mb-2">💡 تحدي المعرفة الإسلامية</h1>
-<p class="text-gray-300 text-lg">اختبر معلوماتك الدينية والفقهية — 10 أسئلة في كل مستوى صعوبة</p>
+<p class="text-gray-300 text-lg">اختبر معلوماتك الدينية والفقهية — 10 أسئلة جديدة كل جولة</p>
 <audio id="background-music" src="https://assets.mixkit.co/sfx/preview/mixkit-lo-fi-hip-hop-loop-803.mp3" loop autoplay></audio> 
 <button id="music-toggle-btn" class="mt-3 text-sm font-semibold text-gray-300 hover:text-yellow-400 transition flex items-center justify-center mx-auto">
     <span id="music-icon">🎵</span>
@@ -47,7 +48,7 @@ body {font-family:'Amiri',serif;background:linear-gradient(to bottom,#0d1b1e,#0c
 <div id="result" class="mt-6 text-2xl md:text-3xl font-bold hidden p-4 rounded-xl shadow-2xl"></div>
 <button id="next-btn" class="mt-6 hidden bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold py-3 px-6 rounded-full text-xl transition shadow-lg">السؤال التالي ➡️</button>
 <div id="timer" class="text-gray-300 text-sm hidden">
-  <p>الأسئلة ستتجدد في: <span id="timer-value"></span></p>
+  <p>الأسئلة ستتجدد تلقائياً</p>
   <p>وقت السؤال: <span id="timer-number">15</span> ثانية</p>
 </div>
 <audio id="sound-correct" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"></audio>
@@ -55,16 +56,17 @@ body {font-family:'Amiri',serif;background:linear-gradient(to bottom,#0d1b1e,#0c
 <audio id="sound-timeup" src="https://actions.google.com/sounds/v1/cartoon/pop.ogg"></audio>
 
 <script>
-// إعدادات الاختبار
-const QUIZ_LENGTH=10, REFRESH_INTERVAL=10*60*1000, TIME_PER_QUESTION=15;
+// *** إعدادات الاختبار ***
+// تم إبقاء QUIZ_LENGTH=10 (عشرة أسئلة)
+const QUIZ_LENGTH=10, TIME_PER_QUESTION=15; 
 const QUESTIONS_FILE = 'questions.json';
 
+// *** عناصر الواجهة والأصوات ***
 const quizContainer=document.getElementById('quiz'),
       result=document.getElementById('result'),
       nextButton=document.getElementById('next-btn'),
       progressFill=document.getElementById('progress-fill'),
       timerElement=document.getElementById('timer'),
-      timerValue=document.getElementById('timer-value'),
       timerNumber=document.getElementById('timer-number'),
       loadingMessage=document.getElementById('loading-message');
 
@@ -75,12 +77,10 @@ const soundCorrect=document.getElementById('sound-correct'),
 const backgroundMusic=document.getElementById('background-music'),
       musicToggleButton=document.getElementById('music-toggle-btn');
 
-let allQuestions=[], selectedQuestions=[], currentQuestionIndex=0, score=0, answered=false, timerInterval, questionTimer, questionCountdown;
+// *** متغيرات حالة الاختبار ***
+let allQuestions=[], selectedQuestions=[], currentQuestionIndex=0, score=0, answered=false, questionTimer, questionCountdown;
 
-// مستوى الصعوبة الحالي
-let difficultyLevel = parseInt(localStorage.getItem('currentDifficulty') || '1');
-
-// جلب الأسئلة
+// *** 1. جلب الأسئلة ***
 async function fetchQuestions() {
     try {
         const response = await fetch(QUESTIONS_FILE);
@@ -89,26 +89,26 @@ async function fetchQuestions() {
         loadingMessage.classList.add('hidden');
         initializeQuestions();
     } catch (error) {
-        quizContainer.innerHTML = `<div class="text-red-500 text-xl mt-12"><p>❌ حدث خطأ في تحميل الأسئلة.</p></div>`;
+        quizContainer.innerHTML = `<div class="text-red-500 text-xl mt-12"><p>❌ حدث خطأ في تحميل الأسئلة. تأكد من وجود ملف <b>questions.json</b>.</p></div>`;
         console.error('Error fetching questions:', error);
     }
 }
 
-// تهيئة الأسئلة حسب مستوى الصعوبة
+// *** 2. تهيئة واختيار 10 أسئلة عشوائية ***
 function initializeQuestions() {
-    const availableQuestions = allQuestions.filter(q => q.difficulty === difficultyLevel);
-    if(availableQuestions.length < QUIZ_LENGTH){
-        quizContainer.innerHTML = `<p class="text-red-500 text-xl mt-12">لا توجد أسئلة كافية لمستوى الصعوبة ${difficultyLevel}.</p>`;
+    if(allQuestions.length < QUIZ_LENGTH){
+        quizContainer.innerHTML = `<p class="text-red-500 text-xl mt-12">لا توجد أسئلة كافية في ملف ${QUESTIONS_FILE}.</p>`;
         return;
     }
+    
+    // استخدام قيمة عشوائية (Random Seed) لخلط الأسئلة
+    const seed = Math.floor(Math.random() * 1000000); 
 
-    const now = Date.now();
-    const intervalSeed = Math.floor(now / REFRESH_INTERVAL);
-
-    function seededShuffle(array, seed) {
+    function seededShuffle(array, currentSeed) {
         let arr = [...array], i = arr.length, j, temp;
         while(i){
-            j = (seed + i) % i;
+            // توليد رقم عشوائي يعتمد على الـ seed
+            j = (currentSeed + i) % i;
             i--;
             temp = arr[i];
             arr[i] = arr[j];
@@ -117,9 +117,9 @@ function initializeQuestions() {
         return arr;
     }
 
-    const shuffledQuestions = seededShuffle(availableQuestions, intervalSeed);
+    const shuffledQuestions = seededShuffle(allQuestions, seed);
     selectedQuestions = shuffledQuestions.slice(0, QUIZ_LENGTH).map((q, index) => {
-        const answerSeed = intervalSeed * 10 + index;
+        const answerSeed = seed * 10 + index; // Seed مختلف لترتيب الإجابات
         const answers = q.a.map((text,i)=>({text,isCorrect:i===q.correct}));
 
         // خلط الإجابات
@@ -141,10 +141,12 @@ function initializeQuestions() {
     });
 
     currentQuestionIndex=0; score=0;
-    result.classList.add('hidden'); timerElement.classList.remove('hidden');
+    result.classList.add('hidden'); 
+    timerElement.classList.remove('hidden');
     startQuiz();
-    updateRefreshTimer(now);
 }
+
+// *** 3. دوال تشغيل الاختبار ***
 
 function startQuiz(){loadQuestion();}
 
@@ -154,8 +156,6 @@ function loadQuestion(){
     answered=false;
 
     if(currentQuestionIndex>=selectedQuestions.length){
-        difficultyLevel++; // زيادة الصعوبة بعد 10 أسئلة
-        localStorage.setItem('currentDifficulty', difficultyLevel);
         showFinalResult();
         return;
     }
@@ -163,7 +163,7 @@ function loadQuestion(){
     const q = selectedQuestions[currentQuestionIndex];
     quizContainer.innerHTML = `
         <div class="question-card mt-6" style="opacity:1; transform:translateY(0);">
-            <p class="text-xl md:text-2xl font-bold mb-6 text-yellow-100">السؤال ${currentQuestionIndex+1} من ${QUIZ_LENGTH} - مستوى الصعوبة: ${difficultyLevel}</p>
+            <p class="text-xl md:text-2xl font-bold mb-6 text-yellow-100">السؤال ${currentQuestionIndex+1} من ${QUIZ_LENGTH}</p>
             <h2 class="text-2xl md:text-3xl font-extrabold mb-8">${q.q}</h2>
             <div id="answers-container" class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 ${q.a.map((answer,index)=>`<button class="answer-btn bg-emerald-700 text-white p-3 rounded-xl shadow-lg hover:bg-emerald-600" data-index="${index}">${answer}</button>`).join('')}
@@ -264,34 +264,43 @@ function showFinalResult(){
     timerElement.classList.add('hidden');
 }
 
-function updateRefreshTimer(startTime){
-    if(timerInterval) clearInterval(timerInterval);
-    const nextRefresh=startTime+REFRESH_INTERVAL;
-    timerInterval=setInterval(()=>{
-        const now=Date.now();
-        const remaining=nextRefresh-now;
-        if(remaining<=0){location.reload(); return;}
-        const seconds=Math.floor((remaining/1000)%60);
-        const minutes=Math.floor((remaining/1000/60)%60);
-        timerValue.textContent=`${minutes.toString().padStart(2,'0')} د و ${seconds.toString().padStart(2,'0')} ث`;
-    },1000);
-}
 
+// *** 4. وظيفة تشغيل الموسيقى/إيقافها ***
 function toggleMusic(){
     const musicIcon=document.getElementById('music-icon'),musicStatus=document.getElementById('music-status');
-    if(backgroundMusic.paused){backgroundMusic.play().catch(()=>{}); musicIcon.textContent='🎵'; musicStatus.textContent='إيقاف';}
+    if(backgroundMusic.paused){
+        backgroundMusic.play().catch(()=>{
+             alert('الرجاء الضغط على أي مكان في الشاشة لتشغيل الموسيقى.');
+        });
+        musicIcon.textContent='🎵'; 
+        musicStatus.textContent='إيقاف';
+    }
     else{backgroundMusic.pause(); musicIcon.textContent='🔇'; musicStatus.textContent='تشغيل';}
 }
 
+// *** 5. معالجات الأحداث ***
 musicToggleButton.addEventListener('click',toggleMusic);
 
 nextButton.addEventListener('click',()=>{
-    if(currentQuestionIndex>=selectedQuestions.length){fetchQuestions(); nextButton.textContent='السؤال التالي ➡️';}
-    else{currentQuestionIndex++; result.classList.add('hidden'); loadQuestion();}
+    // الانتقال للسؤال التالي (بدون صوت تصفير)
+    if(currentQuestionIndex>=selectedQuestions.length){
+        fetchQuestions(); 
+        nextButton.textContent='السؤال التالي ➡️';
+    }
+    else{
+        currentQuestionIndex++; 
+        result.classList.add('hidden'); 
+        loadQuestion();
+    }
 });
 
+// *** 6. بدء التشغيل التلقائي ***
 document.addEventListener('DOMContentLoaded', fetchQuestions);
-document.addEventListener('DOMContentLoaded',()=>{backgroundMusic.play().catch(()=>{console.log("Autoplay failed.");});});
+document.addEventListener('DOMContentLoaded',()=>{
+    backgroundMusic.play().catch(()=>{
+        console.log("Autoplay failed.");
+    });
+});
 </script>
 </body>
 </html>
