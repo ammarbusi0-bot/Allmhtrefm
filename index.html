@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>💡 تحدي المعرفة الإسلامية</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Amiri', serif;
+      background: linear-gradient(to bottom, #0d1b1e, #0c2c24);
+      color: #f8f9fa;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1.5rem;
+    }
+    .container {
+        max-width: 48rem;
+        width: 100%;
+        margin-top: 1rem;
+    }
+    .question-card {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 1.5rem;
+      box-shadow: 0 4px 20px rgba(255, 215, 0, 0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      padding: 1.5rem;
+    }
+    .question-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 30px rgba(255, 215, 0, 0.45);
+    }
+    .answer-btn {
+        transition: all 0.3s ease;
+        text-align: center;
+        border: 2px solid transparent;
+        white-space: normal;
+        line-height: 1.3;
+        min-height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .answer-btn:not(.correct):not(.wrong):hover {
+        background-color: #047857;
+        transform: scale(1.02);
+    }
+    .correct {
+        background-color: #10B981 !important;
+        border-color: #059669 !important;
+        pointer-events: none;
+      }
+    .wrong {
+        background-color: #EF4444 !important;
+        border-color: #DC2626 !important;
+        pointer-events: none;
+      }
+    .answered {
+        pointer-events: none;
+      }
+    .progress-bar {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+      overflow: hidden;
+      margin: 1rem 0;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(to right, #f59e0b, #eab308);
+      transition: width 0.5s ease;
+    }
+    #start-screen {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 60vh;
+      text-align: center;
+    }
+    #start-btn {
+      background: linear-gradient(to right, #f59e0b, #eab308);
+      color: #111827;
+      font-weight: bold;
+      padding: 1rem 2rem;
+      border-radius: 1rem;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      margin-top: 2rem;
+    }
+    #start-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(255, 215, 0, 0.5);
+    }
+  </style>
+</head>
+<body class="text-center">
+
+  <header class="mb-8 w-full max-w-4xl">
+    <h1 class="text-4xl md:text-5xl font-extrabold text-yellow-300 mb-2">💡 تحدي المعرفة الإسلامية</h1>
+    <p class="text-gray-300 text-lg">اختبر معلوماتك الدينية — 10 أسئلة جديدة كل 12 ساعة</p>
+  </header>
+
+  <!-- شاشة البداية -->
+  <div id="start-screen">
+    <p class="text-xl text-gray-300">هل أنت مستعد لتحدي معرفتك؟</p>
+    <button id="start-btn">ابدأ الاختبار 🚀</button>
+  </div>
+
+  <div class="progress-bar w-full max-w-4xl hidden">
+    <div id="progress-fill" class="progress-fill" style="width: 0%"></div>
+  </div>
+
+  <main id="quiz" class="container hidden"></main>
+
+  <div id="result" class="mt-6 text-2xl md:text-3xl font-bold hidden p-4 rounded-xl shadow-2xl"></div>
+
+  <button id="next-btn" class="mt-6 hidden bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold py-3 px-6 rounded-full text-xl transition shadow-lg" onclick="nextQuestion()">السؤال التالي ➡️</button>
+
+  <div id="timer" class="mt-4 text-gray-300 text-sm hidden">
+    <p>الأسئلة ستتجدد في: <span id="timer-value"></span></p>
+  </div>
+
+<script>
+  const allQuestions = [
+    { q: "من أول من أسلم من الرجال الأحرار؟", a: ["أبو بكر الصديق", "علي بن أبي طالب", "عثمان بن عفان"], correct: 0 },
+    { q: "ما هي السورة التي تُسمى قلب القرآن؟", a: ["يس", "الرحمن", "الكهف"], correct: 0 },
+    { q: "كم عدد أركان الإسلام؟", a: ["خمسة", "ستة", "سبعة"], correct: 0 },
+    { q: "ما أول ما نزل من القرآن؟", a: ["اقرأ باسم ربك", "الفاتحة", "المدثر"], correct: 0 },
+    { q: "ما اسم والدة النبي محمد ﷺ؟", a: ["آمنة بنت وهب", "خديجة بنت خويلد", "حليمة السعدية"], correct: 0 },
+    { q: "كم عدد سور القرآن الكريم؟", a: ["114", "112", "116"], correct: 0 },
+    { q: "في أي عام كانت غزوة بدر الكبرى؟", a: ["السنة الثانية للهجرة", "الأولى للهجرة", "الثالثة للهجرة"], correct: 0 },
+    { q: "من هو سيف الله المسلول؟", a: ["خالد بن الوليد", "حمزة بن عبد المطلب", "أبو عبيدة بن الجراح"], correct: 0 },
+    { q: "من النبي الذي ابتلعه الحوت؟", a: ["يونس عليه السلام", "إبراهيم عليه السلام", "أيوب عليه السلام"], correct: 0 },
+    { q: "ما هي أطول سورة في القرآن الكريم؟", a: ["البقرة", "النساء", "آل عمران"], correct: 0 }
+  ];
+
+  const QUIZ_LENGTH = 10;
+  const REFRESH_INTERVAL = 12 * 60 * 60 * 1000;
+  const quizContainer = document.getElementById('quiz');
+  const result = document.getElementById('result');
+  const nextButton = document.getElementById('next-btn');
+  const progressFill = document.getElementById('progress-fill');
+  const timerElement = document.getElementById('timer');
+  const timerValue = document.getElementById('timer-value');
+  const startScreen = document.getElementById('start-screen');
+  const startBtn = document.getElementById('start-btn');
+
+  let selectedQuestions, currentQuestionIndex = 0, score = 0, answered = false, timerInterval;
+
+  startBtn.addEventListener('click', () => {
+    startScreen.classList.add('hidden');
+    document.querySelector('.progress-bar').classList.remove('hidden');
+    quizContainer.classList.remove('hidden');
+    initializeQuestions();
+    showQuestion();
+  });
+
+  function initializeQuestions() {
+    const now = Date.now();
+    const lastRefresh = parseInt(localStorage.getItem('lastRefresh') || '0');
+    let storedQuestions = localStorage.getItem('selectedQuestions');
+    const isQuizExpired = !lastRefresh || now - lastRefresh > REFRESH_INTERVAL;
+
+    if (isQuizExpired || !storedQuestions) {
+      selectedQuestions = [...allQuestions].sort(() => Math.random() - 0.5).slice(0, QUIZ_LENGTH);
+      localStorage.setItem('selectedQuestions', JSON.stringify(selectedQuestions));
+      localStorage.setItem('lastRefresh', now);
+      localStorage.removeItem('currentQuestionIndex');
+      localStorage.removeItem('score');
+      currentQuestionIndex = 0;
+      score = 0;
+    } else {
+      selectedQuestions = JSON.parse(storedQuestions);
+      currentQuestionIndex = parseInt(localStorage.getItem('currentQuestionIndex') || '0');
+      score = parseInt(localStorage.getItem('score') || '0');
+      if (currentQuestionIndex >= selectedQuestions.length) {
+          localStorage.removeItem('currentQuestionIndex');
+          localStorage.removeItem('score');
+          initializeQuestions(); 
+          return;
+      }
+    }
+    startTimer();
+  }
+
+  function startTimer() {
+    const lastRefresh = parseInt(localStorage.getItem('lastRefresh') || '0');
+    const endTime = lastRefresh + REFRESH_INTERVAL;
+    timerElement.classList.remove('hidden');
+
+    if (timerInterval) clearInterval(timerInterval);
+
+    timerInterval = setInterval(() => {
+      const now = Date.now();
+      const remaining = endTime - now;
+      if (remaining <= 0) {
+        clearInterval(timerInterval);
+        timerValue.textContent = "انتهى الوقت! (يتم التجديد الآن)";
+        initializeQuestions(); 
+        showQuestion();
+        return;
+      }
+      const totalSeconds = Math.floor(remaining / 1000);
+      const hours = Math.floor(totalSeconds / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+      timerValue.textContent = `${hours.toString().padStart(2,'0')} س و ${minutes.toString().padStart(2,'0')} د و ${seconds.toString().padStart(2,'0')} ث`;
+    }, 1000);
+  }
+
+  function showQuestion() {
+    if (currentQuestionIndex >= selectedQuestions.length) {
+      showResult();
+      return;
+    }
+    const q = selectedQuestions[currentQuestionIndex];
+    answered = false;
+    nextButton.classList.add('hidden');
+    progressFill.style.width = `${(currentQuestionIndex / selectedQuestions.length) * 100}%`;
+
+    quizContainer.innerHTML = `
+      <div id="q-card" class="question-card p-6 md:p-8 mb-6">
+        <p class="text-xl text-yellow-500 mb-4">سؤال ${currentQuestionIndex + 1} من ${selectedQuestions.length}</p>
+        <h2 class="text-2xl md:text-3xl font-bold mb-6 md:mb-8">${q.q}</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4" id="answers-container">
+          ${q.a.map((ans,i)=>`<button data-index="${i}" onclick="checkAnswer(${i}, this)" class="answer-btn w-full bg-emerald-700 text-white font-semibold py-3 px-4 rounded-xl shadow-md text-base md:text-lg hover:bg-emerald-600">${ans}</button>`).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  window.checkAnswer = function(selectedIndex, button){
+    if(answered) return;
+    answered=true;
+    const q = selectedQuestions[currentQuestionIndex];
+    const answerButtons = document.getElementById('answers-container').children;
+    Array.from(answerButtons).forEach(btn=>{
+      const index=parseInt(btn.getAttribute('data-index'));
+      if(index===q.correct){btn.classList.add('correct');}
+      else if(index===selectedIndex){btn.classList.add('wrong');}
+      else{btn.classList.add('opacity-50');}
+      btn.classList.add('answered');
+    });
+    if(selectedIndex===q.correct){score++;result.classList.remove('hidden');result.textContent="✅ إجابة صحيحة!";result.classList.remove('text-red-400','bg-red-900/50');result.classList.add('text-green-400','bg-green-900/50');}
+    else{result.classList.remove('hidden');result.textContent="❌ إجابة خاطئة. الإجابة الصحيحة هي: "+q.a[q.correct];result.classList.remove('text-green-400','bg-green-900/50');result.classList.add('text-red-400','bg-red-900/50');}
+    nextButton.classList.remove('hidden');
+    localStorage.setItem('score',score);
+  }
+
+  window.nextQuestion=function(){
+    currentQuestionIndex++;
+    localStorage.setItem('currentQuestionIndex',currentQuestionIndex);
+    result.classList.add('hidden');
+    showQuestion();
+  }
+
+  function showResult(){
+    quizContainer.innerHTML='';
+    nextButton.classList.add('hidden');
+    result.classList.remove('hidden','bg-red-900/50','bg-green-900/50');
+    result.classList.add('text-yellow-300','bg-slate-800/80','p-6');
+    progressFill.style.width='100%';
+    const percentage=(score/selectedQuestions.length)*100;
+    let message='';
+    if(percentage===100) message="مبارك! 👑 الدرجة الكاملة! 💯";
+    else if(percentage>=70) message=`نتيجة ممتازة! ✨ ${score} من ${selectedQuestions.length}.`;
+    else if(percentage>=50) message=`نتيجة جيدة! 👍 ${score} من ${selectedQuestions.length}.`;
+    else message=`نتيجتك هي: ${score} من ${selectedQuestions.length}. تحتاج إلى مراجعة بسيطة. 📚`;
+    result.innerHTML=`<p class="text-3xl md:text-4xl mb-4">انتهى الاختبار!</p><p class="text-xl md:text-2xl font-bold mb-4">${message}</p><p class="text-lg mb-4">نسبة النجاح: ${percentage.toFixed(2)}%</p><button onclick="restartQuiz()" class="mt-4 bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold py-2 px-4 rounded-full text-lg transition">ابدأ اختبار جديد</button>`;
+    localStorage.removeItem('currentQuestionIndex');
+    localStorage.removeItem('score');
+    if(timerInterval) clearInterval(timerInterval);
+    timerElement.classList.add('hidden');
+  }
+
+  window.restartQuiz=function(){
+    localStorage.removeItem('selectedQuestions');
+    localStorage.removeItem('lastRefresh');
+    initializeQuestions();
+    currentQuestionIndex=0;
+    score=0;
+    result.classList.add('hidden');
+    showQuestion();
+  }
+</script>
+</body>
+</html>
