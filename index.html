@@ -228,23 +228,22 @@
         .hidden {
             display: none !important;
         }
-
     </style>
 </head>
 <body>
 
 <div class="container">
     <div id="login-screen">
-        <h1>تسجيل الدخول / إنشاء الحساب</h1>
+        <h1>تسجيل الدخول إلى المنصة</h1>
         <form id="login-form">
             <div class="form-group"><input type="text" id="username" placeholder="اسم المستخدم (أي اسم تختاره)" required></div>
             <div class="form-group">
                 <input type="password" id="password" placeholder="كلمة المرور (أي كود سري تختاره)" required>
                 <div class="description">
-                    <p><strong>شرح التخزين المحلي:</strong> عند التسجيل لأول مرة، سيتم حفظ اسم المستخدم وكلمة المرور التي اخترتها على **جهازك الخاص** لتمكينك من الدخول المباشر في المرات القادمة وحفظ نتائجك.</p>
+                    <p>إذا كانت هذه أول زيارة لك، فسيقوم النظام **بتسجيل بيانات الدخول وحفظها** على جهازك تلقائياً لتمكينك من العودة لاحقاً ومتابعة نتائجك.</p>
                 </div>
             </div>
-            <button type="submit" class="primary-button" id="submit-button">تسجيل الدخول / إنشاء حساب</button>
+            <button type="submit" class="primary-button" id="submit-button">تسجيل الدخول</button>
         </form>
         <p id="login-message" style="display:none;"></p>
     </div>
@@ -340,6 +339,7 @@
 
     // =======================================================
     // بيانات الأسئلة (50 سؤال لكل نمط)
+    // (تم تركها كما هي لضمان اكتمال الـ 50 سؤال لكل نوع)
     // =======================================================
     
     // إنشاء 50 سؤال للاختيار من متعدد
@@ -374,7 +374,7 @@
 
 
     // =======================================================
-    // وظائف تسجيل الدخول والتخزين المحلي
+    // وظائف تسجيل الدخول والتخزين المحلي (تم تعديل هذا القسم)
     // =======================================================
 
     /**
@@ -424,34 +424,39 @@
         location.reload(); 
     }
 
-    // معالج حدث تسجيل الدخول/التسجيل
+    // معالج حدث تسجيل الدخول/التسجيل (تم تعديل المنطق هنا)
     document.getElementById('login-form').addEventListener('submit', function(event) {
         event.preventDefault();
 
         const enteredUsername = document.getElementById('username').value.trim();
         const enteredPassword = document.getElementById('password').value.trim();
         
+        // جلب البيانات المسجلة سابقاً
         const savedUsername = localStorage.getItem(USERNAME_KEY);
         const savedPassword = localStorage.getItem(PASSWORD_KEY);
 
         let success = false;
         let actionMessage = '';
 
-        if (savedUsername && savedPassword) {
+        // 1. إذا كانت هناك بيانات مسجلة مسبقاً لهذا الجهاز
+        if (savedUsername) {
             if (enteredUsername === savedUsername && enteredPassword === savedPassword) {
+                // بيانات صحيحة - تسجيل دخول
                 success = true;
-                actionMessage = 'مرحباً بعودتك! جاري التحميل...';
+                actionMessage = 'تم تسجيل الدخول بنجاح. جاري التحميل...';
             } else {
+                // بيانات خاطئة - خطأ
                 loginMessage.textContent = 'خطأ: اسم المستخدم أو كلمة المرور غير صحيحة.';
-                loginMessage.style.backgroundColor = var(--error-color);
+                loginMessage.style.backgroundColor = 'var(--error-color)';
                 loginMessage.style.display = 'block';
             }
         } else {
+            // 2. لا توجد بيانات مسجلة - إنشاء حساب جديد وحفظه تلقائياً
             localStorage.setItem(USERNAME_KEY, enteredUsername);
             localStorage.setItem(PASSWORD_KEY, enteredPassword);
             
             success = true;
-            actionMessage = `تم حفظ بياناتك بنجاح. جاري التحميل...`;
+            actionMessage = `تم حفظ بيانات الدخول تلقائياً. جاري التحميل...`;
         }
 
         if (success) {
@@ -460,6 +465,7 @@
             loginMessage.style.color = 'white';
             loginMessage.style.display = 'block';
 
+            // تعيين حالة الدخول
             localStorage.setItem(IS_LOGGED_IN, 'true');
             
             setTimeout(() => {
@@ -469,7 +475,7 @@
     });
 
     // =======================================================
-    // وظائف الاختبار (الـ 15 ثانية والنمط المزدوج)
+    // وظائف الاختبار (لم يتم تعديلها - المؤقت والأنماط سليمة)
     // =======================================================
 
     /**
@@ -508,7 +514,6 @@
         optionsContainer.innerHTML = '';
         
         if (quizMode === 'tf_quiz') {
-            // نمط صح وخطأ
             optionsContainer.classList.remove('options-grid');
             optionsContainer.classList.add('true-false-options');
             ['صحيح', 'خطأ'].forEach(optionText => {
@@ -519,7 +524,6 @@
                 optionsContainer.appendChild(btn);
             });
         } else { 
-            // نمط الاختيار من متعدد
             optionsContainer.classList.add('options-grid');
             optionsContainer.classList.remove('true-false-options');
             for (const key in questionData.options) {
@@ -666,7 +670,7 @@
             if (savedUsername) {
                  submitButton.textContent = 'تسجيل الدخول';
             } else {
-                 submitButton.textContent = 'إنشاء حساب وتسجيل الدخول';
+                 submitButton.textContent = 'تسجيل الدخول (سجل بياناتك)';
             }
         }
     });
