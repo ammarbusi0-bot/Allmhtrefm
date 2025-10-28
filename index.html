@@ -5,15 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>💡 تحدي المعرفة الإسلامية - الفقه والثقافة</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght=400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="text-center">
-
-    <header class="mb-8 w-full max-w-4xl">
-        <h1 class="text-5xl md:text-6xl font-extrabold text-[#66fcf1] mb-4" style="font-family: 'Cairo', sans-serif;">🕌 تحدي المعرفة الإسلامية</h1>
+<body class="text-center bg-[#0b0c10] text-gray-100 font-sans" style="font-family: 'Cairo', sans-serif;">
+    
+    <header class="mb-8 w-full max-w-4xl mx-auto pt-8">
+        <h1 class="text-5xl md:text-6xl font-extrabold text-[#66fcf1] mb-4">🕌 تحدي المعرفة الإسلامية</h1>
         <p id="greeting-message" class="text-gray-400 text-xl mb-6">اختبر معلوماتك في الفقه والتاريخ!</p>
-
+        
         <div class="video-container mx-auto mt-6 w-full max-w-xl">
             <video 
                 class="rounded-xl shadow-2xl w-full"
@@ -23,7 +23,7 @@
                 <p>متصفحك لا يدعم تشغيل الفيديو.</p>
             </video>
         </div>
-
+        
         <audio id="background-music" src="https://assets.mixkit.co/sfx/preview/mixkit-lo-fi-hip-hop-loop-803.mp3" loop></audio> 
         <button id="music-toggle-btn" class="mt-3 text-sm font-semibold text-gray-300 hover:text-[#66fcf1] transition flex items-center justify-center mx-auto">
             <span id="music-icon">🔇</span>
@@ -31,16 +31,16 @@
         </button>
     </header>
 
-    <div class="progress-bar w-full max-w-4xl hidden">
-        <div id="progress-fill" class="progress-fill" style="width: 0%"></div>
+    <div class="progress-bar w-full max-w-4xl mx-auto bg-gray-700 rounded-full h-2.5 hidden">
+        <div id="progress-fill" class="progress-fill h-2.5 rounded-full bg-yellow-500" style="width: 0%"></div>
     </div>
 
-    <main id="quiz" class="container">
+    <main id="quiz" class="container mx-auto max-w-4xl px-4">
         
         <div id="login-screen" class="card mt-6 p-8" style="opacity:1; transform:translateY(0);">
             <p class="text-3xl font-extrabold text-[#66fcf1] mb-6">مرحباً بك في ساحة التحدي!</p>
             
-            <div class="text-right mb-8 border-r-4 border-yellow-500 pr-4">
+            <div class="text-right mb-8 border-r-4 border-yellow-500 pr-4 bg-[#1f2833] p-4 rounded-lg shadow-inner">
                 <h3 class="text-2xl font-bold text-yellow-300 mb-3">📝 قواعد اللعبة:</h3>
                 <ul class="list-disc list-inside text-lg text-gray-300 space-y-2 mr-4">
                     <li>هناك جولتان: أسئلة **اختيار متعدد** وأسئلة **صح أو خطأ**.</li>
@@ -79,10 +79,12 @@
         <div id="loading-message" class="text-xl mt-12 text-[#66fcf1] hidden">جاري تهيئة الأسئلة... ⏳</div>
     </main>
 
-    <div id="result" class="mt-8 text-2xl md:text-3xl font-bold hidden card p-5"></div>
+    <div id="result" class="mt-8 text-2xl md:text-3xl font-bold hidden card p-5 mx-auto max-w-4xl"></div>
+    
     <button id="next-btn" class="mt-6 hidden bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold py-3 px-6 rounded-full text-xl transition shadow-lg">السؤال التالي ➡️</button>
+    
     <div id="timer" class="text-gray-300 text-sm mt-4 hidden">
-        <div id="timer-number" class="text-2xl font-extrabold text-red-500">15</div>
+        <div id="timer-number" class="text-3xl font-extrabold text-red-500">15</div>
         <p>ثوانٍ متبقية</p>
     </div>
 
