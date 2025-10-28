@@ -33,7 +33,7 @@ const ALL_QUESTIONS_DATA = [
     {q: "ما هو المصطلح الفقهي الذي يطلق على إجازة العقد الناقص من قبل من يملك الإجازة؟", a: ["العقد الموقوف", "العقد الباطل", "العقد الفاسد", "العقد اللازم"], correct: 0, info: "هو العقد الموقوف، مثل بيع الفضولي، والذي يتوقف نفاذه على إجازة المالك."},
     {q: "ما هو الحد الأدنى للنصاب الذي تجب فيه زكاة الفضة؟", a: ["مائتا درهم (595 جراماً تقريباً)", "عشرة دراهم", "خمسون درهماً", "ألف جرام"], correct: 0, info: "نصاب الفضة هو مائتا درهم، أي ما يعادل 595 جراماً من الفضة الخالصة."},
     {q: "ما هي المدة التي يجب على المطلقة ثلاثاً أن تعتد بها؟", a: ["حتى تنكح زوجاً غيره", "ثلاث حيضات", "أربعة أشهر وعشرة أيام", "سنة كاملة"], correct: 0, info: "المطلقة ثلاثاً لا يجوز لها الرجوع إلى مطلقها إلا بعد أن تتزوج زوجاً آخر زواجاً صحيحاً ويطلقها بعد الدخول (المحلل الشرعي)."},
-    {q: "من هو أول خليفة عباسي؟", a: ["أبو العباس السفاح", "هارون الرشيد", "المنصور", "المأمون"], correct: 0, info: "هو أبو العباس عبد الله السفاح، وأُعلن قيام الدولة العباسية عام 132 هـ."},
+    {q: "من هو أول خليفة عباسي؟", a: ["أبو العباس السفاح", "هارون الرشيد", "المنصور", "ال مأمون"], correct: 0, info: "هو أبو العباس عبد الله السفاح، وأُعلن قيام الدولة العباسية عام 132 هـ."},
     {q: "ما اسم المعركة التي هزم فيها المسلمون الروم وفتحت الطريق أمام فتوحات الشام؟", a: ["اليرموك", "القادسية", "عين جالوت", "حطين"], correct: 0, info: "معركة اليرموك (15 هـ) كانت من أكبر المعارك الفاصلة لفتح الشام."},
     {q: "في عهد من من الخلفاء الراشدين تم تدوين الدواوين (السجلات الحكومية) وإنشاء نظام البريد؟", a: ["عمر بن الخطاب", "عثمان بن عفان", "علي بن أبي طالب", "أبو بكر الصديق"], correct: 0, info: "في عهد عمر بن الخطاب رضي الله عنه تم تنظيم الدواوين (مثل ديوان العطاء والجند)."},
     {q: "ما هو الحكم الشرعي لزيادة الثمن مقابل الأجل في البيع (التقسيط)؟", a: ["جائز (بيوع الأجل)", "مكروه", "حرام (ربا)", "مباح بشرطين"], correct: 0, info: "جائز شرعاً عند جمهور الفقهاء، بشرط تحديد الثمن الإجمالي للعقد بوضوح وقت إبرامه."},
@@ -55,7 +55,7 @@ const ALL_QUESTIONS_DATA = [
     {q: "ما هو الحكم إذا نسي الإمام ركناً من أركان الصلاة كالسجود؟", a: ["يجب عليه أن يأتي بالركن فوراً ويسجد للسهو", "تسقط عنه الركعة التي نسي فيها الركن", "يبني على الأقل ويكمل الصلاة", "يقطع الصلاة ويعيدها"], correct: 0, info: "إذا تذكر الركن الناقص أثناء الصلاة، لزمه الإتيان به والإتيان بما بعده، ثم سجود السهو."},
     {q: "ما هو 'التكبير المقيد' في أيام عيد الأضحى؟", a: ["التكبير بعد الصلوات المفروضة", "التكبير المطلق في الأسواق", "التكبير عند رؤية الهلال", "التكبير ليلة العيد فقط"], correct: 0, info: "التكبير المقيد هو الذي يكون عقب الصلوات المفروضة في أيام التشريق."},
     {q: "ما هي 'الرضاع المحرّم'؟", a: ["خمس رضعات مشبعات قبل الفطام", "رضعة واحدة بعد الفطام", "ثلاث رضعات في أي وقت", "رضاع بعد سن الثانية"], correct: 0, info: "الرضاع الذي يحرم النكاح به هو خمس رضعات مشبعات فأكثر في سن الرضاعة (قبل حولين) عند الشافعية والحنابلة."},
-    {q: "ما هو الحكم الشرعي لـ 'الشفعة'؟", a: ["حق الجوار في أخذ العقار المبيع", "حق العاقد في فسخ العقد", "حق الشريك في أخذ العقار المبيع", "حق الولي في تزويج موليته"], correct: 2, info: "الشفعة هي حق الشريك القديم في العقار (أو الجار عند بعض الفقهاء) في تملك الحصة المبيعة بثمنها."},
+    {q: "ما الحكم الشرعي لـ 'الشفعة'؟", a: ["حق الجوار في أخذ العقار المبيع", "حق العاقد في فسخ العقد", "حق الشريك في أخذ العقار المبيع", "حق الولي في تزويج موليته"], correct: 2, info: "الشفعة هي حق الشريك القديم في العقار (أو الجار عند بعض الفقهاء) في تملك الحصة المبيعة بثمنها."},
     {q: "ما هو الحد الأدنى من الإبل الذي تجب فيه الزكاة؟", a: ["خمس من الإبل", "عشر من الإبل", "خمس عشرة من الإبل", "أربعون من الإبل"], correct: 0, info: "نصاب الإبل هو خمسة فصاعداً، وتجب فيها شاة واحدة."},
     {q: "من هو قائد معركة القادسية الذي انتصر فيها المسلمون على الفرس؟", a: ["سعد بن أبي وقاص", "خالد بن الوليد", "أبو عبيدة بن الجراح", "عمرو بن العاص"], correct: 0, info: "القائد هو سعد بن أبي وقاص رضي الله عنه (سنة 15 هـ)."},
     {q: "ما هو 'النسخ' في أصول الفقه؟", a: ["رفع الحكم الشرعي بدليل شرعي متأخر عنه", "تخصيص العام بالخاص", "بيان المجمل", "إلغاء الحديث الضعيف بالصحيح"], correct: 0, info: "النسخ هو إزالة الحكم الشرعي الذي جاء به نص سابق، بنص شرعي لاحق."},
@@ -118,7 +118,7 @@ const ALL_QUESTIONS_DATA = [
     {q: "ما هي الغزوة التي نُقض فيها الصلح مع قريش وتم فتح مكة بعدها؟", a: ["غزوة فتح مكة (العشرة آلاف)", "غزوة حنين", "غزوة الطائف", "غزوة تبوك"], correct: 0, info: "غزوة فتح مكة (8 هـ) جاءت بعد نقض قريش لصلح الحديبية."},
     {q: "ماذا يُقصد بـ 'أدب القاضي'؟", a: ["الصفات التي يجب أن يتصف بها القاضي وسلوكه", "قواعد الإجراءات القضائية", "العقوبات التي يصدرها القاضي", "كتب الفقه المتعلقة بالأقضية"], correct: 0, info: "أدب القاضي يشمل سلوكه، كيفية معاملته للخصوم، وطريقة إصدار الأحكام."},
     {q: "ما الحكم إذا مات المسلم وعليه دين يغرق جميع تركته؟", a: ["لا يوزع الميراث حتى يقضى الدين", "يوزع الميراث ويبقى الدين على الورثة", "يتحمل بيت مال المسلمين الدين", "يسقط الدين بموت المدين"], correct: 0, info: "قضاء الدين مقدم على توزيع الميراث والوصية."},
-    {q: "ما هو 'حكم المكره' في العقود الفقهية؟", a: ["عقده غير صحيح إلا في حالات محددة", "عقده صحيح ونافذ", "عقده موقوف على إجازته بعد زوال الإكراه", "عقده باطل مطلقاً"], correct: 0, info: "عقد المكره لا يصح في الأصل لأنه لا تراضي فيه، إلا في عقود معينة كالطلاق عند بعض الفقهاء."},
+    {q: "ما هو 'حكم المكره' في العقود الفقهية؟", a: ["عقده غير صحيح إلا في حالات محددة", "عقده صحيح ونافذ", "عقده موقوف على إجازته بعد زوال الإكراه", "عقده باطل مطلقاً"], correct: 0, info: "عقد المكره لا يصح في الأصل لأنه لا تراضي فيه، إلا في عقود معينة كَالطلاق عند بعض الفقهاء."},
     {q: "من هو أول من أدخل نظام العسس (دوريات الأمن الليلية) في الإسلام؟", a: ["عمر بن الخطاب", "عثمان بن عفان", "علي بن أبي طالب", "أبو بكر الصديق"], correct: 0, info: "هو عمر بن الخطاب رضي الله عنه."},
     {q: "ما هي المدينة التي كانت عاصمة الدولة الفاطمية؟", a: ["القاهرة", "فاس", "القيروان", "المهدية"], correct: 0, info: "القاهرة كانت عاصمة الفاطميين بعد تأسيسها في مصر."},
     {q: "ماذا يُقصد بـ 'بيع السَلَم'؟", a: ["بيع موصوف في الذمة بثمن معجل", "بيع سلعة حاضرة بثمن مؤجل", "بيع سلعة بثمن مجهول", "بيع الذهب بالذهب"], correct: 0, info: "بيع السلم هو عقد على موصوف في الذمة بثمن مقبوض في مجلس العقد."},
@@ -136,7 +136,7 @@ const ALL_QUESTIONS_DATA = [
     {q: "ما هو 'التأمين التكافلي' (التعاوني) من وجهة النظر الشرعية؟", a: ["عقد تبرع وتعاون جائز", "عقد غرر محرم", "عقد بيع آجل", "عقد قرض ربوي"], correct: 0, info: "التأمين التعاوني أو التكافلي مبني على التبرع والتعاون بين المشتركين، وهو الصيغة المقبولة شرعاً."},
     {q: "كم صاعاً من الشعير يُقدر به نصاب زكاة الفطر؟", a: ["صاع واحد", "نصف صاع", "ثلاثة أصواع", "صاعين"], correct: 0, info: "نصاب زكاة الفطر هو صاع واحد من غالب قوت أهل البلد (صاع نبوي)."},
     {q: "ما هي الغزوة التي وُصفت بأنها 'يوم الفرقان'؟", a: ["غزوة بدر الكبرى", "غزوة أحد", "غزوة الخندق", "غزوة حنين"], correct: 0, info: "غزوة بدر الكبرى، حيث فرق الله فيها بين الحق والباطل."},
-    {q: "ما هو الحكم الفقهي إذا تكررت النجاسة على الثوب دون غسل؟", a: ["لا تصح الصلاة إلا بعد غسل واحد فقط", "تجب إعادة الغسل لكل نجاسة", "تصح الصلاة إذا كانت النجاسة قليلة", "يُعفى عن النجاسة المتكررة"], correct: 0, info: "الأصل أن النجاسة المتكررة على الثوب تجب إزالتها بغسلة واحدة تكفي لإزالة عين النجاسة."},
+    {q: "ما هو الحكم إذا تكررت النجاسة على الثوب دون غسل؟", a: ["لا تصح الصلاة إلا بعد غسل واحد فقط", "تجب إعادة الغسل لكل نجاسة", "تصح الصلاة إذا كانت النجاسة قليلة", "يُعفى عن النجاسة المتكررة"], correct: 0, info: "الأصل أن النجاسة المتكررة على الثوب تجب إزالتها بغسلة واحدة تكفي لإزالة عين النجاسة."},
     {q: "من هو 'سيد التابعين'؟", a: ["سعيد بن المسيب", "الحسن البصري", "عروة بن الزبير", "محمد بن سيرين"], correct: 0, info: "سعيد بن المسيب رحمه الله."},
     {q: "ما هو الحكم إذا رأى المسلم هلال رمضان ثم رُدَّت شهادته؟", a: ["يجب عليه الصوم", "لا يجب عليه الصوم", "يصوم ويجب عليه القضاء", "يصوم تطوعاً"], correct: 0, info: "إذا رأى الهلال بنفسه، وجب عليه الصوم لأنه تحقق من بداية الشهر."},
     {q: "ماذا يُقصد بـ 'الإعسار' في الفقه المالي؟", a: ["عدم القدرة على سداد الدين", "كثرة المال والديون", "بيع السلعة بأقل من سعرها", "البيع بثمن مؤجل"], correct: 0, info: "الإعسار هو العجز عن الوفاء بالدين، ويوجب إنظار المدين (إمهاله)."},
@@ -219,7 +219,7 @@ let totalWrong = parseInt(localStorage.getItem('totalWrong') || '0');
 // ---------------------------------------------
 
 
-// *** 4. عناصر الواجهة والأصوات ***
+// *** 4. عناصر الواجهة والأصوات (التحقق من وجودها قبل البدء) ***
 const quizContainer = document.getElementById('quiz');
 const result = document.getElementById('result');
 const nextButton = document.getElementById('next-btn');
@@ -234,7 +234,7 @@ const startGameBtn = document.getElementById('start-game-btn');
 const usernameInput = document.getElementById('username-input');
 const welcomeUsername = document.getElementById('welcome-username');
 const greetingMessage = document.getElementById('greeting-message');
-const profileButton = document.getElementById('profile-btn'); // **تم إضافة عنصر زر الملف الشخصي**
+const profileButton = document.getElementById('profile-btn'); 
 
 const soundCorrect = document.getElementById('sound-correct');
 const soundWrong = document.getElementById('sound-wrong');
@@ -253,43 +253,74 @@ function saveUserData() {
     localStorage.setItem('username', username);
     localStorage.setItem('bestScoreMCQ', bestScoreMCQ);
     localStorage.setItem('bestScoreTF', bestScoreTF);
-    // *** إضافة حفظ الإحصائيات الجديدة ***
     localStorage.setItem('totalAttempted', totalAttempted);
     localStorage.setItem('totalCorrect', totalCorrect);
     localStorage.setItem('totalWrong', totalWrong);
-    // -----------------------------------
 }
 
-// وظيفة تهيئة شاشة الترحيب
+// *** وظيفة تهيئة شاشة الترحيب (تم تعديلها لضمان ربط الأحداث) ***
 function showWelcomeScreen() {
-    loginScreen.classList.add('hidden');
+    // 1. التأكد من أن عنصر شاشة الترحيب موجود ومرئي
+    if (!welcomeScreen) return; 
+    
+    // 2. إخفاء الشاشة الحالية
+    if (loginScreen) loginScreen.classList.add('hidden');
+    
+    // 3. إظهار شاشة الترحيب وإعدادها
     welcomeScreen.classList.remove('hidden');
-    welcomeScreen.classList.add('question-card'); // لاستخدام تأثير الفيد إن
-    welcomeUsername.textContent = username;
-    greetingMessage.innerHTML = `مرحباً بك يا **${username}**!`;
-    progressBar.classList.add('hidden');
-    nextButton.classList.add('hidden');
-    result.classList.add('hidden');
-    timerElement.classList.add('hidden'); // إخفاء المؤقت في شاشة الترحيب
+    welcomeScreen.classList.add('question-card');
+
+    // 4. تحديث النص بالاسم الجديد
+    if (welcomeUsername) welcomeUsername.textContent = username;
+    if (greetingMessage) greetingMessage.innerHTML = `مرحباً بك يا **${username}**!`;
     
-    // إخفاء محتوى الاختبار وعرض رسالة الترحيب
-    quizContainer.innerHTML = '';
+    // 5. إخفاء عناصر اللعب غير المرغوب فيها
+    if (progressBar) progressBar.classList.add('hidden');
+    if (nextButton) nextButton.classList.add('hidden');
+    if (result) result.classList.add('hidden');
+    if (timerElement) timerElement.classList.add('hidden'); 
     
-    // ربط زر الملف الشخصي وزر التجديد
-    if(profileButton) profileButton.addEventListener('click', showProfileScreen);
+    if (quizContainer) quizContainer.innerHTML = '';
+    
+    // 6. ربط الأزرار بشكل آمن بعد التأكد من وجودها
+    if(profileButton) {
+        profileButton.removeEventListener('click', showProfileScreen); // إزالة الربط القديم
+        profileButton.addEventListener('click', showProfileScreen);
+    }
+    
+    if(startMCQBtn) {
+        // نستخدم دالة خارجية لتجنب المشاكل
+        startMCQBtn.removeEventListener('click', handleStartQuiz); 
+        startMCQBtn.addEventListener('click', handleStartQuiz);
+    }
+    
+    if(startTFBtn) {
+        startTFBtn.removeEventListener('click', handleStartQuiz);
+        startTFBtn.addEventListener('click', handleStartQuiz);
+    }
 }
 
-// *** دالة عرض شاشة الملف الشخصي والإحصائيات (الكود المُعدَّل) ***
+// دالة لمعالجة بدء الاختبار (تُستخدم لربط آمن)
+function handleStartQuiz(e) {
+    // التأكد من أن الزر يحتوي على خاصية data-type
+    const type = e.currentTarget.dataset.type;
+    if (type) {
+        initializeQuestions(type);
+    }
+}
+
+
+// *** دالة عرض شاشة الملف الشخصي والإحصائيات ***
 function showProfileScreen() {
     // إخفاء جميع عناصر اللعب
-    quizContainer.innerHTML = '';
-    result.classList.add('hidden');
-    welcomeScreen.classList.add('hidden');
-    timerElement.classList.add('hidden');
-    progressBar.classList.add('hidden');
-    nextButton.classList.add('hidden');
+    if (quizContainer) quizContainer.innerHTML = '';
+    if (result) result.classList.add('hidden');
+    if (welcomeScreen) welcomeScreen.classList.add('hidden');
+    if (timerElement) timerElement.classList.add('hidden');
+    if (progressBar) progressBar.classList.add('hidden');
+    if (nextButton) nextButton.classList.add('hidden');
     
-    // التأكد من تحميل أحدث الإحصائيات (قد تكون تحديثات في جلسة سابقة)
+    // التأكد من تحميل أحدث الإحصائيات 
     totalAttempted = parseInt(localStorage.getItem('totalAttempted') || '0');
     totalCorrect = parseInt(localStorage.getItem('totalCorrect') || '0');
     totalWrong = parseInt(localStorage.getItem('totalWrong') || '0');
@@ -332,34 +363,38 @@ function showProfileScreen() {
             <button id="reset-stats-btn" class="alt-btn mt-4 bg-gray-600 hover:bg-gray-500">تصفير الإحصائيات الكلية</button>
         </div>
     `;
-    quizContainer.innerHTML = profileHTML;
+    if (quizContainer) quizContainer.innerHTML = profileHTML;
     
-    // ربط الأزرار بعد وضعها في DOM مباشرةً لضمان عدم وجود أخطاء
-    document.getElementById('return-to-welcome-from-profile').addEventListener('click', showWelcomeScreen);
+    // ربط الأزرار بعد وضعها في DOM مباشرةً
+    const returnBtn = document.getElementById('return-to-welcome-from-profile');
+    if (returnBtn) returnBtn.addEventListener('click', showWelcomeScreen);
     
     // معالج زر تصفير الإحصائيات
-    document.getElementById('reset-stats-btn').addEventListener('click', () => {
-        if(confirm("هل أنت متأكد من تصفير جميع إحصائياتك الكلية؟ (لن يتم تصفير أعلى نتيجة)")) {
-            totalAttempted = 0;
-            totalCorrect = 0;
-            totalWrong = 0;
-            saveUserData();
-            showProfileScreen(); // إعادة عرض الشاشة بالقيم الجديدة (الصفر)
-        }
-    });
+    const resetBtn = document.getElementById('reset-stats-btn');
+    if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+            if(confirm("هل أنت متأكد من تصفير جميع إحصائياتك الكلية؟ (لن يتم تصفير أعلى نتيجة)")) {
+                totalAttempted = 0;
+                totalCorrect = 0;
+                totalWrong = 0;
+                saveUserData();
+                showProfileScreen(); // إعادة عرض الشاشة بالقيم الجديدة (الصفر)
+            }
+        });
+    }
 }
 // -------------------------------------------------------------------------------------
 
 // وظيفة خلط واختيار الأسئلة
 function initializeQuestions(type) {
-    loadingMessage.classList.remove('hidden');
-    welcomeScreen.classList.add('hidden');
+    if (loadingMessage) loadingMessage.classList.remove('hidden');
+    if (welcomeScreen) welcomeScreen.classList.add('hidden');
     
     currentQuizType = type;
     const sourceData = type === 'mcq' ? ALL_QUESTIONS_DATA : TF_QUESTIONS_DATA;
 
     if (sourceData.length < QUIZ_LENGTH) {
-        quizContainer.innerHTML = `<div class="text-red-500 text-xl mt-12"><p>❌ لا توجد أسئلة كافية لهذا النوع من الاختبار.</p></div>`;
+        if (quizContainer) quizContainer.innerHTML = `<div class="text-red-500 text-xl mt-12"><p>❌ لا توجد أسئلة كافية لهذا النوع من الاختبار.</p></div>`;
         return;
     }
 
@@ -382,7 +417,7 @@ function initializeQuestions(type) {
     
     // اختيار 10 أسئلة وتهيئة خلط الإجابات (فقط لأسئلة الاختيار المتعدد)
     selectedQuestions = shuffledQuestions.slice(0, QUIZ_LENGTH).map((q, index) => {
-        if (type === 'tf') { // أسئلة صح/خطأ لا تحتاج خلط الإجابات
+        if (type === 'tf') { 
             return q;
         }
         
@@ -409,13 +444,13 @@ function initializeQuestions(type) {
 
     currentQuestionIndex = 0;
     score = 0;
-    result.classList.add('hidden');
-    timerElement.classList.remove('hidden');
-    progressBar.classList.remove('hidden');
+    if (result) result.classList.add('hidden');
+    if (timerElement) timerElement.classList.remove('hidden');
+    if (progressBar) progressBar.classList.remove('hidden');
     
     // ابدأ أول سؤال بعد فترة قصيرة
     setTimeout(() => {
-        loadingMessage.classList.add('hidden');
+        if (loadingMessage) loadingMessage.classList.add('hidden');
         loadQuestion();
     }, 500); 
 }
@@ -424,7 +459,7 @@ function initializeQuestions(type) {
 
 function loadQuestion() {
     clearInterval(questionTimer);
-    nextButton.classList.add('hidden');
+    if (nextButton) nextButton.classList.add('hidden');
     answered = false;
 
     if (currentQuestionIndex >= selectedQuestions.length) {
@@ -434,31 +469,31 @@ function loadQuestion() {
 
     const q = selectedQuestions[currentQuestionIndex];
     
-    // تصميم مختلف لزر الإجابة بناءً على نوع السؤال
     const btnClass = currentQuizType === 'tf' 
-        ? 'col-span-1 answer-btn bg-red-600 hover:bg-red-500' // أزرار صح أو خطأ
-        : 'col-span-1 answer-btn bg-emerald-700 hover:bg-emerald-600'; // أزرار اختيار متعدد
+        ? 'col-span-1 answer-btn bg-red-600 hover:bg-red-500' 
+        : 'col-span-1 answer-btn bg-emerald-700 hover:bg-emerald-600'; 
 
-    // تصميم شبكة الإجابات
     const answersGridClass = currentQuizType === 'tf' 
-        ? 'grid grid-cols-2 gap-6' // صفين لـ "صحيح" و "خطأ"
-        : 'grid grid-cols-1 md:grid-cols-2 gap-4'; // شبكة 2 عمود للاختيار المتعدد
+        ? 'grid grid-cols-2 gap-6' 
+        : 'grid grid-cols-1 md:grid-cols-2 gap-4';
         
-    // تصميم البطاقة للسؤال التالي
-    quizContainer.innerHTML = `
-        <div class="card question-card mt-6" style="opacity:1; transform:translateY(0);">
-            <p class="text-xl md:text-2xl font-bold mb-6 text-yellow-300">
-                ${currentQuizType === 'mcq' ? 'اختيار متعدد' : 'صح أو خطأ'} - سؤال ${currentQuestionIndex + 1} من ${QUIZ_LENGTH}
-            </p>
-            <h2 class="text-2xl md:text-3xl font-extrabold mb-8">${q.q}</h2>
-            <div id="answers-container" class="${answersGridClass}">
-                ${q.a.map((answer, index) => `<button class="${btnClass}" data-index="${index}">${answer}</button>`).join('')}
+    if (quizContainer) {
+        quizContainer.innerHTML = `
+            <div class="card question-card mt-6" style="opacity:1; transform:translateY(0);">
+                <p class="text-xl md:text-2xl font-bold mb-6 text-yellow-300">
+                    ${currentQuizType === 'mcq' ? 'اختيار متعدد' : 'صح أو خطأ'} - سؤال ${currentQuestionIndex + 1} من ${QUIZ_LENGTH}
+                </p>
+                <h2 class="text-2xl md:text-3xl font-extrabold mb-8">${q.q}</h2>
+                <div id="answers-container" class="${answersGridClass}">
+                    ${q.a.map((answer, index) => `<button class="${btnClass}" data-index="${index}">${answer}</button>`).join('')}
+                </div>
+                <div id="info-box" class="hidden text-sm mt-4"></div>
+                <div class="timer-bar mt-6"><div id="timer-fill" class="timer-fill" style="transition:width ${TIME_PER_QUESTION}s linear;"></div></div>
             </div>
-            <div id="info-box" class="hidden text-sm mt-4"></div>
-            <div class="timer-bar mt-6"><div id="timer-fill" class="timer-fill" style="transition:width ${TIME_PER_QUESTION}s linear;"></div></div>
-        </div>
-    `;
-    document.querySelectorAll('.answer-btn').forEach(btn => btn.addEventListener('click', checkAnswer));
+        `;
+        document.querySelectorAll('.answer-btn').forEach(btn => btn.addEventListener('click', checkAnswer));
+    }
+    
     updateProgress();
     startQuestionTimer();
 }
@@ -466,23 +501,23 @@ function loadQuestion() {
 function startQuestionTimer() {
     let timeLeft = TIME_PER_QUESTION;
     const timerFill = document.getElementById('timer-fill');
-    timerNumber.textContent = timeLeft;
+    if (timerNumber) timerNumber.textContent = timeLeft;
     questionCountdown = timeLeft;
     
-    // إعادة تعيين شريط المؤقت
-    timerFill.style.transition = 'none';
-    timerFill.style.width = '100%';
-    void timerFill.offsetWidth; 
-    
-    // بدء الحركة بعد إعادة التعيين
-    setTimeout(() => {
-        timerFill.style.transition = `width ${TIME_PER_QUESTION}s linear`;
-        timerFill.style.width = '0%';
-    }, 50);
+    if (timerFill) {
+        timerFill.style.transition = 'none';
+        timerFill.style.width = '100%';
+        void timerFill.offsetWidth; 
+        
+        setTimeout(() => {
+            timerFill.style.transition = `width ${TIME_PER_QUESTION}s linear`;
+            timerFill.style.width = '0%';
+        }, 50);
+    }
 
     questionTimer = setInterval(() => {
         questionCountdown--;
-        timerNumber.textContent = questionCountdown;
+        if (timerNumber) timerNumber.textContent = questionCountdown;
         if (questionCountdown <= 0) {
             clearInterval(questionTimer);
             handleTimeUp();
@@ -492,26 +527,28 @@ function startQuestionTimer() {
 
 function handleTimeUp() {
     if (!answered) {
-        soundTimeUp.play().catch(() => {});
+        if (soundTimeUp) soundTimeUp.play().catch(() => {});
         answered = true;
         const q = selectedQuestions[currentQuestionIndex];
         const correctButton = document.querySelector(`.answer-btn[data-index="${q.correct}"]`);
         if (correctButton) correctButton.classList.add('correct');
         
         const infoBox = document.getElementById('info-box');
-        infoBox.innerHTML = `**✨ معلومة إضافية:** ${q.info}`;
-        infoBox.classList.remove('hidden');
+        if (infoBox) {
+            infoBox.innerHTML = `**✨ معلومة إضافية:** ${q.info}`;
+            infoBox.classList.remove('hidden');
+        }
         
-        result.textContent = '⌛ انتهى الوقت! لم تحصل على نقطة.';
-        result.className = 'mt-8 text-2xl md:text-3xl font-bold card p-5 bg-red-800 text-white';
-        result.classList.remove('hidden');
-        nextButton.classList.remove('hidden');
+        if (result) {
+            result.textContent = '⌛ انتهى الوقت! لم تحصل على نقطة.';
+            result.className = 'mt-8 text-2xl md:text-3xl font-bold card p-5 bg-red-800 text-white';
+            result.classList.remove('hidden');
+        }
+        if (nextButton) nextButton.classList.remove('hidden');
         
-        // *** تحديث الإحصائيات المتراكمة عند انتهاء الوقت ***
         totalAttempted++;
         totalWrong++;
         saveUserData();
-        // -----------------------------------
     }
 }
 
@@ -525,23 +562,24 @@ function checkAnswer(event) {
     const isCorrect = selectedIndex === q.correct;
     const infoBox = document.getElementById('info-box');
 
-    // *** تحديث الإحصائيات المتراكمة ***
     totalAttempted++;
     if (isCorrect) {
         score++;
         totalCorrect++;
-        soundCorrect.play().catch(() => {});
-        result.textContent = '✅ إجابة صحيحة!';
-        result.className = 'mt-8 text-2xl md:text-3xl font-bold card p-5 bg-green-800 text-white';
+        if (soundCorrect) soundCorrect.play().catch(() => {});
+        if (result) {
+            result.textContent = '✅ إجابة صحيحة!';
+            result.className = 'mt-8 text-2xl md:text-3xl font-bold card p-5 bg-green-800 text-white';
+        }
     } else {
         totalWrong++;
-        soundWrong.play().catch(() => {});
-        result.textContent = `❌ إجابة خاطئة. الصحيحة: ${q.a[q.correct]}`;
-        result.className = 'mt-8 text-2xl md:text-3xl font-bold card p-5 bg-red-800 text-white';
+        if (soundWrong) soundWrong.play().catch(() => {});
+        if (result) {
+            result.textContent = `❌ إجابة خاطئة. الصحيحة: ${q.a[q.correct]}`;
+            result.className = 'mt-8 text-2xl md:text-3xl font-bold card p-5 bg-red-800 text-white';
+        }
     }
-    // حفظ التحديثات في التخزين المحلي فوراً
     saveUserData();
-    // -----------------------------------
 
     document.querySelectorAll('.answer-btn').forEach(btn => {
         if (parseInt(btn.dataset.index) === q.correct) btn.classList.add('correct');
@@ -549,22 +587,24 @@ function checkAnswer(event) {
         btn.classList.add('answered');
     });
 
-    infoBox.innerHTML = `**✨ معلومة إضافية:** ${q.info}`;
-    infoBox.classList.remove('hidden');
-    result.classList.remove('hidden');
-    nextButton.classList.remove('hidden');
+    if (infoBox) {
+        infoBox.innerHTML = `**✨ معلومة إضافية:** ${q.info}`;
+        infoBox.classList.remove('hidden');
+    }
+    if (result) result.classList.remove('hidden');
+    if (nextButton) nextButton.classList.remove('hidden');
 }
 
 function updateProgress() {
     const percentage = (currentQuestionIndex / QUIZ_LENGTH) * 100;
-    progressFill.style.width = `${percentage}%`;
+    if (progressFill) progressFill.style.width = `${percentage}%`;
 }
 
 function showFinalResult() {
-    progressFill.style.width = '100%';
-    quizContainer.innerHTML = '';
-    timerElement.classList.add('hidden');
-    progressBar.classList.add('hidden');
+    if (progressFill) progressFill.style.width = '100%';
+    if (quizContainer) quizContainer.innerHTML = '';
+    if (timerElement) timerElement.classList.add('hidden');
+    if (progressBar) progressBar.classList.add('hidden');
 
     const isMCQ = currentQuizType === 'mcq';
     let bestScore = isMCQ ? bestScoreMCQ : bestScoreTF;
@@ -578,7 +618,7 @@ function showFinalResult() {
         isNewRecord = true;
         if (isMCQ) bestScoreMCQ = score;
         else bestScoreTF = score;
-        saveUserData(); // تحديث السكور
+        saveUserData(); 
     }
 
     const percentage = (score / QUIZ_LENGTH) * 100;
@@ -588,93 +628,97 @@ function showFinalResult() {
     else if (percentage >= 70) message = `نتيجة ممتازة! ✨ ${score} من ${QUIZ_LENGTH}.`;
     else message = `نتيجتك هي: ${score} من ${QUIZ_LENGTH}. تحتاج إلى مراجعة بسيطة. 📚`;
 
-    result.innerHTML = `
-        <p class="text-3xl md:text-4xl mb-4 text-[#66fcf1]">انتهت جولة ${quizTypeTitle}!</p>
-        <p class="text-xl md:text-2xl font-bold mb-4">${message}</p>
-        <p class="text-lg mb-2">نسبة النجاح: ${percentage.toFixed(2)}%</p>
-        <p class="text-yellow-300 text-lg font-bold mb-4">أعلى نتيجة لـ ${username} في هذه الجولة: ${bestScore} من ${QUIZ_LENGTH}</p>
-        <button id="return-to-welcome" class="main-btn mt-4">اختر تحدي جديد</button>
-        <button id="show-profile-from-result" class="alt-btn mt-4">عرض ملفي الشخصي (الإحصائيات)</button>
-        `;
-    result.classList.remove('hidden');
-    document.getElementById('return-to-welcome').addEventListener('click', showWelcomeScreen);
-    document.getElementById('show-profile-from-result').addEventListener('click', showProfileScreen); // ربط الزر الجديد
+    if (result) {
+        result.innerHTML = `
+            <p class="text-3xl md:text-4xl mb-4 text-[#66fcf1]">انتهت جولة ${quizTypeTitle}!</p>
+            <p class="text-xl md:text-2xl font-bold mb-4">${message}</p>
+            <p class="text-lg mb-2">نسبة النجاح: ${percentage.toFixed(2)}%</p>
+            <p class="text-yellow-300 text-lg font-bold mb-4">أعلى نتيجة لـ ${username} في هذه الجولة: ${bestScore} من ${QUIZ_LENGTH}</p>
+            <button id="return-to-welcome" class="main-btn mt-4">اختر تحدي جديد</button>
+            <button id="show-profile-from-result" class="alt-btn mt-4">عرض ملفي الشخصي (الإحصائيات)</button>
+            `;
+        result.classList.remove('hidden');
+        
+        const returnBtn = document.getElementById('return-to-welcome');
+        if (returnBtn) returnBtn.addEventListener('click', showWelcomeScreen);
+        
+        const profileBtn = document.getElementById('show-profile-from-result');
+        if (profileBtn) profileBtn.addEventListener('click', showProfileScreen);
+    }
 }
 
 // *** 7. وظيفة تشغيل الموسيقى/إيقافها ***
 function toggleMusic() {
     const musicIcon = document.getElementById('music-icon'),
         musicStatus = document.getElementById('music-status');
-    if (backgroundMusic.paused) {
-        backgroundMusic.play().catch(() => {
-            console.log("Music Autoplay failed. Requires user interaction.");
-        });
-        musicIcon.textContent = '🎵';
-        musicStatus.textContent = 'إيقاف';
-    } else {
-        backgroundMusic.pause();
-        musicIcon.textContent = '🔇';
-        musicStatus.textContent = 'تشغيل';
+    if (backgroundMusic && musicIcon && musicStatus) {
+        if (backgroundMusic.paused) {
+            backgroundMusic.play().catch(() => {
+                console.log("Music Autoplay failed. Requires user interaction.");
+            });
+            musicIcon.textContent = '🎵';
+            musicStatus.textContent = 'إيقاف';
+        } else {
+            backgroundMusic.pause();
+            musicIcon.textContent = '🔇';
+            musicStatus.textContent = 'تشغيل';
+        }
     }
 }
 
 // *** 8. معالجات الأحداث والبدء ***
 
-// معالج زر التسجيل
-startGameBtn.addEventListener('click', () => {
-    username = usernameInput.value.trim();
-    if (username.length < 2) {
-        alert('الرجاء إدخال اسم مستخدم لا يقل عن حرفين.');
-        return;
-    }
-    // حفظ الاسم وتشغيل الموسيقى
-    saveUserData();
-    showWelcomeScreen();
-    // محاولة تشغيل الموسيقى عند بدء التحدي، إن لم تكن قيد التشغيل
-    if (backgroundMusic.paused) {
-        toggleMusic();
-    }
-});
-
-// معالج زر بدء جولة الاختيار المتعدد
-startMCQBtn.addEventListener('click', (e) => {
-    // استخدام dataset للحصول على النوع
-    initializeQuestions(e.currentTarget.dataset.type); 
-});
-
-// معالج زر بدء جولة صح أو خطأ
-startTFBtn.addEventListener('click', (e) => {
-    // استخدام dataset للحصول على النوع
-    initializeQuestions(e.currentTarget.dataset.type);
-});
+// معالج زر التسجيل (عند الضغط على "دخول وبدء التحدي")
+if (startGameBtn) {
+    startGameBtn.addEventListener('click', () => {
+        username = usernameInput.value.trim();
+        if (username.length < 2) {
+            alert('الرجاء إدخال اسم مستخدم لا يقل عن حرفين.');
+            return;
+        }
+        saveUserData();
+        showWelcomeScreen(); // الانتقال إلى شاشة الترحيب
+        // محاولة تشغيل الموسيقى عند بدء التحدي
+        if (backgroundMusic && backgroundMusic.paused) {
+            toggleMusic();
+        }
+    });
+}
 
 // معالج زر السؤال التالي
-nextButton.addEventListener('click', () => {
-    currentQuestionIndex++;
-    result.classList.add('hidden');
-    loadQuestion();
-});
+if (nextButton) {
+    nextButton.addEventListener('click', () => {
+        currentQuestionIndex++;
+        if (result) result.classList.add('hidden');
+        loadQuestion();
+    });
+}
 
 // التحقق عند تحميل الصفحة لوجود اسم مستخدم محفوظ
 document.addEventListener('DOMContentLoaded', () => {
     const savedUsername = localStorage.getItem('username');
     if (savedUsername) {
         username = savedUsername;
-        usernameInput.value = savedUsername;
+        if (usernameInput) usernameInput.value = savedUsername;
         bestScoreMCQ = parseInt(localStorage.getItem('bestScoreMCQ') || '0');
         bestScoreTF = parseInt(localStorage.getItem('bestScoreTF') || '0');
+        
+        // إذا كان الاسم محفوظاً، ننتقل مباشرة إلى شاشة الترحيب
+        if (loginScreen) loginScreen.classList.add('hidden');
         showWelcomeScreen();
     }
     
-    musicToggleButton.addEventListener('click', toggleMusic);
+    if (musicToggleButton) {
+        musicToggleButton.addEventListener('click', toggleMusic);
+    }
     
-    // *** ربط زر الملف الشخصي (الموجود في شاشة الترحيب) ***
-    const profileBtn = document.getElementById('profile-btn');
-    if (profileBtn) profileBtn.addEventListener('click', showProfileScreen);
-    // --------------------------------------------------------
+    // محاولة تشغيل الموسيقى عند تحميل الصفحة 
+    if (backgroundMusic) {
+        backgroundMusic.play().catch(() => {
+            console.log("Autoplay failed.");
+        });
+    }
 
-    // محاولة تشغيل الموسيقى عند تحميل الصفحة (للاستعداد)
-    backgroundMusic.play().catch(() => {
-        console.log("Autoplay failed.");
-    });
+    // ملاحظة: أزرار التحديات والملف الشخصي يتم ربطها الآن داخل دالة showWelcomeScreen() 
+    // لضمان وجود شاشة الترحيب في DOM أولاً.
 });
