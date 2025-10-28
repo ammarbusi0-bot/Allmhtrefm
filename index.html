@@ -1,744 +1,134 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة التحدي الشاملة</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <style>
-        /*
-        ==================================================
-        التصميم الفخم (CSS) - لم يتغير
-        ==================================================
-        */
-        :root {
-            --primary-color: #38a169;
-            --dark-bg: #1e1e1e;
-            --light-text: #f0f0f0;
-            --secondary-color: #5a5a5a;
-            --error-color: #ff4d4d;
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: var(--dark-bg);
-            color: var(--light-text);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            text-align: right;
-        }
-
-        .container {
-            background-color: #2b2b2b;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-            width: 90%;
-            max-width: 450px;
-            direction: rtl;
-        }
-
-        h1, h2, h3 {
-            color: var(--primary-color);
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        /* تنسيق حقول الإدخال */
-        input[type="text"], input[type="password"] {
-            width: 100%;
-            padding: 15px;
-            margin-bottom: 20px;
-            border: 1px solid var(--secondary-color);
-            background-color: #3a3a3a;
-            color: var(--light-text);
-            border-radius: 8px;
-            box-sizing: border-box;
-            transition: border-color 0.3s;
-        }
-
-        /* الأزرار الرئيسية */
-        .primary-button {
-            width: 100%;
-            padding: 15px;
-            background-color: var(--primary-color);
-            color: var(--dark-bg);
-            font-size: 1.1em;
-            font-weight: bold;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s;
-            margin-bottom: 10px;
-        }
-
-        .primary-button:hover {
-            background-color: #2f855a;
-            transform: translateY(-2px);
-        }
-
-        .description {
-            font-size: 0.85em;
-            color: #ccc;
-            margin-top: -10px;
-            margin-bottom: 25px;
-            padding: 5px 0;
-            border-top: 1px solid #3a3a3a;
-            padding-top: 15px;
-        }
-
-        #login-message {
-            text-align: center;
-            margin-top: 15px;
-            font-weight: bold;
-            padding: 10px;
-            border-radius: 5px;
-        }
-
-        .links-section {
-            display: none;
-            padding-top: 10px;
-        }
-
-        .welcome-message {
-            font-size: 1.2em;
-            text-align: center;
-            margin-bottom: 25px;
-            padding: 15px;
-            border-bottom: 2px solid var(--primary-color);
-        }
-
-        /* تنسيقات الأزرار الفخمة (الروابط) */
-        .fancy-button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            padding: 15px 20px;
-            margin-bottom: 15px;
-            border-radius: 10px;
-            font-size: 1.1em;
-            font-weight: bold;
-            color: var(--light-text);
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            text-align: center;
-        }
-        .fancy-button i { margin-left: 10px; }
-        .whatsapp-button { background: #25d366; }
-        .telegram-button { background: #0088cc; }
-        .tiktok-button { background: #000000; border: 2px solid #fe2c55; }
-        .logout-button { background-color: #8B0000; margin-top: 20px; }
-
-        /* تنسيق أقسام اللعب */
-        .game-mode-selection {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            gap: 10px;
-        }
-        .game-mode-selection button {
-             width: 48%;
-             font-size: 1em;
-             padding: 15px;
-        }
-
-        /* تنسيقات شاشة الاختبار (الجديدة) */
-        .quiz-section {
-            background-color: #333;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 30px;
-            border: 1px solid var(--primary-color);
-        }
-        .score-display {
-            font-size: 1.1em;
-            font-weight: bold;
-            text-align: center;
-            padding: 15px;
-            background-color: #4a4a4a;
-            border-radius: 8px;
-            margin-bottom: 15px;
-        }
-        
-        /* تنسيق النص التوضيحي للوقت */
-        #time-warning {
-            font-size: 0.9em;
-            color: var(--error-color);
-            text-align: center;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-
-        #timer-display {
-            font-size: 2em;
-            font-weight: bold;
-            text-align: center;
-            padding: 10px;
-            color: var(--error-color);
-            background-color: #1a1a1a;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            border: 2px solid var(--error-color);
-        }
-
-        .question-text {
-            font-size: 1.3em;
-            margin-bottom: 25px;
-            padding: 10px;
-        }
-
-        .options-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 10px;
-        }
-        .true-false-options {
-            display: flex;
-            justify-content: space-around;
-            gap: 15px;
-        }
-
-        .option-btn {
-            background-color: #4a4a4a;
-            color: var(--light-text);
-            border: none;
-            padding: 15px;
-            text-align: center;
-            font-size: 1em;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            width: 100%;
-        }
-        .option-btn:hover:not(.disabled) {
-            background-color: #5a5a5a;
-        }
-        .option-btn.correct {
-            background-color: #2f855a !important; /* أخضر للإجابة الصحيحة */
-        }
-        .option-btn.incorrect {
-            background-color: var(--error-color) !important; /* أحمر للإجابة الخاطئة */
-        }
-        .option-btn.disabled {
-            pointer-events: none;
-            opacity: 0.8;
-        }
-
-        #next-btn, #restart-btn {
-            margin-top: 25px;
-            display: none;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>💡 لعبة الأسئلة - تحدي المعرفة</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Amiri', serif;
+      background: linear-gradient(to bottom right, #f0f4f8, #e0ecf3);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .question-card {
+      background: white;
+      border-radius: 1.5rem;
+      padding: 2rem;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+    }
+    .btn {
+      display: block;
+      width: 100%;
+      margin-top: 1rem;
+      padding: 0.75rem;
+      border-radius: 0.75rem;
+      background: #2563eb;
+      color: white;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+    .btn:hover { background: #1e40af; }
+  </style>
 </head>
 <body>
 
-<audio id="correct-sound" src="https://www.soundjay.com/buttons/sounds/button-2.mp3" preload="auto"></audio>
-<audio id="incorrect-sound" src="https://www.soundjay.com/buttons/sounds/button-7.mp3" preload="auto"></audio>
+  <div id="game" class="question-card">
+    <h1 class="text-2xl font-bold mb-4 text-blue-700">🎯 تحدي المعرفة</h1>
+    <div id="question-container" class="mb-4"></div>
+    <div id="answers" class="space-y-2"></div>
+    <button id="next-btn" class="btn hidden">التالي ➡️</button>
+    <p id="score" class="mt-4 text-lg text-gray-700"></p>
+  </div>
 
-<div class="container">
-    <div id="login-screen">
-        <h1>تسجيل الدخول إلى المنصة</h1>
-        <form id="login-form">
-            <div class="form-group"><input type="text" id="username" placeholder="اسم المستخدم (أي اسم تختاره)" required></div>
-            <div class="form-group">
-                <input type="password" id="password" placeholder="كلمة المرور (أي كود سري تختاره)" required>
-                <div class="description">
-                    <p>إذا كانت هذه أول زيارة لك، فسيقوم النظام **بتسجيل بيانات الدخول وحفظها** على جهازك تلقائياً لتمكينك من العودة لاحقاً ومتابعة نتائجك.</p>
-                </div>
-            </div>
-            <button type="submit" class="primary-button" id="submit-button">تسجيل الدخول</button>
-        </form>
-        <p id="login-message" style="display:none;"></p>
-    </div>
-
-    <div id="links-selection-screen" class="hidden">
-        <div class="welcome-message">
-            <span id="greeting-text">أهلاً بك!</span> هذه صفحتك الخاصة.
-        </div>
-        
-        <h2>روابطنا الخاصة</h2>
-        <a href="https://wa.me/905510651347" class="fancy-button whatsapp-button" target="_blank">
-            <i class="fab fa-whatsapp"></i> تواصل حصريًا عبر WhatsApp
-        </a>
-        <a href="https://t.me/bootcadid" class="fancy-button telegram-button" target="_blank">
-            <i class="fab fa-telegram-plane"></i> قناتنا الخاصة على Telegram
-        </a>
-        <a href="https://www.tiktok.com/@allmhtref" class="fancy-button tiktok-button" target="_blank">
-            <i class="fab fa-tiktok"></i> شاهد محتوانا الفخم على TikTok
-        </a>
-
-        <div class="quiz-section">
-            <h3>نتائجك واختيار اللعب</h3>
-            <p id="last-score-mc" class="score-display">اختيار من متعدد: لا نتيجة بعد.</p>
-            <p id="last-score-tf" class="score-display">صح وخطأ: لا نتيجة بعد.</p>
-
-            <p style="text-align: center; font-weight: bold; margin-top: 20px;">ابدأ تحدي جديد:</p>
-            <div class="game-mode-selection">
-                <button onclick="startNewGame('mc_quiz')" class="primary-button">اختيار من متعدد (10 أسئلة عشوائية)</button>
-                <button onclick="startNewGame('tf_quiz')" class="primary-button">صح وخطأ (10 أسئلة عشوائية)</button>
-            </div>
-        </div>
-        
-        <button onclick="logout()" class="primary-button logout-button">تسجيل الخروج</button>
-    </div>
-
-    <div id="game-screen" class="hidden quiz-section">
-        <h2 id="quiz-title"></h2>
-        
-        <p id="time-warning">يجب الإجابة خلال <span id="time-limit-display">15</span> ثانية</p>
-        
-        <div id="timer-display">15</div>
-
-        <p style="font-weight: bold;">
-            <span id="question-counter">السؤال 1 من 10</span> 
-        </p>
-        
-        <p class="question-text" id="question-text"></p>
-        
-        <div id="options-container">
-            </div>
-
-        <button id="next-btn" class="primary-button hidden" onclick="nextQuestion()">السؤال التالي</button>
-    </div>
-
-    <div id="finish-screen" class="hidden quiz-section">
-        <h2>انتهى التحدي!</h2>
-        <div id="results-display" class="score-display"></div>
-        <button id="restart-btn" class="primary-button" onclick="resetGame()">العودة للصفحة الرئيسية</button>
-    </div>
-</div>
-
-<script>
-    // =======================================================
-    // الثوابت وبيانات التخزين
-    // =======================================================
-    const TIME_LIMIT_SECONDS = 15; // 15 ثانية لكل سؤال
-    const QUESTIONS_PER_ROUND = 10; 
-    const TOTAL_MC_QUESTIONS = 50; 
-    const TOTAL_TF_QUESTIONS = 50; 
-
-    // مفاتيح التخزين المحلي
-    const USERNAME_KEY = 'user_username';
-    const PASSWORD_KEY = 'user_password';
-    const IS_LOGGED_IN = 'is_logged_in';
-    const SCORES_KEY = 'user_scores'; // لحفظ جميع النتائج
-
-    // العناصر الأساسية
-    const loginScreen = document.getElementById('login-screen');
-    const linksSelectionScreen = document.getElementById('links-selection-screen');
-    const gameScreen = document.getElementById('game-screen');
-    const finishScreen = document.getElementById('finish-screen');
-    const greetingElement = document.getElementById('greeting-text');
-    const submitButton = document.getElementById('submit-button');
-    const loginMessage = document.getElementById('login-message');
-    const lastScoreMC = document.getElementById('last-score-mc');
-    const lastScoreTF = document.getElementById('last-score-tf');
-    const timerDisplay = document.getElementById('timer-display');
-    const optionsContainer = document.getElementById('options-container');
-
-    // عناصر الصوت
-    const correctSound = document.getElementById('correct-sound');
-    const incorrectSound = document.getElementById('incorrect-sound');
-
-    // متغيرات حالة الاختبار
-    let currentQuizData = []; 
-    let currentQuestionIndex = 0;
-    let currentScore = 0;
-    let timerInterval = null;
-    let quizMode = ''; 
-    let currentUsername = '';
-    
-    // 🛑 التعديل رقم 2: تحديث قيمة نص حد الوقت في HTML
-    document.getElementById('time-limit-display').textContent = TIME_LIMIT_SECONDS;
-
-
-    // =======================================================
-    // بيانات الأسئلة الدينية (50 سؤال لكل نمط)
-    // =======================================================
-    
-    // 50 سؤال اختيار من متعدد (تم الاحتفاظ بالأسئلة السابقة هنا)
-    const allMcQuestions = [
-        { id: 'mc1', question: 'من هو النبي الذي ابتلعه الحوت؟', options: { A: 'يوسف', B: 'إبراهيم', C: 'يونس' }, correctAnswer: 'C' },
-        { id: 'mc2', question: 'ما هو أول مسجد بني في الإسلام؟', options: { A: 'المسجد الأقصى', B: 'مسجد قباء', C: 'المسجد النبوي' }, correctAnswer: 'B' },
-        { id: 'mc3', question: 'كم عدد سور القرآن الكريم؟', options: { A: '114', B: '6666', C: '113' }, correctAnswer: 'A' },
-        { id: 'mc4', question: 'ما اسم السورة التي تعدل ثلث القرآن؟', options: { A: 'الفاتحة', B: 'الإخلاص', C: 'البقرة' }, correctAnswer: 'B' },
-        { id: 'mc5', question: 'من هو خامس الخلفاء الراشدين؟', options: { A: 'علي بن أبي طالب', B: 'الحسن بن علي', C: 'عمر بن عبد العزيز' }, correctAnswer: 'C' },
-        { id: 'mc6', question: 'ما هي أول صلاة فُرِضت على المسلمين؟', options: { A: 'الظهر', B: 'العصر', C: 'الفجر' }, correctAnswer: 'A' },
-        { id: 'mc7', question: 'ما هو الركن الخامس من أركان الإسلام؟', options: { A: 'الزكاة', B: 'الصوم', C: 'الحج' }, correctAnswer: 'C' },
-        { id: 'mc8', question: 'ما اسم زوجة فرعون التي آمنت بموسى؟', options: { A: 'خديجة', B: 'آسيا', C: 'مريم' }, correctAnswer: 'B' },
-        { id: 'mc9', question: 'في أي شهر هجري نزل القرآن الكريم؟', options: { A: 'رجب', B: 'رمضان', C: 'شوال' }, correctAnswer: 'B' },
-        { id: 'mc10', question: 'ما هي معجزة نبي الله موسى عليه السلام؟', options: { A: 'السفينة', B: 'العصا', C: 'إحياء الموتى' }, correctAnswer: 'B' },
-        { id: 'mc11', question: 'من هو الصحابي الذي أشار بحفر الخندق؟', options: { A: 'أبو بكر الصديق', B: 'سلمان الفارسي', C: 'عمر بن الخطاب' }, correctAnswer: 'B' },
-        { id: 'mc12', question: 'متى وقعت غزوة بدر الكبرى؟', options: { A: '2 هـ', B: '3 هـ', C: '5 هـ' }, correctAnswer: 'A' },
-        { id: 'mc13', question: 'ما هي صلاة الوتر؟', options: { A: 'فرض', B: 'سنة مؤكدة', C: 'نافلة' }, correctAnswer: 'B' },
-        { id: 'mc14', question: 'ما هو اسم الملاك الموكل بالوحي؟', options: { A: 'ميكائيل', B: 'جبريل', C: 'إسرافيل' }, correctAnswer: 'B' },
-        { id: 'mc15', question: 'ما هو عدد الصلوات المفروضة في اليوم والليلة؟', options: { A: 'ثلاث', B: 'خمس', C: 'سبع' }, correctAnswer: 'B' },
-        { id: 'mc16', question: 'أين ولد النبي محمد صلى الله عليه وسلم؟', options: { A: 'المدينة المنورة', B: 'مكة المكرمة', C: 'الطائف' }, correctAnswer: 'B' },
-        { id: 'mc17', question: 'من هو أول مؤذن في الإسلام؟', options: { A: 'أبو هريرة', B: 'بلال بن رباح', C: 'عبد الله بن مسعود' }, correctAnswer: 'B' },
-        { id: 'mc18', question: 'ما اسم السورة التي ورد فيها قصة أصحاب الكهف؟', options: { A: 'الكهف', B: 'يوسف', C: 'مريم' }, correctAnswer: 'A' },
-        { id: 'mc19', question: 'ما هي أكبر سورة في القرآن الكريم؟', options: { A: 'آل عمران', B: 'النساء', C: 'البقرة' }, correctAnswer: 'C' },
-        { id: 'mc20', question: 'كم كان عمر النبي عند نزول الوحي؟', options: { A: '35 سنة', B: '40 سنة', C: '45 سنة' }, correctAnswer: 'B' },
-        { id: 'mc21', question: 'ما هو اسم أم النبي محمد صلى الله عليه وسلم؟', options: { A: 'خديجة', B: 'آمنة', C: 'حليمة' }, correctAnswer: 'B' },
-        { id: 'mc22', question: 'ما هي الفترة الزمنية بين النفختين في الصور؟', options: { A: 'أربعين يوماً', B: 'أربعين سنة', C: 'لا يعلمها إلا الله' }, correctAnswer: 'C' },
-        { id: 'mc23', question: 'ما هي العقيدة التي بعث بها جميع الأنبياء؟', options: { A: 'التوحيد', B: 'الزهد', C: 'العدل' }, correctAnswer: 'A' },
-        { id: 'mc24', question: 'ما هو يوم الجمعة في الإسلام؟', options: { A: 'عيد الأضحى', B: 'عيد الأسبوع', C: 'يوم صيام' }, correctAnswer: 'B' },
-        { id: 'mc25', question: 'أين يقع قبر النبي إبراهيم عليه السلام؟', options: { A: 'القدس', B: 'مكة', C: 'الخليل' }, correctAnswer: 'C' },
-        { id: 'mc26', question: 'من هم أهل البيت؟', options: { A: 'زوجات النبي', B: 'علي وفاطمة والحسن والحسين', C: 'أقارب النبي' }, correctAnswer: 'B' },
-        { id: 'mc27', question: 'ما هو آخر ما نزل من القرآن الكريم من الآيات؟', options: { A: 'آية الدين', B: 'آية الكرسي', C: 'اليوم أكملت لكم دينكم' }, correctAnswer: 'A' },
-        { id: 'mc28', question: 'من هو آخر الأنبياء والرسل؟', options: { A: 'عيسى', B: 'موسى', C: 'محمد' }, correctAnswer: 'C' },
-        { id: 'mc29', question: 'ما هي معجزة النبي عيسى عليه السلام؟', options: { A: 'تحويل العصا إلى حية', B: 'إحياء الموتى', C: 'شق القمر' }, correctAnswer: 'B' },
-        { id: 'mc30', question: 'كم مرة ذُكر اسم "محمد" في القرآن الكريم؟', options: { A: 'مرتين', B: 'ثلاث مرات', C: 'أربع مرات' }, correctAnswer: 'C' },
-        { id: 'mc31', question: 'ما هي الليلة التي أنزل فيها القرآن؟', options: { A: 'ليلة الإسراء والمعراج', B: 'ليلة القدر', C: 'ليلة عرفة' }, correctAnswer: 'B' },
-        { id: 'mc32', question: 'ما هو اسم الصحابي الملقب بذي النورين؟', options: { A: 'عثمان بن عفان', B: 'أبو بكر الصديق', C: 'علي بن أبي طالب' }, correctAnswer: 'A' },
-        { id: 'mc33', question: 'ما هو ثاني أركان الإسلام؟', options: { A: 'الشهادتان', B: 'إقام الصلاة', C: 'إيتاء الزكاة' }, correctAnswer: 'B' },
-        { id: 'mc34', question: 'ما هي الكلمة التي افتتحت بها أول آية نزلت من القرآن؟', options: { A: 'اقرأ', B: 'قل', C: 'تبارك' }, correctAnswer: 'A' },
-        { id: 'mc35', question: 'ما اسم الغار الذي كان يتعبد فيه النبي قبل البعثة؟', options: { A: 'غار ثور', B: 'غار حراء', C: 'غار الكهف' }, correctAnswer: 'B' },
-        { id: 'mc36', question: 'ما هو حكم صلاة الجمعة على الرجال الأحرار المقيمين؟', options: { A: 'سنة', B: 'فرض كفاية', C: 'فرض عين' }, correctAnswer: 'C' },
-        { id: 'mc37', question: 'ما هي القبلة الأولى للمسلمين؟', options: { A: 'الكعبة المشرفة', B: 'المسجد الأقصى', C: 'المسجد النبوي' }, correctAnswer: 'B' },
-        { id: 'mc38', question: 'من هو النبي الذي أُوتي علم الطير ومنطق الحيوان؟', options: { A: 'نوح', B: 'داوود', C: 'سليمان' }, correctAnswer: 'C' },
-        { id: 'mc39', question: 'ما هو اليوم الذي يقف فيه الحجاج على جبل عرفات؟', options: { A: 'يوم التروية', B: 'يوم عرفة', C: 'يوم النحر' }, correctAnswer: 'B' },
-        { id: 'mc40', question: 'ما اسم السورة التي بدأت بالحمد لله؟', options: { A: 'البقرة', B: 'الفاتحة', C: 'يس' }, correctAnswer: 'B' },
-        { id: 'mc41', question: 'ما هي ثاني زوجات النبي صلى الله عليه وسلم؟', options: { A: 'عائشة', B: 'سودة بنت زمعة', C: 'حفصة' }, correctAnswer: 'B' },
-        { id: 'mc42', question: 'ما هي الصلاة التي تصلى على الميت؟', options: { A: 'صلاة الكسوف', B: 'صلاة الجنازة', C: 'صلاة الاستسقاء' }, correctAnswer: 'B' },
-        { id: 'mc43', question: 'ما هو مقدار نصاب الزكاة من الذهب؟', options: { A: '85 جراماً', B: '90 جراماً', C: '75 جراماً' }, correctAnswer: 'A' },
-        { id: 'mc44', question: 'ما هو اسم الملائكة الذين يكتبون أعمال العباد؟', options: { A: 'الزبانية', B: 'حملة العرش', C: 'الكرام الكاتبون' }, correctAnswer: 'C' },
-        { id: 'mc45', question: 'ما هي مدة الخلافة الراشدة؟', options: { A: '20 سنة', B: '30 سنة', C: '40 سنة' }, correctAnswer: 'B' },
-        { id: 'mc46', question: 'ما هو اللقب الذي أطلق على حمزة بن عبد المطلب؟', options: { A: 'فاروق الأمة', B: 'أسد الله', C: 'صقر قريش' }, correctAnswer: 'B' },
-        { id: 'mc47', question: 'ما هي معجزة النبي صالح عليه السلام؟', options: { A: 'ناقة الله', B: 'الطوفان', C: 'النار التي لا تحرق' }, correctAnswer: 'A' },
-        { id: 'mc48', question: 'كم عدد أبواب الجنة؟', options: { A: 'سبعة', B: 'ثمانية', C: 'تسعة' }, correctAnswer: 'B' },
-        { id: 'mc49', question: 'ما اسم أول معركة بحرية في الإسلام؟', options: { A: 'ذات الصواري', B: 'اليرموك', C: 'القادسية' }, correctAnswer: 'A' },
-        { id: 'mc50', question: 'ما هو حكم ترك الصلاة عمداً؟', options: { A: 'كبيرة من الكبائر', B: 'يؤدي للكفر', C: 'أمر مكروه' }, correctAnswer: 'B' }
+  <script>
+    const questions = [
+      {
+        question: "ما هو أول مسجد بُني في الإسلام؟",
+        answers: ["المسجد الحرام", "المسجد النبوي", "مسجد قباء", "المسجد الأقصى"],
+        correct: 2
+      },
+      {
+        question: "كم عدد أركان الإسلام؟",
+        answers: ["3", "5", "6", "4"],
+        correct: 1
+      },
+      {
+        question: "من هو خاتم الأنبياء والمرسلين؟",
+        answers: ["عيسى عليه السلام", "موسى عليه السلام", "محمد ﷺ", "نوح عليه السلام"],
+        correct: 2
+      },
+      {
+        question: "كم عدد ركعات صلاة الفجر؟",
+        answers: ["2", "3", "4", "5"],
+        correct: 0
+      },
+      {
+        question: "ما اسم الليلة التي نزل فيها القرآن؟",
+        answers: ["ليلة القدر", "ليلة النصف من شعبان", "ليلة الإسراء", "ليلة الجمعة"],
+        correct: 0
+      }
     ];
 
-    // 50 سؤال صح وخطأ (تم الاحتفاظ بالأسئلة السابقة هنا)
-    const allTfQuestions = [
-        { id: 'tf1', question: 'الوضوء شرط أساسي لصحة الصلاة.', correctAnswer: 'صحيح' },
-        { id: 'tf2', question: 'القرآن الكريم نزل جملة واحدة في ليلة القدر.', correctAnswer: 'خطأ' }, 
-        { id: 'tf3', question: 'الزكاة تجب على جميع أنواع الأموال بما فيها راتب الموظف شهرياً.', correctAnswer: 'خطأ' }, 
-        { id: 'tf4', question: 'يُطلق على سورة البقرة لقب "عروس القرآن".', correctAnswer: 'خطأ' }, 
-        { id: 'tf5', question: 'المدينة المنورة هي أول عاصمة للدولة الإسلامية.', correctAnswer: 'صحيح' },
-        { id: 'tf6', question: 'أول من كتب التاريخ الهجري هو الخليفة عثمان بن عفان.', correctAnswer: 'خطأ' }, 
-        { id: 'tf7', question: 'النبي الذي كان يسمى "ذو النون" هو يونس عليه السلام.', correctAnswer: 'صحيح' },
-        { id: 'tf8', question: 'صلاة العيدين سنة مؤكدة وليست فرضاً.', correctAnswer: 'صحيح' },
-        { id: 'tf9', question: 'الصحابي الذي استشهد وهو يدافع عن النبي في أحد هو مصعب بن عمير.', correctAnswer: 'صحيح' },
-        { id: 'tf10', question: 'السورة التي تحمل اسم امرأة هي سورة مريم.', correctAnswer: 'صحيح' }, 
-        { id: 'tf11', question: 'الركوع هو الاعتدال من السجود.', correctAnswer: 'خطأ' }, 
-        { id: 'tf12', question: 'الميزان الذي توزن به أعمال العباد يوم القيامة هو ميزان حسّي حقيقي.', correctAnswer: 'صحيح' },
-        { id: 'tf13', question: 'هناك ثلاثة أركان أساسية للإيمان وهي: الله، الملائكة، الكتب.', correctAnswer: 'خطأ' }, 
-        { id: 'tf14', question: 'أول من أسلم من الرجال هو علي بن أبي طالب.', correctAnswer: 'خطأ' }, 
-        { id: 'tf15', question: 'الحياء شعبة من الإيمان.', correctAnswer: 'صحيح' },
-        { id: 'tf16', question: 'التحية الإسلامية هي "السلام عليكم ورحمة الله وبركاته".', correctAnswer: 'صحيح' },
-        { id: 'tf17', question: 'الأذان هو الإعلان عن وقت دخول الصلاة.', correctAnswer: 'صحيح' },
-        { id: 'tf18', question: 'السورة التي بدأت بالتسبيح هي سورة الإخلاص.', correctAnswer: 'خطأ' }, 
-        { id: 'tf19', question: 'صلاة الاستسقاء تصلى عند كسوف الشمس.', correctAnswer: 'خطأ' }, 
-        { id: 'tf20', question: 'لا يصح صوم يوم عرفة للحاج الواقف بعرفة.', correctAnswer: 'صحيح' },
-        { id: 'tf21', question: 'سيد الشهور هو شهر رجب.', correctAnswer: 'خطأ' }, 
-        { id: 'tf22', question: 'إخراج زكاة الفطر يكون قبل صلاة العيد.', correctAnswer: 'صحيح' },
-        { id: 'tf23', question: 'المسلم الذي يقرأ القرآن ولا يعمل به له أجر القراءة فقط.', correctAnswer: 'خطأ' }, 
-        { id: 'tf24', question: 'القتل الخطأ لا يستوجب دية ولا كفارة في الإسلام.', correctAnswer: 'خطأ' }, 
-        { id: 'tf25', question: 'المرأة التي طلقت ثلاث طلقات بائنة لا يجوز لها الرجوع لزوجها إلا بعد أن تنكح زوجاً آخر.', correctAnswer: 'صحيح' },
-        { id: 'tf26', question: 'مدة الإقامة في الصلاة تكون أقل من مدة الأذان.', correctAnswer: 'صحيح' },
-        { id: 'tf27', question: 'يوم القيامة هو يوم التغابن.', correctAnswer: 'صحيح' },
-        { id: 'tf28', question: 'الخمر والميسر من كبائر الذنوب.', correctAnswer: 'صحيح' },
-        { id: 'tf29', question: 'سورة يوسف هي السورة الوحيدة التي ذكرت قصة نبي كاملة من أولها لآخرها.', correctAnswer: 'صحيح' },
-        { id: 'tf30', question: 'أبو بكر الصديق هو أول الخلفاء الراشدين.', correctAnswer: 'صحيح' },
-        { id: 'tf31', question: 'يجوز المسح على الخفين للمسافر لمدة ثلاثة أيام بلياليها.', correctAnswer: 'صحيح' },
-        { id: 'tf32', question: 'أشهر الفقه الأربعة هي المالكية والحنفية والشافعية والحنبلية.', correctAnswer: 'صحيح' },
-        { id: 'tf33', question: 'أركان الإسلام خمسة وأركان الإيمان خمسة.', correctAnswer: 'خطأ' }, 
-        { id: 'tf34', question: 'الصحابي خالد بن الوليد هو سيف الله المسلول.', correctAnswer: 'صحيح' },
-        { id: 'tf35', question: 'عاصمة الخلافة العباسية كانت دمشق.', correctAnswer: 'خطأ' }, 
-        { id: 'tf36', question: 'لا يوجد نبي لم يذكر اسمه في القرآن.', correctAnswer: 'خطأ' }, 
-        { id: 'tf37', question: 'يُسمى الفجر الصادق بالفجر الكاذب.', correctAnswer: 'خطأ' }, 
-        { id: 'tf38', question: 'القرآن الكريم هو المصدر الأول للتشريع الإسلامي.', correctAnswer: 'صحيح' },
-        { id: 'tf39', question: 'صلاة الضحى تبدأ من بعد طلوع الشمس حتى قبل الظهر بقليل.', correctAnswer: 'صحيح' },
-        { id: 'tf40', question: 'الجهاد في الإسلام هو القتال فقط.', correctAnswer: 'خطأ' }, 
-        { id: 'tf41', question: 'عدد الأئمة المعصومين عند الشيعة الإثني عشرية هو اثنا عشر إماماً.', correctAnswer: 'صحيح' },
-        { id: 'tf42', question: 'الرضاع المحرِّم هو خمس رضعات مشبعات فأكثر.', correctAnswer: 'صحيح' },
-        { id: 'tf43', question: 'الخوارج هم أول فرقة انشقت عن جماعة المسلمين الكبرى.', correctAnswer: 'صحيح' },
-        { id: 'tf44', question: 'يجوز للمرأة أن تسافر بدون محرم إذا كانت رحلتها داخل حدود بلدها.', correctAnswer: 'خطأ' }, 
-        { id: 'tf45', question: 'من كان في بيته مسافراً لا يجوز له قصر الصلاة.', correctAnswer: 'صحيح' },
-        { id: 'tf46', question: 'يستحب الإفطار في السفر للمُجِدّ في سفره.', correctAnswer: 'صحيح' },
-        { id: 'tf47', question: 'يوم عاشوراء هو اليوم العاشر من شهر شعبان.', correctAnswer: 'خطأ' }, 
-        { id: 'tf48', question: 'المحرمات من النساء هن سبع بسبب النسب وسبع بسبب المصاهرة.', correctAnswer: 'صحيح' },
-        { id: 'tf49', question: 'الشيخ عبد القادر الجيلاني هو أحد أئمة الحنابلة.', correctAnswer: 'صحيح' },
-        { id: 'tf50', question: 'عثمان بن عفان هو صاحب الهجرتين.', correctAnswer: 'صحيح' }
-    ];
-    
-    // =======================================================
-    // وظائف عشوائية (لم تتغير)
-    // =======================================================
+    let currentQuestion = 0;
+    let score = 0;
 
-    function getRandomQuestions(array, num) {
-        const shuffled = [...array].sort(() => 0.5 - Math.random());
-        return shuffled.slice(0, num);
+    const questionContainer = document.getElementById("question-container");
+    const answersContainer = document.getElementById("answers");
+    const nextBtn = document.getElementById("next-btn");
+    const scoreDisplay = document.getElementById("score");
+
+    function showQuestion() {
+      const q = questions[currentQuestion];
+      questionContainer.textContent = q.question;
+      answersContainer.innerHTML = "";
+      q.answers.forEach((ans, i) => {
+        const btn = document.createElement("button");
+        btn.textContent = ans;
+        btn.className = "btn";
+        btn.onclick = () => selectAnswer(i);
+        answersContainer.appendChild(btn);
+      });
+      nextBtn.classList.add("hidden");
     }
 
-
-    // =======================================================
-    // وظائف الواجهة (تم الاحتفاظ بالباقي)
-    // =======================================================
-
-    function showLinksSelectionScreen(username) {
-        currentUsername = username;
-        loginScreen.classList.add('hidden');
-        gameScreen.classList.add('hidden');
-        finishScreen.classList.add('hidden');
-        linksSelectionScreen.classList.remove('hidden');
-        
-        greetingElement.textContent = `أهلاً بك يا ${username}!`;
-        displayLastScores(username); 
+    function selectAnswer(index) {
+      const q = questions[currentQuestion];
+      const buttons = document.querySelectorAll("#answers button");
+      buttons.forEach((b, i) => {
+        b.disabled = true;
+        if (i === q.correct) b.style.background = "#16a34a"; // correct green
+        else if (i === index && i !== q.correct) b.style.background = "#dc2626"; // wrong red
+      });
+      if (index === q.correct) score++; // +1 point
+      nextBtn.classList.remove("hidden");
     }
 
-    function displayLastScores(username) {
-        const scores = JSON.parse(localStorage.getItem(SCORES_KEY)) || {};
-        
-        const lastScoreMCValue = scores[username]?.mc_quiz;
-        if (lastScoreMCValue !== undefined) {
-            lastScoreMC.textContent = `اختيار من متعدد: ${lastScoreMCValue} / ${QUESTIONS_PER_ROUND}`;
-            lastScoreMC.style.backgroundColor = '#2f855a';
-        } else {
-            lastScoreMC.textContent = `اختيار من متعدد: لا نتيجة بعد.`;
-            lastScoreMC.style.backgroundColor = '#4a4a4a';
-        }
-
-        const lastScoreTFValue = scores[username]?.tf_quiz;
-        if (lastScoreTFValue !== undefined) {
-            lastScoreTF.textContent = `صح وخطأ: ${lastScoreTFValue} / ${QUESTIONS_PER_ROUND}`;
-            lastScoreTF.style.backgroundColor = '#2f855a';
-        } else {
-            lastScoreTF.textContent = `صح وخطأ: لا نتيجة بعد.`;
-            lastScoreTF.style.backgroundColor = '#4a4a4a';
-        }
-    }
-
-    window.logout = function() {
-        localStorage.removeItem(IS_LOGGED_IN);
-        location.reload(); 
-    }
-
-    document.getElementById('login-form').addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        const enteredUsername = document.getElementById('username').value.trim();
-        const enteredPassword = document.getElementById('password').value.trim();
-        
-        const savedUsername = localStorage.getItem(USERNAME_KEY);
-        const savedPassword = localStorage.getItem(PASSWORD_KEY);
-
-        let success = false;
-        let actionMessage = '';
-
-        if (savedUsername) {
-            if (enteredUsername === savedUsername && enteredPassword === savedPassword) {
-                success = true;
-                actionMessage = 'تم تسجيل الدخول بنجاح. جاري التحميل...';
-            } else {
-                loginMessage.textContent = 'خطأ: اسم المستخدم أو كلمة المرور غير صحيحة.';
-                loginMessage.style.backgroundColor = 'var(--error-color)';
-                loginMessage.style.display = 'block';
-            }
-        } else {
-            localStorage.setItem(USERNAME_KEY, enteredUsername);
-            localStorage.setItem(PASSWORD_KEY, enteredPassword);
-            
-            success = true;
-            actionMessage = `تم حفظ بيانات الدخول تلقائياً. جاري التحميل...`;
-        }
-
-        if (success) {
-            loginMessage.textContent = actionMessage;
-            loginMessage.style.backgroundColor = '#2f855a';
-            loginMessage.style.color = 'white';
-            loginMessage.style.display = 'block';
-
-            localStorage.setItem(IS_LOGGED_IN, 'true');
-            
-            setTimeout(() => {
-                showLinksSelectionScreen(enteredUsername);
-            }, 1000); 
-        }
+    nextBtn.addEventListener("click", () => {
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        showQuestion();
+      } else {
+        endGame();
+      }
     });
 
-
-    window.startNewGame = function(mode) {
-        quizMode = mode;
-        currentQuestionIndex = 0;
-        currentScore = 0;
-
-        if (mode === 'mc_quiz') {
-            currentQuizData = getRandomQuestions(allMcQuestions, QUESTIONS_PER_ROUND); 
-            document.getElementById('quiz-title').textContent = 'تحدي الاختيار من متعدد (عشوائي)';
-        } else {
-            currentQuizData = getRandomQuestions(allTfQuestions, QUESTIONS_PER_ROUND); 
-            document.getElementById('quiz-title').textContent = 'تحدي الصح والخطأ (عشوائي)';
-        }
-
-        linksSelectionScreen.classList.add('hidden');
-        gameScreen.classList.remove('hidden');
-        
-        loadQuestion();
-        startTimer();
-    }
-    
-    function loadQuestion() {
-        document.getElementById('next-btn').classList.add('hidden');
-        const questionData = currentQuizData[currentQuestionIndex];
-        
-        document.getElementById('question-counter').textContent = `السؤال ${currentQuestionIndex + 1} من ${QUESTIONS_PER_ROUND}`;
-        document.getElementById('question-text').textContent = questionData.question;
-        
-        optionsContainer.innerHTML = '';
-        
-        if (quizMode === 'tf_quiz') {
-            optionsContainer.classList.remove('options-grid');
-            optionsContainer.classList.add('true-false-options');
-            ['صحيح', 'خطأ'].forEach(optionText => {
-                const btn = document.createElement('button');
-                btn.classList.add('option-btn');
-                btn.textContent = optionText;
-                btn.onclick = () => checkAnswer(optionText, btn);
-                optionsContainer.appendChild(btn);
-            });
-        } else { 
-            optionsContainer.classList.add('options-grid');
-            optionsContainer.classList.remove('true-false-options');
-            for (const key in questionData.options) {
-                const btn = document.createElement('button');
-                btn.classList.add('option-btn');
-                btn.textContent = `${key}. ${questionData.options[key]}`;
-                btn.onclick = () => checkAnswer(key, btn);
-                optionsContainer.appendChild(btn);
-            }
-        }
-        
-        resetTimer();
+    function endGame() {
+      questionContainer.textContent = "🎉 انتهت اللعبة!";
+      answersContainer.innerHTML = "";
+      nextBtn.classList.add("hidden");
+      scoreDisplay.textContent = `مجموع نقاطك: ${score} من ${questions.length}`;
     }
 
-    function checkAnswer(selectedAnswer, clickedButton) {
-        stopTimer();
-        const questionData = currentQuizData[currentQuestionIndex];
-        const correctAnswer = questionData.correctAnswer;
-        
-        const allButtons = document.querySelectorAll('#options-container button');
-        allButtons.forEach(btn => {
-            btn.classList.add('disabled');
-            let keyOrText;
-            
-            if (quizMode === 'mc_quiz') {
-                keyOrText = btn.textContent.split('.')[0].trim();
-            } else {
-                keyOrText = btn.textContent.trim();
-            }
-
-            if (keyOrText === correctAnswer) {
-                btn.classList.add('correct');
-            } else if (btn === clickedButton) {
-                btn.classList.add('incorrect');
-            }
-        });
-
-        if (selectedAnswer === correctAnswer) {
-            currentScore++;
-            correctSound.currentTime = 0; 
-            correctSound.play();
-        } else {
-            incorrectSound.currentTime = 0; 
-            incorrectSound.play();
-        }
-
-        document.getElementById('next-btn').classList.remove('hidden');
-    }
-
-    window.nextQuestion = function() {
-        currentQuestionIndex++;
-        if (currentQuestionIndex < QUESTIONS_PER_ROUND) { 
-            loadQuestion();
-            startTimer();
-        } else {
-            finishGame();
-        }
-    }
-
-    function finishGame() {
-        gameScreen.classList.add('hidden');
-        finishScreen.classList.remove('hidden');
-        
-        const scores = JSON.parse(localStorage.getItem(SCORES_KEY)) || {};
-        if (!scores[currentUsername]) {
-            scores[currentUsername] = {};
-        }
-        scores[currentUsername][quizMode] = currentScore;
-        localStorage.setItem(SCORES_KEY, JSON.stringify(scores));
-
-        const modeText = quizMode === 'mc_quiz' ? 'اختيار من متعدد' : 'صح وخطأ';
-        document.getElementById('results-display').innerHTML = `
-            <p>نمط اللعب: <strong>${modeText}</strong></p>
-            <p>نتيجتك النهائية هي: <strong>${currentScore} من ${QUESTIONS_PER_ROUND}</strong></p>
-        `;
-    }
-    
-    window.resetGame = function() {
-        finishScreen.classList.add('hidden');
-        showLinksSelectionScreen(currentUsername); 
-    }
-
-    // =======================================================
-    // وظائف المؤقت (لم تتغير)
-    // =======================================================
-    
-    function startTimer() {
-        let timeLeft = TIME_LIMIT_SECONDS;
-        timerDisplay.textContent = timeLeft;
-
-        timerInterval = setInterval(() => {
-            timeLeft--;
-            timerDisplay.textContent = timeLeft;
-            
-            if (timeLeft <= 0) {
-                stopTimer();
-                // إذا انتهى الوقت ولم يختر المستخدم، اعتبر الإجابة خاطئة
-                checkAnswer(null, null); 
-            }
-        }, 1000);
-    }
-
-    function stopTimer() {
-        clearInterval(timerInterval);
-        timerInterval = null;
-    }
-
-    function resetTimer() {
-        stopTimer();
-        timerDisplay.textContent = TIME_LIMIT_SECONDS;
-    }
-
-    // =======================================================
-    // تهيئة الصفحة عند التحميل (لم تتغير)
-    // =======================================================
-    document.addEventListener('DOMContentLoaded', function() {
-        const savedUsername = localStorage.getItem(USERNAME_KEY);
-        
-        if (localStorage.getItem(IS_LOGGED_IN) === 'true' && savedUsername) {
-            showLinksSelectionScreen(savedUsername);
-        } else {
-            loginScreen.classList.remove('hidden');
-            if (savedUsername) {
-                 submitButton.textContent = 'تسجيل الدخول';
-            } else {
-                 submitButton.textContent = 'تسجيل الدخول (سجل بياناتك)';
-            }
-        }
-    });
-</script>
+    showQuestion();
+  </script>
 
 </body>
 </html>
