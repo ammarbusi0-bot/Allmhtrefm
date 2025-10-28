@@ -3,7 +3,7 @@
 
 // 1. الإعدادات والبيانات والأسئلة (القائمة موسعة)
 const QUESTIONS = {
-    // تم تمديد القائمة لضمان التنوع واختلاف الإجابات الصحيحة والخاطئة
+    // **هنا يجب عليك إضافة المزيد من الأسئلة لتكملة الـ 100 سؤال لكل جولة.**
     mcq: [
         { question: "من هو أول الخلفاء الراشدين؟", options: ["عمر بن الخطاب", "علي بن أبي طالب", "أبو بكر الصديق", "عثمان بن عفان"], answer: "أبو بكر الصديق" },
         { question: "ما هي السورة التي تسمى قلب القرآن؟", options: ["الرحمن", "البقرة", "يس", "الكهف"], answer: "يس" },
@@ -15,7 +15,7 @@ const QUESTIONS = {
         { question: "أين تقع الكعبة المشرفة؟", options: ["المدينة المنورة", "الرياض", "جدة", "مكة المكرمة"], answer: "مكة المكرمة" },
         { question: "ما هو الشيء الذي كان يأكله النبي صلى الله عليه وسلم كثيراً وكان يحبه؟", options: ["السمك", "اللحم", "التمر والعسل", "الخبز والزيت"], answer: "التمر والعسل" },
         { question: "ما هي أطول سورة في القرآن الكريم؟", options: ["سورة آل عمران", "سورة النساء", "سورة البقرة", "سورة الأعراف"], answer: "سورة البقرة" },
-        // **هنا يجب عليك إضافة المزيد من الأسئلة لتكملة الـ 100 سؤال لكل جولة.**
+        // ... يرجى إضافة 90 سؤالاً إضافياً هنا
     ],
     tf: [
         { question: "أول صلاة فُرضت على المسلمين هي صلاة العشاء.", answer: false }, // الإجابة الصحيحة هي الظهر
@@ -28,7 +28,7 @@ const QUESTIONS = {
         { question: "غسل الجنابة لا يصح إلا إذا تم بماء مغلي.", answer: false },
         { question: "الصلاة لا تجوز في المقبرة أو الحمام أو قارعة الطريق.", answer: true },
         { question: "الفرق بين الركن والواجب هو أن الركن لا يسقط لا عمداً ولا سهواً، أما الواجب فيسقط بالسهو ويُجبر بسجود السهو.", answer: true },
-        // **هنا يجب عليك إضافة المزيد من أسئلة صح أو خطأ لتكملة الـ 100 سؤال لكل جولة.**
+        // ... يرجى إضافة 90 سؤالاً إضافياً هنا
     ]
 };
 
@@ -52,7 +52,7 @@ const timerNumber = document.getElementById('timer-number');
 const usernameInput = document.getElementById('username-input');
 const progressBar = document.querySelector('.progress-bar');
 
-// 3. الأصوات (لم يتم تغييرها)
+// 3. الأصوات
 const soundCorrect = document.getElementById('sound-correct');
 const soundWrong = document.getElementById('sound-wrong');
 const soundTimeUp = document.getElementById('sound-timeup');
@@ -105,7 +105,6 @@ function startGame(type) {
     
     // اختيار أسئلة عشوائية
     let allQs = QUESTIONS[type];
-    // **تحذير: إذا كان عدد الأسئلة المتاحة أقل من MAX_QUESTIONS، سيتم استخدام العدد المتاح.**
     const availableQuestionsCount = Math.min(allQs.length, MAX_QUESTIONS);
     currentQuestions = allQs.sort(() => 0.5 - Math.random()).slice(0, availableQuestionsCount);
     
@@ -243,7 +242,7 @@ function checkAnswer(selected, correct) {
 }
 
 
-// 8. وظيفة المؤقت (لم يتم تغييرها)
+// 8. وظيفة المؤقت
 function startTimer() {
     let timeLeft = 15;
     timerNumber.textContent = timeLeft;
@@ -266,7 +265,7 @@ function startTimer() {
     }, 1000);
 }
 
-// 9. وظيفة تحديث شريط التقدم (لم يتم تغييرها)
+// 9. وظيفة تحديث شريط التقدم
 function updateProgressBar() {
     const progressFill = document.getElementById('progress-fill');
     const percentage = ((currentQuestionIndex) / currentQuestions.length) * 100;
@@ -278,7 +277,7 @@ function showResultScreen() {
     progressBar.classList.add('hidden');
     quizContainer.innerHTML = '';
     
-    // **تحسين حفظ الإحصائيات:** حفظ أعلى نتيجة وعدد الجولات الملعوبة.
+    // تحسين حفظ الإحصائيات
     const username = localStorage.getItem('username');
     const storageKeyHigh = `${username}_${quizType}_highScore`;
     const storageKeyPlayed = `${username}_${quizType}_played`;
@@ -313,7 +312,7 @@ function showResultScreen() {
         </button>
     `;
     
-    // **ربط زر العودة بعد انتهاء اللعب**
+    // ربط زر العودة بعد انتهاء اللعب
     document.getElementById('back-to-welcome-btn-final').addEventListener('click', () => {
         const user = localStorage.getItem('username');
         showWelcomeScreen(user);
@@ -325,7 +324,7 @@ function showResultScreen() {
 function showProfileScreen() {
     welcomeScreen.classList.add('hidden');
     
-    // قراءة البيانات من التخزين المحلي (الآن تشمل عدد الجولات الملعوبة)
+    // قراءة البيانات من التخزين المحلي
     const username = localStorage.getItem('username');
     
     const mcqHighScore = localStorage.getItem(`${username}_mcq_highScore`) || 0;
