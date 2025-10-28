@@ -28,13 +28,25 @@
             max-width: 600px;
             margin: auto;
         }
+        
+        /* تغيير لون العناوين إلى الأخضر للتصميم القديم */
         h1, h2, h3 {
-            color: #007bff;
+            color: #28a745; /* اللون الأخضر */
             border-bottom: 2px solid #eee;
             padding-bottom: 10px;
             margin-bottom: 20px;
             text-align: center;
         }
+        
+        /* خلفية شاشات البداية */
+        #welcomeScreen, #modeSelectionScreen {
+            background-color: #e6ffe6; /* لون أخضر فاتح للخلفية */
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+            text-align: center;
+        }
+        
         .question-text {
             font-size: 1.2em;
             margin-bottom: 20px;
@@ -59,7 +71,7 @@
             cursor: pointer;
             transition: background-color 0.2s, transform 0.1s;
             font-size: 1em;
-            display: block; /* لضمان أن كل زر يأخذ سطراً كاملاً */
+            display: block; 
         }
         .option-button:hover:not(:disabled) {
             background-color: #e0e0e0;
@@ -79,117 +91,48 @@
             cursor: not-allowed;
             opacity: 0.8;
         }
-        .navigation-controls {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 25px;
-        }
-        .nav-btn {
+        
+        /* تصميم الأزرار (أخضر وأزرق كما كان في النسخ القديمة) */
+        .nav-btn, .mode-select-btn {
             padding: 10px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             font-size: 1em;
             transition: background-color 0.3s;
+            margin: 5px;
         }
-        #nextBtn {
-            background-color: #007bff;
+        #nextBtn, #continueBtn, #restartBtn {
+            background-color: #007bff; /* أزرق */
             color: white;
         }
-        #nextBtn:hover {
+        #nextBtn:hover, #continueBtn:hover, #restartBtn:hover {
             background-color: #0056b3;
         }
-        #resetBtn {
-            background-color: #ffc107;
-            color: #333;
-        }
-        #resetBtn:hover {
-            background-color: #e0a800;
-        }
-        .hidden {
-            display: none !important;
-        }
-        #resultScreen p {
-            font-size: 1.1em;
-            margin: 10px 0;
-        }
-        #resultScreen p.final-score {
-            font-size: 1.5em;
-            color: #28a745;
-            font-weight: bold;
-        }
-
-        /* تصميم شاشة الترحيب */
-        #welcomeScreen, #resultScreen {
-            text-align: center;
-        }
-        .mode-selection button {
-            padding: 15px 30px;
-            font-size: 1.2em;
-            margin: 10px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
         #startNormalBtn {
-            background-color: #007bff;
+            background-color: #28a745; /* أخضر */
             color: white;
         }
         #startNormalBtn:hover {
-            background-color: #0056b3;
-        }
-        #startBlitzBtn {
-            background-color: #28a745;
-            color: white;
-        }
-        #startBlitzBtn:hover {
             background-color: #1e7e34;
         }
-        
-        /* تصميم العد التنازلي وشرائط الأدوات */
-        #timerBar {
-            width: 100%;
-            background-color: #ddd;
-            border-radius: 5px;
-            height: 10px;
-            margin-bottom: 20px;
+        #startBlitzBtn {
+            background-color: #ffc107; /* أصفر (لوضع مختلف) */
+            color: #333;
         }
-        #timerProgress {
-            height: 100%;
-            width: 100%; /* يبدأ ممتلئاً */
-            background-color: #dc3545;
-            border-radius: 5px;
-            transition: width 0.1s linear;
+        #startBlitzBtn:hover {
+            background-color: #e0a800;
         }
-        #currentQuestionInfo {
-            font-size: 1em;
-            color: #666;
-            text-align: center;
-            margin-top: 10px;
-        }
-
-        /* تصميم خاصية 50/50 */
-        #fiftyFiftyBtn {
-            background-color: #ff8c00;
+        #resetBtn, #backToProfileBtn {
+            background-color: #6c757d;
             color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.9em;
-            margin-bottom: 15px;
-            transition: background-color 0.3s;
-        }
-        #fiftyFiftyBtn:hover:not(:disabled) {
-            background-color: #e67e00;
-        }
-        #fiftyFiftyBtn:disabled {
-            background-color: #cccccc;
-            cursor: not-allowed;
         }
         
-        /* تحسينات لقسم الملف الشخصي والروابط */
+        .hidden {
+            display: none !important;
+        }
+        
+        /* تصميم قسم الملف الشخصي والروابط */
         .section-container {
             padding: 20px;
             border: 1px solid #ddd;
@@ -214,14 +157,9 @@
     <div class="container">
         <div id="welcomeScreen">
             <h1>مرحباً بك في تحدي إثراء الديني!</h1>
-            <p>اختر وضع اللعب للبدء:</p>
-            <div class="mode-selection">
-                <button id="startNormalBtn">تحدي عادي (10 أسئلة)</button>
-                <button id="startBlitzBtn">تحدي السرعة (60 ثانية)</button>
-            </div>
             
-            <div id="userProfileSection" class="section-container" style="text-align: center; margin-top: 30px;">
-                <h2>بيانات الدخول والملف الشخصي</h2>
+            <div id="userProfileSection" class="section-container">
+                <h2>يرجى إدخال بياناتك للمتابعة</h2>
                 
                 <div class="input-group">
                     <label for="usernameInput" style="display: block; margin-bottom: 5px;">اسم المستخدم:</label>
@@ -231,6 +169,8 @@
                     <label for="passwordInput" style="display: block; margin-bottom: 5px;">كلمة السر:</label>
                     <input type="password" id="passwordInput" placeholder="أدخل كلمة السر" style="padding: 10px; margin-bottom: 20px; width: 80%; max-width: 300px; border: 1px solid #ccc; border-radius: 5px;">
                 </div>
+                
+                <button id="continueBtn" class="nav-btn">المتابعة لاختيار الوضع</button>
 
                 <h3>روابط حساباتي</h3>
                 <div id="socialLinks" style="margin-top: 15px;">
@@ -247,9 +187,18 @@
                     متصفحك لا يدعم وسم الفيديو.
                 </video>
             </div>
-            
         </div>
-
+        
+        <div id="modeSelectionScreen" class="hidden container">
+            <h2 style="text-align: center;">اختر وضع اللعب</h2>
+            <p style="text-align: center;">أهلاً بك يا <span id="displayedUsername" style="font-weight: bold; color: #dc3545;">[اسم المستخدم]</span>، تفضل باختيار تحديك:</p>
+            <div class="mode-selection" style="text-align: center;">
+                <button id="startNormalBtn" class="mode-select-btn">تحدي عادي (10 أسئلة)</button>
+                <button id="startBlitzBtn" class="mode-select-btn">تحدي السرعة (60 ثانية)</button>
+            </div>
+             <button id="backToProfileBtn" class="nav-btn" style="margin-top: 20px;">العودة لبيانات الدخول</button>
+        </div>
+        
         <div id="quizContainer" class="hidden">
             <h2 id="modeTitle">التحدي العادي</h2>
             
@@ -277,13 +226,14 @@
             <p id="scoreText" class="final-score"></p>
             <p id="correctAnswersInfo"></p>
             <p id="wrongAnswersInfo"></p>
-            <button id="restartBtn" class="nav-btn" style="background-color: #007bff; color: white; margin-top: 20px;">بدء تحدي جديد</button>
+            <button id="restartBtn" class="nav-btn" style="margin-top: 20px;">بدء تحدي جديد</button>
         </div>
     </div>
 
     <script>
         // المتغيرات العامة
         const welcomeScreen = document.getElementById('welcomeScreen');
+        const modeSelectionScreen = document.getElementById('modeSelectionScreen'); // الشاشة الجديدة
         const quizContainer = document.getElementById('quizContainer');
         const resultScreen = document.getElementById('resultScreen');
         const startNormalBtn = document.getElementById('startNormalBtn');
@@ -301,6 +251,12 @@
         const timerBar = document.getElementById('timerBar');
         const timerProgress = document.getElementById('timerProgress');
         const fiftyFiftyBtn = document.getElementById('fiftyFiftyBtn');
+        
+        // متغيرات شاشة الدخول الجديدة
+        const continueBtn = document.getElementById('continueBtn');
+        const displayedUsername = document.getElementById('displayedUsername');
+        const usernameInput = document.getElementById('usernameInput');
+        const backToProfileBtn = document.getElementById('backToProfileBtn');
 
         let allQuestions = [];
         let currentQuestions = [];
@@ -310,19 +266,19 @@
         let isAnswered = false;
         
         // المتغيرات الخاصة بوضع السرعة
-        const BLITZ_TIME = 60; // 60 ثانية لوضع السرعة
+        const BLITZ_TIME = 60; 
         let timeLeft = BLITZ_TIME;
         let timerInterval;
 
         // المتغيرات الخاصة بخاصية 50/50
         let fiftyFiftyUsed = false;
         
-        // الحد الأقصى للأسئلة لكل وضع (تم التعديل إلى 10 أسئلة حسب طلبك)
+        // الحد الأقصى للأسئلة لكل وضع
         const MAX_QUESTIONS_NORMAL = 10;
         const MAX_QUESTIONS_BLITZ = 10;
 
         // ------------------------------------------------
-        // 1. البيانات (الأسئلة مدمجة هنا لتجنب مشاكل الـ fetch المحلي)
+        // 1. البيانات (الأسئلة مدمجة هنا)
         // ------------------------------------------------
         const loadQuestions = () => {
             allQuestions = [
@@ -358,7 +314,7 @@
             timerBar.classList.remove('hidden');
             timerProgress.style.width = '100%';
             
-            clearInterval(timerInterval); // التأكد من إيقاف أي مؤقت سابق
+            clearInterval(timerInterval); 
             timerInterval = setInterval(() => {
                 timeLeft--;
                 const percentage = (timeLeft / BLITZ_TIME) * 100;
@@ -409,7 +365,7 @@
 
             const q = currentQuestions[currentQuestionIndex];
             questionText.textContent = q.q;
-            optionsList.innerHTML = ''; // مسح الأجوبة القديمة
+            optionsList.innerHTML = ''; 
             isAnswered = false;
             
             // تحديث رقم السؤال
@@ -423,7 +379,7 @@
                 const button = document.createElement('button');
                 button.className = 'option-button';
                 button.textContent = option.answer;
-                button.dataset.originalIndex = option.index; // لتحديد الإجابة الصحيحة لاحقاً
+                button.dataset.originalIndex = option.index; 
                 
                 button.addEventListener('click', () => checkAnswer(button, q.correct));
                 li.appendChild(button);
@@ -447,13 +403,13 @@
             const selectedOriginalIndex = parseInt(selectedButton.dataset.originalIndex);
 
             allButtons.forEach(btn => {
-                btn.disabled = true; // إيقاف إمكانية النقر بعد الإجابة
+                btn.disabled = true; 
                 const btnOriginalIndex = parseInt(btn.dataset.originalIndex);
 
                 if (btnOriginalIndex === correctIndex) {
-                    btn.classList.add('correct'); // تلوين الإجابة الصحيحة
+                    btn.classList.add('correct'); 
                 } else if (btn === selectedButton) {
-                    btn.classList.add('incorrect'); // تلوين الإجابة الخاطئة
+                    btn.classList.add('incorrect'); 
                 }
             });
 
@@ -518,35 +474,55 @@
         // ------------------------------------------------
         // 5. إدارة التنقل بين الشاشات والأزرار
         // ------------------------------------------------
+        
+        // تبدأ اللعبة من شاشة اختيار الوضع
         const startQuiz = (mode) => {
             currentMode = mode;
             modeTitle.textContent = mode === 'normal' ? 'التحدي العادي (10 أسئلة)' : 'تحدي السرعة (60 ثانية)';
             
-            welcomeScreen.classList.add('hidden');
+            modeSelectionScreen.classList.add('hidden');
             resultScreen.classList.add('hidden');
             quizContainer.classList.remove('hidden');
             
-            // إظهار/إخفاء شريط الوقت حسب الوضع
             if (mode === 'blitz') {
                 timerBar.classList.remove('hidden');
             } else {
                 timerBar.classList.add('hidden');
             }
             
-            // تهيئة وتحميل الأسئلة
             initializeQuestions(mode); 
         };
 
+        // العودة إلى الشاشة الرئيسية (إدخال البيانات)
         const resetQuiz = () => {
             stopTimer();
             quizContainer.classList.add('hidden');
             resultScreen.classList.add('hidden');
-            welcomeScreen.classList.remove('hidden');
+            welcomeScreen.classList.remove('hidden'); // إظهار شاشة الدخول أولاً
+            modeSelectionScreen.classList.add('hidden');
         };
-
+        
         // ربط الأحداث بالأزرار
+        
+        // 1. زر المتابعة (من شاشة الدخول إلى شاشة اختيار الوضع)
+        continueBtn.addEventListener('click', () => {
+            const currentUsername = usernameInput.value || 'زائر كريم';
+            displayedUsername.textContent = currentUsername;
+            
+            welcomeScreen.classList.add('hidden');
+            modeSelectionScreen.classList.remove('hidden');
+        });
+        
+        // 2. أزرار وضع اللعب (من شاشة اختيار الوضع إلى شاشة اللعبة)
         startNormalBtn.addEventListener('click', () => startQuiz('normal'));
         startBlitzBtn.addEventListener('click', () => startQuiz('blitz'));
+        
+        // 3. زر العودة (من شاشة اختيار الوضع إلى شاشة الدخول)
+        backToProfileBtn.addEventListener('click', () => {
+            modeSelectionScreen.classList.add('hidden');
+            welcomeScreen.classList.remove('hidden');
+        });
+
         nextBtn.addEventListener('click', moveToNextQuestion);
         resetBtn.addEventListener('click', resetQuiz);
         restartBtn.addEventListener('click', resetQuiz);
