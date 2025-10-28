@@ -24,6 +24,8 @@ body {font-family:'Amiri',serif;background:linear-gradient(to bottom,#0d1b1e,#0c
 #timer {margin-top:0.5rem;}
 #timer-number {font-weight:bold;}
 #info-box {background:rgba(255, 255, 255, 0.1); padding:1rem; border-radius:1rem; margin-top:1rem; text-align:right;}
+.help-btn {transition:background-color 0.2s, transform 0.1s;}
+.help-btn:disabled {background-color: #4b5563; cursor: not-allowed; opacity: 0.6;}
 
 /* ************************************ */
 /* ** كود CSS لمشغل الفيديو (للتجاوب) ** */
@@ -68,9 +70,17 @@ body {font-family:'Amiri',serif;background:linear-gradient(to bottom,#0d1b1e,#0c
 </button>
 </header>
 
-<div class="progress-bar w-full max-w-4xl">
-<div id="progress-fill" class="progress-fill" style="width: 0%"></div>
+<div class="w-full max-w-4xl">
+    <div id="help-controls" class="flex justify-between items-center mb-4 hidden">
+        <button id="fifty-fifty-btn" class="help-btn bg-yellow-600 hover:bg-yellow-500 text-gray-900 font-bold py-2 px-4 rounded-lg shadow-md flex-grow mx-2 text-sm md:text-base">
+            50/50 (مرة واحدة)
+        </button>
+    </div>
+    <div class="progress-bar">
+        <div id="progress-fill" class="progress-fill" style="width: 0%"></div>
+    </div>
 </div>
+
 
 <main id="quiz" class="container">
     <div id="welcome-screen" class="question-card mt-6 p-8" style="opacity:1; transform:translateY(0);">
@@ -82,8 +92,13 @@ body {font-family:'Amiri',serif;background:linear-gradient(to bottom,#0d1b1e,#0c
             <input type="password" id="password-input" placeholder="كلمة السر" class="w-full p-3 mb-6 rounded-lg bg-gray-700 text-white border border-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-500">
         </div>
         
-        <button id="start-quiz-btn" class="bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold py-3 px-8 rounded-full text-xl transition shadow-lg w-full mb-6">
-            ابدأ التحدي الآن ✨
+        <h3 class="text-2xl font-bold text-gray-300 mb-4">اختر نوع التحدي:</h3>
+        
+        <button data-game-type="multiple-choice" id="start-mc-quiz-btn" class="start-game-btn bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold py-3 px-8 rounded-full text-xl transition shadow-lg w-full mb-4">
+            تحدي الاختيار من متعدد ✨ (15 ثانية)
+        </button>
+        <button data-game-type="true-false" id="start-tf-quiz-btn" class="start-game-btn bg-green-500 hover:bg-green-400 text-gray-900 font-bold py-3 px-8 rounded-full text-xl transition shadow-lg w-full mb-6">
+            تحدي صح/خطأ ✅❌ (20 ثانية)
         </button>
         
         <div id="social-links" class="mt-8 pt-4 border-t border-gray-700">
@@ -114,10 +129,12 @@ body {font-family:'Amiri',serif;background:linear-gradient(to bottom,#0d1b1e,#0c
 
 <script>
 // *** إعدادات الاختبار ***
-const QUIZ_LENGTH=10, TIME_PER_QUESTION=15; 
+const QUIZ_LENGTH=10; 
+let TIME_PER_QUESTION=15; // متغير لضبط الوقت حسب نوع اللعبة
+let currentGameType = 'multiple-choice'; // لتتبع نوع اللعبة الحالية
 
-// *** قائمة الأسئلة (70 سؤالاً مدمجة هنا) ***
-const ALL_QUESTIONS = [
+// *** قائمة الأسئلة (70 سؤالاً متعددة الخيارات) ***
+const MC_QUESTIONS = [
     {
         "q": "ما هي السورة التي بدأت بـ 'تبارك الذي بيده الملك' وتُسمى المانعة؟",
         "a": ["سورة يس", "سورة الواقعة", "سورة الملك", "سورة الرحمن"],
@@ -551,7 +568,102 @@ const ALL_QUESTIONS = [
         "info": "أمر أبو بكر بجمع القرآن في مصحف واحد بعد معركة اليمامة، واستغرق ذلك حوالي سنتين."
     }
 ];
+
+// *** قائمة أسئلة صح/خطأ جديدة (15 سؤال) ***
+const TF_QUESTIONS = [
+    {
+        "q": "الزكاة هي الركن الثاني من أركان الإسلام الخمسة.",
+        "a": ["صح", "خطأ"],
+        "correct": 1,
+        "info": "الشهادتان هما الركن الأول، والصلاة الركن الثاني."
+    },
+    {
+        "q": "العمرة تجزئ عن الحج لمن لم يستطع الحج.",
+        "a": ["صح", "خطأ"],
+        "correct": 1,
+        "info": "العمرة لا تجزئ عن الحج؛ فالحج فرض مستقل."
+    },
+    {
+        "q": "الجهاد هو الركن السادس من أركان الإيمان.",
+        "a": ["صح", "خطأ"],
+        "correct": 1,
+        "info": "أركان الإيمان ستة، والجهاد ليس منها."
+    },
+    {
+        "q": "يوم عرفة هو اليوم العاشر من شهر ذي الحجة.",
+        "a": ["صح", "خطأ"],
+        "correct": 1,
+        "info": "يوم عرفة هو اليوم التاسع، واليوم العاشر هو يوم النحر (عيد الأضحى)."
+    },
+    {
+        "q": "أُطلق على أبي بكر الصديق لقب 'الفاروق'.",
+        "a": ["صح", "خطأ"],
+        "correct": 1,
+        "info": "لقب 'الفاروق' أُطلق على عمر بن الخطاب رضي الله عنه."
+    },
+    {
+        "q": "مشروبات الشعير بأنواعها حلال شرعاً ما لم تحتوي على كحول.",
+        "a": ["صح", "خطأ"],
+        "correct": 0,
+        "info": "الأصل في الأشياء الإباحة ما لم يقم دليل على التحريم، وطالما خلت من الكحول فهي حلال."
+    },
+    {
+        "q": "صلاة الجماعة فرض عين على كل مسلم بالغ عاقل.",
+        "a": ["صح", "خطأ"],
+        "correct": 1,
+        "info": "جمهور العلماء يرون أنها سنة مؤكدة أو فرض كفاية، بينما يرى الحنابلة أنها فرض عين."
+    },
+    {
+        "q": "الحد الأقصى للطلاق الرجعي هو ثلاث طلقات.",
+        "a": ["صح", "خطأ"],
+        "correct": 0,
+        "info": "الحد الأقصى للطلاق هو ثلاث طلقات، وبعدها لا تحل له حتى تنكح زوجاً غيره."
+    },
+    {
+        "q": "يُحرم على المُحرم بحج أو عمرة أن يلبس المخيط.",
+        "a": ["صح", "خطأ"],
+        "correct": 0,
+        "info": "يُحرم على الرجال لبس المخيط، وهو ما خيط على قدر العضو (مثل القميص)."
+    },
+    {
+        "q": "يُباح للمسافر قصر الصلاة إذا كانت المسافة لا تقل عن 80 كيلومترًا تقريباً.",
+        "a": ["صح", "خطأ"],
+        "correct": 0,
+        "info": "هذا هو القول الراجح والمشهور لجمهور الفقهاء (ما يعادل 48 ميلاً أو 80 كيلو)."
+    },
+    {
+        "q": "الإيمان بالملائكة هو الركن الثالث من أركان الإيمان.",
+        "a": ["صح", "خطأ"],
+        "correct": 1,
+        "info": "الإيمان بالكتب هو الركن الثالث، والإيمان بالملائكة هو الركن الثاني."
+    },
+    {
+        "q": "القصاص هو مبدأ 'العين بالعين والسن بالسن'.",
+        "a": ["صح", "خطأ"],
+        "correct": 0,
+        "info": "نعم، القصاص هو حق المجني عليه في مقابلة الجاني بما فعل به."
+    },
+    {
+        "q": "لا يجوز للمرأة أن تتولى القضاء أو الحسبة شرعاً.",
+        "a": ["صح", "خطأ"],
+        "correct": 1,
+        "info": "هناك خلاف فقهي، لكن القول المشهور في المذاهب الأربعة هو جواز توليها القضاء فيما لا يقام فيه الحد، وفي الحسبة يجوز باتفاق."
+    },
+    {
+        "q": "صلاة العيدين سنة مؤكدة وليست واجبة عند الأحناف.",
+        "a": ["صح", "خطأ"],
+        "correct": 1,
+        "info": "عند الأحناف صلاة العيد واجبة، وعند الجمهور سنة مؤكدة."
+    },
+    {
+        "q": "الربا نوعان، ربا الفضل وربا النسيئة.",
+        "a": ["صح", "خطأ"],
+        "correct": 0,
+        "info": "صحيح، الربا نوعان: ربا الفضل وربا النسيئة."
+    }
+];
 // *** نهاية قائمة الأسئلة ***
+
 
 // *** عناصر الواجهة والأصوات ***
 const quizContainer=document.getElementById('quiz'),
@@ -560,7 +672,9 @@ const quizContainer=document.getElementById('quiz'),
       progressFill=document.getElementById('progress-fill'),
       timerElement=document.getElementById('timer'),
       timerNumber=document.getElementById('timer-number'),
-      loadingMessage=document.getElementById('loading-message');
+      loadingMessage=document.getElementById('loading-message'),
+      helpControls=document.getElementById('help-controls'), // جديد
+      fiftyFiftyButton = document.getElementById('fifty-fifty-btn'); // جديد
 
 const soundCorrect=document.getElementById('sound-correct'),
       soundWrong=document.getElementById('sound-wrong'),
@@ -571,24 +685,76 @@ const backgroundMusic=document.getElementById('background-music'),
       
 // عناصر شاشة الترحيب الجديدة
 const welcomeScreen=document.getElementById('welcome-screen'), 
-      startButton=document.getElementById('start-quiz-btn'); 
-
+      startGameButtons = document.querySelectorAll('.start-game-btn'); // تم تعديل الاسم
+      
 // عناصر الدخول الجديدة
 const usernameInput = document.getElementById('username-input');
 const passwordInput = document.getElementById('password-input');
 
 // *** متغيرات حالة الاختبار ***
-let allQuestions=ALL_QUESTIONS, selectedQuestions=[], currentQuestionIndex=0, score=0, answered=false, questionTimer, questionCountdown;
+let allQuestions, selectedQuestions=[], currentQuestionIndex=0, score=0, answered=false, questionTimer, questionCountdown;
+let isFiftyFiftyUsed = false; // حالة استخدام المساعدة
 
-// *** 1. جلب الأسئلة (تم التعديل ليقرأ من قائمة ALL_QUESTIONS مباشرة) ***
-function initializeQuestions() {
-    loadingMessage.classList.add('hidden');
+// *** 1. دوال المساعدة (50/50) ***
+
+function useFiftyFifty() {
+    if (answered || isFiftyFiftyUsed || currentGameType !== 'multiple-choice') return;
     
+    const q = selectedQuestions[currentQuestionIndex];
+    const answerButtons = Array.from(document.querySelectorAll('.answer-btn'));
+    const incorrectIndices = answerButtons
+        .map((btn, index) => index)
+        .filter(index => index !== q.correct);
+    
+    // اختيار إجابتين خاطئتين عشوائياً لحذفهما
+    const indicesToRemove = [];
+    while (indicesToRemove.length < 2) {
+        const randomIndex = Math.floor(Math.random() * incorrectIndices.length);
+        const index = incorrectIndices[randomIndex];
+        if (!indicesToRemove.includes(index)) {
+            indicesToRemove.push(index);
+        }
+    }
+
+    // إخفاء الأزرار المختارة
+    indicesToRemove.forEach(index => {
+        const btn = answerButtons.find(b => parseInt(b.dataset.index) === index);
+        if (btn) {
+            btn.style.opacity = '0.3';
+            btn.style.pointerEvents = 'none';
+        }
+    });
+
+    isFiftyFiftyUsed = true;
+    fiftyFiftyButton.disabled = true;
+    fiftyFiftyButton.textContent = '50/50 (مُستخدَم)';
+}
+
+
+// *** 2. تهيئة واختيار 10 أسئلة عشوائية (تم التعديل) ***
+function initializeQuestions(questionsArray, time) {
+    TIME_PER_QUESTION = time;
+    allQuestions = questionsArray;
+
+    const timerFill = document.getElementById('timer-fill');
+    if(timerFill) timerFill.style.transition = `width ${TIME_PER_QUESTION}s linear`;
+    if(timerNumber) timerNumber.textContent = TIME_PER_QUESTION;
+
     if(allQuestions.length < QUIZ_LENGTH){
-        quizContainer.innerHTML = `<p class="text-red-500 text-xl mt-12">لا توجد أسئلة كافية (${allQuestions.length} سؤال فقط). العدد المطلوب هو ${QUIZ_LENGTH}.</p>`;
+        quizContainer.innerHTML = `<p class="text-red-500 text-xl mt-12">لا توجد أسئلة كافية.</p>`;
         return;
     }
     
+    // إعادة تعيين حالة المساعدة
+    isFiftyFiftyUsed = false;
+    if (currentGameType === 'multiple-choice') {
+        helpControls.classList.remove('hidden');
+        fiftyFiftyButton.disabled = false;
+        fiftyFiftyButton.textContent = '50/50 (مرة واحدة)';
+    } else {
+        helpControls.classList.add('hidden');
+    }
+
     // استخدام قيمة عشوائية (Random Seed) لخلط الأسئلة
     const seed = Math.floor(Math.random() * 1000000); 
 
@@ -609,14 +775,17 @@ function initializeQuestions() {
         const answerSeed = seed * 10 + index; 
         const answers = q.a.map((text,i)=>({text,isCorrect:i===q.correct}));
 
-        // خلط الإجابات
-        let ansArr=[...answers], c=ansArr.length, r, t;
-        while(c){
-            r=(answerSeed+c)%c;
-            c--;
-            t=ansArr[c];
-            ansArr[c]=ansArr[r];
-            ansArr[r]=t;
+        // خلط الإجابات (فقط في الاختيار من متعدد)
+        let ansArr=[...answers];
+        if (currentGameType === 'multiple-choice') {
+            let c=ansArr.length, r, t;
+            while(c){
+                r=(answerSeed+c)%c;
+                c--;
+                t=ansArr[c];
+                ansArr[c]=ansArr[r];
+                ansArr[r]=t;
+            }
         }
         const newCorrectIndex = ansArr.findIndex(a=>a.isCorrect);
         return {
@@ -633,7 +802,7 @@ function initializeQuestions() {
     startQuiz();
 }
 
-// *** 2. دوال تشغيل الاختبار ***
+// *** 3. دوال تشغيل الاختبار ***
 
 function startQuiz(){loadQuestion();}
 
@@ -648,13 +817,29 @@ function loadQuestion(){
     }
 
     const q = selectedQuestions[currentQuestionIndex];
+    
+    // تحديد نمط عرض الأزرار حسب نوع اللعبة
+    let answersHTML;
+    if (currentGameType === 'true-false') {
+        answersHTML = `
+            <div id="answers-container" class="grid grid-cols-2 gap-4">
+                <button class="answer-btn bg-emerald-700 text-white p-3 rounded-xl shadow-lg hover:bg-emerald-600 text-2xl" data-index="0">✅ ${q.a[0]}</button>
+                <button class="answer-btn bg-emerald-700 text-white p-3 rounded-xl shadow-lg hover:bg-emerald-600 text-2xl" data-index="1">❌ ${q.a[1]}</button>
+            </div>
+        `;
+    } else { // Multiple Choice
+        answersHTML = `
+            <div id="answers-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                ${q.a.map((answer,index)=>`<button class="answer-btn bg-emerald-700 text-white p-3 rounded-xl shadow-lg hover:bg-emerald-600" data-index="${index}">${answer}</button>`).join('')}
+            </div>
+        `;
+    }
+
     quizContainer.innerHTML = `
         <div class="question-card mt-6" style="opacity:1; transform:translateY(0);">
             <p class="text-xl md:text-2xl font-bold mb-6 text-yellow-100">السؤال ${currentQuestionIndex+1} من ${QUIZ_LENGTH}</p>
             <h2 class="text-2xl md:text-3xl font-extrabold mb-8">${q.q}</h2>
-            <div id="answers-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                ${q.a.map((answer,index)=>`<button class="answer-btn bg-emerald-700 text-white p-3 rounded-xl shadow-lg hover:bg-emerald-600" data-index="${index}">${answer}</button>`).join('')}
-            </div>
+            ${answersHTML}
             <div id="info-box" class="hidden text-sm mt-4"></div>
             <div class="timer-bar mt-6"><div id="timer-fill" class="timer-fill" style="transition:width ${TIME_PER_QUESTION}s linear;"></div></div>
         </div>
@@ -662,16 +847,26 @@ function loadQuestion(){
     document.querySelectorAll('.answer-btn').forEach(btn=>btn.addEventListener('click',checkAnswer));
     updateProgress();
     startQuestionTimer();
+    
+    // إخفاء زر 50/50 في لعبة صح/خطأ
+    if (currentGameType === 'true-false') {
+        helpControls.classList.add('hidden');
+    } else {
+         helpControls.classList.remove('hidden');
+    }
 }
 
 function startQuestionTimer(){
     let timeLeft=TIME_PER_QUESTION;
     const timerFill=document.getElementById('timer-fill');
+    
+    // تحديث شريط المؤقت بناءً على وقت اللعبة الحالي
+    timerFill.style.transition=`width ${TIME_PER_QUESTION}s linear`;
+    timerFill.style.width='100%';
+    
     timerNumber.textContent=timeLeft;
     questionCountdown=timeLeft;
-    timerFill.style.width='100%';
-    timerFill.style.transition=`width ${TIME_PER_QUESTION}s linear`;
-    void timerFill.offsetWidth; 
+    void timerFill.offsetWidth; // Force reflow for smooth transition start
     questionTimer=setInterval(()=>{
         questionCountdown--;
         timerNumber.textContent=questionCountdown;
@@ -692,6 +887,8 @@ function handleTimeUp(){
         result.className='mt-6 text-2xl md:text-3xl font-bold p-4 rounded-xl shadow-2xl bg-red-800 text-white';
         result.classList.remove('hidden');
         nextButton.classList.remove('hidden');
+        // تعطيل زر 50/50 عند انتهاء الوقت
+        if (currentGameType === 'multiple-choice') fiftyFiftyButton.disabled = true;
     }
 }
 
@@ -706,6 +903,9 @@ function checkAnswer(event){
     const infoBox=document.getElementById('info-box');
 
     document.querySelectorAll('.answer-btn').forEach(btn=>{
+        // التأكد من أن الأزرار المخفية لا تظهر كـ (خطأ) إذا لم تكن هي الجواب
+        if(btn.style.opacity === '0.3') return; 
+        
         if(parseInt(btn.dataset.index)===q.correct) btn.classList.add('correct');
         else if(btn===selectedButton) btn.classList.add('wrong');
         btn.classList.add('answered');
@@ -719,6 +919,8 @@ function checkAnswer(event){
 
     result.classList.remove('hidden');
     nextButton.classList.remove('hidden');
+    // تعطيل زر 50/50 عند الإجابة
+    if (currentGameType === 'multiple-choice') fiftyFiftyButton.disabled = true;
 }
 
 function updateProgress(){
@@ -730,8 +932,9 @@ function showFinalResult(){
     progressFill.style.width='100%';
     quizContainer.innerHTML='';
 
-    let bestScore=parseInt(localStorage.getItem('bestScore')||'0'), isNewRecord=false;
-    if(score>bestScore){bestScore=score; localStorage.setItem('bestScore',bestScore); isNewRecord=true;}
+    let bestScoreKey = (currentGameType === 'true-false') ? 'bestScoreTF' : 'bestScoreMC';
+    let bestScore=parseInt(localStorage.getItem(bestScoreKey)||'0'), isNewRecord=false;
+    if(score>bestScore){bestScore=score; localStorage.setItem(bestScoreKey,bestScore); isNewRecord=true;}
 
     const percentage=(score/selectedQuestions.length)*100;
     let message='';
@@ -740,19 +943,20 @@ function showFinalResult(){
     else if(percentage>=70) message=`نتيجة ممتازة! ✨ ${score} من ${selectedQuestions.length}.`;
     else message=`نتيجتك هي: ${score} من ${selectedQuestions.length}. تحتاج إلى مراجعة بسيطة. 📚`;
 
-    result.innerHTML=`<p class="text-3xl md:text-4xl mb-4">انتهى الاختبار!</p>
+    result.innerHTML=`<p class="text-3xl md:text-4xl mb-4">انتهى اختبار ${currentGameType === 'true-false' ? 'صح/خطأ' : 'الاختيار من متعدد'}!</p>
         <p class="text-xl md:text-2xl font-bold mb-4">${message}</p>
         <p class="text-lg mb-2">نسبة النجاح: ${percentage.toFixed(2)}%</p>
-        <p class="text-yellow-300 text-lg font-bold mb-4">أعلى نتيجة لديك: ${bestScore} من ${selectedQuestions.length}</p>
-        <button onclick="window.location.reload()" class="mt-4 bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold py-2 px-4 rounded-full text-lg transition">ابدأ اختبار جديد</button>`;
+        <p class="text-yellow-300 text-lg font-bold mb-4">أعلى نتيجة لديك لهذا التحدي: ${bestScore} من ${selectedQuestions.length}</p>
+        <button onclick="window.location.reload()" class="mt-4 bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold py-2 px-4 rounded-full text-lg transition">ابدأ تحدي جديد</button>`;
 
     result.classList.remove('hidden');
     nextButton.classList.add('hidden'); 
     timerElement.classList.add('hidden');
+    helpControls.classList.add('hidden'); // إخفاء زر 50/50 في شاشة النتائج
 }
 
 
-// *** 3. وظيفة تشغيل الموسيقى/إيقافها ***
+// *** 4. وظيفة تشغيل الموسيقى/إيقافها ***
 function toggleMusic(){
     const musicIcon=document.getElementById('music-icon'),musicStatus=document.getElementById('music-status');
     if(backgroundMusic.paused){
@@ -765,8 +969,9 @@ function toggleMusic(){
     else{backgroundMusic.pause(); musicIcon.textContent='🔇'; musicStatus.textContent='تشغيل';}
 }
 
-// *** 4. معالجات الأحداث والبدء ***
+// *** 5. معالجات الأحداث والبدء ***
 musicToggleButton.addEventListener('click',toggleMusic);
+fiftyFiftyButton.addEventListener('click', useFiftyFifty); // ربط زر 50/50
 
 nextButton.addEventListener('click',()=>{
     if(currentQuestionIndex>=selectedQuestions.length){
@@ -779,26 +984,43 @@ nextButton.addEventListener('click',()=>{
     }
 });
 
-// تشغيل الاختبار بعد النقر على زر البدء
-startButton.addEventListener('click', () => {
-    const username = usernameInput.value;
-    const password = passwordInput.value;
-    
-    // يمكنك هنا إضافة منطق للتحقق من كلمة السر والاسم إذا أردت 
-    console.log(`تم تسجيل الدخول. المستخدم: ${username}, كلمة السر: ${password}`);
-    
-    // إخفاء شاشة الترحيب وإظهار رسالة التحميل
-    welcomeScreen.classList.add('hidden'); 
-    loadingMessage.classList.remove('hidden'); 
-    
-    // محاولة تشغيل الموسيقى
-    backgroundMusic.play().catch(() => {
-        console.log("Music play requested by user click.");
+// معالجة النقر على أزرار بدء اللعب
+startGameButtons.forEach(button => {
+    button.addEventListener('click', (event) => {
+        const gameType = event.target.dataset.gameType;
+        currentGameType = gameType;
+
+        const username = usernameInput.value;
+        const password = passwordInput.value;
+        
+        console.log(`بدء اللعبة: ${gameType}. المستخدم: ${username}, كلمة السر: ${password}`);
+        
+        // إخفاء شاشة الترحيب وإظهار رسالة التحميل
+        welcomeScreen.classList.add('hidden'); 
+        loadingMessage.classList.remove('hidden'); 
+        
+        // محاولة تشغيل الموسيقى
+        backgroundMusic.play().catch(() => {
+            console.log("Music play requested by user click.");
+        });
+
+        // اختيار نوع الأسئلة والوقت
+        let questionsArray, time;
+        if (gameType === 'multiple-choice') {
+            questionsArray = MC_QUESTIONS;
+            time = 15;
+        } else if (gameType === 'true-false') {
+            questionsArray = TF_QUESTIONS;
+            time = 20;
+        }
+        
+        // جلب الأسئلة
+        setTimeout(() => { // تأخير بسيط لإظهار رسالة التحميل
+            initializeQuestions(questionsArray, time);
+        }, 500); 
     });
-    
-    // جلب الأسئلة
-    initializeQuestions(); // تم التعديل للاعتماد على القائمة المدمجة
 });
+
 
 // محاولة تشغيل الموسيقى عند تحميل الصفحة 
 document.addEventListener('DOMContentLoaded', () => {
