@@ -3,596 +3,521 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تحدي الأئمة الفقهي</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>تحدي الأسئلة الدينية - إثراء</title>
+    
     <style>
-        /* تم تطبيق الخط الجديد Cairo */
         body {
-            font-family: 'Cairo', sans-serif;
-            background: linear-gradient(to bottom, #0d1b1e, #0c2c24);
-            color: #f8f9fa;
-            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 1.5rem;
+            min-height: 100vh;
+            text-align: right;
+            line-height: 1.6;
         }
         .container {
-            max-width: 90%;
-            width: 500px;
-            background-color: #1e293b;
-            padding: 1.5rem;
+            background-color: #fff;
+            padding: 25px;
             border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-        }
-        .quiz-title {
-            border-bottom: 2px solid #334155;
-            padding-bottom: 1rem;
-            margin-bottom: 1rem;
-            color: #fcd34d;
-            font-weight: 700;
-        }
-        .answer-btn {
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
             width: 100%;
-            margin-bottom: 0.75rem;
-            padding: 0.75rem 1rem;
-            background-color: #334155;
-            color: #e2e8f0;
+            max-width: 600px;
+            margin: auto;
+        }
+        h1, h2, h3 {
+            color: #007bff;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .question-text {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            background-color: #eaf6ff;
+            padding: 15px;
             border-radius: 8px;
-            transition: background-color 0.2s, transform 0.1s;
+            border-right: 5px solid #007bff;
+        }
+        .options-list {
+            list-style: none;
+            padding: 0;
+        }
+        .option-button {
+            background-color: #f0f0f0;
+            color: #333;
+            border: 1px solid #ddd;
+            padding: 12px 15px;
+            margin: 8px 0;
+            width: 100%;
             text-align: right;
-            border: 2px solid transparent;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            font-size: 1em;
+            display: block; /* لضمان أن كل زر يأخذ سطراً كاملاً */
         }
-        .answer-btn:hover:not(.disabled) {
-            background-color: #475569;
-            transform: translateY(-1px);
+        .option-button:hover:not(:disabled) {
+            background-color: #e0e0e0;
+            transform: translateY(-2px);
         }
-        .answer-btn.correct {
-            background-color: #10b981; /* زمردي */
-            color: #0c4a6e;
-            border-color: #059669;
+        .option-button.correct {
+            background-color: #28a745;
+            color: white;
+            border-color: #218838;
         }
-        .answer-btn.incorrect {
-            background-color: #ef4444; /* أحمر */
-            color: #0c4a6e;
-            border-color: #dc2626;
+        .option-button.incorrect {
+            background-color: #dc3545;
+            color: white;
+            border-color: #c82333;
         }
-        .answer-btn.disabled {
-            opacity: 0.6;
+        .option-button:disabled {
             cursor: not-allowed;
+            opacity: 0.8;
         }
-        #progress-bar {
-            height: 10px;
-            background-color: #4b5563;
+        .navigation-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+        }
+        .nav-btn {
+            padding: 10px 20px;
+            border: none;
             border-radius: 5px;
-            margin-bottom: 1rem;
-            overflow: hidden;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s;
         }
-        #progress-fill {
+        #nextBtn {
+            background-color: #007bff;
+            color: white;
+        }
+        #nextBtn:hover {
+            background-color: #0056b3;
+        }
+        #resetBtn {
+            background-color: #ffc107;
+            color: #333;
+        }
+        #resetBtn:hover {
+            background-color: #e0a800;
+        }
+        .hidden {
+            display: none !important;
+        }
+        #resultScreen p {
+            font-size: 1.1em;
+            margin: 10px 0;
+        }
+        #resultScreen p.final-score {
+            font-size: 1.5em;
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        /* تصميم شاشة الترحيب */
+        #welcomeScreen, #resultScreen {
+            text-align: center;
+        }
+        .mode-selection button {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            margin: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #startNormalBtn {
+            background-color: #007bff;
+            color: white;
+        }
+        #startNormalBtn:hover {
+            background-color: #0056b3;
+        }
+        #startBlitzBtn {
+            background-color: #28a745;
+            color: white;
+        }
+        #startBlitzBtn:hover {
+            background-color: #1e7e34;
+        }
+        
+        /* تصميم العد التنازلي وشرائط الأدوات */
+        #timerBar {
+            width: 100%;
+            background-color: #ddd;
+            border-radius: 5px;
+            height: 10px;
+            margin-bottom: 20px;
+        }
+        #timerProgress {
             height: 100%;
-            background-color: #3b82f6;
-            transition: width 0.3s ease;
-        }
-        #timer-bar {
-            height: 8px;
-            background-color: #ef4444; /* أحمر للتنبيه */
+            width: 100%; /* يبدأ ممتلئاً */
+            background-color: #dc3545;
+            border-radius: 5px;
             transition: width 0.1s linear;
         }
-        /* تصميم زر المساعدة 50/50 */
-        #fifty-fifty-btn {
-            background-color: #f59e0b;
-            color: #1e293b;
-            border-radius: 6px;
-            padding: 0.5rem 1rem;
-            transition: background-color 0.2s;
-            font-weight: 700;
+        #currentQuestionInfo {
+            font-size: 1em;
+            color: #666;
+            text-align: center;
+            margin-top: 10px;
         }
-        #fifty-fifty-btn:hover:not(:disabled) {
-            background-color: #d97706;
+
+        /* تصميم خاصية 50/50 */
+        #fiftyFiftyBtn {
+            background-color: #ff8c00;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+            transition: background-color 0.3s;
         }
-        #fifty-fifty-btn:disabled {
-            background-color: #4b5563;
+        #fiftyFiftyBtn:hover:not(:disabled) {
+            background-color: #e67e00;
+        }
+        #fiftyFiftyBtn:disabled {
+            background-color: #cccccc;
             cursor: not-allowed;
+        }
+        
+        /* تحسينات لقسم الملف الشخصي والروابط */
+        .section-container {
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        .input-group label {
+            font-weight: bold;
+            color: #555;
+        }
+        #socialLinks a {
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.2s;
+        }
+        #socialLinks a:hover {
+            background-color: #f0f0f0;
         }
     </style>
 </head>
 <body>
-
-    <div id="welcome-screen" class="container text-center">
-        <h1 class="text-3xl font-bold quiz-title">تحدي الأئمة الفقهي</h1>
-        <p class="text-lg mb-6">اختر وضع اللعب:</p>
-        
-        <button id="start-normal-mode" class="w-full mb-4 p-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition duration-200">
-            <i class="fas fa-question-circle ml-2"></i> تحدي 10 أسئلة (متعدد الخيارات)
-        </button>
-        
-        <button id="start-blitz-mode" class="w-full p-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition duration-200">
-            <i class="fas fa-bolt ml-2"></i> تحدي السرعة (صح أو خطأ)
-        </button>
-
-        <p id="best-score-display" class="mt-8 text-lg font-semibold text-yellow-400">أفضل نتيجة (التحدي العادي): 0</p>
-    </div>
-
-    <div id="quiz-container" class="container hidden">
-        <div id="progress-bar"><div id="progress-fill"></div></div>
-        <div class="flex justify-between items-center mb-4">
-            <div class="text-xl font-bold" id="mode-title"></div>
-            <div class="text-xl font-bold text-yellow-400" id="score-display">النقاط: 0</div>
-        </div>
-
-        <div id="timer-bar" class="hidden w-full h-2 rounded-lg mb-4"></div>
-        
-        <p class="text-lg mb-6 font-semibold" id="question-text"></p>
-
-        <div id="answers-container">
+    <div class="container">
+        <div id="welcomeScreen">
+            <h1>مرحباً بك في تحدي إثراء الديني!</h1>
+            <p>اختر وضع اللعب للبدء:</p>
+            <div class="mode-selection">
+                <button id="startNormalBtn">تحدي عادي (10 أسئلة)</button>
+                <button id="startBlitzBtn">تحدي السرعة (60 ثانية)</button>
             </div>
+            
+            <div id="userProfileSection" class="section-container" style="text-align: center; margin-top: 30px;">
+                <h2>بيانات الدخول والملف الشخصي</h2>
+                
+                <div class="input-group">
+                    <label for="usernameInput" style="display: block; margin-bottom: 5px;">اسم المستخدم:</label>
+                    <input type="text" id="usernameInput" placeholder="أدخل اسم المستخدم" style="padding: 10px; margin-bottom: 15px; width: 80%; max-width: 300px; border: 1px solid #ccc; border-radius: 5px;">
+                </div>
+                <div class="input-group">
+                    <label for="passwordInput" style="display: block; margin-bottom: 5px;">كلمة السر:</label>
+                    <input type="password" id="passwordInput" placeholder="أدخل كلمة السر" style="padding: 10px; margin-bottom: 20px; width: 80%; max-width: 300px; border: 1px solid #ccc; border-radius: 5px;">
+                </div>
 
-        <div id="controls" class="flex justify-between items-center mt-6">
-            <button id="fifty-fifty-btn" class="text-sm disabled:opacity-50 disabled:cursor-not-allowed">
-                <i class="fas fa-magic ml-1"></i> 50/50 (مرة واحدة)
-            </button>
-            <button id="next-btn" class="p-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition duration-200 disabled:opacity-50" disabled>
-                التالي <i class="fas fa-arrow-left mr-1"></i>
-            </button>
+                <h3>روابط حساباتي</h3>
+                <div id="socialLinks" style="margin-top: 15px;">
+                    <a href="رابط_حسابك_على_انستجرام" target="_blank" style="margin: 0 10px; color: #E1306C; text-decoration: none; font-weight: bold;">انستجرام</a> |
+                    <a href="رابط_حسابك_على_تويتر_أو_X" target="_blank" style="margin: 0 10px; color: #1DA1F2; text-decoration: none; font-weight: bold;">تويتر/X</a> |
+                    <a href="رابط_حسابك_على_تيك_توك" target="_blank" style="margin: 0 10px; color: #000; text-decoration: none; font-weight: bold;">تيك توك</a>
+                </div>
+            </div>
+            
+            <div id="videoContainer" class="section-container" style="text-align: center; margin-top: 30px;">
+                <h3>فيديو مهم</h3>
+                <video width="100%" controls poster="صورة_غلاف_الفيديو_إن_وجدت.jpg">
+                    <source src="VID_20251027_220735_527.mp4" type="video/mp4">
+                    متصفحك لا يدعم وسم الفيديو.
+                </video>
+            </div>
+            
         </div>
-    </div>
 
-    <div id="result-screen" class="container text-center hidden">
-        <h2 class="text-3xl font-bold quiz-title" id="final-message"></h2>
-        <p class="text-2xl mb-4" id="final-score"></p>
-        <p class="text-lg text-yellow-400 mb-6" id="final-best-score"></p>
-        <p class="text-base text-gray-400 mb-6" id="summary-info"></p>
+        <div id="quizContainer" class="hidden">
+            <h2 id="modeTitle">التحدي العادي</h2>
+            
+            <div id="timerBar" class="hidden">
+                <div id="timerProgress"></div>
+            </div>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <button id="fiftyFiftyBtn">50/50 (مرة واحدة)</button>
+                <div id="currentQuestionInfo"></div>
+            </div>
+            
+            <p id="questionText" class="question-text"></p>
+            <ul id="optionsList" class="options-list">
+                </ul>
+            
+            <div class="navigation-controls">
+                <button id="resetBtn" class="nav-btn">العودة للرئيسية</button>
+                <button id="nextBtn" class="nav-btn">السؤال التالي</button>
+            </div>
+        </div>
 
-        <button id="restart-btn" class="w-full p-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition duration-200">
-            <i class="fas fa-redo ml-2"></i> البدء من جديد
-        </button>
+        <div id="resultScreen" class="hidden">
+            <h2>نتائج التحدي</h2>
+            <p id="scoreText" class="final-score"></p>
+            <p id="correctAnswersInfo"></p>
+            <p id="wrongAnswersInfo"></p>
+            <button id="restartBtn" class="nav-btn" style="background-color: #007bff; color: white; margin-top: 20px;">بدء تحدي جديد</button>
+        </div>
     </div>
 
     <script>
-        const QUIZ_LENGTH = 10;
+        // المتغيرات العامة
+        const welcomeScreen = document.getElementById('welcomeScreen');
+        const quizContainer = document.getElementById('quizContainer');
+        const resultScreen = document.getElementById('resultScreen');
+        const startNormalBtn = document.getElementById('startNormalBtn');
+        const startBlitzBtn = document.getElementById('startBlitzBtn');
+        const modeTitle = document.getElementById('modeTitle');
+        const questionText = document.getElementById('questionText');
+        const optionsList = document.getElementById('optionsList');
+        const nextBtn = document.getElementById('nextBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const restartBtn = document.getElementById('restartBtn');
+        const scoreText = document.getElementById('scoreText');
+        const correctAnswersInfo = document.getElementById('correctAnswersInfo');
+        const wrongAnswersInfo = document.getElementById('wrongAnswersInfo');
+        const currentQuestionInfo = document.getElementById('currentQuestionInfo');
+        const timerBar = document.getElementById('timerBar');
+        const timerProgress = document.getElementById('timerProgress');
+        const fiftyFiftyBtn = document.getElementById('fiftyFiftyBtn');
+
         let allQuestions = [];
-        let selectedQuestions = [];
+        let currentQuestions = [];
         let currentQuestionIndex = 0;
         let score = 0;
-        let bestScore = parseInt(localStorage.getItem('bestScore')) || 0;
-        let isAnswerLocked = false;
-        let isFiftyFiftyUsed = false;
-        let currentMode = 'normal'; // 'normal' or 'blitz'
-        let blitzTimer = null;
-        let blitzTimeLeft = 60; // 60 seconds for Blitz Mode
-
-        // --- DOM Elements ---
-        const welcomeScreen = document.getElementById('welcome-screen');
-        const quizContainer = document.getElementById('quiz-container');
-        const resultScreen = document.getElementById('result-screen');
-        const questionText = document.getElementById('question-text');
-        const answersContainer = document.getElementById('answers-container');
-        const scoreDisplay = document.getElementById('score-display');
-        const bestScoreDisplay = document.getElementById('best-score-display');
-        const progressBarFill = document.getElementById('progress-fill');
-        const nextBtn = document.getElementById('next-btn');
-        const restartBtn = document.getElementById('restart-btn');
-        const fiftyFiftyBtn = document.getElementById('fifty-fifty-btn');
-        const startNormalBtn = document.getElementById('start-normal-mode');
-        const startBlitzBtn = document.getElementById('start-blitz-mode');
-        const timerBar = document.getElementById('timer-bar');
-        const modeTitle = document.getElementById('mode-title');
+        let currentMode = 'normal';
+        let isAnswered = false;
         
-        bestScoreDisplay.textContent = `أفضل نتيجة (التحدي العادي): ${bestScore}`;
+        // المتغيرات الخاصة بوضع السرعة
+        const BLITZ_TIME = 60; // 60 ثانية لوضع السرعة
+        let timeLeft = BLITZ_TIME;
+        let timerInterval;
 
-        // --- Data Loading (Simulating fetch of questions.json) ---
-        // في بيئة GitHub Pages أو بيئة حية، استخدم fetch
-        // const fetchQuestions = async () => {
-        //     const response = await fetch('questions.json');
-        //     allQuestions = await response.json();
-        //     startQuiz(currentMode);
-        // };
+        // المتغيرات الخاصة بخاصية 50/50
+        let fiftyFiftyUsed = false;
+        
+        // الحد الأقصى للأسئلة لكل وضع (تم التعديل إلى 10 أسئلة حسب طلبك)
+        const MAX_QUESTIONS_NORMAL = 10;
+        const MAX_QUESTIONS_BLITZ = 10;
 
-        // بما أن الكود يتوقع ملف questions.json، سنستخدم الملف الذي أرسلته كمصفوفة (للتجربة المباشرة هنا)
+        // ------------------------------------------------
+        // 1. البيانات (الأسئلة مدمجة هنا لتجنب مشاكل الـ fetch المحلي)
+        // ------------------------------------------------
         const loadQuestions = () => {
             allQuestions = [
-                // مصفوفة الأسئلة الطويلة التي أرسلها المستخدم
-                // (أضفت هنا أول سؤالين فقط للاختصار، لكن يجب لصق الـ 78 سؤالاً كاملة هنا في كودك)
-                { "q": "في الفقه الإسلامي، ما هو الحكم الشرعي لبيع 'العِينة'؟", "a": ["حرام", "جائز بشروط", "مكروه", "مباح"], "correct": 0, "info": "بيع العينة هو بيع السلعة بثمن مؤجل ثم شراؤها نقداً بثمن أقل، وهو حيلة للربا، وحكمه التحريم عند جمهور الفقهاء." },
-                { "q": "ما هو أقل النصاب الذي تجب فيه زكاة الذهب؟", "a": ["20 مثقالاً (حوالي 85 جراماً)", "10 مثاقيل", "30 مثقالاً", "50 جراماً"], "correct": 0, "info": "نصاب الذهب 20 مثقالاً، ويعادل تقريباً 85 جراماً من الذهب الخالص (عيار 24)، وتجب فيه الزكاة بمقدار 2.5%." },
-                { "q": "ما هي الفترة الزمنية التي يُشرع فيها للمسافر أن يمسح على خفيه أو جوربيه؟", "a": ["ثلاثة أيام بلياليها", "يوم وليلة", "خمسة أيام بلياليها", "أسبوع كامل"], "correct": 0, "info": "المسافر له أن يمسح على الخفين أو الجوربين لمدة ثلاثة أيام بلياليها (72 ساعة)." },
-                { "q": "في أي ركعة من صلاة الوتر يشرع قراءة دعاء القنوت؟", "a": ["الركعة الأخيرة قبل الركوع", "الركعة الأخيرة بعد الركوع", "الركعة الأولى", "بعد السلام من الصلاة"], "correct": 1, "info": "يشرع دعاء القنوت في الركعة الأخيرة من صلاة الوتر بعد الرفع من الركوع (عند الشافعية والحنابلة)، وقبله (عند الأحناف)." },
-                { "q": "ما حكم إخراج زكاة الفطر قيمة نقدية (مالاً) بدلاً من الطعام؟", "a": ["جائز عند الحنفية", "غير جائز باتفاق المذاهب", "جائز عند المالكية فقط", "مكروه"], "correct": 0, "info": "يجوز إخراج زكاة الفطر نقداً (مالاً) بدلاً من الطعام عند الحنفية وبعض الفقهاء المعاصرين، وهو خلاف مذهب الجمهور." },
-                { "q": "ما هو الحد الأدنى لوقت الحيض الذي تعتد به المرأة شرعاً؟", "a": ["يوم وليلة", "ثلاثة أيام", "ساعة واحدة", "لا حد لأقله"], "correct": 1, "info": "أقل الحيض يوم وليلة عند بعض الفقهاء، بينما يرى آخرون (كالأحناف) أن أقله ثلاثة أيام بلياليها." },
-                { "q": "ما هي الشروط الأساسية لصحة عقد البيع في الفقه؟", "a": ["الرضا والمعلومية والقدرة على التسليم", "توثيق العقد بالكتابة", "وجود شهود على البيع", "دفع الثمن كاملاً فوراً"], "correct": 0, "info": "من الشروط الأساسية لصحة البيع: التراضي بين البائع والمشتري، وأن يكون المبيع والثمن معلومين، والقدرة على تسليم المبيع." },
-                { "q": "ما هو الحكم الفقهي لمن حلف يميناً ثم حنث فيه؟", "a": ["وجبت عليه الكفارة", "يستغفر الله فقط", "يصوم ثلاثة أيام دون كفارة", "لا شيء عليه"], "correct": 0, "info": "إذا حنث في يمينه، وجبت عليه كفارة اليمين: إطعام عشرة مساكين أو كسوتهم أو تحرير رقبة، فمن لم يجد فصيام ثلاثة أيام." },
-                { "q": "ما الحكم الفقهي للعاقد الذي يعلم الغبن (الضرر الفاحش) على الطرف الآخر؟", "a": ["البيع صحيح مع الإثم", "البيع باطل", "البيع موقوف على إجازة القاضي", "البيع مكروه"], "correct": 0, "info": "البيع صحيح ولكنه يأثم إذا كان يعلم بالغبن، وللمغبون حق الفسخ عند بعض الفقهاء." },
-                { "q": "ماذا يُقصد بـ 'المُصرّاة' في الفقه المتعلق بعيوب المبيع؟", "a": ["التي حبس لبنها لتظهر أنها كثيرة الحليب", "التي اشتريت بسعر مبالغ فيه", "التي تحمل أكثر من حمل", "التي فيها عيب خلقي"], "correct": 0, "info": "المصرّاة هي البهيمة التي تُحبس ضرعها عن الحلب أياماً قبل البيع ليظن المشتري أن لبنها كثير. وللمشتري الخيار بردّها مع صاع من تمر." },
-                { "q": "كم هي المدة التي تُعفى فيها الإبل السائمة من الزكاة قبل أن يتم حولها؟", "a": ["لا شيء يُعفى منها", "6 أشهر", "9 أشهر", "3 أشهر"], "correct": 0, "info": "لا يوجد إعفاء زمني؛ إذا بلغت النصاب وحال عليها الحول، وجبت الزكاة فيها." },
-                { "q": "ما حكم تيمم الجُنُب إذا لم يجد الماء للصلاة؟", "a": ["التيمم صحيح ويصلي", "لا يجوز له التيمم إلا بعد مرور وقت الصلاة", "يؤخر الصلاة حتى يجد الماء", "يتيمم ويقضي بعد ذلك"], "correct": 0, "info": "التيمم يرفع الحدث الأكبر والأصغر عند فقد الماء أو العجز عن استعماله، والتيمم صحيح ويصلي." },
-                { "q": "ماذا يُقصد بـ 'نَفْقة المُتعة' في الطلاق؟", "a": ["ما يعطى للزوجة تعويضاً لجبرها بعد الطلاق", "ما تدفعه الزوجة للزوج مقابل الخُلع", "المتعة في فترة العدة", "نفقة الأطفال بعد الطلاق"], "correct": 0, "info": "نفقة المتعة هي مال يدفعه الزوج للمرأة المطلقة لجبر خاطرها، وهي واجبة عند بعض الفقهاء للمطلقة قبل الدخول، وعند آخرين للمطلقة التي لم تُفرض لها نفقة." },
-                { "q": "ما هو الحد الأدنى لعدد الأشخاص لصحة صلاة الجمعة عند الجمهور (غير الحنابلة)؟", "a": ["أربعون", "اثنا عشر", "اثنان", "ثلاثة"], "correct": 0, "info": "يشترط لصحة الجمعة عند الشافعية والمالكية عدد معين من الرجال الأحرار البالغين، وغالباً يحدد بأربعين رجلاً." },
-                { "q": "ما هو 'التأبيد' في باب النكاح؟", "a": ["الاشتراط على الزوجين عدم الطلاق أبداً", "اشتراط الزواج المؤقت بمدة معينة", "الاشتراط على الزوجة عدم الزواج بعد الطلاق", "نية استمرار الزواج دون تحديد مدة"], "correct": 3, "info": "النية التي يجب أن تتوفر في عقد النكاح بأن يكون لغرض الدوام والاستمرار، بخلاف نية التوقيت (نكاح المتعة) وهو باطل." },
-                { "q": "ما هي السورة التي بدأت بالحمد واختُتمت به أيضاً؟", "a": ["سورة الفاتحة", "سورة الإسراء", "سورة الكهف", "سورة سبأ"], "correct": 2, "info": "سورة الكهف هي التي بدأت بـ (الحمد لله الذي أنزل على عبده الكتاب) واختُتمت بـ (فلله الحمد رب السماوات ورب الأرض رب العالمين)." },
-                { "q": "ما هو الشيء الذي يحرم بيعه قبل قبضه في الشريعة الإسلامية؟", "a": ["الطعام (المكيل والموزون)", "العقار", "الذهب والفضة", "الملابس المصنوعة يدوياً"], "correct": 0, "info": "يحرم بيع الطعام المكيل والموزون قبل قبضه؛ لحديث النبي ﷺ: 'من ابتاع طعاماً فلا يبعه حتى يقبضه'." },
-                { "q": "ما الحكم إذا نوى الإمام والمنفرد الصوم في الليل، ثم أفاق الإمام قبل الفجر ونوى الإفطار، فهل يصح صوم المنفرد؟", "a": ["يصح صوم المنفرد", "لا يصح ويجب عليه القضاء", "يجب عليه أن يجدد النية بعد الفجر", "يصوم ذلك اليوم تطوعاً"], "correct": 0, "info": "نية كل مكلف مستقلة عن الآخر، وصوم المنفرد صحيح ما دام قد نوى الصوم قبل الفجر." },
-                { "q": "من هو 'حبر الأمة وترجمان القرآن' من الصحابة؟", "a": ["عبد الله بن عباس", "عبد الله بن عمر", "أنس بن مالك", "معاذ بن جبل"], "correct": 0, "info": "هو الصحابي الجليل عبد الله بن عباس رضي الله عنهما، دعا له النبي ﷺ بالفهم في الدين والتأويل." },
-                { "q": "ما هو الفرق الرئيسي بين 'الواجب' و 'الفرض' عند جمهور الفقهاء؟", "a": ["هما مترادفان ولا فرق بينهما", "الواجب أقل تأكيداً من الفرض", "الفرض ما ثبت بدليل قطعي والواجب بدليل ظني", "الواجب يتعلق بالبدن والفرض بالمال"], "correct": 2, "info": "الفرض ما ثبت بدليل قطعي لا شبهة فيه، والواجب ما ثبت بدليل ظني يحتمل التأويل. هذا التفريق هو مذهب الحنفية، بينما يرى الجمهور أنهما مترادفان." },
-                { "q": "في أي سنة هجرية وقعت غزوة أحد؟", "a": ["السنة الثالثة للهجرة", "السنة الخامسة للهجرة", "السنة السابعة للهجرة", "السنة الرابعة للهجرة"], "correct": 0, "info": "وقعت غزوة أحد في شوال من السنة الثالثة للهجرة." },
-                { "q": "كم كان عدد الصحابة الذين بايعوا النبي ﷺ في بيعة الرضوان؟", "a": ["حوالي 1400 صحابي", "ألف صحابي", "ثلاثمائة وثلاثة عشر", "سبعون صحابياً"], "correct": 0, "info": "كان عدد الصحابة الذين بايعوا النبي تحت الشجرة في الحديبية حوالي 1400 صحابي." },
-                { "q": "من هو الخليفة الذي أمر بجمع القرآن الكريم في مصحف واحد بعد وفاة النبي ﷺ؟", "a": ["أبو بكر الصديق", "عمر بن الخطاب", "عثمان بن عفان", "علي بن أبي طالب"], "correct": 0, "info": "أبو بكر الصديق هو من أمر بجمع القرآن بعد استشارة عمر بن الخطاب، بسبب كثرة استشهاد القراء في حروب الردة." },
-                { "q": "ما هي المدينة التي كانت عاصمة الدولة الأموية؟", "a": ["دمشق", "بغداد", "المدينة المنورة", "القاهرة"], "correct": 0, "info": "كانت دمشق عاصمة الخلافة الأموية." },
-                { "q": "من هو أول من قاد فتوحات المسلمين في بلاد السند؟", "a": ["محمد بن القاسم الثقفي", "قُتيبة بن مسلم الباهلي", "طارق بن زياد", "عقبة بن نافع"], "correct": 0, "info": "محمد بن القاسم الثقفي قاد الفتوحات إلى السند (باكستان حالياً) في عهد الوليد بن عبد الملك." },
-                { "q": "ما هو الحكم إذا شك المصلي في عدد الركعات هل صلى ثلاثاً أم أربعاً؟", "a": ["يبني على الأقل (ثلاث) ويسجد للسهو", "يبني على الأكثر (أربع)", "يقطع الصلاة ويعيدها", "يخير بين الأخذ بأي عدد"], "correct": 0, "info": "يبني على اليقين وهو الأقل (ثلاث)، ويأتي بالركعة الناقصة، ويسجد للسهو بعد السلام (مذهب الشافعية والحنابلة)." },
-                { "q": "ما هو أقل مهر يجب أن يُسمّى للمرأة في عقد النكاح؟", "a": ["لا حد لأقله", "دينار ذهبي واحد", "ثلاثة دراهم فضية", "عشرة دراهم"], "correct": 0, "info": "جمهور الفقهاء (كالشافعية والحنابلة) يرون أنه لا حد لأقله، فكل ما يصح أن يكون مبيعاً صح أن يكون مهراً." },
-                { "q": "ماذا يُقصد بـ 'التولية' في البيوع؟", "a": ["البيع برأس المال دون ربح أو خسارة", "البيع برأس المال مع ربح معلوم", "البيع بسعر أقل من سعر السوق", "البيع مع تحديد أجل للدفع"], "correct": 0, "info": "التولية هي بيع السلعة بثمنها الأصلي الذي اشتراها به البائع (برأس المال) دون زيادة ربح أو خسارة." },
-                { "q": "متى يجوز للمحرم بالحج أو العمرة قتل الصيد؟", "a": ["لا يجوز له القتل أبداً", "إذا كان الصيد مؤذياً", "إذا كان صيداً بحرياً", "إذا كان المحرم مضطراً للأكل"], "correct": 2, "info": "يحرم على المحرم صيد البر، أما صيد البحر فيجوز له قتله وأكله لقوله تعالى: 'أحل لكم صيد البحر وطعامه متاعاً لكم وللسيارة'." },
-                { "q": "ما حكم لمس المصحف من غير وضوء؟", "a": ["حرام", "مكروه", "جائز إذا كان للتعلم", "جائز للمرأة الحائض فقط"], "correct": 0, "info": "جمهور الفقهاء يرون أنه لا يجوز مس المصحف لغير المتطهر، لقوله تعالى: 'لا يمسه إلا المطهرون'." },
-                { "q": "ما هي السورة التي ذكرت قصة ذي القرنين؟", "a": ["سورة الكهف", "سورة مريم", "سورة الأنبياء", "سورة الإسراء"], "correct": 0, "info": "سورة الكهف هي التي ذكرت قصة ذي القرنين ورحلاته." },
-                { "q": "ما هي اللغة التي كان يتحدث بها أهل الجنة، حسب بعض الأحاديث المشهورة؟", "a": ["اللغة العربية", "اللغة السريانية", "لا توجد لغة محددة", "لغة مختلفة لكل شخص"], "correct": 2, "info": "لا يوجد حديث صحيح صريح يحدد لغة أهل الجنة، والرأي الراجح هو عدم وجود لغة محددة ثابتة." },
-                { "q": "في الفقه، ما هو الحكم إذا تزوجت امرأة رجلاً ثم تبين أنه أخوها من الرضاعة؟", "a": ["يُفسخ العقد وجوباً", "يصح العقد مع الكفارة", "يبقى العقد صحيحاً إذا لم يكن يعلم", "يجب إعادة العقد بعد الطهارة"], "correct": 0, "info": "الزواج باطل ويجب فسخ العقد فوراً؛ لأن الرضاع يُحرم ما يُحرمه النسب." },
-                { "q": "ما هي العقوبة المقررة على شرب الخمر في الشريعة الإسلامية؟", "a": ["الجلد (ثمانون جلدة)", "السجن", "الغرامة المالية", "النفي"], "correct": 0, "info": "الحد المقرر على شرب الخمر هو ثمانون جلدة (في مذهب الجمهور)، أو أربعون جلدة (في مذهب الشافعية)." },
-                { "q": "ما هو اسم المعركة التي هُزم فيها المسلمون في بداية الأمر ثم عادوا للنصر؟", "a": ["معركة حنين", "معركة مؤتة", "معركة تبوك", "معركة اليرموك"], "correct": 0, "info": "معركة حُنين (في السنة الثامنة للهجرة) بدأ المسلمون فيها بالهزيمة، ثم ثبتوا ونصرهم الله." },
-                { "q": "من هو الصحابي الذي ذُكر اسمه صراحةً في القرآن الكريم؟", "a": ["زيد بن حارثة", "أبو بكر الصديق", "علي بن أبي طالب", "بلال بن رباح"], "correct": 0, "info": "زيد بن حارثة رضي الله عنه، ذُكر اسمه في سورة الأحزاب: (فَلَمَّا قَضَى زَيْدٌ مِنْهَا وَطَراً زَوَّجْنَاكَهَا)." },
-                { "q": "ما هي السورة التي بدأ كل آياتها بلفظ الجلالة 'الله'؟", "a": ["لا توجد سورة تبدأ كل آياتها بلفظ الجلالة", "سورة الإخلاص", "سورة النور", "سورة الرحمن"], "correct": 0, "info": "لا توجد سورة في القرآن تبدأ جميع آياتها بلفظ الجلالة 'الله'." },
-                { "q": "ما هي الكفارة الواجبة على من جامع زوجته في نهار رمضان متعمداً؟", "a": ["صيام شهرين متتابعين أو عتق رقبة أو إطعام ستين مسكيناً", "إطعام ستين مسكيناً فقط", "صيام ستين يوماً متتالياً", "قضاء اليوم فقط"], "correct": 0, "info": "كفارة الجماع هي على الترتيب: عتق رقبة، فإن لم يجد فصيام شهرين متتابعين، فإن لم يستطع فإطعام ستين مسكيناً." },
-                { "q": "ما حكم صلاة من أتى المسجد ووجد الإمام يصلي صلاة العيد؟", "a": ["يصلي معه وتُحتسب له نافلة", "لا يدركها وتفوت عليه", "يصليها منفرداً بعد الإمام", "يصلي ركعتين ثم يدرك الإمام"], "correct": 0, "info": "يصلي مع الإمام وتُحتسب له، ويتابعه في التكبيرات حتى لو لم يدرك التكبيرات الأولى (مذهب الجمهور)." },
-                { "q": "ما هي السورة التي تسمى 'سورة المنافقين'؟", "a": ["سورة التوبة", "سورة المنافقون", "سورة الحشر", "سورة الأحزاب"], "correct": 1, "info": "سورة المنافقون هي السورة التي خصصت للحديث عن صفاتهم وأحوالهم." },
-                { "q": "ما هي أول عاصمة إسلامية خارج الجزيرة العربية بعد الفتوحات؟", "a": ["الكوفة", "البصرة", "الفسطاط", "دمشق"], "correct": 0, "info": "مدينة الكوفة في العراق، أسسها سعد بن أبي وقاص بأمر من عمر بن الخطاب وكانت عاصمة لخلافة علي بن أبي طالب فيما بعد." },
-                { "q": "ما هو المصطلح الذي يطلقه الفقهاء على المال الذي يُتلف من غير تعدٍ ولا تفريط؟", "a": ["هدر", "ضمان", "جناية", "إتلاف"], "correct": 0, "info": "يُعتبر 'هَدَر' أي لا ضمان فيه، ما لم يكن هناك تعدٍ أو تفريط من مالكه." },
-                { "q": "في باب القضاء، ماذا يعني مصطلح 'البينة على المُدَّعي'؟", "a": ["وجوب إقامة الدليل على من يدعي حقاً", "اليمين على من أنكر", "القاضي هو من يقدم الدليل", "الصلح هو خير بين الطرفين"], "correct": 0, "info": "هو قاعدة فقهية وقانونية شهيرة: البينة (الدليل) واجبة على من يدعي حقاً، واليمين (القسم) على من أنكر." },
-                { "q": "ما هي السنة الهجرية التي توفي فيها النبي محمد ﷺ؟", "a": ["السنة 11 هـ", "السنة 10 هـ", "السنة 13 هـ", "السنة 9 هـ"], "correct": 0, "info": "توفي النبي ﷺ في ربيع الأول من السنة الحادية عشرة للهجرة." },
-                { "q": "من هو الصحابي الذي كان أميناً لسر النبي ﷺ؟", "a": ["حذيفة بن اليمان", "أبو ذر الغفاري", "عبد الله بن مسعود", "سعد بن معاذ"], "correct": 0, "info": "حذيفة بن اليمان رضي الله عنه، كان يعلم أسماء المنافقين بأمر من النبي ﷺ." },
-                { "q": "ما الحكم إذا كان الإمام جنباً أو محدثاً ولم يعلم المأمومون إلا بعد انتهاء الصلاة؟", "a": ["صلاة الإمام باطلة والمأمومون صحيحة", "صلاة الجميع باطلة ويجب إعادتها", "صلاة الإمام باطلة وعليه القضاء فقط", "صلاة الجميع صحيحة ولا شيء عليهم"], "correct": 0, "info": "صلاة الإمام باطلة ويجب عليه الإعادة، بينما صلاة المأمومين صحيحة ولا إعادة عليهم عند جمهور الفقهاء." },
-                { "q": "ما هو الحد الفاصل بين صلاة العشاء وصلاة الفجر شرعاً؟", "a": ["نصف الليل", "الربع الأخير من الليل", "غروب الشمس", "وقت السحر"], "correct": 0, "info": "وقت صلاة العشاء يمتد إلى نصف الليل الأوسط (الذي يُحسب من غروب الشمس إلى طلوع الفجر)، وهو مذهب الجمهور." },
-                { "q": "ماذا يسمى المال الذي يُدفع لولي الأمر مقابل رفع دعوى قضائية؟", "a": ["رسوم قضائية", "غرامة", "أُجرة", "جزية"], "correct": 0, "info": "يُسمى رسوم قضائية، وتختلف الأحكام الفقهية حول جواز أخذها." },
-                { "q": "من هو 'سيد التابعين'؟", "a": ["أويس القرني", "سعيد بن المسيب", "الحسن البصري", "عروة بن الزبير"], "correct": 1, "info": "سعيد بن المسيب رحمه الله، كان يُلقب بـ 'سيد التابعين' في المدينة المنورة." },
-                { "q": "ما هو الحكم الشرعي لأكل لحوم السباع (التي لها أنياب)؟", "a": ["محرّم", "مكروه", "جائز", "جائز بشرط الذكاة"], "correct": 0, "info": "يحرم أكل لحوم كل ذي ناب من السباع وكل ذي مخلب من الطير، وهو مذهب الجمهور." },
-                { "q": "ما هو المقصود بـ 'الاستحالة' في الفقه؟", "a": ["تحول العين النجسة إلى عين طاهرة", "تحول الماء النجس إلى طاهر", "تحول النية في العبادة", "تحول ملكية المال"], "correct": 0, "info": "الاستحالة تعني تحول المادة النجسة إلى مادة أخرى بصفات مختلفة، وبذلك تطهر (مثل تحول العذرة إلى رماد أو دم الغزال إلى مسك)." },
-                { "q": "ما هي السورة التي أمر الله فيها بالصلاة والسلام على النبي ﷺ؟", "a": ["سورة الأحزاب", "سورة النور", "سورة الفتح", "سورة الزخرف"], "correct": 0, "info": "سورة الأحزاب: (إِنَّ اللَّهَ وَمَلَائِكَتَهُ يُصَلُّونَ عَلَى النَّبِيِّ يَا أَيُّهَا الَّذِينَ آمَنُوا صَلُّوا عَلَيْهِ وَسَلِّمُوا تَسْلِيماً)." },
-                { "q": "ما هي الفئة التي لا تجب عليها الزكاة في الأموال باتفاق الفقهاء؟", "a": ["الفقراء", "المدينون", "المساكين", "العاملون عليها"], "correct": 0, "info": "الفقراء والمساكين هم من أصناف المستحقين للزكاة، ولا تجب عليهم الزكاة لعدم امتلاكهم النصاب." },
-                { "q": "ما هو الحكم الفقهي لـ 'بيعتين في بيعة'؟", "a": ["محرّم", "مكروه", "جائز إذا لم يكن ربا", "صحيح لكنه غير مستحب"], "correct": 0, "info": "نهى النبي ﷺ عن بيعتين في بيعة، وهو ما يُفسر غالباً ببيع السلعة بثمن نقدي مؤجل مع تحديد سعرين مختلفين." },
-                { "q": "كم عدد السور التي تبدأ بالحروف المقطعة (مثل ألم، حم)؟", "a": ["29 سورة", "25 سورة", "35 سورة", "20 سورة"], "correct": 0, "info": "عدد السور التي تبدأ بالحروف المقطعة في القرآن الكريم هو 29 سورة." },
-                { "q": "من هو الخليفة الذي أنشأ ديوان الخاتم وديوان البريد؟", "a": ["معاوية بن أبي سفيان", "عمر بن الخطاب", "عبد الملك بن مروان", "الوليد بن عبد الملك"], "correct": 0, "info": "الخليفة الأموي معاوية بن أبي سفيان هو من أسس ديوان الخاتم لختم الرسائل وديوان البريد لنقلها." },
-                { "q": "ما هو الاسم الذي أطلقه النبي ﷺ على مكة قبل الهجرة؟", "a": ["البلد الأمين", "أم القرى", "يثرب", "طيبة"], "correct": 1, "info": "مكة كانت تُسمى 'أم القرى'، بينما كانت المدينة تُسمى يثرب." },
-                { "q": "ما هو 'التضمين' في فقه المعاملات؟", "a": ["إلزام المودَع أو المستأجر بضمان تلف المال دون تعدٍ", "التأمين على البضائع", "إلزام المودِع بدفع أجر", "التعويض عن الضرر"], "correct": 0, "info": "التضمين هو إلزام الشخص بضمان شيء لم يتلف بفعله، مثل تضمين الصناع والمستأجرين إذا تلفت البضاعة دون تقصير منهم (وهو خلاف بين الفقهاء)." },
-                { "q": "ما حكم الردة (الرجوع عن الإسلام) في الشريعة الإسلامية؟", "a": ["القتل بعد الاستتابة", "السجن المؤبد", "النفي من البلاد", "الغرامة المالية"], "correct": 0, "info": "الردة تُوجب القتل بعد الاستتابة (مناداته بالتوبة) ثلاثة أيام، إذا لم يتب." },
-                { "q": "ما هو الحكم الفقهي لبيع الغرر (الجهالة الفاحشة)؟", "a": ["محرّم", "مكروه", "جائز بشروط", "مباح في القليل"], "correct": 0, "info": "نهى النبي ﷺ عن بيع الغرر، وهو بيع ما لم يتم التأكد من وجوده أو قدرته على تسليمه." },
-                { "q": "في أي سورة وردت آية الكرسي؟", "a": ["سورة البقرة", "سورة آل عمران", "سورة المائدة", "سورة الأنعام"], "correct": 0, "info": "آية الكرسي هي الآية رقم 255 من سورة البقرة، وهي أعظم آية في القرآن." },
-                { "q": "من هو الصحابي الذي جُمعت على مصحفه الأمة في عهد عثمان بن عفان؟", "a": ["زيد بن ثابت", "أبي بن كعب", "عبد الله بن مسعود", "سالم مولى أبي حذيفة"], "correct": 0, "info": "زيد بن ثابت رضي الله عنه كان رئيس اللجنة التي كلّفها عثمان بن عفان بجمع وكتابة المصحف الإمام وتوحيد قراءة القرآن." },
-                { "q": "ماذا يُقصد بـ 'المُزارعة' في فقه المعاملات؟", "a": ["دفع الأرض لآخر ليزرعها على جزء معلوم من المحصول", "تأجير الأرض بمبلغ نقدي", "بيع المحاصيل قبل نضجها", "شراء المعدات الزراعية"], "correct": 0, "info": "المزارعة هي دفع الأرض إلى من يزرعها، على أن يكون الزرع بينهما مشاعاً بنسبة معلومة (مثل النصف أو الثلث)." },
-                { "q": "ما هي الآية التي تعتبر أطول آية في القرآن الكريم؟", "a": ["آية الدين", "آية الكرسي", "آية المواريث", "آية النور"], "correct": 0, "info": "أطول آية هي آية الدين في سورة البقرة (الآية 282)." },
-                { "q": "ما هو الحكم إذا أصاب الثوب نجاسة وجفّت دون غسلها؟", "a": ["لا تطهر بالجفاف ويجب غسلها بالماء", "تطهر بالجفاف في بعض المذاهب", "تطهر بالمسح", "تطهر بمرور الوقت"], "correct": 0, "info": "النجاسة لا تزول بالجفاف، بل لا بد من إزالة عينها أو أثرها بالماء الطهور، وهو مذهب الجمهور." },
-                { "q": "متى يجوز للمسافر أن يقصر الصلاة الرباعية؟", "a": ["إذا كانت مسافة السفر 83 كم أو أكثر", "إذا سافر مسافة يوم واحد", "إذا خرج من حدود مدينته", "في أي سفر كان"], "correct": 0, "info": "يشترط لقصر الصلاة أن تكون مسافة السفر لا تقل عن مرحلتين (حوالي 83 كم) عند جمهور الفقهاء." },
-                { "q": "من هو الصحابي الذي كان يُلقب بـ 'خطيب النبي'؟", "a": ["ثابت بن قيس", "حسان بن ثابت", "عبد الله بن رواحة", "زيد بن ثابت"], "correct": 0, "info": "ثابت بن قيس رضي الله عنه كان خطيب رسول الله ﷺ." },
-                { "q": "ما هي 'ذوات الأرحام' في فقه المواريث؟", "a": ["الأقارب الذين لا يرثون بفرض ولا تعصيب", "العمات والأخوال فقط", "كل من له صلة قرابة بالنبي ﷺ", "الأقارب من جهة الأم فقط"], "correct": 0, "info": "هم الأقارب الذين ليس لهم نصيب محدد في الميراث بفرض (نصيب معين) أو تعصيب (باقي التركة)، مثل أولاد البنات وبنات الأخوة." },
-                { "q": "في أي سنة هجرية فُتحت مكة؟", "a": ["السنة الثامنة للهجرة", "السنة السادسة للهجرة", "السنة العاشرة للهجرة", "السنة التاسعة للهجرة"], "correct": 0, "info": "تم فتح مكة في السنة الثامنة للهجرة." },
-                { "q": "ما حكم بيع الكلب؟", "a": ["محرّم", "جائز لكلب الصيد فقط", "جائز لكلب الحراسة فقط", "مكروه"], "correct": 0, "info": "نهى النبي ﷺ عن ثمن الكلب. وبالتالي يحرم بيعه عند جمهور الفقهاء، ويستثنى من ذلك بعض المذاهب كلب الصيد أو الحراسة." },
-                { "q": "ما هي السورة التي ذكرت فيها البسملة مرتين؟", "a": ["سورة النمل", "سورة البقرة", "سورة الفاتحة", "سورة الإسراء"], "correct": 0, "info": "سورة النمل، فقد وردت في بدايتها ووردت في قصة سليمان عليه السلام." },
-                { "q": "ما هو الحكم إذا تذكر المصلي أنه ترك ركناً من أركان الصلاة (مثل الركوع)؟", "a": ["يجب عليه العودة إلى الركن المتروك واستئناف ما بعده", "يستمر في صلاته ويسجد للسهو", "يقطع الصلاة ويعيدها من البداية", "يقضي الركن بعد السلام"], "correct": 0, "info": "يجب عليه العودة فوراً إلى أداء الركن المتروك، ويعتبر ما فعله بعده لغواً، ويكمل صلاته ويسجد للسهو." },
-                { "q": "من هو الخليفة العباسي الذي قضى على فتنة الزنج؟", "a": ["المعتضد بالله", "المتوكل على الله", "المعتمد على الله", "المقتدر بالله"], "correct": 0, "info": "المعتضد بالله هو الذي قضى على فتنة الزنج بعد سنوات من القتال." },
-                { "q": "ما هو الحكم إذا اشتبه على المصلي اتجاه القبلة في السفر؟", "a": ["يجتهد ويصلي ولا إعادة عليه", "يصلي باتجاه ما يراه ويجب عليه الإعادة", "يجب أن يسأل أحداً", "يجب أن يؤخر الصلاة"], "correct": 0, "info": "إذا اجتهد المصلي وصلى ثم تبين له أنه أخطأ الاتجاه، فصلاته صحيحة ولا إعادة عليه." },
-                { "q": "ما هو معنى 'القرآن المتواتر'؟", "a": ["ما نقله جماعة عن جماعة بحيث يستحيل تواطؤهم على الكذب", "ما نقله آحاد من الصحابة", "ما ثبت بالدليل القطعي فقط", "ما اتفق عليه القراء العشرة"], "correct": 0, "info": "التواتر هو نقل الخبر أو النص من قبل جمع غفير عن جمع غفير يستحيل في العادة أن يتفقوا على الكذب، وهذا هو الوصف الذي نزل به القرآن." },
-                { "q": "ما هي السورة التي تُسمى 'عروس القرآن'؟", "a": ["سورة الرحمن", "سورة يس", "سورة الواقعة", "سورة الملك"], "correct": 0, "info": "سورة الرحمن هي التي تُسمى 'عروس القرآن'، وقد ورد فيها فَبِأَيِّ آلَاءِ رَبِّكُمَا تُكَذِّبَانِ." },
-                { "q": "ما هي أول آية نزلت بعد بسم الله الرحمن الرحيم؟", "a": ["اقرأ باسم ربك الذي خلق", "الحمد لله رب العالمين", "ن والقلم وما يسطرون", "يا أيها المدثر قم فأنذر"], "correct": 0, "info": "أول آية نزلت هي 'اقرأ باسم ربك الذي خلق' من سورة العلق." },
-                { "q": "كم هي المدة بين نفختي الصور؟", "a": ["أربعون سنة", "مائة سنة", "سنة كاملة", "عشرة أعوام"], "correct": 0, "info": "جاء في الحديث عن أبي هريرة أن المدة بين النفختين أربعون، ويُراد بها أربعون سنة." },
-                { "q": "ما هي أسماء الشهور التي تسمى 'الأشهر الحُرم'؟", "a": ["محرم، رجب، ذو القعدة، ذو الحجة", "رمضان، شوال، ذو القعدة، ذو الحجة", "رجب، شعبان، رمضان، شوال", "محرم، صفر، ربيع الأول، ربيع الآخر"], "correct": 0, "info": "الأشهر الحُرم هي: ذو القعدة، ذو الحجة، المحرم، ورجب." },
-                { "q": "من هو مؤلف كتاب 'الرسالة' الذي يُعتبر أول كتاب في أصول الفقه؟", "a": ["الإمام الشافعي", "الإمام مالك", "الإمام أحمد بن حنبل", "الإمام أبو حنيفة"], "correct": 0, "info": "الإمام محمد بن إدريس الشافعي هو أول من وضع كتاباً منظماً في علم أصول الفقه بعنوان 'الرسالة'." },
-                { "q": "ما هو 'الحَجَر الأسود'؟", "a": ["حجر نزل من الجنة", "حجر بركاني", "حجر عادي من جبال مكة", "حجر أثري من عهد إبراهيم"], "correct": 0, "info": "هو حجر نزل من الجنة وكان أبيض، ولكن سوّدته خطايا بني آدم." },
-                { "q": "ما هي أول هجرة للمسلمين خارج مكة؟", "a": ["الهجرة إلى الحبشة", "الهجرة إلى المدينة المنورة", "الهجرة إلى الطائف", "الهجرة إلى الشام"], "correct": 0, "info": "كانت الهجرة الأولى للمسلمين إلى الحبشة هرباً من اضطهاد قريش." },
-                { "q": "من هو الصحابي الذي قال عنه النبي ﷺ: 'لقد أُوتي مزماراً من مزامير آل داود'؟", "a": ["أبو موسى الأشعري", "بلال بن رباح", "عبد الله بن مسعود", "سلمان الفارسي"], "correct": 0, "info": "أبو موسى الأشعري رضي الله عنه، لجمال صوته عند قراءة القرآن." },
-                { "q": "في الفقه، ما هو الحكم إذا أخطأ الإمام في القراءة ففتح عليه المأموم؟", "a": ["جائز ومستحب", "مكروه", "يبطل الصلاة", "يجوز للإمام فقط أن يفتح على نفسه"], "correct": 0, "info": "جائز ومستحب إذا توقف الإمام ولم يستطع إكمال الآية." },
-                { "q": "ما هي السورة التي بدأت بالقسم بالزمن؟", "a": ["سورة العصر", "سورة الشمس", "سورة الفجر", "سورة الليل"], "correct": 0, "info": "سورة العصر: (وَالْعَصْرِ)." },
-                { "q": "ما حكم بيع التمر بالتمر المتفاضل (زيادة كمية بأخرى)؟", "a": ["حرام (ربا الفضل)", "جائز", "جائز بشروط", "مكروه"], "correct": 0, "info": "هذا هو ربا الفضل، وهو محرم، حيث يجب التساوي في الكيل عند بيع الربويات من جنس واحد (مثل التمر بالتمر) يداً بيد." },
-                { "q": "من هو 'أسد الله الغالب'؟", "a": ["علي بن أبي طالب", "حمزة بن عبد المطلب", "عمر بن الخطاب", "خالد بن الوليد"], "correct": 0, "info": "علي بن أبي طالب رضي الله عنه، وهو من أشهر ألقابه." },
-                { "q": "ما هي 'العورات' التي يجب سترها في الصلاة بالنسبة للمرأة؟", "a": ["جميع الجسد ما عدا الوجه والكفين (عند الجمهور)", "الجسد كاملاً", "من السرة إلى الركبة", "الشعر فقط"], "correct": 0, "info": "العورة هي جميع بدنها ما عدا الوجه والكفين عند المذاهب الأربعة (أبو حنيفة، مالك، الشافعي، أحمد بن حنبل)." },
-                { "q": "ما هي السورة التي تسمى 'المنجية من عذاب القبر'؟", "a": ["سورة الملك", "سورة يس", "سورة السجدة", "سورة الواقعة"], "correct": 0, "info": "سورة الملك (تبارك) ورد في فضائلها أنها تمنع من عذاب القبر وتنجي صاحبها." },
-                { "q": "ما هي أول جامعة بُنيت في الإسلام؟", "a": ["جامع القرويين (فاس)", "الأزهر (القاهرة)", "النظامية (بغداد)", "الزيتونة (تونس)"], "correct": 0, "info": "جامع القرويين في فاس بالمغرب، تأسست عام 859م، وتُعتبر أقدم جامعة مستمرة في العالم حسب اليونسكو وموسوعة جينيس." },
-                { "q": "ماذا يُقصد بـ 'التكبير المقيد' في أيام التشريق؟", "a": ["التكبير بعد الصلوات الخمس المكتوبة", "التكبير عند رؤية الكعبة فقط", "التكبير في الأسواق والطرق", "التكبير عند رمي الجمرات"], "correct": 0, "info": "التكبير المقيد هو التكبير الذي يكون عقب الصلوات المكتوبة في أيام التشريق (من فجر يوم عرفة إلى آخر أيام التشريق)." },
-                { "q": "من هو فاتح بيت المقدس (القدس) في العهد الإسلامي؟", "a": ["عمر بن الخطاب", "صلاح الدين الأيوبي", "خالد بن الوليد", "أبو عبيدة بن الجراح"], "correct": 0, "info": "الخليفة عمر بن الخطاب رضي الله عنه هو من استلم مفاتيح بيت المقدس في العام 15 هـ (636م)." },
-                { "q": "ما هي الآية التي نزلت في حادثة الإفك لتبرئة السيدة عائشة؟", "a": ["آيات من سورة النور", "آيات من سورة الأحزاب", "آيات من سورة البقرة", "آيات من سورة يوسف"], "correct": 0, "info": "نزلت عشر آيات من سورة النور في تبرئة السيدة عائشة رضي الله عنها من حادثة الإفك." },
-                { "q": "ما هو الحكم الفقهي لـ 'الشفعة'؟", "a": ["حق الشريك في أخذ حصة شريكه المبيعة بثمنها", "حق الجار في شراء الأرض المجاورة", "حق البائع في استرداد السلعة", "حق القاضي في فسخ البيع"], "correct": 0, "info": "الشفعة هي حق الشريك في الملك المشترك أن يأخذ حصة شريكه المبيعة للغير بثمنها، منعاً لضرر الشريك الجديد." },
-                { "q": "ما هي السورة التي افتتحت بقوله: 'يا أيها النبي اتق الله'؟", "a": ["سورة الأحزاب", "سورة الطلاق", "سورة الممتحنة", "سورة التحريم"], "correct": 0, "info": "سورة الأحزاب." },
-                { "q": "ما هو الحد الأقصى لإرضاع الطفل الذي يثبت به تحريم الرضاعة؟", "a": ["حولان كاملان (سنتان)", "سنة ونصف", "ثلاث سنوات", "لا حد له"], "correct": 0, "info": "الحد الأقصى هو حولان كاملان لقوله تعالى: 'والوالدات يرضعن أولادهن حولين كاملين لمن أراد أن يتم الرضاعة'." },
-                { "q": "ما هو 'التورية' في فقه المعاملات؟", "a": ["القول خلاف الحقيقة بكلمة تحتمل معنيين", "التعريض دون التصريح بالخطأ", "الكذب الصريح", "القسم الكاذب"], "correct": 0, "info": "التورية هي أن يقصد المتكلم شيئاً ويأتي بعبارة تحتمل ذلك الشيء، لكن السامع يفهم منها معنى آخر." },
-                { "q": "ما حكم بيع ما في بطون الأمهات؟", "a": ["حرام (لأنه من بيع الغرر)", "جائز بشروط", "مكروه", "صحيح"], "correct": 0, "info": "محرم لنهي النبي ﷺ عن بيع حبل الحبلة (بيع ما في بطون الأمهات)، لأنه غرر وجهالة." },
-                { "q": "ما هو أول مسجد وُضع في الأرض؟", "a": ["المسجد الحرام", "المسجد النبوي", "المسجد الأقصى", "مسجد قباء"], "correct": 0, "info": "المسجد الحرام هو أول مسجد وُضع في الأرض، ثم المسجد الأقصى." },
-                { "q": "ما حكم صلاة من صلى الظهر أربع ركعات ثم تذكر أنه لم يصلِ الفجر؟", "a": ["يقطع صلاة الظهر ويصلي الفجر ثم يعيد الظهر", "يكمل الظهر ثم يصلي الفجر", "تُعتبر صلاة الظهر قضاءً للفجر", "يصلي الفجر ثم يكمل الظهر"], "correct": 0, "info": "يجب أن يقطع صلاة الظهر، ثم يصلي الفجر (مرتباً)، ثم يعيد صلاة الظهر." },
-                { "q": "ما هو الحد الأقصى لسن الطفل الذي يستحق حضانة أمه بعد الطلاق؟", "a": ["حتى سن البلوغ", "حتى سن السابعة أو التمييز (في مذهب الجمهور)", "حتى سن العاشرة", "حتى سن الثانية عشرة"], "correct": 1, "info": "يختلف الأمر باختلاف المذاهب، لكن مذهب الجمهور يرى أن الحضانة للأم حتى سن السابعة أو التمييز، ثم يُخيّر الطفل بين أبويه." }
-
+                // السؤال 1
+                { "q": "في الفقه الإسلامي، ما هو الحكم الشرعي لبيع 'العِينة'؟", "a": ["حرام", "جائز بشروط", "مكروه", "مباح"], "correct": 0, "info": "بيع العِينة هو بيع السلعة بثمن مؤجل ثم شراؤها نقداً بثمن أقل، وهو نوع من الاحتيال على الربا، وحكمه التحريم عند جمهور الفقهاء." },
+                // السؤال 2
+                { "q": "ما هو أقل النصاب الذي تجب فيه زكاة الذهب؟", "a": ["20 مثقالاً (حوالي 85 جراماً)", "10 مثاقيل", "30 مثقالاً", "50 جراماً"], "correct": 0, "info": "نصاب الذهب هو 20 مثقالاً، وهو ما يعادل تقريباً 85 جراماً من الذهب الخالص." },
+                // السؤال 3
+                { "q": "ما هو اليوم الذي يُستحب صومه في الأسبوع ويُعرف باسم 'يوم تُرفع فيه الأعمال'؟", "a": ["الإثنين والخميس", "الجمعة", "السبت", "الثلاثاء والأربعاء"], "correct": 0, "info": "يوم الإثنين والخميس هما اليومان اللذان تُعرض فيهما أعمال العباد على الله، ويُستحب صومهما." },
+                // السؤال 4
+                { "q": "كم عدد الصلوات المفروضة التي تُصلى جهراً (قراءة الإمام بصوت عالٍ)؟", "a": ["3 صلوات (المغرب والعشاء والصبح)", "5 صلوات", "صلاتان فقط (المغرب والعشاء)", "4 صلوات (باستثناء الظهر والعصر)"], "correct": 0, "info": "الصلوات الجهرية هي المغرب (أول ركعتين)، العشاء (أول ركعتين)، والصبح (الركعتان كاملتان). المجموع 3 صلوات." },
+                // السؤال 5
+                { "q": "في علم الحديث، ما هو تصنيف الحديث الذي رواه عدد كثير عن مثلهم، ويستحيل عادةً تواطؤهم على الكذب؟", "a": ["الحديث المتواتر", "الحديث الآحاد", "الحديث المشهور", "الحديث الصحيح"], "correct": 0, "info": "الحديث المتواتر هو ما رواه جمعٌ عن جمع تُحيل العادة تواطؤهم على الكذب." },
+                // السؤال 6
+                { "q": "ما هي السورة التي كان النبي صلى الله عليه وسلم يقرأ بها في ركعتي سنة الفجر بعد سورة الفاتحة؟", "a": ["الكافرون والإخلاص", "الإخلاص والفلق", "الضحى والشرح", "الملك والسجدة"], "correct": 0, "info": "كان يقرأ في الركعة الأولى بعد الفاتحة بـ 'قل يا أيها الكافرون' وفي الثانية بـ 'قل هو الله أحد'." },
+                // السؤال 7
+                { "q": "ما هي العقوبة المقررة شرعاً لمن شرب الخمر باتفاق المذاهب الأربعة؟", "a": ["الجلد", "السجن", "التعزير", "القتل"], "correct": 0, "info": "العقوبة المقررة هي الجلد، واختلفوا في عدد الجلدات (80 جلدة أو 40 جلدة)." },
+                // السؤال 8
+                { "q": "من هو الصحابي الجليل الملقب بـ 'سيف الله المسلول'؟", "a": ["خالد بن الوليد", "حمزة بن عبد المطلب", "عمر بن الخطاب", "علي بن أبي طالب"], "correct": 0, "info": "هو الصحابي القائد خالد بن الوليد." },
+                // السؤال 9
+                { "q": "ما هو الاسم الذي يطلق على التابعين الذين أدركوا الصحابة ولكن لم يروا النبي صلى الله عليه وسلم؟", "a": ["التابعون", "الأتباع", "المخضرمون", "الأولياء"], "correct": 0, "info": "التابعون هم من لقوا الصحابة وعاشوا بعد عصر النبوة." },
+                // السؤال 10
+                { "q": "ما هي الجهة التي يُصرف فيها ثُلثا زكاة الفطر عند المالكية؟", "a": ["الفقراء والمساكين", "ابن السبيل والغارمون", "المؤلفة قلوبهم", "العاملون عليها"], "correct": 0, "info": "تُصرف زكاة الفطر على الفقراء والمساكين فقط عند المالكية (بخلاف زكاة المال)." },
+                // ... (هنا يمكنك إضافة الـ 70 سؤالًا المتبقية) ...
             ];
         };
-
-        // --- Utility Functions ---
-        // خوارزمية Fisher-Yates لخلط المصفوفة عشوائياً
-        const shuffleArray = (array) => {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
-        };
         
-        // --- Core Quiz Logic ---
-
-        // تهيئة الأسئلة حسب وضع اللعب
-        const initializeQuestions = (mode) => {
-            if (allQuestions.length === 0) loadQuestions();
+        // ------------------------------------------------
+        // 2. دوال التوقيت (لوضع السرعة)
+        // ------------------------------------------------
+        const startTimer = () => {
+            timeLeft = BLITZ_TIME;
+            timerBar.classList.remove('hidden');
+            timerProgress.style.width = '100%';
             
-            selectedQuestions = [];
+            clearInterval(timerInterval); // التأكد من إيقاف أي مؤقت سابق
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                const percentage = (timeLeft / BLITZ_TIME) * 100;
+                timerProgress.style.width = `${percentage}%`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    endQuiz();
+                }
+            }, 1000);
+        };
+
+        const stopTimer = () => {
+            clearInterval(timerInterval);
+            timerBar.classList.add('hidden');
+        };
+
+        // ------------------------------------------------
+        // 3. منطق اللعبة
+        // ------------------------------------------------
+        const initializeQuestions = (mode) => {
+            let maxQuestions = mode === 'normal' ? MAX_QUESTIONS_NORMAL : MAX_QUESTIONS_BLITZ;
+            
+            // خلط الأسئلة واختيار العدد المطلوب
+            currentQuestions = allQuestions.sort(() => 0.5 - Math.random()).slice(0, maxQuestions);
+            
             currentQuestionIndex = 0;
             score = 0;
-            isAnswerLocked = false;
+            isAnswered = false;
+            fiftyFiftyUsed = false;
             
-            // تهيئة وضع التحدي العادي (Multiple Choice)
-            if (mode === 'normal') {
-                isFiftyFiftyUsed = false;
-                fiftyFiftyBtn.disabled = false;
-                fiftyFiftyBtn.classList.remove('hidden');
-                
-                // 1. خلط جميع الأسئلة
-                const shuffledQuestions = shuffleArray([...allQuestions]);
-                // 2. اختيار أول 10 أسئلة فقط
-                selectedQuestions = shuffledQuestions.slice(0, QUIZ_LENGTH);
-                
-                // 3. خلط ترتيب الإجابات لكل سؤال تم اختياره
-                selectedQuestions.forEach(q => {
-                    // ننشئ مصفوفة جديدة لدمج الإجابة الصحيحة مع الخاطئة لخلطها
-                    const allAnswers = [...q.a];
-                    
-                    // نحفظ مؤشر الإجابة الصحيحة بناءً على النص، وليس الموضع القديم
-                    const correctAnswerText = allAnswers[q.correct];
-                    
-                    // خلط الإجابات
-                    shuffleArray(allAnswers);
-                    
-                    // تحديث مصفوفة الإجابات والمؤشر الصحيح في السؤال المختار
-                    q.a = allAnswers;
-                    q.correct = allAnswers.findIndex(answer => answer === correctAnswerText);
-                });
-                
-            } 
-            // تهيئة وضع تحدي السرعة (True/False Blitz)
-            else if (mode === 'blitz') {
-                // نختار 50 سؤالاً أو جميع الأسئلة المتاحة
-                const blitzLength = Math.min(50, allQuestions.length);
-                const shuffledQuestions = shuffleArray([...allQuestions]);
-                selectedQuestions = shuffledQuestions.slice(0, blitzLength);
-                
-                // نخفي زر 50/50 لأنه غير منطقي هنا
-                fiftyFiftyBtn.classList.add('hidden'); 
+            // إظهار زر 50/50 وتفعيله
+            fiftyFiftyBtn.classList.remove('hidden');
+            fiftyFiftyBtn.disabled = false;
+            
+            if (mode === 'blitz') {
+                startTimer();
             }
-            
-            displayQuestion();
+
+            loadQuestion();
         };
 
-        const displayQuestion = () => {
-            isAnswerLocked = false;
-            nextBtn.disabled = true;
-            answersContainer.innerHTML = '';
-            scoreDisplay.textContent = `النقاط: ${score}`;
-
-            if (currentQuestionIndex >= selectedQuestions.length) {
+        const loadQuestion = () => {
+            if (currentQuestionIndex >= currentQuestions.length) {
                 endQuiz();
                 return;
             }
 
-            const currentQ = selectedQuestions[currentQuestionIndex];
-
-            // تحديث شريط التقدم
-            const progress = (currentQuestionIndex / selectedQuestions.length) * 100;
-            progressBarFill.style.width = `${progress}%`;
+            const q = currentQuestions[currentQuestionIndex];
+            questionText.textContent = q.q;
+            optionsList.innerHTML = ''; // مسح الأجوبة القديمة
+            isAnswered = false;
             
-            // عرض السؤال
-            questionText.textContent = `${currentQuestionIndex + 1}. ${currentQ.q}`;
+            // تحديث رقم السؤال
+            currentQuestionInfo.textContent = `السؤال ${currentQuestionIndex + 1} من ${currentQuestions.length}`;
 
+            // خلط الأجوبة
+            const shuffledOptions = q.a.map((answer, index) => ({ answer, index })).sort(() => 0.5 - Math.random());
+
+            shuffledOptions.forEach(option => {
+                const li = document.createElement('li');
+                const button = document.createElement('button');
+                button.className = 'option-button';
+                button.textContent = option.answer;
+                button.dataset.originalIndex = option.index; // لتحديد الإجابة الصحيحة لاحقاً
+                
+                button.addEventListener('click', () => checkAnswer(button, q.correct));
+                li.appendChild(button);
+                optionsList.appendChild(li);
+            });
+            
+            // إظهار زر "التالي" لوضع "العادي" فقط
             if (currentMode === 'normal') {
-                // وضع التحدي العادي
-                currentQ.a.forEach((answer, index) => {
-                    const button = document.createElement('button');
-                    button.textContent = answer;
-                    button.classList.add('answer-btn');
-                    button.dataset.index = index;
-                    button.addEventListener('click', () => checkAnswer(button, index));
-                    answersContainer.appendChild(button);
-                });
-            } else if (currentMode === 'blitz') {
-                // وضع تحدي السرعة (صح أو خطأ)
-                // في هذا الوضع، نعتبر الإجابة الصحيحة هي الخيار رقم 0 (الإجابة الأولى في Q.a)
-                // والعبارة المعروضة هي السؤال الأصلي
-                
-                const buttons = [
-                    { text: 'صحيح', value: 0, color: 'bg-green-600', hover: 'hover:bg-green-700' },
-                    { text: 'خطأ', value: 1, color: 'bg-red-600', hover: 'hover:bg-red-700' }
-                ];
-                
-                // لتوليد أسئلة T/F: ننشئ احتمال 50/50 بأن يكون السؤال صحيحاً أو خاطئاً
-                // إذا كان "صحيح"، نعرض السؤال الأصلي ونضع الإجابة الصحيحة كـ 0
-                // إذا كان "خطأ"، نعرض سؤالاً خاطئاً (باستبدال الإجابة الصحيحة بإحدى الخاطئة) ونضع الإجابة الصحيحة كـ 1
-                
-                const isStatementTrue = Math.random() < 0.5;
-                currentQ.isTrueStatement = isStatementTrue; // لحفظ حالة السؤال
-
-                if (!isStatementTrue) {
-                    // إذا كان العبارة خاطئة، نقوم بتعديل نص السؤال ليتضمن إجابة خاطئة بشكل عشوائي
-                    const correctText = currentQ.a[currentQ.correct];
-                    
-                    // نجمع الإجابات الخاطئة
-                    const incorrectAnswers = currentQ.a.filter((_, i) => i !== currentQ.correct);
-                    // نختار إجابة خاطئة عشوائية
-                    const randomIncorrectAnswer = incorrectAnswers[Math.floor(Math.random() * incorrectAnswers.length)];
-                    
-                    // نقوم باستبدال الإجابة الصحيحة في نص السؤال التوضيحي بالاجابة الخاطئة
-                    // (هذا تبسيط، ولكن يمكن أن يجعل السؤال صعباً)
-                    questionText.textContent += ` (الإجابة الصحيحة هي: ${correctText}. هل هذا صحيح؟)`;
-                    
-                    // في وضع Blitz، الإجابات الصحيحة هي: 
-                    // إذا العبارة صحيحة: الجواب هو "صحيح" (الخيار 0)
-                    // إذا العبارة خاطئة: الجواب هو "خطأ" (الخيار 1)
-                    currentQ.correctBlitzAnswer = isStatementTrue ? 0 : 1; 
-
-                } else {
-                     // إذا كانت العبارة صحيحة، نعرض السؤال العادي ونعتبر الإجابة الصحيحة هي "صحيح"
-                     currentQ.correctBlitzAnswer = 0;
-                }
-                
-                buttons.forEach(btn => {
-                    const button = document.createElement('button');
-                    button.textContent = btn.text;
-                    button.classList.add('answer-btn', btn.color, btn.hover);
-                    button.addEventListener('click', () => checkBlitzAnswer(button, btn.value));
-                    answersContainer.appendChild(button);
-                });
-                
-                // Reset the timer bar
-                timerBar.style.width = '100%';
-                if (!blitzTimer) {
-                    startBlitzTimer();
-                }
-            }
-        };
-
-        const checkAnswer = (selectedButton, selectedIndex) => {
-            if (isAnswerLocked || currentMode !== 'normal') return;
-
-            isAnswerLocked = true;
-            nextBtn.disabled = false;
-            const currentQ = selectedQuestions[currentQuestionIndex];
-            const correctIndex = currentQ.correct;
-
-            // تحديد جميع الأزرار لتعطيلها
-            const answerButtons = answersContainer.querySelectorAll('.answer-btn');
-            answerButtons.forEach(btn => {
-                btn.classList.add('disabled');
-                btn.removeEventListener('click', checkAnswer);
-            });
-
-            // تلوين الإجابات
-            if (selectedIndex === correctIndex) {
-                selectedButton.classList.add('correct');
-                score += 10; // نقاط الإجابة الصحيحة
+                nextBtn.classList.remove('hidden');
+                nextBtn.disabled = true;
             } else {
-                selectedButton.classList.add('incorrect');
-                // تلوين الإجابة الصحيحة باللون الأخضر أيضاً
-                answerButtons[correctIndex].classList.add('correct');
+                nextBtn.classList.add('hidden');
             }
-
-            // تحديث عرض النقاط
-            scoreDisplay.textContent = `النقاط: ${score}`;
         };
-        
-        // --- Blitz Mode Logic ---
-        const startBlitzTimer = () => {
-            blitzTimeLeft = 60;
-            const timerInterval = setInterval(() => {
-                blitzTimeLeft--;
-                const percentage = (blitzTimeLeft / 60) * 100;
-                timerBar.style.width = `${percentage}%`;
 
-                if (blitzTimeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    blitzTimer = null;
-                    endQuiz();
+        const checkAnswer = (selectedButton, correctIndex) => {
+            if (isAnswered) return;
+            isAnswered = true;
+
+            const allButtons = optionsList.querySelectorAll('.option-button');
+            const selectedOriginalIndex = parseInt(selectedButton.dataset.originalIndex);
+
+            allButtons.forEach(btn => {
+                btn.disabled = true; // إيقاف إمكانية النقر بعد الإجابة
+                const btnOriginalIndex = parseInt(btn.dataset.originalIndex);
+
+                if (btnOriginalIndex === correctIndex) {
+                    btn.classList.add('correct'); // تلوين الإجابة الصحيحة
+                } else if (btn === selectedButton) {
+                    btn.classList.add('incorrect'); // تلوين الإجابة الخاطئة
                 }
-
-                if (currentQuestionIndex >= selectedQuestions.length) {
-                    clearInterval(timerInterval);
-                    blitzTimer = null;
-                }
-            }, 1000);
-            blitzTimer = timerInterval;
-        };
-        
-        const checkBlitzAnswer = (selectedButton, selectedValue) => {
-            if (isAnswerLocked || currentMode !== 'blitz') return;
-            
-            const currentQ = selectedQuestions[currentQuestionIndex];
-            const isCorrect = selectedValue === currentQ.correctBlitzAnswer;
-
-            // تلوين سريع للإجابة قبل الانتقال
-            selectedButton.classList.add(isCorrect ? 'correct' : 'incorrect');
-
-            if (isCorrect) {
-                score += 1; // نقطة واحدة لسرعة التحدي
-            }
-            
-            // تأخير بسيط قبل عرض السؤال التالي
-            setTimeout(() => {
-                currentQuestionIndex++;
-                displayQuestion();
-            }, 100); 
-        };
-
-        // --- Fifty Fifty Feature Logic ---
-        const useFiftyFifty = () => {
-            if (isAnswerLocked || isFiftyFiftyUsed || currentMode !== 'normal') return;
-
-            isFiftyFiftyUsed = true;
-            fiftyFiftyBtn.disabled = true;
-            
-            const currentQ = selectedQuestions[currentQuestionIndex];
-            const correctIndex = currentQ.correct;
-            const allButtons = Array.from(answersContainer.querySelectorAll('.answer-btn'));
-            
-            // نجمع مؤشرات الإجابات الخاطئة
-            const incorrectIndices = allButtons
-                .map((_, i) => i)
-                .filter(i => i !== correctIndex);
-
-            // نختار مؤشرين خاطئين لحذفهما عشوائياً
-            const indicesToRemove = shuffleArray(incorrectIndices).slice(0, 2);
-
-            indicesToRemove.forEach(index => {
-                const buttonToHide = allButtons[index];
-                // إخفاء الزرين الخاطئين
-                buttonToHide.style.visibility = 'hidden'; 
-                buttonToHide.disabled = true;
-                buttonToHide.classList.add('disabled');
             });
+
+            // تحديث النتيجة
+            if (selectedOriginalIndex === correctIndex) {
+                score++;
+            }
+
+            // لوضع "العادي" نفعّل زر "التالي"
+            if (currentMode === 'normal') {
+                nextBtn.disabled = false;
+            } else {
+                 // لوضع "السرعة" ننتقل تلقائياً بعد ثانية
+                 setTimeout(moveToNextQuestion, 1000);
+            }
         };
 
-        // --- Navigation and Flow ---
-        
+        const moveToNextQuestion = () => {
+            currentQuestionIndex++;
+            loadQuestion();
+        };
+
         const endQuiz = () => {
-            if (currentMode === 'blitz' && blitzTimer) {
-                clearInterval(blitzTimer);
-                blitzTimer = null;
-            }
-            
+            stopTimer();
             quizContainer.classList.add('hidden');
             resultScreen.classList.remove('hidden');
-
-            const finalMessage = document.getElementById('final-message');
-            const finalScore = document.getElementById('final-score');
-            const finalBestScore = document.getElementById('final-best-score');
-            const summaryInfo = document.getElementById('summary-info');
-
-            finalScore.textContent = `النتيجة التي حققتها: ${score}`;
             
-            let message = '';
-            let info = '';
-
-            if (currentMode === 'normal') {
-                if (score > bestScore) {
-                    message = 'تهانينا! سجلت رقماً قياسياً جديداً!';
-                    bestScore = score;
-                    localStorage.setItem('bestScore', bestScore);
-                } else if (score === 0) {
-                    message = 'حسناً، يمكن أن يكون أداؤك أفضل في المرة القادمة.';
-                } else {
-                    message = 'أداء جيد!';
-                }
-                
-                const correctCount = score / 10;
-                info = `لقد أجبت على ${correctCount} سؤال صحيح من أصل ${selectedQuestions.length}.`;
-                finalBestScore.textContent = `أفضل نتيجة سابقة: ${bestScore}`;
-            } else if (currentMode === 'blitz') {
-                message = 'انتهى تحدي السرعة!';
-                info = `لقد تمكنت من الإجابة على ${score} سؤال في 60 ثانية.`;
-                finalBestScore.textContent = 'يمكنك إعادة المحاولة لزيادة سرعتك!';
-            }
+            const totalQuestions = currentQuestions.length;
+            const wrongAnswers = totalQuestions - score;
             
-            finalMessage.textContent = message;
-            summaryInfo.textContent = info;
+            scoreText.textContent = `نتيجتك النهائية: ${score} من ${totalQuestions}`;
+            correctAnswersInfo.textContent = `الإجابات الصحيحة: ${score}`;
+            wrongAnswersInfo.textContent = `الإجابات الخاطئة: ${wrongAnswers}`;
         };
 
+        // ------------------------------------------------
+        // 4. خاصية 50/50
+        // ------------------------------------------------
+        const useFiftyFifty = () => {
+            if (fiftyFiftyUsed || isAnswered) return;
+            
+            fiftyFiftyUsed = true;
+            fiftyFiftyBtn.disabled = true;
+            
+            const q = currentQuestions[currentQuestionIndex];
+            const correctIndex = q.correct;
+            const allButtons = optionsList.querySelectorAll('.option-button');
+            
+            let incorrectIndices = [];
+            allButtons.forEach((btn, index) => {
+                if (parseInt(btn.dataset.originalIndex) !== correctIndex) {
+                    incorrectIndices.push(index);
+                }
+            });
+            
+            // اختيار إجابة خاطئة عشوائية لحذفها (نترك الإجابة الصحيحة وإجابة خاطئة واحدة)
+            incorrectIndices.sort(() => 0.5 - Math.random()).slice(0, incorrectIndices.length - 1).forEach(index => {
+                allButtons[index].parentElement.classList.add('hidden');
+            });
+        };
+
+        // ------------------------------------------------
+        // 5. إدارة التنقل بين الشاشات والأزرار
+        // ------------------------------------------------
         const startQuiz = (mode) => {
             currentMode = mode;
             modeTitle.textContent = mode === 'normal' ? 'التحدي العادي (10 أسئلة)' : 'تحدي السرعة (60 ثانية)';
@@ -604,38 +529,32 @@
             // إظهار/إخفاء شريط الوقت حسب الوضع
             if (mode === 'blitz') {
                 timerBar.classList.remove('hidden');
-                nextBtn.classList.add('hidden');
             } else {
                 timerBar.classList.add('hidden');
-                nextBtn.classList.remove('hidden');
             }
             
-            initializeQuestions(mode);
+            // تهيئة وتحميل الأسئلة
+            initializeQuestions(mode); 
         };
-        
-        // --- Event Listeners ---
-        startNormalBtn.addEventListener('click', () => startQuiz('normal'));
-        startBlitzBtn.addEventListener('click', () => startQuiz('blitz'));
-        
-        nextBtn.addEventListener('click', () => {
-            if (currentMode === 'normal') {
-                currentQuestionIndex++;
-                displayQuestion();
-            }
-        });
-        
-        restartBtn.addEventListener('click', () => {
-            welcomeScreen.classList.remove('hidden');
+
+        const resetQuiz = () => {
+            stopTimer();
             quizContainer.classList.add('hidden');
             resultScreen.classList.add('hidden');
-            bestScoreDisplay.textContent = `أفضل نتيجة (التحدي العادي): ${bestScore}`;
-        });
-        
+            welcomeScreen.classList.remove('hidden');
+        };
+
+        // ربط الأحداث بالأزرار
+        startNormalBtn.addEventListener('click', () => startQuiz('normal'));
+        startBlitzBtn.addEventListener('click', () => startQuiz('blitz'));
+        nextBtn.addEventListener('click', moveToNextQuestion);
+        resetBtn.addEventListener('click', resetQuiz);
+        restartBtn.addEventListener('click', resetQuiz);
         fiftyFiftyBtn.addEventListener('click', useFiftyFifty);
 
-        // تحميل الأسئلة عند بدء التشغيل
-        loadQuestions();
-    </script>
+        // تحميل البيانات عند فتح الصفحة لأول مرة
+        loadQuestions(); 
 
+    </script>
 </body>
 </html>
