@@ -77,3 +77,46 @@ body {
     transform: scale(1.05);
     opacity: 0.9;
 }
+
+/* *** تنسيقات إضافية لشاشة الملف الشخصي (Profile Screen) *** */
+.stat-box {
+    /* تنسيق خاص بصناديق الإحصائيات */
+    border-radius: 0.75rem; /* rounded-xl */
+    padding: 1rem; /* p-4 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* ظل خفيف */
+    transition: transform 0.2s;
+    min-height: 100px; /* لضمان حجم موحد */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.stat-box:hover {
+    transform: translateY(-3px); /* تأثير خفيف عند المرور */
+}
+
+/* زر العودة/بدء جديد */
+.alt-btn {
+    background-color: #45a29e;
+    color: #1f2833;
+    font-size: 1.25rem;
+    font-weight: 700;
+    padding: 0.5rem 1.5rem;
+    border-radius: 50px;
+    transition: all 0.3s;
+    border: none;
+    cursor: pointer;
+}
+.alt-btn:hover {
+    background-color: #387b77;
+    transform: scale(1.03);
+}
+
+/* تعديل عرض الشاشة (Media Query) لترتيب الإحصائيات في سطر واحد على الشاشات الكبيرة */
+@media (min-width: 768px) { /* md breakpoint */
+    /* هذا التنسيق مهم لترتيب الأربعة صناديق جنبًا إلى جنب على شاشات الكمبيوتر/التابلت */
+    .profile-stats-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
