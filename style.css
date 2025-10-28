@@ -1,122 +1,94 @@
-/* تعزيز الخطوط والديكور */
+/* Custom CSS for Quiz App */
+
+/* الخلفية الرئيسية والخطوط */
 body {
-    font-family: 'Cairo', sans-serif; /* خط حديث وجميل */
-    background: linear-gradient(135deg, #1f2833 0%, #0d1b1e 100%); /* خلفية متدرجة عميقة */
-    color: #f8f9fa;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 1.5rem;
-}
-.container {max-width: 52rem; width: 100%; margin-top: 1rem;}
-.card {
-    background: #253341; /* لون أساسي للبطاقات */
-    border: 2px solid #66fcf1; /* إطار أزرق سماوي لامع */
-    border-radius: 2rem;
-    box-shadow: 0 8px 30px rgba(102, 252, 241, 0.2);
-    transition: all 0.5s ease;
-    padding: 2rem;
-}
-.question-card {
-    opacity: 0; 
-    animation: fadeIn 0.6s forwards;
-    padding: 2.5rem;
-}
-@keyframes fadeIn {from {opacity: 0; transform: translateY(20px);} to {opacity: 1; transform: translateY(0);}}
-
-/* تحسين أزرار الإجابة */
-.answer-btn {
-    transition: all 0.3s ease;
-    text-align: center;
-    border: 2px solid #45a29e;
-    white-space: normal;
-    line-height: 1.5;
-    min-height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #1f2833;
-    color: #f8f9fa;
-    font-size: 1.15rem;
-    font-weight: 700;
-}
-.answer-btn:not(.correct):not(.wrong):hover {
     background-color: #0b0c10;
-    transform: scale(1.03) translateY(-2px);
-    box-shadow: 0 5px 15px rgba(102, 252, 241, 0.4);
+    color: #c5c6c7;
+    min-height: 100vh;
+    padding-bottom: 40px; /* مسافة أسفل الصفحة */
 }
-.correct {background-color: #4CAF50 !important; border-color: #388E3C !important; pointer-events: none;}
-.wrong {background-color: #F44336 !important; border-color: #D32F2F !important; pointer-events: none;}
-.answered {pointer-events: none;}
 
-/* شريط التقدم والمؤقت */
-.progress-bar {height: 12px; background: #3b4d61; border-radius: 6px; overflow: hidden; margin: 1.5rem 0;}
-.progress-fill {height: 100%; background: linear-gradient(to right, #66fcf1, #45a29e); transition: width 0.5s ease;}
-.timer-bar {height: 10px; background: #FEE715; border-radius: 5px; overflow: hidden; margin-bottom: 0.5rem; box-shadow: 0 0 15px rgba(255, 231, 21, 0.5);}
-.timer-fill {height: 100%; background: linear-gradient(to right, #FF7043, #E64A19); width: 100%; transition: width 15s linear;}
+/* نمط الحاويات الرئيسية */
+.container {
+    padding-top: 20px;
+}
 
-#info-box {background: #1f2833; padding: 1.5rem; border-radius: 1.5rem; margin-top: 1.5rem; text-align: right; border-left: 5px solid #66fcf1;}
+/* نمط البطاقة/الواجهة */
+.card {
+    background-color: #1f2833;
+    border-radius: 1.5rem; /* rounded-xl */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-2xl */
+    padding: 2.5rem; /* p-10 */
+    border: 1px solid #45a29e; /* حدود خفيفة */
+}
 
-/* تعديل الروابط والفيديو */
-.video-container { margin-bottom: 2rem; padding: 0 1rem; }
-.video-container video { max-width: 100%; height: auto; border-radius: 1.5rem; box-shadow: 0 4px 30px rgba(102, 252, 241, 0.3); }
-
-/* زر البدء والتسجيل */
+/* زر العمل الرئيسي */
 .main-btn {
-    background: linear-gradient(90deg, #66fcf1, #45a29e);
-    color: #1f2833;
-    font-size: 1.5rem;
-    font-weight: 900;
-    padding: 0.75rem 2.5rem;
-    border-radius: 50px;
-    box-shadow: 0 5px 20px rgba(102, 252, 241, 0.4);
-    transition: all 0.3s;
-}
-.main-btn:hover {
-    transform: scale(1.05);
-    opacity: 0.9;
-}
-
-/* *** تنسيقات إضافية لشاشة الملف الشخصي (Profile Screen) *** */
-.stat-box {
-    /* تنسيق خاص بصناديق الإحصائيات */
-    border-radius: 0.75rem; /* rounded-xl */
-    padding: 1rem; /* p-4 */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* ظل خفيف */
-    transition: transform 0.2s;
-    min-height: 100px; /* لضمان حجم موحد */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.stat-box:hover {
-    transform: translateY(-3px); /* تأثير خفيف عند المرور */
-}
-
-/* زر العودة/بدء جديد */
-.alt-btn {
-    background-color: #45a29e;
-    color: #1f2833;
-    font-size: 1.25rem;
+    background-color: #66fcf1;
+    color: #0b0c10;
     font-weight: 700;
-    padding: 0.5rem 1.5rem;
-    border-radius: 50px;
-    transition: all 0.3s;
-    border: none;
-    cursor: pointer;
-}
-.alt-btn:hover {
-    background-color: #387b77;
-    transform: scale(1.03);
+    padding: 0.75rem 1.5rem; /* py-3 px-6 */
+    border-radius: 9999px; /* rounded-full */
+    transition: background-color 0.3s, transform 0.1s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+    display: inline-block;
 }
 
-/* تعديل عرض الشاشة (Media Query) لترتيب الإحصائيات في سطر واحد على الشاشات الكبيرة */
-@media (min-width: 768px) { /* md breakpoint */
-    /* هذا التنسيق مهم لترتيب الأربعة صناديق جنبًا إلى جنب على شاشات الكمبيوتر/التابلت */
-    .profile-stats-grid {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
+.main-btn:hover {
+    background-color: #45a29e;
+    transform: translateY(-2px);
+}
+
+.main-btn:disabled {
+    background-color: #494949;
+    color: #999;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* زر العمل البديل/الثانوي */
+.alt-btn {
+    background-color: #3f4751;
+    color: #c5c6c7;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    transition: background-color 0.3s;
+    display: inline-block;
+}
+
+.alt-btn:hover {
+    background-color: #5a6470;
+}
+
+
+/* نمط الأزرار الخاصة بالخيارات */
+.option-btn {
+    /* تم تعريف الأنماط الأساسية في JS لكي تعمل مع Tailwind */
+    border: 2px solid transparent;
+    text-align: right;
+    width: 100%;
+}
+
+/* نمط الإجابات الصحيحة والخاطئة (يتم إضافته بواسطة JS) */
+.option-btn.bg-green-700 {
+    background-color: #047857; /* زمردي غامق */
+    border-color: #34d399;
+    color: #fff;
+}
+
+.option-btn.bg-red-700 {
+    background-color: #b91c1c; /* أحمر غامق */
+    border-color: #f87171;
+    color: #fff;
+}
+
+/* شريط التقدم */
+.progress-bar {
+    max-width: 800px;
+}
+
+/* حاوية الفيديو */
+.video-container {
+    max-width: 600px;
 }
