@@ -1,35 +1,38 @@
-<!DOCTYPE html>
+ط<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>💡 تحدي المعرفة الإسلامية - الفقه والثقافة</title>
+<link rel="stylesheet" href="style.css"> 
 <script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body class="text-center">
 
 <header class="mb-8 w-full max-w-4xl">
-    <h1 class="text-5xl md:text-6xl font-extrabold text-[#66fcf1] mb-4">🕌 تحدي المعرفة الإسلامية</h1>
-    <p id="greeting-message" class="text-gray-400 text-xl mb-6">اختبر معلوماتك في الفقه والتاريخ!</p>
+<h1 class="text-5xl md:text-6xl font-extrabold text-[#66fcf1] mb-4" style="font-family: 'Cairo', sans-serif;">🕌 تحدي المعرفة الإسلامية</h1>
+<p id="greeting-message" class="text-gray-400 text-xl mb-6">اختبر معلوماتك في الفقه والتاريخ!</p>
 
-    <div class="video-container mx-auto mt-6 w-full max-w-xl">
-        <video class="rounded-xl shadow-2xl w-full" controls preload="metadata"> 
-            <source src="VID_20251027_220735_527.mp4" type="video/mp4">
-            <p>متصفحك لا يدعم تشغيل الفيديو.</p>
-        </video>
-    </div>
-    
-    <audio id="background-music" src="https://assets.mixkit.co/sfx/preview/mixkit-lo-fi-hip-hop-loop-803.mp3" loop></audio> 
-    <button id="music-toggle-btn" class="mt-3 text-sm font-semibold text-gray-300 hover:text-[#66fcf1] transition flex items-center justify-center mx-auto">
-        <span id="music-icon">🔇</span>
-        <span id="music-status" class="mr-2">تشغيل</span>
-    </button>
+<div class="video-container mx-auto mt-6 w-full max-w-xl">
+    <video 
+        class="rounded-xl shadow-2xl w-full"
+        controls 
+        preload="metadata"> 
+        <source src="VID_20251027_220735_527.mp4" type="video/mp4">
+        <p>متصفحك لا يدعم تشغيل الفيديو.</p>
+    </video>
+</div>
+
+<audio id="background-music" src="https://assets.mixkit.co/sfx/preview/mixkit-lo-fi-hip-hop-loop-803.mp3" loop></audio> 
+<button id="music-toggle-btn" class="mt-3 text-sm font-semibold text-gray-300 hover:text-[#66fcf1] transition flex items-center justify-center mx-auto">
+    <span id="music-icon">🔇</span>
+    <span id="music-status" class="mr-2">تشغيل</span>
+</button>
 </header>
 
 <div class="progress-bar w-full max-w-4xl hidden">
-    <div id="progress-fill" class="progress-fill" style="width: 0%"></div>
+<div id="progress-fill" class="progress-fill" style="width: 0%"></div>
 </div>
 
 <main id="quiz" class="container">
@@ -70,7 +73,6 @@
     </div>
     
     <div id="loading-message" class="text-xl mt-12 text-[#66fcf1] hidden">جاري تهيئة الأسئلة... ⏳</div>
-
 </main>
 <div id="result" class="mt-8 text-2xl md:text-3xl font-bold hidden card p-5"></div>
 <button id="next-btn" class="mt-6 hidden bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold py-3 px-6 rounded-full text-xl transition shadow-lg">السؤال التالي ➡️</button>
@@ -83,8 +85,7 @@
 <audio id="sound-wrong" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"></audio>
 <audio id="sound-timeup" src="https://actions.google.com/sounds/v1/cartoon/pop.ogg"></audio>
 
-<script src="questions.js"></script>
-<script src="app.js"></script>
+<script src="script.js"></script>
 
 </body>
 </html>
