@@ -61,31 +61,62 @@ body {
     background-color: #5a6470;
 }
 
+/* ------------------------------------- */
+/* تحسين أنماط أزرار الإجابات والمؤقت   */
+/* ------------------------------------- */
 
-/* نمط الأزرار الخاصة بالخيارات */
-.option-btn {
-    /* تم تعريف الأنماط الأساسية في JS لكي تعمل مع Tailwind */
-    border: 2px solid transparent;
-    text-align: right;
+/* نمط زر الخيار الأساسي */
+.answer-btn {
+    padding: 1rem;
+    border-radius: 0.75rem; /* rounded-xl */
+    font-size: 1.125rem; /* text-xl */
+    font-weight: 700;
+    transition: background-color 0.3s, border-color 0.3s, transform 0.1s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    text-align: center; 
+    cursor: pointer;
+    border: 2px solid transparent; /* إضافة حدود لتحديد اللون لاحقا */
+}
+
+.answer-btn:not(.answered):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.answer-btn.answered {
+    cursor: default;
+}
+
+/* نمط الإجابة الصحيحة */
+.answer-btn.correct {
+    background-color: #047857 !important; /* لون أخضر داكن */
+    border-color: #34d399 !important; /* حدود خضراء فاتحة */
+    color: #fff;
+    transform: scale(1.02); /* تمييز بصري بسيط */
+    box-shadow: 0 0 10px #34d399;
+}
+
+/* نمط الإجابة الخاطئة */
+.answer-btn.wrong {
+    background-color: #991b1b !important; /* لون أحمر داكن */
+    border-color: #f87171 !important; /* حدود حمراء فاتحة */
+    color: #fff;
+    opacity: 0.7; 
+}
+
+/* شريط المؤقت */
+.timer-bar {
     width: 100%;
+    height: 8px;
+    background-color: #45a29e; /* خلفية الشريط */
+    border-radius: 4px;
+    overflow: hidden;
 }
 
-/* نمط الإجابات الصحيحة والخاطئة (يتم إضافته بواسطة JS) */
-.option-btn.bg-green-700 {
-    background-color: #047857; /* زمردي غامق */
-    border-color: #34d399;
-    color: #fff;
-}
-
-.option-btn.bg-red-700 {
-    background-color: #b91c1c; /* أحمر غامق */
-    border-color: #f87171;
-    color: #fff;
-}
-
-/* شريط التقدم */
-.progress-bar {
-    max-width: 800px;
+#timer-fill {
+    height: 100%;
+    background-color: #ffc107; /* لون ملء المؤقت */
+    width: 100%;
 }
 
 /* حاوية الفيديو */
