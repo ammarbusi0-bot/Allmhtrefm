@@ -5,8 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>💡 تحدي المعرفة الإسلامية - الفقه والثقافة</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght=400;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght[AT]400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css"> 
+    
+    <style>
+        .question-card {
+            /* إضافة تأثير انزلاق وشفافية لبطاقة السؤال */
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+            transform: translateY(20px);
+            opacity: 0;
+        }
+        .question-card.active {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    </style>
 </head>
 <body class="text-center bg-[#0b0c10] text-gray-100 font-sans" style="font-family: 'Cairo', sans-serif;">
     
@@ -37,14 +50,14 @@
 
     <main id="quiz" class="container mx-auto max-w-4xl px-4">
         
-        <div id="login-screen" class="card mt-6 p-8" style="opacity:1; transform:translateY(0);">
+        <div id="login-screen" class="card mt-6 p-8 question-card active">
             <p class="text-3xl font-extrabold text-[#66fcf1] mb-6">مرحباً بك في ساحة التحدي!</p>
             
             <div class="text-right mb-8 border-r-4 border-yellow-500 pr-4 bg-[#1f2833] p-4 rounded-lg shadow-inner">
                 <h3 class="text-2xl font-bold text-yellow-300 mb-3">📝 قواعد اللعبة:</h3>
                 <ul class="list-disc list-inside text-lg text-gray-300 space-y-2 mr-4">
                     <li>هناك جولتان: أسئلة **اختيار متعدد** وأسئلة **صح أو خطأ**.</li>
-                    <li>ستلعب **10 أسئلة** في كل جولة (يتم اختيارها عشوائياً من **100 سؤال**).</li>
+                    <li>ستلعب **10 أسئلة** في كل جولة (يتم اختيارها عشوائياً).</li>
                     <li>لديك **15 ثانية** للإجابة على كل سؤال.</li>
                     <li>يتم حفظ اسمك وأعلى نتيجة لديك في هذا المتصفح.</li>
                 </ul>
