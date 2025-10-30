@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحدي المعرفة الاسلامية - واجهة فخمة</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+    <div id="splash-screen" class="screen active">
+        <h1 class="header-title">تحدي المعرفة الاسلامية</h1>
+        <div class="input-group">
+            <label for="user-name">أدخل اسمك الكريم:</label>
+            <input type="text" id="user-name" placeholder="الاسم">
+            <button onclick="saveAndEnter()">ابدأ التحدي</button>
+        </div>
+    </div>
+
+    <div id="main-menu" class="screen">
+        <h1 class="header-title">أهلاً بك يا <span id="display-user-name"></span>!</h1>
+        <div class="menu-grid">
+            <button onclick="startGame('tf')">لعبة: صح وخطأ</button>
+            <button onclick="startGame('mc')">لعبة: الاختيار من متعدد</button>
+        </div>
+        <div class="options-bar">
+            <div class="level-control">
+                <label class="switch-label">رفع المستوى (أسئلة أصعب):</label>
+                <label class="switch">
+                    <input type="checkbox" id="level-up-toggle" onchange="toggleLevel()">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div id="game-screen" class="screen">
+        <div class="game-area">
+            <p id="question-text" class="question-box"></p>
+            <div id="answers-container" class="answers-container">
+                </div>
+            <p id="question-counter" class="counter-text"></p>
+        </div>
+    </div>
+
+    <div id="profile-screen" class="screen">
+        <h1 class="header-title">ملفي الشخصي</h1>
+        <div class="profile-card">
+            <h2>الاسم: <span id="profile-name"></span></h2>
+            <h3>إحصائيات هذا الأسبوع:</h3>
+            <p><strong>الأسئلة التي تم الإجابة عليها:</strong> <span id="total-answered">0</span></p>
+            <p class="correct"><strong>الإجابات الصحيحة:</strong> <span id="total-correct">0</span></p>
+            <p class="wrong"><strong>الإجابات الخاطئة:</strong> <span id="total-wrong">0</span></p>
+            <p class="level-status"><strong>مستوى التحدي الحالي:</strong> <span id="current-level-status">عادي</span></p>
+        </div>
+    </div>
+
+    <div id="contact-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeContactModal()">&times;</span>
+            <h2 class="contact-header">المساعدة والتواصل</h2>
+            <div class="contact-details">
+                <a href="https://wa.me/905510651347" target="_blank" class="contact-item whatsapp">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>تواصل واتساب (تركيا)</span>
+                    <span class="number-text">00905510651347</span>
+                </a>
+                <a href="mailto:ammarbusi338@gmail.com" class="contact-item email">
+                    <i class="fas fa-envelope"></i>
+                    <span>البريد الإلكتروني</span>
+                    <span class="number-text">ammarbusi338@gmail.com</span>
+                </a>
+                <a href="https://t.me/bootcadid" target="_blank" class="contact-item telegram">
+                    <i class="fab fa-telegram-plane"></i>
+                    <span>قناة تيليجرام</span>
+                    <span class="number-text">@bootcadid</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="bottom-nav">
+        <button id="back-btn" class="nav-button" onclick="goBack()" style="display:none;">
+            <i class="fas fa-arrow-right"></i>
+            <span>رجوع</span>
+        </button>
+        <button class="nav-button" onclick="showScreen('main-menu')">
+            <i class="fas fa-home"></i>
+            <span>الشاشة الرئيسية</span>
+        </button>
+        <button class="nav-button" onclick="showScreen('profile-screen')">
+            <i class="fas fa-user-circle"></i>
+            <span>ملفي الشخصي</span>
+        </button>
+        <button class="nav-button" onclick="openContactModal()">
+            <i class="fas fa-headset"></i>
+            <span>المساعدة/تواصل</span>
+        </button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
