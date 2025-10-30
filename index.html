@@ -14,12 +14,12 @@
             transition: opacity 0.5s ease-out, transform 0.5s ease-out;
             transform: translateY(20px);
             opacity: 0;
-            display: none; 
+            display: none; /* إخفاء افتراضي أفضل للتعامل مع JS */
         }
         .question-card.active {
             transform: translateY(0);
             opacity: 1;
-            display: block; 
+            display: block; /* إظهار عند التفعيل */
         }
     </style>
 </head>
@@ -29,7 +29,7 @@
         <h1 class="text-5xl md:text-6xl font-extrabold text-[#66fcf1] mb-4">🕌 تحدي المعرفة الإسلامية</h1>
         <p id="greeting-message" class="text-gray-400 text-xl mb-6">اختبر معلوماتك في الفقه والتاريخ!</p>
         
-        <div class="video-container mx-auto mt-6 w-full max-w-xl">
+        <div id="video-wrapper" class="video-container mx-auto mt-6 w-full max-w-xl">
             <video 
                 class="rounded-xl shadow-2xl w-full"
                 controls 
@@ -73,7 +73,23 @@
             </button>
         </div>
         
-        <div id="welcome-screen" class="card question-card mt-6"></div>
+        <div id="welcome-screen" class="card question-card mt-6">
+            <p class="text-3xl font-extrabold text-yellow-300 mb-4">جاهز يا <span id="welcome-username"></span>؟</p>
+            <p class="text-xl text-gray-200 mb-8">اختر جولة الاختبار التي تفضلها:</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <button id="start-mcq-btn" data-type="mcq" class="main-btn py-4 px-6 text-2xl bg-green-600 hover:bg-green-500">
+                    اختبار الاختيار المتعدد 📚
+                </button>
+                <button id="start-tf-btn" data-type="tf" class="main-btn py-4 px-6 text-2xl bg-purple-600 hover:bg-purple-500">
+                    اختبار صح أو خطأ ✅/❌
+                </button>
+            </div>
+            
+            <button id="profile-btn" class="alt-btn mt-6 py-3 px-6 text-xl bg-gray-600 hover:bg-gray-500">
+                عرض ملفي الشخصي والإحصائيات 📊
+            </button>
+        </div>
 
         <div id="profile-screen" class="card question-card mt-6"></div>
 
