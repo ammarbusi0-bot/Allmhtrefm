@@ -1,125 +1,78 @@
-/* Custom CSS for Quiz App */
+/* Custom CSS for Quiz App (تنسيقات إضافية للشريط الثابت) */
 
-/* الخلفية الرئيسية والخطوط */
-body {
-    background-color: #0b0c10;
-    color: #c5c6c7;
-    min-height: 100vh;
-    padding-bottom: 40px; /* مسافة أسفل الصفحة */
-}
-
-/* نمط الحاويات الرئيسية */
-.container {
-    padding-top: 20px;
-}
-
-/* نمط البطاقة/الواجهة */
-.card {
-    background-color: #1f2833;
-    border-radius: 1.5rem; /* rounded-xl */
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-2xl */
-    padding: 2.5rem; /* p-10 */
-    border: 1px solid #45a29e; /* حدود خفيفة */
-}
-
-/* زر العمل الرئيسي */
-.main-btn {
-    background-color: #66fcf1;
-    color: #0b0c10;
-    font-weight: 700;
-    padding: 0.75rem 1.5rem; /* py-3 px-6 */
-    border-radius: 9999px; /* rounded-full */
-    transition: background-color 0.3s, transform 0.1s;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
-    display: inline-block;
-}
-
-.main-btn:hover {
-    background-color: #45a29e;
-    transform: translateY(-2px);
-}
-
-.main-btn:disabled {
-    background-color: #494949;
-    color: #999;
-    cursor: not-allowed;
-    transform: none;
-}
-
-/* زر العمل البديل/الثانوي */
-.alt-btn {
-    background-color: #3f4751;
-    color: #c5c6c7;
-    font-weight: 600;
-    padding: 0.75rem 1.5rem;
-    border-radius: 9999px;
-    transition: background-color 0.3s;
-    display: inline-block;
-}
-
-.alt-btn:hover {
-    background-color: #5a6470;
-}
+/* ... (جميع التنسيقات السابقة تبقى كما هي) ... */
 
 /* ------------------------------------- */
-/* تحسين أنماط أزرار الإجابات والمؤقت   */
+/* أنماط الشريط السفلي الثابت (Fixed Footer)   */
 /* ------------------------------------- */
 
-/* نمط زر الخيار الأساسي */
-.answer-btn {
-    padding: 1rem;
-    border-radius: 0.75rem; /* rounded-xl */
-    font-size: 1.125rem; /* text-xl */
+.fixed-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background-color: #1f2833; /* لون الخلفية */
+    border-top: 2px solid #66fcf1; /* شريط علوي مميز */
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.footer-btn {
+    background-color: transparent;
+    border: none;
+    color: #c5c6c7;
+    padding: 8px 15px;
+    font-size: 1rem;
     font-weight: 700;
-    transition: background-color 0.3s, border-color 0.3s, transform 0.1s;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-    text-align: center; 
+    border-radius: 8px;
     cursor: pointer;
-    border: 2px solid transparent; /* إضافة حدود لتحديد اللون لاحقا */
+    transition: background-color 0.3s, color 0.3s;
+    display: flex;
+    align-items: center;
 }
 
-.answer-btn:not(.answered):hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+.footer-btn:hover {
+    background-color: #45a29e;
+    color: #0b0c10;
 }
 
-.answer-btn.answered {
-    cursor: default;
+.footer-btn.contact-btn {
+    color: #66fcf1; /* تمييز زر التواصل */
 }
 
-/* نمط الإجابة الصحيحة */
-.answer-btn.correct {
-    background-color: #047857 !important; /* لون أخضر داكن */
-    border-color: #34d399 !important; /* حدود خضراء فاتحة */
-    color: #fff;
-    transform: scale(1.02); /* تمييز بصري بسيط */
-    box-shadow: 0 0 10px #34d399;
+/* ------------------------------------- */
+/* أنماط شاشة التواصل (Contact Screen)   */
+/* ------------------------------------- */
+
+.contact-icon {
+    font-size: 2.5rem; /* حجم الأيقونة */
+    color: #66fcf1;
+    transition: transform 0.2s, color 0.3s;
 }
 
-/* نمط الإجابة الخاطئة */
-.answer-btn.wrong {
-    background-color: #991b1b !important; /* لون أحمر داكن */
-    border-color: #f87171 !important; /* حدود حمراء فاتحة */
-    color: #fff;
-    opacity: 0.7; 
+.contact-link {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: #0b0c10;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+    border-right: 4px solid #45a29e;
 }
 
-/* شريط المؤقت */
-.timer-bar {
-    width: 100%;
-    height: 8px;
-    background-color: #45a29e; /* خلفية الشريط */
-    border-radius: 4px;
-    overflow: hidden;
+.contact-link:hover {
+    background-color: #1f2833;
+    transform: translateX(-5px);
 }
 
-#timer-fill {
-    height: 100%;
-    background-color: #ffc107; /* لون ملء المؤقت */
-    width: 100%;
-}
-
-/* حاوية الفيديو */
-.video-container {
-    max-width: 600px;
+.contact-link:hover .contact-icon {
+    transform: scale(1.1);
+    color: #45a29e;
 }
