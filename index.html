@@ -1,55 +1,0 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>الصفحة الرئيسية</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <div id="login-container" class="card">
-    <h2>مرحباً بك!</h2>
-    <p>الرجاء إدخال اسم المستخدم للمتابعة:</p>
-    <input type="text" id="username" placeholder="اكتب اسمك هنا" />
-    <button id="loginBtn">تسجيل الدخول</button>
-  </div>
-
-  <div id="main-menu" class="hidden">
-    <h1>مرحباً <span id="displayName"></span> 👋</h1>
-    <button onclick="location.href='quiz.html'">🎮 لعبة الأسئلة والأجوبة</button>
-    <button onclick="location.href='truefalse.html'">✅ لعبة صح أو خطأ</button>
-    <button onclick="location.href='profile.html'">👤 الملف الشخصي</button>
-  </div>
-
-  <script>
-    const loginContainer = document.getElementById("login-container");
-    const mainMenu = document.getElementById("main-menu");
-    const usernameInput = document.getElementById("username");
-    const loginBtn = document.getElementById("loginBtn");
-    const displayName = document.getElementById("displayName");
-
-    // تحقق من وجود اسم المستخدم مسبقاً
-    const savedName = localStorage.getItem("username");
-    if (savedName) {
-      showMainMenu(savedName);
-    }
-
-    // عند الضغط على زر تسجيل الدخول
-    loginBtn.addEventListener("click", () => {
-      const name = usernameInput.value.trim();
-      if (name === "") {
-        alert("الرجاء إدخال اسم المستخدم");
-        return;
-      }
-      localStorage.setItem("username", name);
-      showMainMenu(name);
-    });
-
-    function showMainMenu(name) {
-      loginContainer.classList.add("hidden");
-      mainMenu.classList.remove("hidden");
-      displayName.textContent = name;
-    }
-  </script>
-</body>
-</html>
