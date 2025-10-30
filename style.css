@@ -1,159 +1,136 @@
-/* =================================================================
-   style.css 
-   (يجب أن تكون الأولوية للتنسيقات التي تعالج الإخفاء والإظهار)
-   ================================================================= */
-
-/* الخطوط الأساسية */
+/* تنسيقات أساسية للخط والخلفية والألوان الداكنة */
 body {
-    font-family: 'Cairo', sans-serif;
-    min-height: 100vh;
-    padding-bottom: 70px; /* مساحة للشريط السفلي */
-    position: relative;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #1e1e1e; /* خلفية داكنة */
+    color: #ffffff; /* نص فاتح */
+    text-align: center;
+    padding: 20px;
+    direction: rtl; /* دعم اللغة العربية */
 }
 
-/* التنسيق العام لبطاقات المحتوى */
-.card {
-    background-color: #1f2833; /* لون خلفية داكن */
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-    max-width: 600px;
-    margin: 20px auto;
+h1 {
+    color: #4CAF50; /* لون أخضر مميز للعنوان */
+    margin-bottom: 30px;
 }
 
-/* تنسيق زر الإجراء الرئيسي */
-.main-btn {
-    background-color: #66fcf1; /* لون التمييز الفيروزي */
-    color: #0b0c10;
-    font-weight: 700;
-    padding: 12px 24px;
-    border-radius: 8px;
-    transition: background-color 0.3s, transform 0.1s;
-    width: 100%;
-    max-width: 300px;
-    cursor: pointer;
-    border: none;
-    font-size: 1.25rem;
-}
-
-.main-btn:hover {
-    background-color: #45a29e;
-    transform: translateY(-1px);
-}
-
-.alt-btn {
-    font-weight: 600;
-    padding: 10px 20px;
-    border-radius: 8px;
-    transition: background-color 0.3s;
-    cursor: pointer;
-    border: none;
-}
-
-/* تنسيق أزرار الإجابات */
-.answer-btn {
-    background-color: #0b0c10;
-    color: #c5c6c7;
-    border: 2px solid #45a29e;
-    padding: 15px 20px;
+.screen {
+    padding: 30px;
     border-radius: 10px;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+    background-color: #2a2a2a; /* خلفية قسم الشاشة الرئيسية */
+    margin-bottom: 25px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* تنسيق حقل الاسم وزر البدء */
+#usernameSection {
+    margin: 20px 0;
+}
+
+#usernameSection input[type="text"] {
+    padding: 12px;
+    margin-right: 10px;
+    border-radius: 6px;
+    border: 1px solid #4CAF50;
+    background-color: #333;
+    color: #fff;
+    width: 250px;
     text-align: right;
-    font-weight: 600;
 }
 
-.answer-btn:hover:not(:disabled) {
-    background-color: #1f2833;
-    border-color: #66fcf1;
-}
-
-.answer-btn.correct {
-    background-color: #22c55e; /* أخضر */
-    border-color: #15803d;
+#usernameSection button {
+    padding: 12px 25px;
+    background-color: #4CAF50;
     color: white;
-    animation: pulse-correct 0.5s ease-out;
-}
-
-.answer-btn.wrong {
-    background-color: #ef4444; /* أحمر */
-    border-color: #b91c1c;
-    color: white;
-    animation: shake 0.3s;
-}
-
-/* الأنماط الخاصة بالشريط السفلي (لحل مشكلة الظهور) */
-.fixed-footer {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    background-color: #1f2833; /* لون الشريط */
-    border-top: 1px solid #45a29e;
-    padding: 10px 0;
-    z-index: 1000; /* لضمان الظهور فوق كل شيء */
-    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.5);
-}
-
-.footer-btn {
-    background: none;
     border: none;
-    color: #66fcf1;
-    font-size: 1rem;
-    font-weight: 600;
-    padding: 5px 10px;
+    border-radius: 6px;
     cursor: pointer;
-    transition: color 0.3s;
-}
-
-.footer-btn:hover {
-    color: #45a29e;
-}
-
-/* الأنماط الخاصة بصفحة التواصل */
-.contact-link {
-    display: flex;
-    align-items: center;
-    text-align: right;
-    background-color: #111827;
-    padding: 10px;
-    border-radius: 8px;
-    border-right: 3px solid #66fcf1;
+    font-weight: bold;
     transition: background-color 0.3s;
 }
 
-.contact-link:hover {
-    background-color: #1f2833;
-    border-right-color: #45a29e;
+#usernameSection button:hover {
+    background-color: #45a049;
 }
 
-.contact-icon {
-    font-size: 1.8rem;
+#welcomeMessage {
+    padding: 15px;
+    background-color: #388e3c;
+    border-radius: 6px;
+    margin-top: 15px;
+    font-size: 1.1em;
 }
 
-
-/* الكلاسات الأساسية للإخفاء/الإظهار المستخدمة في JS */
-.hidden {
-    display: none !important;
+/* تنسيق روابط أقسام الأسئلة */
+.sections-list {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px dashed #333;
 }
 
-.active {
-    display: block !important;
+.sections-list h2 {
+    color: #fdd835;
 }
 
-/* الرسوم المتحركة */
-@keyframes pulse-correct {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.03); }
-    100% { transform: scale(1); }
+.section-link {
+    display: inline-block;
+    padding: 10px 15px;
+    margin: 8px;
+    background-color: #444;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
 }
 
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    20%, 60% { transform: translateX(-5px); }
-    40%, 80% { transform: translateX(5px); }
+.section-link:hover {
+    background-color: #555;
 }
 
+/* تنسيق رابط README */
+.readme-section h2 a {
+    color: #fdd835; 
+    text-decoration: none;
+    font-size: 1.2em;
+    padding: 10px;
+    border: 1px solid #fdd835;
+    display: inline-block;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.readme-section h2 a:hover {
+    background-color: #fdd83520;
+}
+
+/* تنسيق روابط الدعم والتلغرام (أسفل الصفحة) */
+.footer-links {
+    margin-top: 40px;
+    border-top: 1px solid #333;
+    padding-top: 20px;
+}
+
+.support-link, .telegram-link {
+    display: inline-block;
+    padding: 12px 25px;
+    margin: 10px;
+    text-decoration: none;
+    color: white;
+    border-radius: 6px;
+    font-weight: bold;
+    min-width: 200px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.support-link {
+    background-color: #007bff; /* لون أزرق للدعم */
+}
+
+.telegram-link {
+    background-color: #0088cc; /* لون تلغرام الأزرق */
+}
+
+.support-link:hover, .telegram-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
