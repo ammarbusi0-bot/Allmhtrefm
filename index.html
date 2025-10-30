@@ -1,78 +1,0 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تطبيق الاختبار - Quiz App</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-
-    <div class="container" id="name-input-section">
-        <div class="card">
-            <h2 class="text-center">👋 مرحباً بك في التطبيق</h2>
-            <p>الرجاء إدخال اسمك للبدء في الاختبار.</p>
-            <input type="text" id="username-input" placeholder="أدخل اسمك هنا..." class="text-input">
-            <button class="main-btn mt-4" id="start-app-btn">تسجيل الاسم والبدء</button>
-            <p id="name-error" class="error-message"></p>
-        </div>
-    </div>
-
-    <div class="container hidden" id="main-app-content">
-
-        <header class="header">
-            <button class="nav-btn alt-btn" id="home-btn" data-target="home-screen">🏠 الرئيسية</button>
-            <button class="nav-btn alt-btn" id="support-menu-btn" data-target="support-screen">📞 الدعم</button>
-            <button class="nav-btn back-btn main-btn hidden" id="back-btn">⬅️ رجوع</button>
-        </header>
-
-        <div class="screen-container" id="home-screen">
-            <div class="card">
-                <h2>اختبار المعلومات العامة</h2>
-                <p>اختر أحد خيارات اللعب أو تصفح الإعدادات.</p>
-                <button class="main-btn mb-3" data-target="quiz-screen">بدء الاختبار 🚀</button>
-                <button class="alt-btn" data-target="settings-screen">الإعدادات ⚙️</button>
-            </div>
-        </div>
-        
-        <div class="screen-container hidden" id="quiz-screen">
-            <div class="card">
-                <h3>سؤال 1 من 10</h3>
-                <p>ما هي عاصمة فرنسا؟</p>
-                </div>
-        </div>
-        
-        <div class="screen-container hidden" id="support-screen">
-            <div class="card">
-                <h2>📞 مركز الدعم والتواصل</h2>
-                <p>يسعدنا تواصلكم معنا عبر القنوات التالية:</p>
-                
-                <div class="social-links">
-                    <a href="https://wa.me/905510651347" target="_blank" class="social-icon whatsapp">
-                        [attachment_0](attachment)
-                        <span>واتساب (تركيا)</span>
-                    </a>
-                    <a href="mailto:ammarbusi338@gmail.com" class="social-icon email">
-                        [attachment_1](attachment)
-                        <span>البريد الإلكتروني</span>
-                    </a>
-                    <a href="https://t.me/bootcadid" target="_blank" class="social-icon telegram">
-                        [attachment_2](attachment)
-                        <span>قناة تليجرام</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="screen-container hidden" id="settings-screen">
-            <div class="card">
-                <h2>⚙️ الإعدادات</h2>
-                <p>تغيير الإعدادات قريباً...</p>
-            </div>
-        </div>
-
-    </div>
-
-    <script src="script.js"></script>
-</body>
-</html>
