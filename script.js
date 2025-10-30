@@ -1,323 +1,126 @@
-// =================================================================
-// script.js
-// المنطق الأساسي للعبة: الانتقالات، التوقيت، حساب النتيجة، ومعالجة الأزرار
-// يعتمد على questions.js للحصول على بيانات الأسئلة.
-// =================================================================
-
-// *** 1. المتغيرات والمصفوفات العامة ***
-// يتم استدعاء ALL_QUESTIONS_DATA و TF_QUESTIONS_DATA من ملف questions.js (المفترض وجوده)
-
-const QUIZ_LENGTH = 10;
-const TIME_PER_QUESTION = 15;
-let currentQuestionIndex = 0;
-let score = 0;
-let answered = false;
-let questionTimer;
-let questionCountdown;
-let currentQuizType = 'mcq'; 
-let bestScoreMCQ = parseInt(localStorage.getItem('bestScoreMCQ') || '0');
-let bestScoreTF = parseInt(localStorage.getItem('bestScoreTF') || '0');
-let username = '';
-let selectedQuestions = []; // الأسئلة التي يتم اختيارها في كل جولة
-
-// *** 2. عناصر الواجهة والأصوات ***
-const quizContainer = document.getElementById('quiz');
-const result = document.getElementById('result');
-const nextButton = document.getElementById('next-btn');
-const progressFill = document.getElementById('progress-fill');
-const progressBar = document.querySelector('.progress-bar');
-const timerElement = document.getElementById('timer');
-const timerNumber = document.getElementById('timer-number');
-const loadingMessage = document.getElementById('loading-message');
-
-const loginScreen = document.getElementById('login-screen');
-const welcomeScreen = document.getElementById('welcome-screen');
-const profileScreen = document.getElementById('profile-screen'); 
-const contactScreen = document.getElementById('contact-screen'); 
-
-const startGameBtn = document.getElementById('start-game-btn'); // زر الدخول
-const usernameInput = document.getElementById('username-input');
-const welcomeUsername = document.getElementById('welcome-username');
-const greetingMessage = document.getElementById('greeting-message');
-const profileBtn = document.getElementById('profile-btn'); 
-
-const musicToggleButton = document.getElementById('music-toggle-btn');
-const backgroundMusic = document.getElementById('background-music');
-const soundCorrect = document.getElementById('sound-correct');
-const soundWrong = document.getElementById('sound-wrong');
-const soundTimeup = document.getElementById('sound-timeup');
-
-// عناصر الشريط السفلي
-const fixedFooter = document.getElementById('fixed-footer');
-const footerHomeBtn = document.getElementById('footer-home-btn');
-const footerContactBtn = document.getElementById('footer-contact-btn');
-
-
-// *** 3. وظائف الإدارة العامة ***
-
-function saveUserData() {
-    localStorage.setItem('username', username);
-    localStorage.setItem('bestScoreMCQ', bestScoreMCQ);
-    localStorage.setItem('bestScoreTF', bestScoreTF);
-}
-
-function playSound(audioElement) {
-    audioElement.currentTime = 0;
-    audioElement.play().catch(e => console.error("Error playing sound:", e));
-}
-
-function toggleMusic() {
-    const icon = document.getElementById('music-icon');
-    const status = document.getElementById('music-status');
-    if (backgroundMusic.paused) {
-        backgroundMusic.play().then(() => {
-            icon.textContent = '🔊';
-            status.textContent = 'إيقاف';
-        }).catch(e => {
-            console.warn("Music play failed:", e);
-            icon.textContent = '🔇';
-            status.textContent = 'تشغيل';
-        });
-    } else {
-        backgroundMusic.pause();
-        icon.textContent = '🔇';
-        status.textContent = 'تشغيل';
-    }
-}
-
-// *** 4. وظائف إدارة الشاشات (حل مشكلة الانتقال) ***
-
-function hideAllScreens() {
-    // إخفاء جميع الحاويات الرئيسية للأسئلة والإحصائيات
-    document.querySelectorAll('.question-card').forEach(card => {
-        card.classList.remove('active');
-        card.classList.add('hidden');
-    });
-    // إخفاء العناصر غير الضرورية
-    nextButton.classList.add('hidden');
-    timerElement.classList.add('hidden');
-    progressBar.classList.add('hidden');
-    loadingMessage.classList.add('hidden');
-    result.classList.add('hidden');
-    quizContainer.innerHTML = ''; // تنظيف حاوية الأسئلة
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>💡 تحدي المعرفة الإسلامية - الفقه والثقافة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css"> 
     
-    // إدارة الشريط السفلي: إخفاؤه إذا كنا في شاشة تسجيل الدخول
-    if(document.body.classList.contains('logged-in')) {
-        fixedFooter.classList.remove('hidden');
-    } else {
-        fixedFooter.classList.add('hidden');
-    }
-}
-
-// الوظيفة الأساسية للانتقال إلى الشاشة الرئيسية (Welcome Screen)
-function showWelcomeScreen() {
-    hideAllScreens();
+    <style>
+        /* CSS مدمج لتحسين الانتقالات البصرية لبطاقات الأسئلة */
+        .question-card {
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+            transform: translateY(20px);
+            opacity: 0;
+            display: none; /* إخفاء افتراضي أفضل للتعامل مع JS */
+        }
+        .question-card.active {
+            transform: translateY(0);
+            opacity: 1;
+            display: block; /* إظهار عند التفعيل */
+        }
+    </style>
+</head>
+<body class="text-center bg-[#0b0c10] text-gray-100 font-sans" style="font-family: 'Cairo', sans-serif;">
     
-    // إظهار شاشة الترحيب فقط
-    welcomeScreen.classList.remove('hidden');
-    welcomeScreen.classList.add('active'); 
-    welcomeUsername.textContent = username;
-    
-    // تحديث رسالة الترحيب
-    greetingMessage.innerHTML = `مرحباً بك يا **${username}**! <br>أعلى نتيجة: ${Math.max(bestScoreMCQ, bestScoreTF)} من ${QUIZ_LENGTH}`;
-    
-    document.body.classList.add('logged-in'); // تعيين حالة تسجيل الدخول
-    fixedFooter.classList.remove('hidden'); // إظهار الشريط السفلي
-}
-
-function showProfileScreen() {
-    hideAllScreens();
-    
-    // بناء وعرض محتوى شاشة الإحصائيات
-    profileScreen.classList.remove('hidden');
-    profileScreen.classList.add('active');
-    
-    profileScreen.innerHTML = `
-        <h2 class="text-3xl font-extrabold text-[#66fcf1] mb-6">📊 ملفك الشخصي يا ${username}</h2>
-        <div class="space-y-4 text-right">
-            <div class="bg-[#0b0c10] p-4 rounded-lg border-r-4 border-yellow-500 shadow-xl">
-                <p class="text-lg font-bold text-yellow-300 mb-1">أعلى نتيجة في الاختيار المتعدد (MCQ):</p>
-                <p class="text-4xl font-extrabold text-white">${bestScoreMCQ} / ${QUIZ_LENGTH}</p>
-            </div>
-            
-            <div class="bg-[#0b0c10] p-4 rounded-lg border-r-4 border-purple-500 shadow-xl">
-                <p class="text-lg font-bold text-purple-300 mb-1">أعلى نتيجة في صح أو خطأ (T/F):</p>
-                <p class="text-4xl font-extrabold text-white">${bestScoreTF} / ${QUIZ_LENGTH}</p>
-            </div>
+    <header class="mb-8 w-full max-w-4xl mx-auto pt-8">
+        <h1 class="text-5xl md:text-6xl font-extrabold text-[#66fcf1] mb-4">🕌 تحدي المعرفة الإسلامية</h1>
+        <p id="greeting-message" class="text-gray-400 text-xl mb-6">اختبر معلوماتك في الفقه والتاريخ!</p>
+        
+        <div id="video-wrapper" class="video-container mx-auto mt-6 w-full max-w-xl">
+            <video 
+                class="rounded-xl shadow-2xl w-full"
+                controls 
+                preload="metadata"> 
+                <source src="VID_20251027_220735_527.mp4" type="video/mp4">
+                <p>متصفحك لا يدعم تشغيل الفيديو.</p>
+            </video>
         </div>
-        <button id="return-from-profile" class="alt-btn mt-8 py-3 px-6 text-xl bg-gray-600 hover:bg-gray-500 text-white">
-            العودة إلى اختيار الجولة
+        
+        <audio id="background-music" src="https://assets.mixkit.co/sfx/preview/mixkit-lo-fi-hip-hop-loop-803.mp3" loop></audio> 
+        <button id="music-toggle-btn" class="mt-3 text-sm font-semibold text-gray-300 hover:text-[#66fcf1] transition flex items-center justify-center mx-auto">
+            <span id="music-icon">🔇</span>
+            <span id="music-status" class="mr-2">تشغيل</span>
         </button>
-    `;
-    
-    document.getElementById('return-from-profile').addEventListener('click', showWelcomeScreen);
-}
+    </header>
 
-// وظيفة عرض شاشة التواصل الجديدة
-function showContactScreen() {
-    hideAllScreens();
+    <div class="progress-bar w-full max-w-4xl mx-auto bg-gray-700 rounded-full h-2.5 hidden">
+        <div id="progress-fill" class="progress-fill h-2.5 rounded-full bg-yellow-500" style="width: 0%"></div>
+    </div>
 
-    contactScreen.classList.remove('hidden');
-    contactScreen.classList.add('active');
-    
-    contactScreen.innerHTML = `
-        <h2 class="text-3xl font-extrabold text-[#66fcf1] mb-4">💬 تواصل معنا وادعمنا</h2>
-        <p class="text-xl text-gray-300 mb-8">نشكر دعمكم وملاحظاتكم! تواصلوا معنا عبر الطرق التالية:</p>
-
-        <div class="space-y-4 text-right">
-            <h3 class="text-2xl font-bold text-yellow-500 border-b border-gray-700 pb-2 mb-4">قنوات التواصل:</h3>
+    <main id="quiz" class="container mx-auto max-w-4xl px-4">
+        
+        <div id="login-screen" class="card mt-6 p-8 question-card active">
+            <p class="text-3xl font-extrabold text-[#66fcf1] mb-6">مرحباً بك في ساحة التحدي!</p>
             
-            <a href="https://t.me/bootcadid" target="_blank" class="contact-link">
-                <span class="contact-icon ml-4">✉️</span>
-                <div>
-                    <p class="text-xl font-bold text-white">قناة التلجرام</p>
-                    <p class="text-sm text-gray-400">للانضمام والمتابعة</p>
-                </div>
-            </a>
-            
-            <a href="https://wa.me/905510651347" target="_blank" class="contact-link">
-                <span class="contact-icon ml-4">📱</span>
-                <div>
-                    <p class="text-xl font-bold text-white">واتساب مباشر</p>
-                    <p class="text-sm text-gray-400">00905510651347</p>
-                </div>
-            </a>
+            <div class="text-right mb-8 border-r-4 border-yellow-500 pr-4 bg-[#1f2833] p-4 rounded-lg shadow-inner">
+                <h3 class="text-2xl font-bold text-yellow-300 mb-3">📝 قواعد اللعبة:</h3>
+                <ul class="list-disc list-inside text-lg text-gray-300 space-y-2 mr-4">
+                    <li>هناك جولتان: أسئلة **اختيار متعدد** وأسئلة **صح أو خطأ**.</li>
+                    <li>ستلعب **10 أسئلة** في كل جولة (يتم اختيارها عشوائياً).</li>
+                    <li>لديك **15 ثانية** للإجابة على كل سؤال.</li>
+                    <li>يتم حفظ اسمك وأعلى نتيجة لديك في هذا المتصفح.</li>
+                </ul>
+            </div>
 
-            <a href="mailto:ammarbusi338@gmail.com" class="contact-link">
-                <span class="contact-icon ml-4">📧</span>
-                <div>
-                    <p class="text-xl font-bold text-white">البريد الإلكتروني</p>
-                    <p class="text-sm text-gray-400">ammarbusi338@gmail.com</p>
-                </div>
-            </a>
+            <p class="text-xl text-gray-200 mb-4">أدخل اسمك لتسجيل نتيجتك:</p>
+            <input type="text" id="username-input" placeholder="اسم المستخدم" class="w-full max-w-sm p-3 mb-4 rounded-xl bg-[#1f2833] border border-[#66fcf1] text-white text-lg placeholder-gray-500 text-center" required>
             
-            <div class="bg-[#1f2833] p-4 rounded-lg mt-6 border-r-4 border-red-500 shadow-xl">
-                 <p class="text-xl font-bold text-red-400">❤️ لدعمنا مادياً</p>
-                 <p class="text-sm text-gray-400">يمكنك دعم استمرار تطويرنا عبر منصات الدفع المفضلة لديك.</p>
+            <button id="start-game-btn" class="main-btn mt-4">
+                دخول وبدء التحدي
+            </button>
+        </div>
+        
+        <div id="welcome-screen" class="card question-card mt-6">
+            <p class="text-3xl font-extrabold text-yellow-300 mb-4">جاهز يا <span id="welcome-username"></span>؟</p>
+            <p class="text-xl text-gray-200 mb-8">اختر جولة الاختبار التي تفضلها:</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <button id="start-mcq-btn" data-type="mcq" class="main-btn py-4 px-6 text-2xl bg-green-600 hover:bg-green-500">
+                    اختبار الاختيار المتعدد 📚
+                </button>
+                <button id="start-tf-btn" data-type="tf" class="main-btn py-4 px-6 text-2xl bg-purple-600 hover:bg-purple-500">
+                    اختبار صح أو خطأ ✅/❌
+                </button>
             </div>
             
+            <button id="profile-btn" class="alt-btn mt-6 py-3 px-6 text-xl bg-gray-600 hover:bg-gray-500">
+                عرض ملفي الشخصي والإحصائيات 📊
+            </button>
         </div>
+
+        <div id="profile-screen" class="card question-card mt-6"></div>
+
+        <div id="contact-screen" class="card question-card mt-6"></div>
         
-        <button id="return-from-contact" class="alt-btn mt-8 py-3 px-6 text-xl bg-gray-600 hover:bg-gray-500 text-white">
-            العودة إلى اختيار الجولة
+        <div id="loading-message" class="text-xl mt-12 text-[#66fcf1] hidden">جاري تهيئة الأسئلة... ⏳</div>
+    </main>
+
+    <div id="result" class="mt-8 text-2xl md:text-3xl font-bold hidden card p-5 mx-auto max-w-4xl"></div>
+    
+    <button id="next-btn" class="mt-6 hidden bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold py-3 px-6 rounded-full text-xl transition shadow-lg">السؤال التالي ➡️</button>
+    
+    <div id="timer" class="text-gray-300 text-sm mt-4 hidden">
+        <div id="timer-number" class="text-3xl font-extrabold text-red-500">15</div>
+        <p>ثوانٍ متبقية</p>
+    </div>
+
+    <audio id="sound-correct" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"></audio>
+    <audio id="sound-wrong" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"></audio>
+    <audio id="sound-timeup" src="https://actions.google.com/sounds/v1/cartoon/pop.ogg"></audio>
+
+    <footer id="fixed-footer" class="fixed-footer hidden">
+        <button id="footer-home-btn" class="footer-btn">
+            🏠 الشاشة الرئيسية
         </button>
-    `;
+        <button id="footer-contact-btn" class="footer-btn contact-btn">
+            💬 لدعمنا وتواصل معنا
+        </button>
+    </footer>
     
-    document.getElementById('return-from-contact').addEventListener('click', showWelcomeScreen);
-}
-
-// ... (بقية دوال اللعبة: initializeQuestions, loadQuestion, checkAnswer, updateProgress, showFinalResult) ...
-
-function showFinalResult() {
-    clearInterval(questionTimer);
-    
-    hideAllScreens();
-    
-    // تهيئة شاشة النتيجة النهائية
-    progressFill.style.width = '100%';
-    quizContainer.innerHTML = '';
-
-    const isMCQ = currentQuizType === 'mcq';
-    let bestScore = isMCQ ? bestScoreMCQ : bestScoreTF;
-    let storageKey = isMCQ ? 'bestScoreMCQ' : 'bestScoreTF';
-    let quizTypeTitle = isMCQ ? 'الاختيار المتعدد' : 'الصح أو الخطأ';
-    
-    let isNewRecord = false;
-    if (score > bestScore) {
-        bestScore = score;
-        isNewRecord = true;
-        if (isMCQ) bestScoreMCQ = score;
-        else bestScoreTF = score;
-        saveUserData(); // حفظ الرقم القياسي الجديد
-    }
-    
-    const percentage = (score / QUIZ_LENGTH) * 100;
-    let message;
-    if (percentage >= 90) message = 'تهانينا! أنت متمكن ولديك معلومات ممتازة! 🌟';
-    else if (percentage >= 70) message = 'نتيجة جيدة! استمر في التعلم وتحدي نفسك. 💪';
-    else message = 'تحتاج إلى بعض المراجعة. لا تيأس، المحاولة القادمة أفضل! 💡';
-
-    // إنشاء واجهة النتيجة النهائية
-    quizContainer.innerHTML = `
-        <div class="card question-card active mt-6 p-8">
-            <p class="text-3xl md:text-4xl mb-4 text-[#66fcf1]">انتهت جولة ${quizTypeTitle}!</p>
-            <p class="text-2xl md:text-3xl font-bold mb-4 ${isNewRecord ? 'text-yellow-400' : 'text-gray-200'}">${message}</p>
-            <p class="text-2xl font-extrabold text-green-400">أحرزت ${score} من ${QUIZ_LENGTH} أسئلة.</p>
-            <p class="text-yellow-300 text-lg font-bold mt-2">أعلى نتيجة لـ ${username} في هذه الجولة: ${bestScore} من ${QUIZ_LENGTH}</p>
-            <button id="return-to-welcome" class="main-btn mt-6 py-3 px-6 text-xl">اختر تحدي جديد</button>
-        </div>
-    `;
-
-    document.getElementById('return-to-welcome').addEventListener('click', showWelcomeScreen);
-}
-
-
-function loadQuestion() {
-    // ... (بقية منطق تحميل السؤال) ...
-    // يرجى تضمين المنطق الأصلي الخاص بتحميل السؤال والتوقيت هنا.
-}
-
-
-// *** 5. معالجات الأحداث والبدء ***
-
-// معالج زر التسجيل (عند النقر على "دخول وبدء التحدي")
-startGameBtn.addEventListener('click', () => {
-    username = usernameInput.value.trim();
-    if (username) {
-        saveUserData(); // حفظ الاسم
-        
-        // **الخطوة الحاسمة:** الانتقال إلى شاشة الترحيب
-        loginScreen.classList.remove('active');
-        loginScreen.classList.add('hidden');
-        
-        // إظهار الشاشة الرئيسية (Welcome Screen)
-        showWelcomeScreen(); 
-        
-    } else {
-        alert('الرجاء إدخال اسم المستخدم.');
-    }
-});
-
-// معالج زر عرض الملف الشخصي
-profileBtn.addEventListener('click', showProfileScreen);
-
-// معالج زر الشاشة الرئيسية في الشريط السفلي
-footerHomeBtn.addEventListener('click', showWelcomeScreen);
-
-// معالج زر التواصل في الشريط السفلي
-footerContactBtn.addEventListener('click', showContactScreen);
-
-// معالج زر السؤال التالي
-nextButton.addEventListener('click', () => {
-    currentQuestionIndex++;
-    result.classList.add('hidden');
-    loadQuestion();
-});
-
-// التحقق عند تحميل الصفحة لوجود اسم مستخدم محفوظ (للتخطي التلقائي)
-document.addEventListener('DOMContentLoaded', () => {
-    const savedUsername = localStorage.getItem('username');
-    if (savedUsername) {
-        username = savedUsername;
-        usernameInput.value = savedUsername;
-        bestScoreMCQ = parseInt(localStorage.getItem('bestScoreMCQ') || '0');
-        bestScoreTF = parseInt(localStorage.getItem('bestScoreTF') || '0');
-        
-        // إخفاء شاشة الدخول وإظهار شاشة الترحيب
-        loginScreen.classList.remove('active');
-        loginScreen.classList.add('hidden');
-        showWelcomeScreen();
-    } else {
-        // إظهار شاشة تسجيل الدخول
-        loginScreen.classList.add('active');
-        loginScreen.classList.remove('hidden');
-        fixedFooter.classList.add('hidden'); // إخفاء الشريط السفلي قبل التسجيل
-    }
-    
-    // ربط أزرار بدء التحدي في شاشة الترحيب
-    document.getElementById('start-mcq-btn').addEventListener('click', (e) => initializeQuestions(e.target.dataset.type));
-    document.getElementById('start-tf-btn').addEventListener('click', (e) => initializeQuestions(e.target.dataset.type));
-    
-    // ربط زر الموسيقى
-    musicToggleButton.addEventListener('click', toggleMusic);
-});
+    <script src="questions.js"></script> 
+    <script src="script.js"></script> 
+</body>
+</html>
