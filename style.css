@@ -1,78 +1,159 @@
-/* Custom CSS for Quiz App (تنسيقات إضافية للشريط الثابت) */
+/* =================================================================
+   style.css 
+   (يجب أن تكون الأولوية للتنسيقات التي تعالج الإخفاء والإظهار)
+   ================================================================= */
 
-/* ... (جميع التنسيقات السابقة تبقى كما هي) ... */
+/* الخطوط الأساسية */
+body {
+    font-family: 'Cairo', sans-serif;
+    min-height: 100vh;
+    padding-bottom: 70px; /* مساحة للشريط السفلي */
+    position: relative;
+}
 
-/* ------------------------------------- */
-/* أنماط الشريط السفلي الثابت (Fixed Footer)   */
-/* ------------------------------------- */
+/* التنسيق العام لبطاقات المحتوى */
+.card {
+    background-color: #1f2833; /* لون خلفية داكن */
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    max-width: 600px;
+    margin: 20px auto;
+}
 
+/* تنسيق زر الإجراء الرئيسي */
+.main-btn {
+    background-color: #66fcf1; /* لون التمييز الفيروزي */
+    color: #0b0c10;
+    font-weight: 700;
+    padding: 12px 24px;
+    border-radius: 8px;
+    transition: background-color 0.3s, transform 0.1s;
+    width: 100%;
+    max-width: 300px;
+    cursor: pointer;
+    border: none;
+    font-size: 1.25rem;
+}
+
+.main-btn:hover {
+    background-color: #45a29e;
+    transform: translateY(-1px);
+}
+
+.alt-btn {
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+    cursor: pointer;
+    border: none;
+}
+
+/* تنسيق أزرار الإجابات */
+.answer-btn {
+    background-color: #0b0c10;
+    color: #c5c6c7;
+    border: 2px solid #45a29e;
+    padding: 15px 20px;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+    text-align: right;
+    font-weight: 600;
+}
+
+.answer-btn:hover:not(:disabled) {
+    background-color: #1f2833;
+    border-color: #66fcf1;
+}
+
+.answer-btn.correct {
+    background-color: #22c55e; /* أخضر */
+    border-color: #15803d;
+    color: white;
+    animation: pulse-correct 0.5s ease-out;
+}
+
+.answer-btn.wrong {
+    background-color: #ef4444; /* أحمر */
+    border-color: #b91c1c;
+    color: white;
+    animation: shake 0.3s;
+}
+
+/* الأنماط الخاصة بالشريط السفلي (لحل مشكلة الظهور) */
 .fixed-footer {
     position: fixed;
     bottom: 0;
-    left: 0;
     right: 0;
-    width: 100%;
-    background-color: #1f2833; /* لون الخلفية */
-    border-top: 2px solid #66fcf1; /* شريط علوي مميز */
-    padding: 10px 15px;
+    left: 0;
     display: flex;
     justify-content: space-around;
     align-items: center;
-    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.5);
-    z-index: 1000;
+    background-color: #1f2833; /* لون الشريط */
+    border-top: 1px solid #45a29e;
+    padding: 10px 0;
+    z-index: 1000; /* لضمان الظهور فوق كل شيء */
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.5);
 }
 
 .footer-btn {
-    background-color: transparent;
+    background: none;
     border: none;
-    color: #c5c6c7;
-    padding: 8px 15px;
+    color: #66fcf1;
     font-size: 1rem;
-    font-weight: 700;
-    border-radius: 8px;
+    font-weight: 600;
+    padding: 5px 10px;
     cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-    display: flex;
-    align-items: center;
+    transition: color 0.3s;
 }
 
 .footer-btn:hover {
-    background-color: #45a29e;
-    color: #0b0c10;
+    color: #45a29e;
 }
 
-.footer-btn.contact-btn {
-    color: #66fcf1; /* تمييز زر التواصل */
-}
-
-/* ------------------------------------- */
-/* أنماط شاشة التواصل (Contact Screen)   */
-/* ------------------------------------- */
-
-.contact-icon {
-    font-size: 2.5rem; /* حجم الأيقونة */
-    color: #66fcf1;
-    transition: transform 0.2s, color 0.3s;
-}
-
+/* الأنماط الخاصة بصفحة التواصل */
 .contact-link {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    padding: 15px;
-    margin-bottom: 10px;
-    background-color: #0b0c10;
-    border-radius: 10px;
+    text-align: right;
+    background-color: #111827;
+    padding: 10px;
+    border-radius: 8px;
+    border-right: 3px solid #66fcf1;
     transition: background-color 0.3s;
-    border-right: 4px solid #45a29e;
 }
 
 .contact-link:hover {
     background-color: #1f2833;
-    transform: translateX(-5px);
+    border-right-color: #45a29e;
 }
 
-.contact-link:hover .contact-icon {
-    transform: scale(1.1);
-    color: #45a29e;
+.contact-icon {
+    font-size: 1.8rem;
 }
+
+
+/* الكلاسات الأساسية للإخفاء/الإظهار المستخدمة في JS */
+.hidden {
+    display: none !important;
+}
+
+.active {
+    display: block !important;
+}
+
+/* الرسوم المتحركة */
+@keyframes pulse-correct {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+    100% { transform: scale(1); }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-5px); }
+    40%, 80% { transform: translateX(5px); }
+}
+
