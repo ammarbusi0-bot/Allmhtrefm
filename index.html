@@ -21,6 +21,10 @@
             opacity: 1;
             display: block; /* إظهار عند التفعيل */
         }
+        /* لضمان عمل الـ "hidden" على حاوية الفيديو */
+        .hidden {
+            display: none !important;
+        }
     </style>
 </head>
 <body class="text-center bg-[#0b0c10] text-gray-100 font-sans" style="font-family: 'Cairo', sans-serif;">
@@ -66,7 +70,7 @@
             </div>
 
             <p class="text-xl text-gray-200 mb-4">أدخل اسمك لتسجيل نتيجتك:</p>
-            <input type="text" id="username-input" placeholder="اسم المستخدم" class="w-full max-w-sm p-3 mb-4 rounded-xl bg-[#1f2833] border border-[#66fcf1] text-white text-lg placeholder-gray-500 text-center" required>
+            <input type="text" id="username-input" placeholder="اسم المستخدم" class="w-full max-w-sm p-3 mb-4 rounded-xl bg-[#1f2833] border border-[#66fcf1] text-white text-lg placeholder-gray-500 text-center" required value="Ammar">
             
             <button id="start-game-btn" class="main-btn mt-4">
                 دخول وبدء التحدي
@@ -92,7 +96,6 @@
         </div>
 
         <div id="profile-screen" class="card question-card mt-6"></div>
-
         <div id="contact-screen" class="card question-card mt-6"></div>
         
         <div id="loading-message" class="text-xl mt-12 text-[#66fcf1] hidden">جاري تهيئة الأسئلة... ⏳</div>
