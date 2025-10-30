@@ -1,114 +1,63 @@
-:root{
-  --bg:#f5f7fb;
-  --card:#ffffff;
-  --accent:#2b6cb0;
-  --accent-dark:#1e4a7a;
-  --text:#1f2937;
-  --muted:#6b7280;
-  --danger:#e53e3e;
-  --radius:12px;
-  font-family: "Tajawal", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@500&display=swap');
+
+body {
+  font-family: 'Cairo', sans-serif;
+  background: linear-gradient(135deg, #0099cc, #ffcc66);
+  color: #222;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
 }
 
-*{box-sizing:border-box}
-html,body{height:100%}
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
-  line-height:1.45;
-  padding-bottom:40px;
+.card, #main-menu {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  text-align: center;
+  width: 90%;
+  max-width: 400px;
+  transition: all 0.3s ease;
 }
 
-/* container */
-.container{
-  max-width:980px;
-  margin:20px auto;
-  padding:16px;
+.hidden {
+  display: none;
 }
 
-/* topbar */
-.topbar{
-  background:linear-gradient(90deg, var(--accent), var(--accent-dark));
-  color:white;
-  padding:14px 0;
-  box-shadow:0 6px 18px rgba(11,35,69,0.08);
-}
-.topbar .container{display:flex;align-items:center;justify-content:space-between}
-.logo{margin:0;font-size:20px;font-weight:700}
-.user-greet{font-size:14px;opacity:0.95}
-
-/* grid */
-.grid{
-  display:grid;
-  gap:14px;
-  grid-template-columns:repeat(auto-fit, minmax(240px,1fr));
-  margin-top:14px;
+h1, h2 {
+  color: #004c70;
 }
 
-/* cards */
-.card{
-  background:var(--card);
-  border-radius:var(--radius);
-  padding:18px;
-  box-shadow:0 6px 14px rgba(29,40,53,0.06);
-}
-.card h3{margin-top:0}
-.btn{
-  display:inline-block;
-  padding:10px 14px;
-  border-radius:10px;
-  border:0;
-  background:var(--accent);
-  color:white;
-  font-weight:600;
-  cursor:pointer;
-  margin-top:10px;
-}
-.btn:hover{filter:brightness(0.95)}
-.btn.link{background:transparent;color:var(--accent);padding:6px 10px;margin:6px 0}
-.btn.primary{background:var(--accent-dark)}
-.btn.danger{background:var(--danger)}
-.hidden{display:none}
-
-/* question area */
-.question-text{font-size:18px;margin:8px 0 16px}
-.options{display:flex;flex-direction:column;gap:8px}
-.option-btn{
-  text-align:right;
-  padding:10px 12px;
-  border-radius:10px;
-  border:1px solid rgba(0,0,0,0.06);
-  background:transparent;
-  cursor:pointer;
-  font-size:16px;
-}
-.option-btn:hover{background:rgba(43,108,176,0.06)}
-.option-btn.disabled{opacity:0.6;cursor:default}
-
-/* progress */
-#game-header{display:flex;justify-content:space-between;align-items:center;margin:12px 0}
-
-/* overlay login */
-.overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:80;
-}
-.modal{
-  background:var(--card);padding:22px;border-radius:12px;max-width:420px;width:90%;text-align:center;
-  box-shadow:0 12px 40px rgba(3,10,27,0.24);
-}
-.modal input{width:100%;padding:10px;border-radius:8px;border:1px solid #e6eef7;margin-top:12px;font-size:16px}
-.modal-actions{margin-top:12px;display:flex;justify-content:center;gap:8px}
-
-/* toast */
-.toast{
-  position:fixed;left:50%;transform:translateX(-50%);bottom:26px;background:#111;color:white;padding:10px 16px;border-radius:999px;z-index:90;
+button {
+  background: linear-gradient(90deg, #0077aa, #00c2a8);
+  border: none;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 16px;
+  margin: 10px 0;
+  cursor: pointer;
+  transition: 0.3s;
+  width: 100%;
 }
 
-/* responsive tweaks */
-@media (max-width:520px){
-  .question-text{font-size:16px}
-  .modal{padding:16px}
+button:hover {
+  background: linear-gradient(90deg, #00c2a8, #0077aa);
+  transform: scale(1.05);
+}
+
+input {
+  width: 90%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  text-align: center;
+  font-size: 16px;
+}
+
+p {
+  color: #333;
 }
