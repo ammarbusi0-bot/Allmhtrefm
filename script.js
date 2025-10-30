@@ -1,5 +1,11 @@
-// *** 1. المتغيرات والمصفوفات العامة (نعتمد على questions.js الآن) ***
-// يتم استدعاء ALL_QUESTIONS_DATA و TF_QUESTIONS_DATA من ملف questions.js
+// =================================================================
+// script.js
+// المنطق الأساسي للعبة: الانتقالات، التوقيت، حساب النتيجة، ومعالجة الأزرار
+// يعتمد على questions.js للحصول على بيانات الأسئلة.
+// =================================================================
+
+// *** 1. المتغيرات والمصفوفات العامة ***
+// يتم استدعاء ALL_QUESTIONS_DATA و TF_QUESTIONS_DATA من ملف questions.js (المفترض وجوده)
 
 const QUIZ_LENGTH = 10;
 const TIME_PER_QUESTION = 15;
@@ -26,10 +32,10 @@ const loadingMessage = document.getElementById('loading-message');
 
 const loginScreen = document.getElementById('login-screen');
 const welcomeScreen = document.getElementById('welcome-screen');
-const profileScreen = document.getElementById('profile-screen'); // شاشة الإحصائيات
-const contactScreen = document.getElementById('contact-screen'); // شاشة التواصل
+const profileScreen = document.getElementById('profile-screen'); 
+const contactScreen = document.getElementById('contact-screen'); 
 
-const startGameBtn = document.getElementById('start-game-btn');
+const startGameBtn = document.getElementById('start-game-btn'); // زر الدخول
 const usernameInput = document.getElementById('username-input');
 const welcomeUsername = document.getElementById('welcome-username');
 const greetingMessage = document.getElementById('greeting-message');
@@ -37,6 +43,9 @@ const profileBtn = document.getElementById('profile-btn');
 
 const musicToggleButton = document.getElementById('music-toggle-btn');
 const backgroundMusic = document.getElementById('background-music');
+const soundCorrect = document.getElementById('sound-correct');
+const soundWrong = document.getElementById('sound-wrong');
+const soundTimeup = document.getElementById('sound-timeup');
 
 // عناصر الشريط السفلي
 const fixedFooter = document.getElementById('fixed-footer');
@@ -44,7 +53,39 @@ const footerHomeBtn = document.getElementById('footer-home-btn');
 const footerContactBtn = document.getElementById('footer-contact-btn');
 
 
-// *** 3. وظائف إدارة الشاشات (حل مشكلة الانتقال) ***
+// *** 3. وظائف الإدارة العامة ***
+
+function saveUserData() {
+    localStorage.setItem('username', username);
+    localStorage.setItem('bestScoreMCQ', bestScoreMCQ);
+    localStorage.setItem('bestScoreTF', bestScoreTF);
+}
+
+function playSound(audioElement) {
+    audioElement.currentTime = 0;
+    audioElement.play().catch(e => console.error("Error playing sound:", e));
+}
+
+function toggleMusic() {
+    const icon = document.getElementById('music-icon');
+    const status = document.getElementById('music-status');
+    if (backgroundMusic.paused) {
+        backgroundMusic.play().then(() => {
+            icon.textContent = '🔊';
+            status.textContent = 'إيقاف';
+        }).catch(e => {
+            console.warn("Music play failed:", e);
+            icon.textContent = '🔇';
+            status.textContent = 'تشغيل';
+        });
+    } else {
+        backgroundMusic.pause();
+        icon.textContent = '🔇';
+        status.textContent = 'تشغيل';
+    }
+}
+
+// *** 4. وظائف إدارة الشاشات (حل مشكلة الانتقال) ***
 
 function hideAllScreens() {
     // إخفاء جميع الحاويات الرئيسية للأسئلة والإحصائيات
@@ -52,7 +93,7 @@ function hideAllScreens() {
         card.classList.remove('active');
         card.classList.add('hidden');
     });
-    // إخفاء العناصر غير المتعلقة بالشاشات الرئيسية
+    // إخفاء العناصر غير الضرورية
     nextButton.classList.add('hidden');
     timerElement.classList.add('hidden');
     progressBar.classList.add('hidden');
@@ -60,7 +101,7 @@ function hideAllScreens() {
     result.classList.add('hidden');
     quizContainer.innerHTML = ''; // تنظيف حاوية الأسئلة
     
-    // إخفاء الشريط السفلي في شاشة تسجيل الدخول فقط
+    // إدارة الشريط السفلي: إخفاؤه إذا كنا في شاشة تسجيل الدخول
     if(document.body.classList.contains('logged-in')) {
         fixedFooter.classList.remove('hidden');
     } else {
@@ -68,7 +109,7 @@ function hideAllScreens() {
     }
 }
 
-// ** الوظيفة الأساسية للعودة للصفحة الرئيسية (تم إصلاحها)**
+// الوظيفة الأساسية للانتقال إلى الشاشة الرئيسية (Welcome Screen)
 function showWelcomeScreen() {
     hideAllScreens();
     
@@ -82,54 +123,6 @@ function showWelcomeScreen() {
     
     document.body.classList.add('logged-in'); // تعيين حالة تسجيل الدخول
     fixedFooter.classList.remove('hidden'); // إظهار الشريط السفلي
-}
-
-// وظيفة حفظ الاسم وأعلى نتيجة في المتصفح
-function saveUserData() {
-    localStorage.setItem('username', username);
-    localStorage.setItem('bestScoreMCQ', bestScoreMCQ);
-    localStorage.setItem('bestScoreTF', bestScoreTF);
-}
-
-// ... (باقي وظائف initializeQuestions و loadQuestion و checkAnswer و updateProgress تبقى كما هي) ...
-
-function showFinalResult() {
-    // ... (كود النتيجة النهائية) ...
-    
-    // تهيئة شاشة النتيجة النهائية
-    progressFill.style.width = '100%';
-    quizContainer.innerHTML = '';
-    timerElement.classList.add('hidden');
-    progressBar.classList.add('hidden');
-
-    const isMCQ = currentQuizType === 'mcq';
-    let bestScore = isMCQ ? bestScoreMCQ : bestScoreTF;
-    let storageKey = isMCQ ? 'bestScoreMCQ' : 'bestScoreTF';
-    let quizTypeTitle = isMCQ ? 'الاختيار المتعدد' : 'الصح أو الخطأ';
-    
-    let isNewRecord = false;
-    if (score > bestScore) {
-        // ... (منطق تحديث الرقم القياسي) ...
-    }
-    
-    // إخفاء جميع الشاشات أولاً
-    hideAllScreens();
-
-    const percentage = (score / QUIZ_LENGTH) * 100;
-    let message = '...'; // (رسالة النتيجة)
-    
-    // إنشاء واجهة النتيجة النهائية داخل حاوية QuizContainer
-    quizContainer.innerHTML = `
-        <div class="card question-card active mt-6 p-8">
-            <p class="text-3xl md:text-4xl mb-4 text-[#66fcf1]">انتهت جولة ${quizTypeTitle}!</p>
-            <p class="text-2xl md:text-3xl font-bold mb-4 ${isNewRecord ? 'text-yellow-400' : 'text-gray-200'}">${message}</p>
-            <p class="text-yellow-300 text-lg font-bold mb-4">أعلى نتيجة لـ ${username} في هذه الجولة: ${bestScore} من ${QUIZ_LENGTH}</p>
-            <button id="return-to-welcome" class="main-btn mt-4 py-3 px-6 text-xl">اختر تحدي جديد</button>
-        </div>
-    `;
-
-    result.classList.add('hidden'); // إخفاء صندوق "إجابة صحيحة/خاطئة"
-    document.getElementById('return-to-welcome').addEventListener('click', showWelcomeScreen);
 }
 
 function showProfileScreen() {
@@ -160,7 +153,7 @@ function showProfileScreen() {
     document.getElementById('return-from-profile').addEventListener('click', showWelcomeScreen);
 }
 
-// ** وظيفة عرض شاشة التواصل الجديدة **
+// وظيفة عرض شاشة التواصل الجديدة
 function showContactScreen() {
     hideAllScreens();
 
@@ -213,19 +206,76 @@ function showContactScreen() {
     document.getElementById('return-from-contact').addEventListener('click', showWelcomeScreen);
 }
 
-// ... (باقي وظائف اللعبة مثل toggleMusic و initializeQuestions) ...
-// ** يجب إعادة كتابة initializeQuestions لتبدأ بالاعتماد على مصفوفات ALL_QUESTIONS_DATA و TF_QUESTIONS_DATA من questions.js
+// ... (بقية دوال اللعبة: initializeQuestions, loadQuestion, checkAnswer, updateProgress, showFinalResult) ...
 
-function initializeQuestions(type) {
-    // ... (نفس المنطق السابق ولكن مع الاعتماد على المتغيرات العالمية من questions.js) ...
+function showFinalResult() {
+    clearInterval(questionTimer);
+    
+    hideAllScreens();
+    
+    // تهيئة شاشة النتيجة النهائية
+    progressFill.style.width = '100%';
+    quizContainer.innerHTML = '';
+
+    const isMCQ = currentQuizType === 'mcq';
+    let bestScore = isMCQ ? bestScoreMCQ : bestScoreTF;
+    let storageKey = isMCQ ? 'bestScoreMCQ' : 'bestScoreTF';
+    let quizTypeTitle = isMCQ ? 'الاختيار المتعدد' : 'الصح أو الخطأ';
+    
+    let isNewRecord = false;
+    if (score > bestScore) {
+        bestScore = score;
+        isNewRecord = true;
+        if (isMCQ) bestScoreMCQ = score;
+        else bestScoreTF = score;
+        saveUserData(); // حفظ الرقم القياسي الجديد
+    }
+    
+    const percentage = (score / QUIZ_LENGTH) * 100;
+    let message;
+    if (percentage >= 90) message = 'تهانينا! أنت متمكن ولديك معلومات ممتازة! 🌟';
+    else if (percentage >= 70) message = 'نتيجة جيدة! استمر في التعلم وتحدي نفسك. 💪';
+    else message = 'تحتاج إلى بعض المراجعة. لا تيأس، المحاولة القادمة أفضل! 💡';
+
+    // إنشاء واجهة النتيجة النهائية
+    quizContainer.innerHTML = `
+        <div class="card question-card active mt-6 p-8">
+            <p class="text-3xl md:text-4xl mb-4 text-[#66fcf1]">انتهت جولة ${quizTypeTitle}!</p>
+            <p class="text-2xl md:text-3xl font-bold mb-4 ${isNewRecord ? 'text-yellow-400' : 'text-gray-200'}">${message}</p>
+            <p class="text-2xl font-extrabold text-green-400">أحرزت ${score} من ${QUIZ_LENGTH} أسئلة.</p>
+            <p class="text-yellow-300 text-lg font-bold mt-2">أعلى نتيجة لـ ${username} في هذه الجولة: ${bestScore} من ${QUIZ_LENGTH}</p>
+            <button id="return-to-welcome" class="main-btn mt-6 py-3 px-6 text-xl">اختر تحدي جديد</button>
+        </div>
+    `;
+
+    document.getElementById('return-to-welcome').addEventListener('click', showWelcomeScreen);
 }
 
-// *** 4. معالجات الأحداث والبدء ***
 
-// معالج زر التسجيل (عند النقر لأول مرة)
+function loadQuestion() {
+    // ... (بقية منطق تحميل السؤال) ...
+    // يرجى تضمين المنطق الأصلي الخاص بتحميل السؤال والتوقيت هنا.
+}
+
+
+// *** 5. معالجات الأحداث والبدء ***
+
+// معالج زر التسجيل (عند النقر على "دخول وبدء التحدي")
 startGameBtn.addEventListener('click', () => {
-    // ... (نفس المنطق السابق) ...
-    document.body.classList.add('logged-in'); // إضافة كلاس الدلالة على تسجيل الدخول
+    username = usernameInput.value.trim();
+    if (username) {
+        saveUserData(); // حفظ الاسم
+        
+        // **الخطوة الحاسمة:** الانتقال إلى شاشة الترحيب
+        loginScreen.classList.remove('active');
+        loginScreen.classList.add('hidden');
+        
+        // إظهار الشاشة الرئيسية (Welcome Screen)
+        showWelcomeScreen(); 
+        
+    } else {
+        alert('الرجاء إدخال اسم المستخدم.');
+    }
 });
 
 // معالج زر عرض الملف الشخصي
@@ -244,7 +294,7 @@ nextButton.addEventListener('click', () => {
     loadQuestion();
 });
 
-// التحقق عند تحميل الصفحة لوجود اسم مستخدم محفوظ
+// التحقق عند تحميل الصفحة لوجود اسم مستخدم محفوظ (للتخطي التلقائي)
 document.addEventListener('DOMContentLoaded', () => {
     const savedUsername = localStorage.getItem('username');
     if (savedUsername) {
@@ -264,7 +314,7 @@ document.addEventListener('DOMContentLoaded', () => {
         fixedFooter.classList.add('hidden'); // إخفاء الشريط السفلي قبل التسجيل
     }
     
-    // ربط أزرار بدء التحدي
+    // ربط أزرار بدء التحدي في شاشة الترحيب
     document.getElementById('start-mcq-btn').addEventListener('click', (e) => initializeQuestions(e.target.dataset.type));
     document.getElementById('start-tf-btn').addEventListener('click', (e) => initializeQuestions(e.target.dataset.type));
     
