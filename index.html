@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>منصة الأسئلة الدينية — صفحات ثابتة</title>
+
+  <!-- خط عربي واضح -->
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- شاشة تسجيل/ترحيب -->
+  <div id="login-overlay" class="overlay hidden" role="dialog" aria-modal="true">
+    <div class="modal">
+      <h2>مرحباً — أدخل اسم المستخدم</h2>
+      <input id="username-input" type="text" placeholder="اكتب اسمك هنا" />
+      <div class="modal-actions">
+        <button id="save-username" class="btn primary">حفظ والبدء</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- شريط أعلى بسيط -->
+  <header class="topbar">
+    <div class="container">
+      <h1 class="logo">منصة الأسئلة الدينية</h1>
+      <div id="user-greet" class="user-greet"></div>
+    </div>
+  </header>
+
+  <!-- محتوى -->
+  <main class="container" id="main">
+    <!-- الصفحة الرئيسية -->
+    <section id="home-screen">
+      <h2>الصفحة الرئيسية</h2>
+      <p>اختر ما تريد لعبه:</p>
+      <div class="grid">
+        <div class="card">
+          <h3>لعبة الأسئلة والأجوبة</h3>
+          <p>أسئلة متعددة الخيارات (10 أسئلة لكل جولة).</p>
+          <button class="btn" id="start-mcq">ابدأ اللعبة</button>
+        </div>
+        <div class="card">
+          <h3>لعبة صح أو خطأ</h3>
+          <p>اختيار صح / خطأ (10 أسئلة لكل جولة).</p>
+          <button class="btn" id="start-tf">ابدأ اللعبة</button>
+        </div>
+        <div class="card">
+          <h3>الملف الشخصي</h3>
+          <p>عرض اسمك وسجل الأداء.</p>
+          <button class="btn" id="open-profile">عرض الملف</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- شاشة اللعبة (مشتركة) -->
+    <section id="game-screen" class="hidden">
+      <button class="btn link" id="back-home-1">← العودة إلى الشاشة الرئيسية</button>
+      <div id="game-header">
+        <h2 id="game-title"></h2>
+        <div id="progress">السؤال <span id="qnum">1</span> من 10</div>
+      </div>
+
+      <div id="question-area" class="card">
+        <p id="question-text" class="question-text"></p>
+        <div id="options" class="options"></div>
+      </div>
+      <div id="after-actions" class="hidden">
+        <button class="btn" id="next-question">التالي</button>
+      </div>
+    </section>
+
+    <!-- شاشة النتيجة بعد جولة -->
+    <section id="round-end" class="hidden">
+      <button class="btn link" id="back-home-2">← العودة إلى الشاشة الرئيسية</button>
+      <h2>انتهت الجولة</h2>
+      <p>نتيجتك في هذه الجولة: <strong id="round-score">0</strong> / 10</p>
+      <div class="actions">
+        <button class="btn" id="new-round">الذهاب إلى جولة أسئلة جديدة</button>
+      </div>
+    </section>
+
+    <!-- الملف الشخصي -->
+    <section id="profile-screen" class="hidden">
+      <button class="btn link" id="back-home-3">← العودة إلى الشاشة الرئيسية</button>
+      <h2>الملف الشخصي</h2>
+      <p>المستخدم: <strong id="profile-username"></strong></p>
+
+      <h3>سجل الأداء (الأحدث أولاً)</h3>
+      <div id="history-list" class="card">
+        <p id="no-history">لا يوجد سجلات بعد.</p>
+        <ul id="history-ul" class="history-ul"></ul>
+      </div>
+
+      <div class="profile-actions">
+        <button class="btn danger" id="clear-history">مسح السجل</button>
+        <button class="btn" id="logout">تغيير اسم المستخدم</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- رسالة نتيجة مؤقتة -->
+  <div id="toast" class="toast hidden"></div>
+
+  <!-- ملفات السكربت -->
+  <script src="questions.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
