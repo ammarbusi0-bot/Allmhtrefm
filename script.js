@@ -1,7 +1,7 @@
 // =================================================================
 // script.js
 // المنطق الأساسي للعبة: الانتقالات، التوقيت، حساب النتيجة، ومعالجة الأزرار
-// يعتمد على questions.js للحصول على بيانات الأسئلة.
+// يتضمن جميع الدوال الضرورية للتشغيل
 // =================================================================
 
 // *** 1. المتغيرات والمصفوفات العامة ***
@@ -18,7 +18,7 @@ let bestScoreTF = parseInt(localStorage.getItem('bestScoreTF') || '0');
 let username = '';
 let selectedQuestions = []; 
 
-// *** 2. عناصر الواجهة والأصوات (مجموعة في مكان واحد لضمان التعريف) ***
+// *** 2. عناصر الواجهة والأصوات ***
 const quizContainer = document.getElementById('quiz');
 const result = document.getElementById('result');
 const nextButton = document.getElementById('next-btn');
@@ -33,7 +33,7 @@ const welcomeScreen = document.getElementById('welcome-screen');
 const profileScreen = document.getElementById('profile-screen'); 
 const contactScreen = document.getElementById('contact-screen'); 
 
-const startGameBtn = document.getElementById('start-game-btn'); // زر الدخول
+const startGameBtn = document.getElementById('start-game-btn'); 
 const usernameInput = document.getElementById('username-input');
 const welcomeUsername = document.getElementById('welcome-username');
 const greetingMessage = document.getElementById('greeting-message');
@@ -41,7 +41,7 @@ const profileBtn = document.getElementById('profile-btn');
 
 const musicToggleButton = document.getElementById('music-toggle-btn');
 const backgroundMusic = document.getElementById('background-music');
-const videoWrapper = document.getElementById('video-wrapper'); // حاوية الفيديو الجديدة
+const videoWrapper = document.getElementById('video-wrapper'); // حاوية الفيديو
 
 const fixedFooter = document.getElementById('fixed-footer');
 const footerHomeBtn = document.getElementById('footer-home-btn');
@@ -84,10 +84,9 @@ function toggleMusic() {
     }
 }
 
-// *** 4. وظائف إدارة الشاشات (حل مشكلة الانتقال وتداخل الفيديو) ***
+// *** 4. وظائف إدارة الشاشات والانتقالات ***
 
 function hideAllScreens() {
-    // إخفاء جميع الحاويات الرئيسية للأسئلة والإحصائيات
     document.querySelectorAll('.question-card').forEach(card => {
         card.classList.remove('active');
         card.classList.add('hidden');
@@ -99,7 +98,6 @@ function hideAllScreens() {
     }
     musicToggleButton.classList.add('hidden');
     
-    // إخفاء العناصر غير الضرورية
     nextButton.classList.add('hidden');
     timerElement.classList.add('hidden');
     progressBar.classList.add('hidden');
@@ -115,7 +113,6 @@ function hideAllScreens() {
     }
 }
 
-// الوظيفة الأساسية للانتقال إلى الشاشة الرئيسية (Welcome Screen)
 function showWelcomeScreen() {
     hideAllScreens();
     
@@ -125,7 +122,6 @@ function showWelcomeScreen() {
     }
     musicToggleButton.classList.remove('hidden');
 
-    // إظهار شاشة الترحيب فقط
     welcomeScreen.classList.remove('hidden');
     welcomeScreen.classList.add('active'); 
     welcomeUsername.textContent = username;
@@ -140,7 +136,6 @@ function showWelcomeScreen() {
 function showProfileScreen() {
     hideAllScreens();
     
-    // بناء وعرض محتوى شاشة الإحصائيات
     profileScreen.classList.remove('hidden');
     profileScreen.classList.add('active');
     
@@ -217,12 +212,186 @@ function showContactScreen() {
     document.getElementById('return-from-contact').addEventListener('click', showWelcomeScreen);
 }
 
-// ... (تضمين منطق اللعبة الأصلي - loadQuestion, checkAnswer, initializeQuestions, showFinalResult) ...
+// *** 5. وظائف اللعبة الأساسية ***
 
-// **ملاحظة:** تم حذف دوال اللعبة الرئيسية هنا للاختصار. يجب أن تكون هذه الدوال موجودة في نسختك.
-// سنركز على معالجات الأحداث التي تسبب المشكلة.
+// اختيار 10 أسئلة عشوائية
+function initializeQuestions(type) {
+    hideAllScreens();
+    loadingMessage.classList.remove('hidden');
+    currentQuizType = type;
+    currentQuestionIndex = 0;
+    score = 0;
 
-// *** 5. معالجات الأحداث والبدء (التركيز على زر الدخول) ***
+    const data = (type === 'mcq') ? ALL_QUESTIONS_DATA : TF_QUESTIONS_DATA;
+
+    // خلط واختيار 10 أسئلة
+    const shuffled = data.sort(() => 0.5 - Math.random());
+    selectedQuestions = shuffled.slice(0, QUIZ_LENGTH);
+
+    // تأخير بسيط لمحاكاة التحميل
+    setTimeout(() => {
+        loadingMessage.classList.add('hidden');
+        progressBar.classList.remove('hidden');
+        timerElement.classList.remove('hidden');
+        loadQuestion();
+    }, 500);
+}
+
+// تحميل وبناء السؤال الحالي
+function loadQuestion() {
+    clearInterval(questionTimer);
+    clearTimeout(questionCountdown);
+    
+    if (currentQuestionIndex >= QUIZ_LENGTH) {
+        showFinalResult();
+        return;
+    }
+    
+    answered = false;
+    nextButton.classList.add('hidden');
+    timerNumber.textContent = TIME_PER_QUESTION;
+    
+    const currentQ = selectedQuestions[currentQuestionIndex];
+    
+    // بناء السؤال والإجابات
+    let optionsHtml = '';
+    currentQ.a.forEach((option, index) => {
+        optionsHtml += `
+            <button class="answer-btn" data-index="${index}" onclick="checkAnswer(${index}, this)">
+                ${option}
+            </button>
+        `;
+    });
+
+    const cardType = currentQuizType === 'mcq' ? 'الاختيار المتعدد' : 'الصح أو الخطأ';
+
+    quizContainer.innerHTML = `
+        <div class="question-card mt-6 p-8 active">
+            <p class="text-lg text-gray-400 mb-3">السؤال ${currentQuestionIndex + 1} من ${QUIZ_LENGTH} (${cardType})</p>
+            <p class="text-3xl font-extrabold text-white mb-8">${currentQ.q}</p>
+            <div id="options-container" class="grid gap-4 ${currentQuizType === 'mcq' ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-2 md:grid-cols-2'}">
+                ${optionsHtml}
+            </div>
+            <div id="feedback" class="mt-4 text-xl font-bold hidden"></div>
+        </div>
+    `;
+
+    updateProgress();
+    startTimer();
+}
+
+function startTimer() {
+    let timeLeft = TIME_PER_QUESTION;
+    timerNumber.textContent = timeLeft;
+    
+    questionTimer = setInterval(() => {
+        timeLeft--;
+        timerNumber.textContent = timeLeft;
+        
+        if (timeLeft <= 0) {
+            clearInterval(questionTimer);
+            checkAnswer(-1); // -1 تعني أن الوقت قد انتهى
+        }
+    }, 1000);
+}
+
+function checkAnswer(selectedIndex, button) {
+    if (answered) return;
+    answered = true;
+    clearInterval(questionTimer);
+    
+    const currentQ = selectedQuestions[currentQuestionIndex];
+    const correctIndex = currentQ.correct;
+    const allButtons = document.querySelectorAll('.answer-btn');
+    const feedback = document.getElementById('feedback');
+
+    allButtons.forEach((btn, index) => {
+        if (index === correctIndex) {
+            btn.classList.add('correct');
+        } else {
+            btn.classList.add('wrong');
+        }
+        btn.disabled = true; // إيقاف إمكانية النقر على كل الأزرار
+    });
+    
+    // تقييم الإجابة
+    if (selectedIndex === correctIndex) {
+        score++;
+        feedback.textContent = 'إجابة صحيحة! 🟢';
+        feedback.classList.remove('hidden');
+        feedback.classList.add('text-green-400');
+        playSound(soundCorrect);
+    } else if (selectedIndex === -1) {
+        feedback.textContent = 'انتهى الوقت! الإجابة الصحيحة هي: ' + currentQ.a[correctIndex];
+        feedback.classList.remove('hidden');
+        feedback.classList.add('text-yellow-400');
+        playSound(soundTimeup);
+    } else {
+        feedback.textContent = 'إجابة خاطئة! الإجابة الصحيحة هي: ' + currentQ.a[correctIndex];
+        feedback.classList.remove('hidden');
+        feedback.classList.add('text-red-400');
+        playSound(soundWrong);
+    }
+
+    // عرض زر السؤال التالي بعد تأخير بسيط
+    nextButton.classList.remove('hidden');
+}
+
+function updateProgress() {
+    const percentage = ((currentQuestionIndex + 1) / QUIZ_LENGTH) * 100;
+    progressFill.style.width = `${percentage}%`;
+    
+    // إضافة لون خاص عندما تكون في آخر سؤال
+    if (currentQuestionIndex === QUIZ_LENGTH - 1) {
+        progressFill.classList.add('bg-red-500');
+        progressFill.classList.remove('bg-yellow-500');
+    } else {
+        progressFill.classList.remove('bg-red-500');
+        progressFill.classList.add('bg-yellow-500');
+    }
+}
+
+function showFinalResult() {
+    clearInterval(questionTimer);
+    
+    hideAllScreens();
+    
+    progressFill.style.width = '100%';
+    quizContainer.innerHTML = '';
+
+    const isMCQ = currentQuizType === 'mcq';
+    let bestScore = isMCQ ? bestScoreMCQ : bestScoreTF;
+    let quizTypeTitle = isMCQ ? 'الاختيار المتعدد' : 'الصح أو الخطأ';
+    
+    let isNewRecord = false;
+    if (score > bestScore) {
+        bestScore = score;
+        isNewRecord = true;
+        if (isMCQ) bestScoreMCQ = score;
+        else bestScoreTF = score;
+        saveUserData(); 
+    }
+    
+    const percentage = (score / QUIZ_LENGTH) * 100;
+    let message;
+    if (percentage >= 90) message = 'تهانينا! أنت متمكن ولديك معلومات ممتازة! 🌟';
+    else if (percentage >= 70) message = 'نتيجة جيدة! استمر في التعلم وتحدي نفسك. 💪';
+    else message = 'تحتاج إلى بعض المراجعة. لا تيأس، المحاولة القادمة أفضل! 💡';
+
+    quizContainer.innerHTML = `
+        <div class="card question-card active mt-6 p-8">
+            <p class="text-3xl md:text-4xl mb-4 text-[#66fcf1]">انتهت جولة ${quizTypeTitle}!</p>
+            <p class="text-2xl md:text-3xl font-bold mb-4 ${isNewRecord ? 'text-yellow-400' : 'text-gray-200'}">${message}</p>
+            <p class="text-2xl font-extrabold text-green-400">أحرزت ${score} من ${QUIZ_LENGTH} أسئلة.</p>
+            <p class="text-yellow-300 text-lg font-bold mt-2">أعلى نتيجة لـ ${username} في هذه الجولة: ${bestScore} من ${QUIZ_LENGTH}</p>
+            <button id="return-to-welcome" class="main-btn mt-6 py-3 px-6 text-xl">اختر تحدي جديد</button>
+        </div>
+    `;
+
+    document.getElementById('return-to-welcome').addEventListener('click', showWelcomeScreen);
+}
+
+// *** 6. معالجات الأحداث والبدء ***
 
 // معالج زر التسجيل (عند النقر على "دخول وبدء التحدي")
 startGameBtn.addEventListener('click', () => {
@@ -230,11 +399,9 @@ startGameBtn.addEventListener('click', () => {
     if (username) {
         saveUserData(); 
         
-        // إخفاء شاشة الدخول
         loginScreen.classList.remove('active');
         loginScreen.classList.add('hidden');
         
-        // الانتقال إلى شاشة الترحيب
         showWelcomeScreen(); 
         
     } else {
@@ -242,25 +409,20 @@ startGameBtn.addEventListener('click', () => {
     }
 });
 
-// معالج زر عرض الملف الشخصي
+// معالجات الشريط السفلي وأزرار الشاشات
 profileBtn.addEventListener('click', showProfileScreen);
-
-// معالج زر الشاشة الرئيسية في الشريط السفلي
 footerHomeBtn.addEventListener('click', showWelcomeScreen);
-
-// معالج زر التواصل في الشريط السفلي
 footerContactBtn.addEventListener('click', showContactScreen);
 
 // معالج زر السؤال التالي
 nextButton.addEventListener('click', () => {
     currentQuestionIndex++;
     result.classList.add('hidden');
-    // loadQuestion(); // يجب استدعاء دالة loadQuestion() الأصلية هنا
+    loadQuestion();
 });
 
-// التحقق عند تحميل الصفحة لوجود اسم مستخدم محفوظ (للتخطي التلقائي)
+// تهيئة اللعبة عند تحميل الصفحة
 document.addEventListener('DOMContentLoaded', () => {
-    // محاولة استرداد اسم المستخدم المحفوظ
     const savedUsername = localStorage.getItem('username');
     if (savedUsername) {
         username = savedUsername;
@@ -290,7 +452,3 @@ document.addEventListener('DOMContentLoaded', () => {
     // ربط زر الموسيقى
     musicToggleButton.addEventListener('click', toggleMusic);
 });
-
-// *****************************************************************
-// يجب إضافة بقية دوال اللعبة الرئيسية (مثل initializeQuestions) هنا
-// *****************************************************************
