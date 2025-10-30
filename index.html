@@ -1,3 +1,6 @@
+    <script src="script.js?v=5"></script> 
+</body>
+</html>
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -5,19 +8,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>💡 تحدي المعرفة الإسلامية - الفقه والثقافة</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght[AT]400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css"> 
     
     <style>
+        /* CSS مدمج لتحسين الانتقالات البصرية لبطاقات الأسئلة */
         .question-card {
-            /* إضافة تأثير انزلاق وشفافية لبطاقة السؤال */
             transition: opacity 0.5s ease-out, transform 0.5s ease-out;
             transform: translateY(20px);
             opacity: 0;
+            display: none; /* إخفاء افتراضي أفضل للتعامل مع JS */
         }
         .question-card.active {
             transform: translateY(0);
             opacity: 1;
+            display: block; /* إظهار عند التفعيل */
         }
     </style>
 </head>
@@ -71,7 +76,7 @@
             </button>
         </div>
         
-        <div id="welcome-screen" class="card question-card mt-6 hidden">
+        <div id="welcome-screen" class="card question-card mt-6">
             <p class="text-3xl font-extrabold text-yellow-300 mb-4">جاهز يا <span id="welcome-username"></span>؟</p>
             <p class="text-xl text-gray-200 mb-8">اختر جولة الاختبار التي تفضلها:</p>
             
@@ -88,6 +93,10 @@
                 عرض ملفي الشخصي والإحصائيات 📊
             </button>
         </div>
+
+        <div id="profile-screen" class="card question-card mt-6"></div>
+
+        <div id="contact-screen" class="card question-card mt-6"></div>
         
         <div id="loading-message" class="text-xl mt-12 text-[#66fcf1] hidden">جاري تهيئة الأسئلة... ⏳</div>
     </main>
@@ -104,7 +113,17 @@
     <audio id="sound-correct" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"></audio>
     <audio id="sound-wrong" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"></audio>
     <audio id="sound-timeup" src="https://actions.google.com/sounds/v1/cartoon/pop.ogg"></audio>
+
+    <footer id="fixed-footer" class="fixed-footer hidden">
+        <button id="footer-home-btn" class="footer-btn">
+            🏠 الشاشة الرئيسية
+        </button>
+        <button id="footer-contact-btn" class="footer-btn contact-btn">
+            💬 لدعمنا وتواصل معنا
+        </button>
+    </footer>
     
-    <script src="script.js?v=5"></script> 
+    <script src="questions.js"></script> 
+    <script src="script.js"></script> 
 </body>
 </html>
