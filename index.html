@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تحدي المعرفة الاسلامية - واجهة فخمة</title>
+    <title>تحدي المعرفة الإسلامية</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
 
     <div id="splash-screen" class="screen active">
-        <h1 class="header-title">تحدي المعرفة الاسلامية</h1>
+        <h1 class="header-title">تحدي المعرفة الإسلامية</h1>
         <div class="input-group">
             <label for="user-name">أدخل اسمك الكريم:</label>
             <input type="text" id="user-name" placeholder="الاسم">
@@ -22,30 +22,38 @@
     <div id="main-menu" class="screen">
         <h1 class="header-title">أهلاً بك يا <span id="display-user-name"></span>!</h1>
         <div class="menu-grid">
-            <button onclick="startGame('tf')">لعبة: صح وخطأ</button>
-            <button onclick="startGame('mc')">لعبة: الاختيار من متعدد</button>
+            <button onclick="startGame('tf')">لعبة: صح وخطأ (10 أسئلة)</button>
+            <button onclick="startGame('mc')">لعبة: الاختيار من متعدد (10 أسئلة)</button>
         </div>
-        <div class="options-bar">
-            <div class="level-control">
-                <label class="switch-label">رفع المستوى (أسئلة أصعب):</label>
-                <label class="switch">
-                    <input type="checkbox" id="level-up-toggle" onchange="toggleLevel()">
-                    <span class="slider round"></span>
-                </label>
-            </div>
-        </div>
+
         <div class="social-bar">
-            <a href="https://tiktok.com/@allmhtref" target="_blank" class="social-link">
-                <i class="fab fa-tiktok"></i> تيك توك الرسمي
+            <a href="https://wa.me/905510651347" target="_blank" class="social-link">
+                <i class="fab fa-whatsapp"></i> واتساب
             </a>
+            <a href="https://t.me/bootcadid" target="_blank" class="social-link">
+                <i class="fab fa-telegram-plane"></i> تيليجرام
+            </a>
+            <a href="https://tiktok.com/@allmhtref" target="_blank" class="social-link">
+                <i class="fab fa-tiktok"></i> تيك توك
+            </a>
+        </div>
+
+        <div class="points-bar">
+            <p>نقاطك: <span id="user-points">0</span> ⭐</p>
         </div>
     </div>
 
     <div id="game-screen" class="screen">
-        <div class="game-area"> <div id="timer-circle"><span id="timer-text">15</span>s</div>
+        <div class="game-area">
+            <div id="timer-circle"><span id="timer-text">15</span>s</div>
             <p id="question-text" class="question-box"></p>
             <div id="answers-container" class="answers-container"></div>
             <p id="question-counter" class="counter-text"></p>
+
+            <div class="help-buttons">
+                <button onclick="useRemoveOption()">إزالة خيار (-20 نقطة)</button>
+                <button onclick="useChangeQuestion()">تغيير السؤال (-30 نقطة)</button>
+            </div>
         </div>
     </div>
 
@@ -57,7 +65,7 @@
             <p><strong>الأسئلة التي تم الإجابة عليها:</strong> <span id="total-answered">0</span></p>
             <p class="correct"><strong>الإجابات الصحيحة:</strong> <span id="total-correct">0</span></p>
             <p class="wrong"><strong>الإجابات الخاطئة:</strong> <span id="total-wrong">0</span></p>
-            <p class="level-status"><strong>مستوى التحدي الحالي:</strong> <span id="current-level-status">عادي</span></p>
+            <p><strong>النقاط الحالية:</strong> <span id="profile-points">0</span> ⭐</p>
         </div>
     </div>
 
@@ -68,7 +76,7 @@
             <div class="contact-details">
                 <a href="https://wa.me/905510651347" target="_blank" class="contact-item whatsapp">
                     <i class="fab fa-whatsapp"></i>
-                    <span>تواصل واتساب (تركيا)</span>
+                    <span>تواصل واتساب</span>
                     <span class="number-text">00905510651347</span>
                 </a>
                 <a href="mailto:ammarbusi338@gmail.com" class="contact-item email">
@@ -81,6 +89,10 @@
                     <span>قناة تيليجرام</span>
                     <span class="number-text">@bootcadid</span>
                 </a>
+                <a href="https://tiktok.com/@allmhtref" target="_blank" class="contact-item tiktok">
+                    <i class="fab fa-tiktok"></i>
+                    <span>حساب تيك توك الرسمي</span>
+                </a>
             </div>
         </div>
     </div>
@@ -92,19 +104,20 @@
         </button>
         <button class="nav-button" onclick="showScreen('main-menu')">
             <i class="fas fa-home"></i>
-            <span>الشاشة الرئيسية</span>
+            <span>الرئيسية</span>
         </button>
         <button class="nav-button" onclick="showScreen('profile-screen')">
             <i class="fas fa-user-circle"></i>
-            <span>ملفي الشخصي</span>
+            <span>ملفي</span>
         </button>
         <button class="nav-button" onclick="openContactModal()">
             <i class="fas fa-headset"></i>
-            <span>المساعدة/تواصل</span>
+            <span>تواصل</span>
         </button>
     </div>
 
     <script src="questions.js"></script>
     <script src="script.js"></script>
+
 </body>
 </html>
