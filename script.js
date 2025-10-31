@@ -28,7 +28,6 @@ let userStats = {
 };
 
 // بيانات لوحة الصدارة الحقيقية (API)
-// يرجى التأكد من أن هذا هو الرابط الذي حصلت عليه:
 const LEADERBOARD_API_URL = "https://script.google.com/macros/s/AKfycbwlUNpgrnV8t9aLJdqPbH5yAJwobF_lnnI0IZcdnfdUijX5ObifTRavulADw9M8kUBk/exec"; 
 
 
@@ -314,17 +313,18 @@ function startGame(level, type) {
     gameLevel = level;
     gameType = type;
 
-    // الحصول على الأسئلة التي لم يتم الإجابة عليها سابقاً في هذا المستوى/النوع
     const allQ = allQuestions[gameLevel][gameType];
     const answeredIds = userStats.answeredQuestions[gameLevel][gameType];
     
-    // تصفية الأسئلة لتجنب تكرار ما تم الإجابة عليه في الجولات السابقة
+    // 1. التصفية: استبعاد الأسئلة المجابة
     const availableQuestions = allQ.filter(q => !answeredIds.includes(q.question));
 
-    // خلط الأسئلة واختيار العشرة الأوائل (أو أقل إذا لم تتوفر 10)
-    currentQuestions = availableQuestions.sort(() => Math.random() - 0.5).slice(0, 10);
+    // 2. الخلط: خلط القائمة المتاحة (لضمان تباعد الأسئلة المتشابهة)
+    const shuffledQuestions = availableQuestions.sort(() => Math.random() - 0.5);
+
+    // 3. التحديد: اختيار العشرة الأوائل
+    currentQuestions = shuffledQuestions.slice(0, 10);
     
-    // **تحقق التكرار:** إذا لم تتوفر أسئلة جديدة، اعرض رسالة انتهاء المستوى
     if (currentQuestions.length === 0) {
         showLevelCompletedMessage();
         return;
@@ -335,18 +335,18 @@ function startGame(level, type) {
     loadQuestion();
 }
 
-// دالة لمعالجة انتهاء الأسئلة في نوع معين من الأسئلة في المستوى (حل مشكلة التكرار)
+// دالة لمعالجة انتهاء الأسئلة في نوع معين من الأسئلة في المستوى
 function showLevelCompletedMessage() {
     const qText = document.getElementById('question-text');
     const container = document.getElementById('answers-container');
     
-    // **إعادة تعيين قائمة الأسئلة المجابة**
+    // إعادة تعيين قائمة الأسئلة المجابة للسماح بالتكرار
     userStats.answeredQuestions[gameLevel][gameType] = [];
-    saveUserStats(); // حفظ التعديل
+    saveUserStats(); 
 
     qText.textContent = `تهانينا! لقد استنفذت جميع أسئلة (${gameLevel.toUpperCase()} - ${gameType.toUpperCase()}). يمكنك الآن البدء مجدداً لتكرار الأسئلة والتدرب عليها.`;
     
-    // **الأزرار الجديدة:** ابدأ التكرار أو عد للقائمة
+    // الأزرار الجديدة: ابدأ التكرار أو عد للقائمة
     container.innerHTML = `
         <button onclick="startGame('${gameLevel}', '${gameType}')" class="restart-btn">بدء جولة التكرار</button>
         <button onclick="showScreen('level-select')">العودة لاختيار مستوى آخر</button>
@@ -395,13 +395,19 @@ function loadQuestion() {
 
         counter.textContent = `السؤال ${currentQuestionIndex + 1} من ${currentQuestions.length} (${gameLevel.toUpperCase()} - ${gameType.toUpperCase()})`;
 
+        // **[تعديل الخبير والمبرمج: خلط خيارات الصح والخطأ]**
         if (gameType === 'tf') {
-            container.innerHTML = `
-                <button onclick="checkAnswer(true, this)">صح</button>
-                <button onclick="checkAnswer(false, this)">خطأ</button>
-            `;
-        } else if (gameType === 'mc') {
-            const shuffledOptions = q.options.sort(() => Math.random() - 0.5);
+            const tfOptions = [
+                `<button onclick="checkAnswer(true, this)">صح</button>`,
+                `<button onclick="checkAnswer(false, this)">خطأ</button>`
+            ];
+            tfOptions.sort(() => Math.random() - 0.5); 
+            container.innerHTML = tfOptions.join('');
+        } 
+        // **[تعديل الخبير والمبرمج: خلط خيارات الاختيار من متعدد]**
+        else if (gameType === 'mc') {
+            const shuffledOptions = q.options.sort(() => Math.random() - 0.5); // الخلط الصحيح
+            
             shuffledOptions.forEach(option => {
                 const btn = document.createElement('button');
                 btn.textContent = option;
@@ -416,7 +422,7 @@ function loadQuestion() {
     }
 }
 
-// **[تعديل الخبير والمبرمج: الدالة النهائية لحل مشكلة "العب مجدداً"]**
+// دالة عرض رسالة انتهاء الجولة
 function showEndGameMessage(isNormalEnd = false) {
     const qText = document.getElementById('question-text');
     const container = document.getElementById('answers-container');
@@ -437,7 +443,7 @@ function showEndGameMessage(isNormalEnd = false) {
     document.getElementById('question-counter').textContent = "";
     history = [];
     
-    // **هام:** إعادة تعيين عداد الإجابات الصحيحة للجولة القادمة
+    // هام: إعادة تعيين عداد الإجابات الصحيحة للجولة القادمة
     correctAnswersInCurrentRound = 0; 
 }
 
