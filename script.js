@@ -27,16 +27,12 @@ let userStats = {
     weeklyStats:{answered:0,correct:0,wrong:0,lastWeekReset:new Date().getTime()}
 };
 
-// بيانات لوحة الصدارة الوهمية 
-const BASE_LEADERS = [
-    { name: "Yousef", basePoints: 1400 },
-    { name: "Fatima", basePoints: 1250 },
-    { name: "Ahmed", basePoints: 1100 },
-    { name: "Sara", basePoints: 950 },
-    { name: "Omar", basePoints: 800 },
-    { name: "Layla", basePoints: 650 },
-    { name: "Khalid", basePoints: 500 }
-];
+// **[تعديل الخبير والمبرمج: إضافة رابط API لوحة الصدارة الحقيقية]**
+const LEADERBOARD_API_URL = "https://script.google.com/macros/s/AKfycbwlUNpgrnV8t9aLJdqPbH5yAJwobF_lnnI0IZcdnfdUijX5ObifTRavulADw9M8kUBk/exec"; 
+
+
+// **[تعديل الخبير والمبرمج: حذف متغير BASE_LEADERS الوهمي]**
+// تم حذفه!
 
 // ----------------------------------------------------
 // تحميل البيانات (تم التعديل)
@@ -75,14 +71,45 @@ function loadInitialData(){
 }
 
 // ----------------------------------------------------
-// حفظ البيانات
+// حفظ البيانات وتحديث لوحة الصدارة
 // ----------------------------------------------------
+// **[تعديل الخبير والمبرمج: إضافة استدعاء إرسال النقاط]**
 function saveUserStats(){
     localStorage.setItem('userName',userStats.name);
     localStorage.setItem('userStats',JSON.stringify(userStats));
     updateProfileDisplay();
     document.getElementById('user-points').textContent = userStats.points; 
+    
+    // **الجزء الجديد: إرسال النقاط للوحة الصدارة الحقيقية**
+    sendScoreToLeaderboard();
 }
+
+// دالة جديدة لإرسال النقاط إلى Google Sheets
+async function sendScoreToLeaderboard() {
+    // نرسل النقاط فقط إذا كانت كافية للظهور في لوحة الصدارة
+    if (userStats.points < MIN_POINTS_TO_SHOW_ON_LEADERBOARD) {
+        return; 
+    }
+    
+    try {
+        await fetch(LEADERBOARD_API_URL, {
+            method: 'POST',
+            mode: 'no-cors', // يجب أن تكون no-cors لنجاح الاتصال بـ Apps Script
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: userStats.name,
+                points: userStats.points
+            })
+        });
+        // لا يمكننا قراءة الرد بسبب 'no-cors' mode، لكن نضمن إرسال البيانات
+    } catch (error) {
+        console.error("Failed to send score to leaderboard API:", error);
+    }
+}
+
 
 // ----------------------------------------------------
 // التنقل بين الشاشات (تم التعديل)
@@ -482,70 +509,50 @@ function checkLevelUnlockCondition() {
 }
 
 // ----------------------------------------------------
-// وظائف لوحة الصدارة (المحاكاة) 
+// وظائف لوحة الصدارة (الحقيقية) 
 // ----------------------------------------------------
 
-// توليد قائمة متغيرة يومياً لمحاكاة المنافسة
-function generateDailyLeaderboard() {
-    // استخدام اليوم كبذرة للعشوائية
-    const today = new Date().toDateString();
-    let seed = 0;
-    for (let i = 0; i < today.length; i++) {
-        seed += today.charCodeAt(i);
-    }
-    
-    // دالة عشوائية مُخصصة لضمان التغيير اليومي الثابت
-    const pseudoRandom = (max) => {
-        seed = (seed * 9301 + 49297) % 233280;
-        return Math.floor(seed / 233280 * max);
-    };
+// **[تعديل الخبير والمبرمج: حذف generateDailyLeaderboard() الوهمية]**
+// تم حذفها!
 
-    let dailyLeaders = [];
-    const availableLeaders = [...BASE_LEADERS];
-    
-    // اختيار 5 أسماء عشوائية من القائمة الأساسية بنقاط متغيرة قليلاً
-    for (let i = 0; i < 5 && availableLeaders.length > 0; i++) {
-        const index = pseudoRandom(availableLeaders.length);
-        const leader = availableLeaders.splice(index, 1)[0];
-        
-        // تغيير بسيط في النقاط (بين -50 و +50)
-        const deviation = pseudoRandom(101) - 50; 
-        const dailyPoints = Math.max(450, leader.basePoints + deviation); // النقاط تبدأ من 450 كحد أدنى
-        
-        dailyLeaders.push({ name: leader.name, points: dailyPoints });
-    }
-
-    // إضافة المستخدم الحالي بشرط الظهور (200 نقطة)
-    if (userStats.points >= MIN_POINTS_TO_SHOW_ON_LEADERBOARD) {
-        dailyLeaders.push({ name: userStats.name, points: userStats.points });
-    }
-    
-    // الفرز التنازلي (الأعلى نقاطاً أولاً)
-    dailyLeaders.sort((a, b) => b.points - a.points);
-    
-    // قص القائمة إلى 5 أسماء (لضمان بقائها قصيرة)
-    return dailyLeaders.slice(0, 5);
-}
-
-// دالة لتحديث عرض لوحة الصدارة
-function updateLeaderboardDisplay() {
-    const leaderboard = generateDailyLeaderboard();
+// **[تعديل الخبير والمبرمج: استبدال updateLeaderboardDisplay() لجلب البيانات من الـ API]**
+async function updateLeaderboardDisplay() {
     const container = document.getElementById('leaderboard-list');
-    container.innerHTML = '';
+    container.innerHTML = '<li>جاري تحميل لوحة الصدارة...</li>'; // رسالة تحميل مؤقتة
     
-    leaderboard.forEach((leader, index) => {
-        const listItem = document.createElement('li');
-        listItem.innerHTML = `
-            <span class="rank">${index + 1}</span>
-            <span class="name">${leader.name}</span>
-            <span class="points">${leader.points} ⭐</span>
-        `;
-        // تمييز المستخدم الحالي
-        if (leader.name === userStats.name) {
-            listItem.classList.add('is-user');
+    try {
+        // جلب البيانات من الـ API (Apps Script)
+        const response = await fetch(LEADERBOARD_API_URL, { method: 'GET' });
+        const leaderboard = await response.json();
+        
+        container.innerHTML = ''; // مسح رسالة التحميل
+
+        // تصفية البيانات لعرض أفضل 10 لاعبين
+        const topLeaders = leaderboard.slice(0, 10);
+        
+        // إذا لم تكن لوحة الصدارة فارغة، نبدأ العرض
+        if (topLeaders.length > 0) {
+            topLeaders.forEach((leader, index) => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `
+                    <span class="rank">${index + 1}</span>
+                    <span class="name">${leader.name}</span>
+                    <span class="points">${leader.points} ⭐</span>
+                `;
+                // تمييز المستخدم الحالي
+                if (leader.name === userStats.name) {
+                    listItem.classList.add('is-user');
+                }
+                container.appendChild(listItem);
+            });
+        } else {
+             container.innerHTML = '<li>لا توجد بيانات كافية حالياً في لوحة الصدارة.</li>';
         }
-        container.appendChild(listItem);
-    });
+
+    } catch (error) {
+        container.innerHTML = '<li>فشل في الاتصال بخادم لوحة الصدارة.</li>';
+        console.error("Failed to fetch leaderboard:", error);
+    }
 }
 
 
