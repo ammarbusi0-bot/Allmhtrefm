@@ -21,6 +21,11 @@
 
     <div id="main-menu" class="screen">
         <h1 class="header-title">أهلاً بك يا <span id="display-user-name"></span>!</h1>
+        
+        <div class="points-bar">
+            <p>تحدي المعرفة: <span id="user-points">0</span> ⭐</p>
+        </div>
+
         <div class="menu-grid">
             <button onclick="showScreen('level-select')">ابدأ اللعب</button>
             <button onclick="showScreen('leaderboard-screen')">🏆 لوحة الصدارة اليومية</button>
@@ -36,10 +41,6 @@
             <a href="https://tiktok.com/@allmhtref" target="_blank" class="social-link">
                 <i class="fab fa-tiktok"></i> تيك توك
             </a>
-        </div>
-
-        <div class="points-bar">
-            <p>نقاطك: <span id="user-points">0</span> ⭐</p>
         </div>
     </div>
 
@@ -91,7 +92,7 @@
     
     <div id="leaderboard-screen" class="screen">
         <h1 class="header-title">🏆 لوحة الصدارة اليومية (المحاكاة)</h1>
-        <p class="leaderboard-note">هذه القائمة تتغير يومياً. تحتاج ${MIN_POINTS_TO_SHOW_ON_LEADERBOARD} نقطة للظهور!</p>
+        <p class="leaderboard-note">هذه القائمة تتغير يومياً. تحتاج 200 نقطة للظهور!</p>
         <div class="leaderboard-card">
             <ol id="leaderboard-list"></ol>
         </div>
