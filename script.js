@@ -1,13 +1,16 @@
 // ----------------------------------------------------
 // متغيرات اللعبة
 // ----------------------------------------------------
-let currentLevel = 'normal';
 let currentQuestionIndex = 0;
 let currentQuestions = [];
+let gameLevel = ''; // لتخزين المستوى المختار (normal, medium, hard)
 let gameType = '';
 let history = [];
 let timer;
-let timeLeft = 15; // يبدأ المؤقت بـ 15 ثانية
+let timeLeft = 15; 
+const POINTS_CORRECT_ANSWER = 10;
+const COST_REMOVE_OPTION = 20;
+const COST_CHANGE_QUESTION = 30;
 
 // بيانات المستخدم
 let userStats = {
@@ -15,6 +18,7 @@ let userStats = {
     totalAnswered: 0,
     totalCorrect: 0,
     totalWrong: 0,
+    points: 100, // البدء بـ 100 نقطة
     weeklyStats:{answered:0,correct:0,wrong:0,lastWeekReset:new Date().getTime()}
 };
 
@@ -24,22 +28,27 @@ let userStats = {
 function loadInitialData(){
     const storedName = localStorage.getItem('userName');
     const storedStats = localStorage.getItem('userStats');
-    const storedLevel = localStorage.getItem('currentLevel');
-    const levelToggle = document.getElementById('level-up-toggle');
 
     if(storedName){ userStats.name=storedName; document.getElementById('display-user-name').textContent=storedName; showScreen('main-menu',true);}
     else showScreen('splash-screen',true);
 
     if(storedStats){
         userStats=JSON.parse(storedStats);
+        // التحقق من وجود النقاط وإضافة قيمة افتراضية إذا كانت مفقودة
+        if (typeof userStats.points === 'undefined' || userStats.points === null) {
+            userStats.points = 100;
+            saveUserStats();
+        }
+        
+        // تحديث النقاط في الواجهة عند التحميل
+        document.getElementById('user-points').textContent = userStats.points;
+        
         const now=new Date().getTime(),oneWeek=7*24*60*60*1000;
         if(now-userStats.weeklyStats.lastWeekReset>=oneWeek){
             userStats.weeklyStats={answered:0,correct:0,wrong:0,lastWeekReset:now};
             saveUserStats();
         }
     }
-
-    if(storedLevel){ currentLevel=storedLevel; levelToggle.checked=(currentLevel==='hard'); }
 }
 
 // ----------------------------------------------------
@@ -48,15 +57,16 @@ function loadInitialData(){
 function saveUserStats(){
     localStorage.setItem('userName',userStats.name);
     localStorage.setItem('userStats',JSON.stringify(userStats));
-    localStorage.setItem('currentLevel',currentLevel);
     updateProfileDisplay();
+    // تحديث النقاط في شريط القائمة الرئيسية
+    document.getElementById('user-points').textContent = userStats.points; 
 }
 
 // ----------------------------------------------------
 // التنقل بين الشاشات
 // ----------------------------------------------------
 function showScreen(screenId,isInitialLoad=false){
-    clearTimer(); // مسح المؤقت عند مغادرة شاشة اللعب
+    clearTimer();
     const currentActiveScreen=document.querySelector('.screen.active');
     if(currentActiveScreen && !isInitialLoad && currentActiveScreen.id!==screenId){ history.push(currentActiveScreen.id); }
     document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
@@ -64,7 +74,7 @@ function showScreen(screenId,isInitialLoad=false){
     document.getElementById('back-btn').style.display=history.length>0?'flex':'none';
     if(screenId==='profile-screen'){ updateProfileDisplay(); }
     document.getElementById('bottom-nav').style.display=(screenId==='splash-screen')?'none':'flex';
-    if(screenId === 'main-menu') { history = []; } // مسح السجل عند العودة للقائمة الرئيسية
+    if(screenId === 'main-menu') { history = []; }
 }
 
 function goBack(){
@@ -74,7 +84,6 @@ function goBack(){
         document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
         document.getElementById(prev).classList.add('active');
         document.getElementById('back-btn').style.display=history.length>0?'flex':'none';
-        if(prev==='main-menu'){ history=[]; }
     }
 }
 
@@ -92,19 +101,19 @@ function closeContactModal() { document.getElementById('contact-modal').style.di
 
 
 // ----------------------------------------------------
-// رفع المستوى والإحصائيات
+// الإحصائيات وتحديث النقاط
 // ----------------------------------------------------
-function toggleLevel(){
-    const isHard=document.getElementById('level-up-toggle').checked;
-    currentLevel=isHard?'hard':'normal';
-    saveUserStats();
-    alert(`تم تعيين مستوى التحدي إلى: ${isHard?'صعب':'عادي'}`);
-}
-
 function updateStats(isCorrect){
     userStats.totalAnswered++; userStats.weeklyStats.answered++;
-    if(isCorrect){ userStats.totalCorrect++; userStats.weeklyStats.correct++; }
-    else{ userStats.totalWrong++; userStats.weeklyStats.wrong++; }
+    if(isCorrect){ 
+        userStats.totalCorrect++; 
+        userStats.weeklyStats.correct++;
+        userStats.points += POINTS_CORRECT_ANSWER; // إضافة نقاط للإجابة الصحيحة
+    }
+    else{ 
+        userStats.totalWrong++; 
+        userStats.weeklyStats.wrong++; 
+    }
     saveUserStats();
 }
 
@@ -113,24 +122,24 @@ function updateProfileDisplay(){
     document.getElementById('total-answered').textContent=userStats.weeklyStats.answered;
     document.getElementById('total-correct').textContent=userStats.weeklyStats.correct;
     document.getElementById('total-wrong').textContent=userStats.weeklyStats.wrong;
-    document.getElementById('current-level-status').textContent = (currentLevel === 'hard') ? 'صعب' : 'عادي';
+    document.getElementById('profile-points').textContent = userStats.points; // عرض النقاط
 }
 
 // ----------------------------------------------------
 // وظائف المؤقت (Timer Logic)
 // ----------------------------------------------------
 function startTimer() {
-    clearTimer(); // لضمان عدم وجود مؤقتين يعملان
+    clearTimer();
     timeLeft = 15;
     document.getElementById('timer-text').textContent = timeLeft;
-    document.getElementById('timer-circle').style.borderColor = '#D4AF37'; // لون ذهبي
+    document.getElementById('timer-circle').style.borderColor = '#D4AF37'; 
 
     timer = setInterval(() => {
         timeLeft--;
         document.getElementById('timer-text').textContent = timeLeft;
 
         if (timeLeft <= 5) {
-            document.getElementById('timer-circle').style.borderColor = '#F44336'; // لون أحمر عند قرب الانتهاء
+            document.getElementById('timer-circle').style.borderColor = '#F44336'; 
         }
 
         if (timeLeft <= 0) {
@@ -149,15 +158,107 @@ function clearTimer() {
 }
 
 // ----------------------------------------------------
+// وظائف أدوات المساعدة (Help Buttons)
+// ----------------------------------------------------
+
+// مساعدة: إزالة خيارين خاطئين (متعدد فقط)
+function useRemoveOption() {
+    if (gameType !== 'mc') {
+        alert("هذه الميزة متاحة فقط في أسئلة الاختيار من متعدد.");
+        return;
+    }
+    if (userStats.points < COST_REMOVE_OPTION) {
+        alert(`نقاطك (${userStats.points}) لا تكفي. تحتاج لـ ${COST_REMOVE_OPTION} نقطة لاستخدام هذه الميزة.`);
+        return;
+    }
+    
+    // تأكيد الخصم
+    if (!confirm(`هل أنت متأكد من خصم ${COST_REMOVE_OPTION} نقطة مقابل إزالة خيار خاطئ؟`)) {
+        return;
+    }
+
+    userStats.points -= COST_REMOVE_OPTION;
+    saveUserStats();
+
+    const q = currentQuestions[currentQuestionIndex];
+    const buttons = document.querySelectorAll('#answers-container button:not([disabled])');
+    
+    if (buttons.length <= 2) {
+        alert("لا يمكن إزالة المزيد من الخيارات.");
+        return;
+    }
+
+    let removedCount = 0;
+    const incorrectOptions = Array.from(buttons).filter(btn => btn.textContent !== q.correct);
+    
+    // إزالة أول خيارين خاطئين عشوائياً
+    for (let i = 0; i < Math.min(2, incorrectOptions.length); i++) {
+        // نختار عشوائياً لمنع التوقع (إذا كان هناك أكثر من خيارين)
+        const randomIndex = Math.floor(Math.random() * incorrectOptions.length);
+        const btnToRemove = incorrectOptions.splice(randomIndex, 1)[0];
+        if (btnToRemove) {
+            btnToRemove.style.display = 'none';
+            btnToRemove.disabled = true;
+            removedCount++;
+        }
+    }
+    
+    document.querySelectorAll('.help-buttons button')[0].disabled = true; // تعطيل زر الإزالة لهذه الجولة
+    alert(`تم خصم ${COST_REMOVE_OPTION} نقطة. تم إزالة ${removedCount} خيار خاطئ.`);
+}
+
+// مساعدة: تغيير السؤال الحالي
+function useChangeQuestion() {
+    if (userStats.points < COST_CHANGE_QUESTION) {
+        alert(`نقاطك (${userStats.points}) لا تكفي. تحتاج لـ ${COST_CHANGE_QUESTION} نقطة لاستخدام هذه الميزة.`);
+        return;
+    }
+    
+    if (!confirm(`هل أنت متأكد من خصم ${COST_CHANGE_QUESTION} نقطة مقابل تغيير السؤال؟`)) {
+        return;
+    }
+
+    userStats.points -= COST_CHANGE_QUESTION;
+    saveUserStats();
+
+    // نعتبر هذا السؤال غير مجاب عليه وننتقل للتالي
+    currentQuestionIndex++; 
+    
+    // تعطيل زر التغيير لهذه الجولة
+    document.querySelectorAll('.help-buttons button')[1].disabled = true; 
+
+    if (currentQuestionIndex < 10) {
+        loadQuestion();
+    } else {
+        // إذا كان السؤال الأخير، ننهي الجولة
+        showEndGameMessage();
+    }
+    
+    alert(`تم خصم ${COST_CHANGE_QUESTION} نقطة. تم تغيير السؤال.`);
+}
+
+
+// ----------------------------------------------------
 // وظائف اللعب الرئيسية (Game Logic)
 // ----------------------------------------------------
-function startGame(type) {
+
+function startGame(level, type) {
+    gameLevel = level; // حفظ المستوى
     gameType = type;
-    currentQuestionIndex = 0;
-    // خلط الأسئلة واختيار العشرة الأوائل منها
-    const levelQuestions = allQuestions[currentLevel][gameType];
-    currentQuestions = levelQuestions.sort(() => Math.random() - 0.5).slice(0, 10);
+
+    // الحصول على الأسئلة من المستوى المحدد فقط
+    const availableQuestions = allQuestions[gameLevel][gameType];
     
+    // خلط الأسئلة واختيار العشرة الأوائل
+    currentQuestions = availableQuestions.sort(() => Math.random() - 0.5).slice(0, 10);
+    
+    if (currentQuestions.length === 0) {
+        alert("عذراً، لا توجد أسئلة متوفرة حالياً لهذا المستوى!");
+        showScreen('level-select');
+        return;
+    }
+    
+    currentQuestionIndex = 0;
     showScreen('game-screen');
     loadQuestion();
 }
@@ -169,16 +270,20 @@ function loadQuestion() {
 
     clearTimer();
     
-    if (currentQuestionIndex < 10) { // شرط العشرة أسئلة
+    if (currentQuestionIndex < 10) {
         const q = currentQuestions[currentQuestionIndex];
         qText.textContent = q.question;
-        container.innerHTML = ''; // مسح الإجابات القديمة
+        container.innerHTML = '';
         
-        // تحديث العداد
-        counter.textContent = `السؤال ${currentQuestionIndex + 1} من 10`;
+        // تفعيل أزرار المساعدة للجولة الجديدة
+        document.querySelectorAll('.help-buttons button').forEach(btn => btn.disabled = false);
+
+        counter.textContent = `السؤال ${currentQuestionIndex + 1} من 10 (${gameLevel.toUpperCase()} - ${gameType.toUpperCase()})`;
 
         if (gameType === 'tf') {
-            // أسئلة صح وخطأ
+            // أسئلة صح وخطأ (لا يوجد "إزالة خيار")
+            document.querySelectorAll('.help-buttons button')[0].disabled = true;
+
             container.innerHTML = `
                 <button onclick="checkAnswer(true, this)">صح</button>
                 <button onclick="checkAnswer(false, this)">خطأ</button>
@@ -193,64 +298,68 @@ function loadQuestion() {
                 container.appendChild(btn);
             });
         }
-        startTimer(); // بدء المؤقت لكل سؤال
+        startTimer();
     } else {
-        // نهاية الجولة
-        qText.textContent = `انتهت جولة الأسئلة العشرة! لقد أجبت على ${userStats.weeklyStats.correct} سؤال صحيح هذا الأسبوع.`;
-        container.innerHTML = '<button onclick="showScreen(\'main-menu\')">العودة للقائمة الرئيسية</button>';
-        counter.textContent = "";
-        history = []; // مسح سجل التنقل بعد نهاية الجولة
+        showEndGameMessage();
     }
 }
 
+function showEndGameMessage() {
+    const qText = document.getElementById('question-text');
+    const container = document.getElementById('answers-container');
+    
+    qText.textContent = `انتهت جولة الأسئلة العشرة! لديك الآن ${userStats.points} نقطة.`;
+    container.innerHTML = '<button onclick="showScreen(\'main-menu\')">العودة للقائمة الرئيسية</button>';
+    document.getElementById('question-counter').textContent = "";
+    history = [];
+}
+
 function checkAnswer(selectedAnswer, button, timedOut = false) {
-    clearTimer(); // إيقاف المؤقت فور الإجابة أو انتهاء الوقت
+    clearTimer();
     const q = currentQuestions[currentQuestionIndex];
     let isCorrect = false;
     
-    // إذا انتهى الوقت، الإجابة تعتبر خاطئة ولا يوجد زر محدد
+    // تعطيل جميع أزرار المساعدة بعد الإجابة/انتهاء الوقت
+    document.querySelectorAll('.help-buttons button').forEach(btn => btn.disabled = true);
+
     if (timedOut) {
         isCorrect = false;
-        alert("انتهى وقت الإجابة!");
+        alert("انتهى وقت الإجابة! تم اعتبار الإجابة خاطئة.");
     } else {
-        // التحقق من الإجابة
         if (gameType === 'tf') {
             isCorrect = (selectedAnswer === q.answer);
         } else if (gameType === 'mc') {
             isCorrect = (selectedAnswer === q.correct);
         }
 
-        // تلوين الأزرار
-        if (isCorrect) {
+        if (isCorrect && button) {
             button.classList.add('correct-answer');
-        } else {
+        } else if (button) {
             button.classList.add('wrong-answer');
         }
     }
     
-    // تحديث الإحصائيات (فقط إذا لم يكن انتهاء وقت، أو كان انتهاء وقت وقررنا تسجيله كخاطئ)
+    // تحديث الإحصائيات (وإضافة النقاط إذا كانت الإجابة صحيحة)
     updateStats(isCorrect);
     
-    // تمييز الإجابة الصحيحة إذا كانت الإجابة خاطئة أو انتهى الوقت
-    if (!isCorrect || timedOut) {
-        document.querySelectorAll('#answers-container button').forEach(btn => {
-            let correctAnswerText = (gameType === 'tf') ? (q.answer ? 'صح' : 'خطأ') : q.correct;
-            if (btn.textContent === correctAnswerText || (gameType === 'tf' && (q.answer === (btn.textContent === 'صح')))) {
-                btn.classList.add('correct-answer');
-            }
-        });
-    }
-
-    // تعطيل جميع الأزرار لمنع الإجابة مرة أخرى
+    // تمييز الإجابة الصحيحة
     document.querySelectorAll('#answers-container button').forEach(btn => {
+        let isCorrectButton = false;
+        if (gameType === 'tf') {
+            isCorrectButton = (q.answer ? (btn.textContent === 'صح') : (btn.textContent === 'خطأ'));
+        } else if (gameType === 'mc') {
+            isCorrectButton = (btn.textContent === q.correct);
+        }
+        
+        if (isCorrectButton) {
+            btn.classList.add('correct-answer');
+        }
         btn.disabled = true;
     });
-    
-    // الانتقال للسؤال التالي بعد تأخير
+
     currentQuestionIndex++;
-    setTimeout(loadQuestion, 2000); // تأخير ثانيتين لرؤية النتيجة
+    setTimeout(loadQuestion, 2000); 
 }
 
 // تشغيل وظيفة التحميل عند فتح الصفحة
 window.onload = loadInitialData;
-
