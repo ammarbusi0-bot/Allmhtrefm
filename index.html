@@ -22,8 +22,7 @@
     <div id="main-menu" class="screen">
         <h1 class="header-title">أهلاً بك يا <span id="display-user-name"></span>!</h1>
         <div class="menu-grid">
-            <button onclick="startGame('tf')">لعبة: صح وخطأ (10 أسئلة)</button>
-            <button onclick="startGame('mc')">لعبة: الاختيار من متعدد (10 أسئلة)</button>
+            <button onclick="showScreen('level-select')">ابدأ اللعب</button>
         </div>
 
         <div class="social-bar">
@@ -40,6 +39,25 @@
 
         <div class="points-bar">
             <p>نقاطك: <span id="user-points">0</span> ⭐</p>
+        </div>
+    </div>
+
+    <div id="level-select" class="screen">
+        <h1 class="header-title">اختر مستوى الصعوبة ونوع السؤال</h1>
+
+        <div class="level-selection">
+            
+            <h2 class="level-header">المستوى العادي (Normal)</h2>
+            <button onclick="startGame('normal', 'tf')">صح وخطأ</button>
+            <button onclick="startGame('normal', 'mc')">اختيار من متعدد</button>
+
+            <h2 class="level-header">المستوى المتوسط (Medium)</h2>
+            <button onclick="startGame('medium', 'tf')">صح وخطأ</button>
+            <button onclick="startGame('medium', 'mc')">اختيار من متعدد</button>
+
+            <h2 class="level-header">المستوى الصعب (Hard)</h2>
+            <button onclick="startGame('hard', 'tf')">صح وخطأ</button>
+            <button onclick="startGame('hard', 'mc')">اختيار من متعدد</button>
         </div>
     </div>
 
