@@ -1,17 +1,17 @@
 /* -------------------------------------------------- */
-/* 1. التنسيقات العامة والألوان (تم التعديل) */
+/* 1. التنسيقات العامة والألوان (تم التعديل للوضع الداكن) */
 /* -------------------------------------------------- */
 :root {
-    --primary-color: #C62828; /* أحمر داكن (لون أساسي جديد) */
-    --secondary-color: #8BC34A; /* أخضر فاتح جميل (لون ثانوي) */
-    --background-color: #EFEBE9; /* خلفية فاتحة ومريحة (بدلاً من الأبيض الصارخ) */
-    --card-background: #FFFFFF; /* خلفية البطاقات والأزرار تبقى بيضاء لتباين جيد */
-    --text-color: #212121; /* لون النص الرئيسي */
+    --primary-color: #E57373; /* أحمر فاتح وجميل (للتوازن مع الخلفية الداكنة) */
+    --secondary-color: #AED581; /* أخضر فاتح جميل (لون ثانوي) */
+    --background-color: #121212; /* DEEP DARK GRAY (الخلفية الرئيسية) */
+    --card-background: #2C2C2C; /* SLIGHTLY LIGHTER DARK GRAY for cards */
+    --text-color: #E0E0E0; /* LIGHT GRAY for text */
     --correct-color: #4CAF50; /* أخضر (صحيح) */
     --wrong-color: #F44336; /* أحمر (خطأ) */
     --accent-color: #D4AF37; /* ذهبي (للنقاط والمؤقت) */
-    --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.1);
-    --shadow-deep: 0 8px 16px rgba(0, 0, 0, 0.2);
+    --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.5); /* Adjusted shadow intensity */
+    --shadow-deep: 0 8px 16px rgba(0, 0, 0, 0.7); /* Adjusted shadow intensity */
 }
 
 * {
@@ -23,8 +23,9 @@
 }
 
 body {
+    /* تغيير خلفية الجسم */
     background-color: var(--background-color);
-    color: var(--text-color);
+    color: var(--text-color); /* النص أصبح فاتحاً */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -73,7 +74,7 @@ body {
 .input-group {
     width: 100%;
     padding: 20px;
-    background: var(--card-background);
+    background: var(--card-background); /* خلفية البطاقات الداكنة */
     border-radius: 10px;
     box-shadow: var(--shadow-light);
     text-align: center;
@@ -90,7 +91,9 @@ body {
     width: 100%;
     padding: 12px;
     margin-bottom: 20px;
-    border: 1px solid #ccc;
+    border: 1px solid #444; /* لون حدود فاتح ليتناسب مع الخلفية الداكنة */
+    background-color: #444; /* خلفية خانة الإدخال */
+    color: var(--text-color);
     border-radius: 8px;
     font-size: 1rem;
     text-align: center;
@@ -101,7 +104,7 @@ button {
     width: 100%;
     padding: 15px;
     background-color: var(--primary-color);
-    color: white;
+    color: var(--text-color); /* لون النص على الأزرار */
     border: none;
     border-radius: 8px;
     cursor: pointer;
@@ -112,7 +115,7 @@ button {
 }
 
 button:hover {
-    background-color: #9C1F1F; /* ظل أغمق للأحمر */
+    background-color: #C62828; /* ظل أغمق للأحمر */
 }
 
 button:active {
@@ -120,8 +123,9 @@ button:active {
 }
 
 button:disabled {
-    background-color: #BDBDBD;
+    background-color: #555; /* لون داكن للزر المعطل */
     cursor: not-allowed;
+    color: #999;
 }
 
 /* شبكة القائمة الرئيسية */
@@ -135,7 +139,7 @@ button:disabled {
     box-shadow: var(--shadow-light);
 }
 
-/* شريط النقاط في القائمة الرئيسية (تم تعديل اللون) */
+/* شريط النقاط في القائمة الرئيسية */
 .points-bar {
     position: fixed;
     top: 0;
@@ -144,7 +148,7 @@ button:disabled {
     max-width: 450px;
     margin: 0 auto;
     background-color: var(--primary-color); 
-    color: white;
+    color: var(--text-color);
     padding: 10px 20px;
     text-align: center;
     font-size: 1.2rem;
@@ -182,9 +186,10 @@ button:disabled {
     border-bottom: 2px solid var(--secondary-color);
 }
 
-/* أزرار المستوى (تم تعديل اللون) */
+/* أزرار المستوى */
 .level-selection button {
     background-color: var(--secondary-color);
+    color: #121212; /* جعل النص داكناً ليتناسب مع الخلفية الفاتحة للزر */
 }
 .level-selection button:hover:not([disabled]) {
     background-color: #689F38; /* ظل أغمق للأخضر الثانوي */
@@ -192,10 +197,10 @@ button:disabled {
 
 /* تنسيق أزرار المستويات المقفلة */
 .level-selection button.locked-btn {
-    background-color: #9E9E9E !important; 
-    color: #424242;
+    background-color: #444 !important; 
+    color: #888 !important;
     cursor: not-allowed;
-    border: 2px dashed #757575;
+    border: 2px dashed #666;
     font-size: 1rem;
 }
 
@@ -227,7 +232,7 @@ button:disabled {
 
 .question-box {
     background-color: var(--primary-color);
-    color: white;
+    color: var(--text-color);
     padding: 20px;
     border-radius: 10px;
     box-shadow: var(--shadow-deep);
@@ -256,7 +261,7 @@ button:disabled {
 }
 
 .answers-container button:hover:not([disabled]) {
-    background-color: #E0F2F1;
+    background-color: #444; /* تظليل عند التمرير */
 }
 
 /* تنسيقات الإجابات الصحيحة والخاطئة */
@@ -288,7 +293,7 @@ button:disabled {
 
 .counter-text {
     font-size: 0.9rem;
-    color: #616161;
+    color: #9E9E9E; /* لون فاتح للنص المساعد */
 }
 
 /* أزرار المساعدة (Help Buttons) */
@@ -304,7 +309,7 @@ button:disabled {
     font-size: 0.85rem;
     padding: 10px;
     background-color: #FFB300; 
-    color: var(--text-color);
+    color: #121212; /* نص داكن على الأصفر */
     font-weight: bold;
 }
 .help-buttons button:hover:not([disabled]) {
@@ -324,7 +329,7 @@ button:disabled {
 
 .profile-card h2, .profile-card h3 {
     color: var(--primary-color);
-    border-bottom: 1px dashed #ccc;
+    border-bottom: 1px dashed #444; /* لون فاتح للخط الداش */
     padding-bottom: 5px;
     margin-bottom: 15px;
 }
@@ -360,7 +365,7 @@ button:disabled {
     justify-content: space-between;
     align-items: center;
     padding: 10px 0;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #444; /* لون فاتح للخط الفاصل */
     font-size: 1.1rem;
     font-weight: 500;
 }
@@ -382,14 +387,14 @@ button:disabled {
 
 .leaderboard-note {
     text-align: center;
-    color: #757575;
+    color: #9E9E9E;
     margin-bottom: 15px;
     font-size: 0.9rem;
 }
 
 /* تمييز المستخدم الحالي */
 .is-user {
-    background-color: #E0F2F1; 
+    background-color: #444; 
     border-radius: 5px;
     padding: 10px;
     margin: 5px -10px !important; 
@@ -410,8 +415,8 @@ button:disabled {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    background-color: var(--card-background);
-    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+    background-color: #202020; /* لون أغمق قليلاً من البطاقات */
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.4);
     padding: 5px 0;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
@@ -421,7 +426,7 @@ button:disabled {
 .nav-button {
     background: none;
     border: none;
-    color: #9E9E9E;
+    color: #888;
     flex-direction: column;
     display: flex;
     align-items: center;
@@ -484,7 +489,7 @@ button:disabled {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0,0,0,0.4);
+    background-color: rgba(0,0,0,0.7);
 }
 
 .modal-content {
@@ -507,7 +512,7 @@ button:disabled {
 
 .close-btn:hover,
 .close-btn:focus {
-    color: #000;
+    color: #E0E0E0;
     text-decoration: none;
     cursor: pointer;
 }
@@ -532,12 +537,12 @@ button:disabled {
     border-radius: 5px;
     text-decoration: none;
     color: var(--text-color);
-    background-color: #F5F5F5;
+    background-color: #383838; /* خلفية أفتح قليلاً للعناصر */
     transition: background-color 0.3s;
 }
 
 .contact-item:hover {
-    background-color: #ECEFF1;
+    background-color: #444;
 }
 
 .contact-item i {
@@ -547,13 +552,13 @@ button:disabled {
 
 .contact-item .number-text {
     font-size: 0.9rem;
-    color: #616161;
+    color: #aaa;
 }
 
 /* ألوان أيقونات التواصل */
 .whatsapp i { color: #25D366; }
 .telegram i { color: #0088CC; }
-.tiktok i { color: #000000; }
+.tiktok i { color: #E0E0E0; } /* تيك توك يحتاج لون فاتح على الخلفية الداكنة */
 .email i { color: #FFC107; }
 
 /* -------------------------------------------------- */
