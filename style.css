@@ -26,7 +26,7 @@
 body {
     /* تغيير خلفية الجسم إلى صورة نجمية */
     background-color: #0d0124;
-    background-image: url('star_background.jpg'); /* يجب استبدال هذا بالصورة الحقيقية أو استخدام رابط URL لصورة */
+    background-image: url('star_background.jpg'); 
     background-size: cover;
     background-attachment: fixed;
     color: var(--text-color);
@@ -70,10 +70,13 @@ body {
 /* 3. شاشة الدخول والقائمة الرئيسية */
 /* -------------------------------------------------- */
 #splash-screen {
+    /* تم التعديل: لضمان ظهور شاشة البداية بشكل صحيح */
+    background-color: transparent; 
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    z-index: 100; 
 }
 
 /* تطبيق تأثير الزجاج على بطاقات المحتوى */
@@ -101,20 +104,50 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.3);
     background-color: rgba(255, 255, 255, 0.1); /* خلفية خانة الإدخال شفافة أكثر */
     color: var(--text-color);
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    font-size: 1rem;
+    text-align: center;
 }
 
 /* أزرار عامة */
 button {
+    width: 100%;
     padding: 15px;
     background-color: var(--primary-color);
     color: #121212; /* لون داكن على الزر الفاتح لتباين جيد */
+    border: none;
     border-radius: 10px;
-    /* إزالة الظل الداكن من الزر للحفاظ على تصميم الصورة */
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 700;
+    transition: background-color 0.3s, transform 0.1s;
+    margin-top: 10px;
     box-shadow: 0 0 15px rgba(251, 192, 45, 0.5); /* توهج حول الزر */
 }
 
 button:hover {
     background-color: #FFB300; 
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+button:disabled {
+    background-color: #555 !important; 
+    cursor: not-allowed;
+    color: #999 !important;
+    box-shadow: none;
+}
+
+/* شبكة القائمة الرئيسية */
+.menu-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 /* شريط النقاط العلوي */
@@ -132,33 +165,59 @@ button:hover {
     font-size: 1.2rem;
     font-weight: 700;
     z-index: 10;
-    border-bottom-left-radius: 0; /* إزالة الانحناءات السفلية لتصميم الصورة */
+    border-bottom-left-radius: 0; 
     border-bottom-right-radius: 0;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5); 
 }
 /* إزاحة المحتوى لتجنب شريط النقاط */
 #main-menu, #game-screen, #profile-screen, #level-select, #leaderboard-screen {
-    padding-top: 50px; /* تقليل الإزاحة ليتناسب مع الصورة */
+    padding-top: 60px; 
 }
 
-/* شريط التواصل الاجتماعي (لجعله يطابق الصورة) */
+/* شريط التواصل الاجتماعي */
 .social-bar {
     display: flex;
     justify-content: space-around;
     margin-top: 30px;
     padding: 10px 0;
-    /* إزالة الخلفية هنا إذا كانت موجودة */
 }
 
 .social-link {
     color: var(--text-color);
-    /* إضافة توهج للأيقونات */
+    text-decoration: none;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: color 0.3s;
     text-shadow: 0 0 5px var(--secondary-color);
 }
+
+.social-link:hover {
+    color: var(--secondary-color);
+}
+
 
 /* -------------------------------------------------- */
 /* 4. شاشة اختيار المستوى (Level Select) */
 /* -------------------------------------------------- */
+.level-selection {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.level-header {
+    color: var(--primary-color);
+    margin-top: 20px;
+    margin-bottom: 5px;
+    font-size: 1.3rem;
+    text-align: center;
+    padding-bottom: 5px;
+    border-bottom: 2px solid var(--secondary-color);
+}
+
+/* أزرار المستوى */
 .level-selection button {
     background-color: var(--secondary-color); /* لون أكوا */
     color: #121212;
@@ -168,67 +227,243 @@ button:hover {
     background-color: #00897B;
 }
 
+/* تنسيق أزرار المستويات المقفلة */
 .level-selection button.locked-btn {
     background-color: rgba(68, 68, 68, 0.5) !important; 
     color: #888 !important;
     border: 2px dashed rgba(255, 255, 255, 0.3);
+    font-size: 1rem;
+    box-shadow: none;
 }
 
 /* -------------------------------------------------- */
 /* 5. شاشة اللعب (Game Screen) */
 /* -------------------------------------------------- */
+.game-area {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+/* تنسيق المؤقت (Timer Circle) */
+#timer-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 5px solid var(--accent-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    transition: border-color 0.5s;
+    background-color: rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+}
+
 .question-box {
     background-color: var(--card-background); /* شفافية لصندوق السؤال */
     backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     border: 1px solid rgba(255, 255, 255, 0.18);
     color: var(--text-color);
     box-shadow: var(--shadow-deep);
+    padding: 20px;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    text-align: center;
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.answers-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
 }
 
 .answers-container button {
     background-color: rgba(255, 255, 255, 0.1); /* شفافية لأزرار الإجابات */
     color: var(--text-color);
     border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow: none;
 }
 
 .answers-container button:hover:not([disabled]) {
     background-color: rgba(255, 255, 255, 0.2);
 }
 
+/* تنسيقات الإجابات الصحيحة والخاطئة */
+.correct-answer {
+    background-color: var(--correct-color) !important;
+    color: white !important;
+    border-color: var(--correct-color) !important;
+    animation: pulse-correct 0.5s 2;
+    box-shadow: 0 0 15px var(--correct-color) !important;
+}
+
+.wrong-answer {
+    background-color: var(--wrong-color) !important;
+    color: white !important;
+    border-color: var(--wrong-color) !important;
+    animation: shake 0.3s;
+    box-shadow: 0 0 15px var(--wrong-color) !important;
+}
+
+@keyframes pulse-correct {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-5px); }
+    40%, 80% { transform: translateX(5px); }
+}
+
+.counter-text {
+    font-size: 0.9rem;
+    color: #9E9E9E; 
+}
+
+/* أزرار المساعدة (Help Buttons) */
+.help-buttons button {
+    background-color: #FFB300; 
+    color: #121212; 
+    box-shadow: 0 0 10px rgba(255, 179, 0, 0.5);
+}
+
+/* -------------------------------------------------- */
+/* 6. شاشة الملف الشخصي (Profile Screen) */
+/* -------------------------------------------------- */
+.profile-card h2, .profile-card h3 {
+    color: var(--primary-color);
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.3); 
+}
+/* ... باقي تنسيقات .profile-card ... */
+
+/* -------------------------------------------------- */
+/* 7. لوحة الصدارة اليومية */
+/* -------------------------------------------------- */
+#leaderboard-list li {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+}
+.leaderboard-note {
+    color: #9E9E9E;
+}
+.is-user {
+    background-color: rgba(255, 255, 255, 0.1); 
+    border: 2px solid var(--primary-color) !important;
+}
+
 /* -------------------------------------------------- */
 /* 8. شريط التنقل السفلي (Bottom Navigation) */
 /* -------------------------------------------------- */
 #bottom-nav {
-    background-color: rgba(0, 0, 0, 0.6); /* شريط سفلي شبه شفاف */
-    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.5);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-width: 450px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.7); /* شريط سفلي شبه شفاف وداكن */
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.7);
+    padding: 5px 0;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
-    
-    /* تصميم توهج الأيقونات */
-    padding: 10px 0;
+    z-index: 20;
 }
+
+.nav-button {
+    color: #888;
+    /* ... باقي تنسيقات .nav-button ... */
+}
+
 .nav-button i {
     font-size: 1.6rem;
-    /* لجعل الأيقونات تبدو متوهجة عند عدم التحديد */
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
 .nav-button:hover, .screen.active ~ #bottom-nav .nav-button[onclick*="showScreen('main-menu')"] {
     color: var(--primary-color);
-    /* توهج الأيقونة المحددة */
     text-shadow: 0 0 15px var(--primary-color);
 }
 
+#back-btn {
+    color: var(--wrong-color);
+    text-shadow: 0 0 10px var(--wrong-color);
+}
+#back-btn:hover {
+    color: #D32F2F;
+}
 
 /* -------------------------------------------------- */
-/* 9. نافذة التواصل (Modal) */
+/* 9. نافذة التواصل (Modal) وشريط التواصل الاجتماعي */
 /* -------------------------------------------------- */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000; /* تم زيادة القيمة لحل مشكلة التداخل */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.8);
+}
+
 .modal-content {
     background-color: var(--card-background);
     backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     border: 1px solid rgba(255, 255, 255, 0.18);
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+    box-shadow: var(--shadow-deep);
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: #E0E0E0;
 }
 
 .contact-item {
     background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* -------------------------------------------------- */
+/* 10. تنسيقات العرض على شاشات كبيرة */
+/* -------------------------------------------------- */
+@media (min-width: 600px) {
+    body {
+        padding-bottom: 0;
+    }
+    .screen {
+        min-height: auto;
+        border-radius: 15px;
+        box-shadow: var(--shadow-deep);
+        position: relative;
+        top: auto;
+    }
+    #bottom-nav {
+        display: none !important; 
+    }
+    #main-menu, #game-screen, #profile-screen, #level-select, #leaderboard-screen {
+        padding-top: 20px;
+    }
 }
