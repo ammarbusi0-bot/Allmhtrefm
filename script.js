@@ -27,12 +27,10 @@ let userStats = {
     weeklyStats:{answered:0,correct:0,wrong:0,lastWeekReset:new Date().getTime()}
 };
 
-// **[تعديل الخبير والمبرمج: إضافة رابط API لوحة الصدارة الحقيقية]**
+// بيانات لوحة الصدارة الحقيقية (API)
+// يرجى التأكد من أن هذا هو الرابط الذي حصلت عليه:
 const LEADERBOARD_API_URL = "https://script.google.com/macros/s/AKfycbwlUNpgrnV8t9aLJdqPbH5yAJwobF_lnnI0IZcdnfdUijX5ObifTRavulADw9M8kUBk/exec"; 
 
-
-// **[تعديل الخبير والمبرمج: حذف متغير BASE_LEADERS الوهمي]**
-// تم حذفه!
 
 // ----------------------------------------------------
 // تحميل البيانات (تم التعديل)
@@ -73,20 +71,18 @@ function loadInitialData(){
 // ----------------------------------------------------
 // حفظ البيانات وتحديث لوحة الصدارة
 // ----------------------------------------------------
-// **[تعديل الخبير والمبرمج: إضافة استدعاء إرسال النقاط]**
 function saveUserStats(){
     localStorage.setItem('userName',userStats.name);
     localStorage.setItem('userStats',JSON.stringify(userStats));
     updateProfileDisplay();
     document.getElementById('user-points').textContent = userStats.points; 
     
-    // **الجزء الجديد: إرسال النقاط للوحة الصدارة الحقيقية**
+    // إرسال النقاط للوحة الصدارة الحقيقية
     sendScoreToLeaderboard();
 }
 
 // دالة جديدة لإرسال النقاط إلى Google Sheets
 async function sendScoreToLeaderboard() {
-    // نرسل النقاط فقط إذا كانت كافية للظهور في لوحة الصدارة
     if (userStats.points < MIN_POINTS_TO_SHOW_ON_LEADERBOARD) {
         return; 
     }
@@ -94,7 +90,7 @@ async function sendScoreToLeaderboard() {
     try {
         await fetch(LEADERBOARD_API_URL, {
             method: 'POST',
-            mode: 'no-cors', // يجب أن تكون no-cors لنجاح الاتصال بـ Apps Script
+            mode: 'no-cors', 
             cache: 'no-cache',
             headers: {
                 'Content-Type': 'application/json'
@@ -104,7 +100,6 @@ async function sendScoreToLeaderboard() {
                 points: userStats.points
             })
         });
-        // لا يمكننا قراءة الرد بسبب 'no-cors' mode، لكن نضمن إرسال البيانات
     } catch (error) {
         console.error("Failed to send score to leaderboard API:", error);
     }
@@ -323,11 +318,13 @@ function startGame(level, type) {
     const allQ = allQuestions[gameLevel][gameType];
     const answeredIds = userStats.answeredQuestions[gameLevel][gameType];
     
+    // تصفية الأسئلة لتجنب تكرار ما تم الإجابة عليه في الجولات السابقة
     const availableQuestions = allQ.filter(q => !answeredIds.includes(q.question));
 
     // خلط الأسئلة واختيار العشرة الأوائل (أو أقل إذا لم تتوفر 10)
     currentQuestions = availableQuestions.sort(() => Math.random() - 0.5).slice(0, 10);
     
+    // **تحقق التكرار:** إذا لم تتوفر أسئلة جديدة، اعرض رسالة انتهاء المستوى
     if (currentQuestions.length === 0) {
         showLevelCompletedMessage();
         return;
@@ -338,13 +335,23 @@ function startGame(level, type) {
     loadQuestion();
 }
 
-// دالة لمعالجة انتهاء الأسئلة في نوع معين من الأسئلة في المستوى
+// دالة لمعالجة انتهاء الأسئلة في نوع معين من الأسئلة في المستوى (حل مشكلة التكرار)
 function showLevelCompletedMessage() {
     const qText = document.getElementById('question-text');
     const container = document.getElementById('answers-container');
     
-    qText.textContent = `تهانينا! لقد استنفذت جميع أسئلة (${gameLevel.toUpperCase()} - ${gameType.toUpperCase()}).`;
-    container.innerHTML = '<button onclick="showScreen(\'level-select\')">العودة لاختيار مستوى أو نوع آخر</button>';
+    // **إعادة تعيين قائمة الأسئلة المجابة**
+    userStats.answeredQuestions[gameLevel][gameType] = [];
+    saveUserStats(); // حفظ التعديل
+
+    qText.textContent = `تهانينا! لقد استنفذت جميع أسئلة (${gameLevel.toUpperCase()} - ${gameType.toUpperCase()}). يمكنك الآن البدء مجدداً لتكرار الأسئلة والتدرب عليها.`;
+    
+    // **الأزرار الجديدة:** ابدأ التكرار أو عد للقائمة
+    container.innerHTML = `
+        <button onclick="startGame('${gameLevel}', '${gameType}')" class="restart-btn">بدء جولة التكرار</button>
+        <button onclick="showScreen('level-select')">العودة لاختيار مستوى آخر</button>
+    `;
+
     document.getElementById('question-counter').textContent = "";
     history = [];
 }
@@ -409,20 +416,31 @@ function loadQuestion() {
     }
 }
 
+// **[تعديل الخبير والمبرمج: الدالة النهائية لحل مشكلة "العب مجدداً"]**
 function showEndGameMessage(isNormalEnd = false) {
     const qText = document.getElementById('question-text');
     const container = document.getElementById('answers-container');
     
+    // إعداد رسالة النهاية
     if (isNormalEnd) {
         qText.textContent = `انتهت جولة الأسئلة (${currentQuestions.length} سؤال)! لديك الآن ${userStats.points} نقطة.`;
     } else {
          qText.textContent = `انتهت جولة الأسئلة! لديك الآن ${userStats.points} نقطة.`;
     }
     
-    container.innerHTML = '<button onclick="showScreen(\'main-menu\')">العودة للقائمة الرئيسية</button>';
+    // الأزرار الجديدة: العب مجدداً والعودة للقائمة
+    container.innerHTML = `
+        <button onclick="startGame('${gameLevel}', '${gameType}')" class="restart-btn">العب مجدداً (${gameLevel.toUpperCase()})</button>
+        <button onclick="showScreen('main-menu')">العودة للقائمة الرئيسية</button>
+    `;
+    
     document.getElementById('question-counter').textContent = "";
     history = [];
+    
+    // **هام:** إعادة تعيين عداد الإجابات الصحيحة للجولة القادمة
+    correctAnswersInCurrentRound = 0; 
 }
+
 
 let correctAnswersInCurrentRound = 0; 
 
@@ -512,10 +530,7 @@ function checkLevelUnlockCondition() {
 // وظائف لوحة الصدارة (الحقيقية) 
 // ----------------------------------------------------
 
-// **[تعديل الخبير والمبرمج: حذف generateDailyLeaderboard() الوهمية]**
-// تم حذفها!
-
-// **[تعديل الخبير والمبرمج: استبدال updateLeaderboardDisplay() لجلب البيانات من الـ API]**
+// استبدال updateLeaderboardDisplay() لجلب البيانات من الـ API
 async function updateLeaderboardDisplay() {
     const container = document.getElementById('leaderboard-list');
     container.innerHTML = '<li>جاري تحميل لوحة الصدارة...</li>'; // رسالة تحميل مؤقتة
