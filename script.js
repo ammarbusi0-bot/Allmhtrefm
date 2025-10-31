@@ -11,9 +11,9 @@ let timeLeft = 15;
 const POINTS_CORRECT_ANSWER = 10;
 const COST_REMOVE_OPTION = 20;
 const COST_CHANGE_QUESTION = 30;
-const COST_ADD_TIME = 25; // تكلفة شراء وقت إضافي
-const MIN_POINTS_TO_SHOW_ON_LEADERBOARD = 200; // الحد الأدنى لظهور المستخدم في الصدارة
-const SUCCESS_THRESHOLD = 7; // شرط النجاح (7 من 10) لفتح المستوى التالي
+const COST_ADD_TIME = 25; 
+const MIN_POINTS_TO_SHOW_ON_LEADERBOARD = 200; 
+const SUCCESS_THRESHOLD = 7; 
 
 // بيانات المستخدم (تم التعديل)
 let userStats = {
@@ -21,13 +21,13 @@ let userStats = {
     totalAnswered: 0,
     totalCorrect: 0,
     totalWrong: 0,
-    points: 200, // البدء بـ 200 نقطة للسماح بالظهور المبدئي
-    unlockedLevel: 'normal', // المستوى المفتوح حالياً
-    answeredQuestions: { normal: { tf: [], mc: [] }, medium: { tf: [], mc: [] }, hard: { tf: [], mc: [] } }, // لتتبع الأسئلة المُجابة
+    points: 200, 
+    unlockedLevel: 'normal', 
+    answeredQuestions: { normal: { tf: [], mc: [] }, medium: { tf: [], mc: [] }, hard: { tf: [], mc: [] } }, 
     weeklyStats:{answered:0,correct:0,wrong:0,lastWeekReset:new Date().getTime()}
 };
 
-// بيانات لوحة الصدارة الوهمية (أسماء عربية بصيغة إنجليزية ونقاط أساسية)
+// بيانات لوحة الصدارة الوهمية 
 const BASE_LEADERS = [
     { name: "Yousef", basePoints: 1400 },
     { name: "Fatima", basePoints: 1250 },
@@ -59,7 +59,7 @@ function loadInitialData(){
         userStats = {
             ...userStats,
             ...loadedStats,
-            points: loadedStats.points || 200, // التأكد من وجود النقاط
+            points: loadedStats.points || 200, 
             unlockedLevel: loadedStats.unlockedLevel || 'normal',
             answeredQuestions: loadedStats.answeredQuestions || { normal: { tf: [], mc: [] }, medium: { tf: [], mc: [] }, hard: { tf: [], mc: [] } }
         };
@@ -96,8 +96,8 @@ function showScreen(screenId,isInitialLoad=false){
     document.getElementById('back-btn').style.display=history.length>0?'flex':'none';
     
     if(screenId==='profile-screen'){ updateProfileDisplay(); }
-    else if(screenId==='leaderboard-screen'){ updateLeaderboardDisplay(); } // تحديث لوحة الصدارة
-    else if(screenId==='level-select'){ updateLevelButtons(); } // تحديث حالة أزرار المستويات
+    else if(screenId==='leaderboard-screen'){ updateLeaderboardDisplay(); } 
+    else if(screenId==='level-select'){ updateLevelButtons(); } 
 
     document.getElementById('bottom-nav').style.display=(screenId==='splash-screen')?'none':'flex';
     if(screenId === 'main-menu') { history = []; }
@@ -184,7 +184,7 @@ function clearTimer() {
 }
 
 // ----------------------------------------------------
-// وظائف أدوات المساعدة (تم التعديل)
+// وظائف أدوات المساعدة 
 // ----------------------------------------------------
 
 // مساعدة: إزالة خيارين خاطئين (متعدد فقط)
@@ -257,7 +257,7 @@ function useChangeQuestion() {
     alert(`تم خصم ${COST_CHANGE_QUESTION} نقطة. تم تغيير السؤال.`);
 }
 
-// مساعدة: إضافة وقت (10 ثواني إضافية) - [الميزة الجديدة]
+// مساعدة: إضافة وقت (10 ثواني إضافية)
 function useAddTime() {
     if (userStats.points < COST_ADD_TIME) {
         alert(`نقاطك (${userStats.points}) لا تكفي. تحتاج لـ ${COST_ADD_TIME} نقطة لشراء وقت إضافي.`);
@@ -397,7 +397,7 @@ function showEndGameMessage(isNormalEnd = false) {
     history = [];
 }
 
-let correctAnswersInCurrentRound = 0; // متتبع جديد لشرط الفتح
+let correctAnswersInCurrentRound = 0; 
 
 function checkAnswer(selectedAnswer, button, timedOut = false) {
     clearTimer();
@@ -482,7 +482,7 @@ function checkLevelUnlockCondition() {
 }
 
 // ----------------------------------------------------
-// وظائف لوحة الصدارة (المحاكاة) - [الميزة الجديدة]
+// وظائف لوحة الصدارة (المحاكاة) 
 // ----------------------------------------------------
 
 // توليد قائمة متغيرة يومياً لمحاكاة المنافسة
