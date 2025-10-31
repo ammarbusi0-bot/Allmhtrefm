@@ -1,17 +1,18 @@
 /* -------------------------------------------------- */
-/* 1. التنسيقات العامة والألوان (تم التعديل للوضع الداكن) */
+/* 1. التنسيقات العامة والألوان (تعديلات لتصميم شفّاف) */
 /* -------------------------------------------------- */
 :root {
-    --primary-color: #E57373; /* أحمر فاتح وجميل (للتوازن مع الخلفية الداكنة) */
-    --secondary-color: #AED581; /* أخضر فاتح جميل (لون ثانوي) */
-    --background-color: #121212; /* DEEP DARK GRAY (الخلفية الرئيسية) */
-    --card-background: #2C2C2C; /* SLIGHTLY LIGHTER DARK GRAY for cards */
+    --primary-color: #FBC02D; /* لون ذهبي/أصفر ساطع لشريط النقاط والأزرار الرئيسية */
+    --secondary-color: #26A69A; /* لون أكوا (مائل للأخضر البحري) لبعض الأزرار */
+    --background-color: #121212; /* DEEP DARK GRAY (لون ثابت للخلفية إذا لم تظهر الصورة) */
+    --card-background: rgba(44, 44, 44, 0.4); /* شفافية للبطاقات */
     --text-color: #E0E0E0; /* LIGHT GRAY for text */
-    --correct-color: #4CAF50; /* أخضر (صحيح) */
-    --wrong-color: #F44336; /* أحمر (خطأ) */
-    --accent-color: #D4AF37; /* ذهبي (للنقاط والمؤقت) */
-    --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.5); /* Adjusted shadow intensity */
-    --shadow-deep: 0 8px 16px rgba(0, 0, 0, 0.7); /* Adjusted shadow intensity */
+    --correct-color: #4CAF50; 
+    --wrong-color: #F44336; 
+    --accent-color: #D4AF37;
+    --shadow-light: 0 4px 30px rgba(0, 0, 0, 0.2); 
+    --shadow-deep: 0 8px 32px 0 rgba(0, 0, 0, 0.3); /* ظل عميق وشفاف */
+    --glass-blur: blur(10px); /* تأثير التعتيم الزجاجي */
 }
 
 * {
@@ -23,9 +24,12 @@
 }
 
 body {
-    /* تغيير خلفية الجسم */
-    background-color: var(--background-color);
-    color: var(--text-color); /* النص أصبح فاتحاً */
+    /* تغيير خلفية الجسم إلى صورة نجمية */
+    background-color: #0d0124;
+    background-image: url('star_background.jpg'); /* يجب استبدال هذا بالصورة الحقيقية أو استخدام رابط URL لصورة */
+    background-size: cover;
+    background-attachment: fixed;
+    color: var(--text-color);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -40,7 +44,7 @@ body {
     width: 100%;
     max-width: 450px;
     padding: 20px;
-    background-color: var(--background-color);
+    background-color: transparent; /* جعل الشاشات شفافة لرؤية الخلفية */
     display: none;
     transition: opacity 0.3s ease-in-out;
     position: absolute;
@@ -54,7 +58,8 @@ body {
 }
 
 .header-title {
-    color: var(--primary-color);
+    color: var(--text-color); /* أبيض أو فاتح */
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* تأثير توهج للنص */
     text-align: center;
     margin-bottom: 30px;
     font-size: 1.8rem;
@@ -71,75 +76,48 @@ body {
     align-items: center;
 }
 
-.input-group {
+/* تطبيق تأثير الزجاج على بطاقات المحتوى */
+.input-group, 
+.menu-grid, 
+.level-selection, 
+.profile-card, 
+.leaderboard-card {
     width: 100%;
     padding: 20px;
-    background: var(--card-background); /* خلفية البطاقات الداكنة */
-    border-radius: 10px;
-    box-shadow: var(--shadow-light);
-    text-align: center;
+    background: var(--card-background); 
+    border-radius: 16px;
+    box-shadow: var(--shadow-deep);
+    backdrop-filter: var(--glass-blur); /* تأثير الزجاج */
+    -webkit-backdrop-filter: var(--glass-blur); /* لتوافق Safari */
+    border: 1px solid rgba(255, 255, 255, 0.18); /* حدود فاتحة شفافة */
+    margin-bottom: 20px;
 }
 
 .input-group label {
-    display: block;
-    margin-bottom: 10px;
-    font-size: 1.1rem;
     color: var(--primary-color);
 }
 
 .input-group input {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 20px;
-    border: 1px solid #444; /* لون حدود فاتح ليتناسب مع الخلفية الداكنة */
-    background-color: #444; /* خلفية خانة الإدخال */
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.1); /* خلفية خانة الإدخال شفافة أكثر */
     color: var(--text-color);
-    border-radius: 8px;
-    font-size: 1rem;
-    text-align: center;
 }
 
 /* أزرار عامة */
 button {
-    width: 100%;
     padding: 15px;
     background-color: var(--primary-color);
-    color: var(--text-color); /* لون النص على الأزرار */
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1.1rem;
-    font-weight: 700;
-    transition: background-color 0.3s, transform 0.1s;
-    margin-top: 10px;
+    color: #121212; /* لون داكن على الزر الفاتح لتباين جيد */
+    border-radius: 10px;
+    /* إزالة الظل الداكن من الزر للحفاظ على تصميم الصورة */
+    box-shadow: 0 0 15px rgba(251, 192, 45, 0.5); /* توهج حول الزر */
 }
 
 button:hover {
-    background-color: #C62828; /* ظل أغمق للأحمر */
+    background-color: #FFB300; 
 }
 
-button:active {
-    transform: scale(0.98);
-}
-
-button:disabled {
-    background-color: #555; /* لون داكن للزر المعطل */
-    cursor: not-allowed;
-    color: #999;
-}
-
-/* شبكة القائمة الرئيسية */
-.menu-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    padding: 20px;
-    background: var(--card-background);
-    border-radius: 10px;
-    box-shadow: var(--shadow-light);
-}
-
-/* شريط النقاط في القائمة الرئيسية */
+/* شريط النقاط العلوي */
 .points-bar {
     position: fixed;
     top: 0;
@@ -148,437 +126,109 @@ button:disabled {
     max-width: 450px;
     margin: 0 auto;
     background-color: var(--primary-color); 
-    color: var(--text-color);
+    color: #121212; /* لون داكن على الشريط الفاتح */
     padding: 10px 20px;
     text-align: center;
     font-size: 1.2rem;
     font-weight: 700;
     z-index: 10;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    box-shadow: var(--shadow-deep);
+    border-bottom-left-radius: 0; /* إزالة الانحناءات السفلية لتصميم الصورة */
+    border-bottom-right-radius: 0;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5); 
 }
 /* إزاحة المحتوى لتجنب شريط النقاط */
 #main-menu, #game-screen, #profile-screen, #level-select, #leaderboard-screen {
-    padding-top: 60px;
+    padding-top: 50px; /* تقليل الإزاحة ليتناسب مع الصورة */
+}
+
+/* شريط التواصل الاجتماعي (لجعله يطابق الصورة) */
+.social-bar {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 30px;
+    padding: 10px 0;
+    /* إزالة الخلفية هنا إذا كانت موجودة */
+}
+
+.social-link {
+    color: var(--text-color);
+    /* إضافة توهج للأيقونات */
+    text-shadow: 0 0 5px var(--secondary-color);
 }
 
 /* -------------------------------------------------- */
 /* 4. شاشة اختيار المستوى (Level Select) */
 /* -------------------------------------------------- */
-.level-selection {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    padding: 20px;
-    background: var(--card-background);
-    border-radius: 10px;
-    box-shadow: var(--shadow-light);
-}
-
-.level-header {
-    color: var(--primary-color);
-    margin-top: 20px;
-    margin-bottom: 5px;
-    font-size: 1.3rem;
-    text-align: center;
-    padding-bottom: 5px;
-    border-bottom: 2px solid var(--secondary-color);
-}
-
-/* أزرار المستوى */
 .level-selection button {
-    background-color: var(--secondary-color);
-    color: #121212; /* جعل النص داكناً ليتناسب مع الخلفية الفاتحة للزر */
+    background-color: var(--secondary-color); /* لون أكوا */
+    color: #121212;
+    box-shadow: 0 0 10px rgba(38, 166, 154, 0.5);
 }
 .level-selection button:hover:not([disabled]) {
-    background-color: #689F38; /* ظل أغمق للأخضر الثانوي */
+    background-color: #00897B;
 }
 
-/* تنسيق أزرار المستويات المقفلة */
 .level-selection button.locked-btn {
-    background-color: #444 !important; 
+    background-color: rgba(68, 68, 68, 0.5) !important; 
     color: #888 !important;
-    cursor: not-allowed;
-    border: 2px dashed #666;
-    font-size: 1rem;
+    border: 2px dashed rgba(255, 255, 255, 0.3);
 }
 
 /* -------------------------------------------------- */
 /* 5. شاشة اللعب (Game Screen) */
 /* -------------------------------------------------- */
-.game-area {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    align-items: center;
-}
-
-/* تنسيق المؤقت (Timer Circle) */
-#timer-circle {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    border: 5px solid var(--accent-color);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: var(--primary-color);
-    margin-bottom: 20px;
-    transition: border-color 0.5s;
-}
-
 .question-box {
-    background-color: var(--primary-color);
+    background-color: var(--card-background); /* شفافية لصندوق السؤال */
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid rgba(255, 255, 255, 0.18);
     color: var(--text-color);
-    padding: 20px;
-    border-radius: 10px;
     box-shadow: var(--shadow-deep);
-    font-size: 1.2rem;
-    text-align: center;
-    min-height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-}
-
-.answers-container {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 100%;
 }
 
 .answers-container button {
-    background-color: var(--card-background);
+    background-color: rgba(255, 255, 255, 0.1); /* شفافية لأزرار الإجابات */
     color: var(--text-color);
-    border: 2px solid var(--secondary-color);
-    font-size: 1rem;
-    padding: 15px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
 .answers-container button:hover:not([disabled]) {
-    background-color: #444; /* تظليل عند التمرير */
-}
-
-/* تنسيقات الإجابات الصحيحة والخاطئة */
-.correct-answer {
-    background-color: var(--correct-color) !important;
-    color: white !important;
-    border-color: var(--correct-color) !important;
-    animation: pulse-correct 0.5s 2;
-}
-
-.wrong-answer {
-    background-color: var(--wrong-color) !important;
-    color: white !important;
-    border-color: var(--wrong-color) !important;
-    animation: shake 0.3s;
-}
-
-@keyframes pulse-correct {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-}
-
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    20%, 60% { transform: translateX(-5px); }
-    40%, 80% { transform: translateX(5px); }
-}
-
-.counter-text {
-    font-size: 0.9rem;
-    color: #9E9E9E; /* لون فاتح للنص المساعد */
-}
-
-/* أزرار المساعدة (Help Buttons) */
-.help-buttons {
-    display: flex;
-    gap: 10px;
-    width: 100%;
-    margin-top: 10px;
-}
-
-.help-buttons button {
-    flex: 1;
-    font-size: 0.85rem;
-    padding: 10px;
-    background-color: #FFB300; 
-    color: #121212; /* نص داكن على الأصفر */
-    font-weight: bold;
-}
-.help-buttons button:hover:not([disabled]) {
-    background-color: #FF8F00;
-}
-
-/* -------------------------------------------------- */
-/* 6. شاشة الملف الشخصي (Profile Screen) */
-/* -------------------------------------------------- */
-.profile-card {
-    background: var(--card-background);
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: var(--shadow-light);
-    line-height: 1.8;
-}
-
-.profile-card h2, .profile-card h3 {
-    color: var(--primary-color);
-    border-bottom: 1px dashed #444; /* لون فاتح للخط الداش */
-    padding-bottom: 5px;
-    margin-bottom: 15px;
-}
-
-.profile-card p {
-    font-size: 1.05rem;
-    font-weight: 500;
-}
-.profile-card p strong {
-    color: var(--text-color);
-    font-weight: 700;
-}
-.profile-card .correct { color: var(--correct-color); }
-.profile-card .wrong { color: var(--wrong-color); }
-
-/* -------------------------------------------------- */
-/* 7. لوحة الصدارة اليومية */
-/* -------------------------------------------------- */
-.leaderboard-card {
-    background: var(--card-background);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: var(--shadow-light);
-}
-
-#leaderboard-list {
-    list-style: none;
-    padding: 0;
-}
-
-#leaderboard-list li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid #444; /* لون فاتح للخط الفاصل */
-    font-size: 1.1rem;
-    font-weight: 500;
-}
-#leaderboard-list li:last-child {
-    border-bottom: none;
-}
-
-.rank {
-    font-weight: 700;
-    color: var(--primary-color);
-    width: 30px;
-    text-align: center;
-}
-
-.points {
-    color: var(--accent-color);
-    font-weight: 700;
-}
-
-.leaderboard-note {
-    text-align: center;
-    color: #9E9E9E;
-    margin-bottom: 15px;
-    font-size: 0.9rem;
-}
-
-/* تمييز المستخدم الحالي */
-.is-user {
-    background-color: #444; 
-    border-radius: 5px;
-    padding: 10px;
-    margin: 5px -10px !important; 
-    font-weight: 700 !important;
-    border: 2px solid var(--primary-color) !important;
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 /* -------------------------------------------------- */
 /* 8. شريط التنقل السفلي (Bottom Navigation) */
 /* -------------------------------------------------- */
 #bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    max-width: 450px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    background-color: #202020; /* لون أغمق قليلاً من البطاقات */
-    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.4);
-    padding: 5px 0;
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
-    z-index: 20;
-}
-
-.nav-button {
-    background: none;
-    border: none;
-    color: #888;
-    flex-direction: column;
-    display: flex;
-    align-items: center;
-    gap: 2px;
+    background-color: rgba(0, 0, 0, 0.6); /* شريط سفلي شبه شفاف */
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.5);
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    
+    /* تصميم توهج الأيقونات */
     padding: 10px 0;
-    font-size: 0.8rem;
-    font-weight: 500;
-    transition: color 0.3s;
-    width: 25%;
 }
-
 .nav-button i {
-    font-size: 1.4rem;
+    font-size: 1.6rem;
+    /* لجعل الأيقونات تبدو متوهجة عند عدم التحديد */
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
 .nav-button:hover, .screen.active ~ #bottom-nav .nav-button[onclick*="showScreen('main-menu')"] {
     color: var(--primary-color);
+    /* توهج الأيقونة المحددة */
+    text-shadow: 0 0 15px var(--primary-color);
 }
 
-/* تنسيق زر الرجوع */
-#back-btn {
-    color: var(--wrong-color);
-    width: 15%;
-    display: none;
-}
-#back-btn:hover {
-    color: #D32F2F;
-}
 
 /* -------------------------------------------------- */
-/* 9. نافذة التواصل (Modal) وشريط التواصل الاجتماعي */
+/* 9. نافذة التواصل (Modal) */
 /* -------------------------------------------------- */
-.social-bar {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 30px;
-    padding: 10px 0;
-}
-
-.social-link {
-    color: var(--primary-color);
-    text-decoration: none;
-    font-size: 0.9rem;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    transition: color 0.3s;
-}
-
-.social-link:hover {
-    color: var(--secondary-color);
-}
-
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 100;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.7);
-}
-
 .modal-content {
     background-color: var(--card-background);
-    margin: 15% auto;
-    padding: 20px;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 400px;
-    position: relative;
-    box-shadow: var(--shadow-deep);
-}
-
-.close-btn {
-    color: #aaa;
-    float: left;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close-btn:hover,
-.close-btn:focus {
-    color: #E0E0E0;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.contact-header {
-    color: var(--primary-color);
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.contact-details {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
 .contact-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px;
-    border-radius: 5px;
-    text-decoration: none;
-    color: var(--text-color);
-    background-color: #383838; /* خلفية أفتح قليلاً للعناصر */
-    transition: background-color 0.3s;
-}
-
-.contact-item:hover {
-    background-color: #444;
-}
-
-.contact-item i {
-    font-size: 1.5rem;
-    color: var(--primary-color);
-}
-
-.contact-item .number-text {
-    font-size: 0.9rem;
-    color: #aaa;
-}
-
-/* ألوان أيقونات التواصل */
-.whatsapp i { color: #25D366; }
-.telegram i { color: #0088CC; }
-.tiktok i { color: #E0E0E0; } /* تيك توك يحتاج لون فاتح على الخلفية الداكنة */
-.email i { color: #FFC107; }
-
-/* -------------------------------------------------- */
-/* 10. تنسيقات العرض على شاشات كبيرة */
-/* -------------------------------------------------- */
-@media (min-width: 600px) {
-    body {
-        padding-bottom: 0;
-    }
-    .screen {
-        min-height: auto;
-        border-radius: 15px;
-        box-shadow: var(--shadow-deep);
-        position: relative;
-        top: auto;
-    }
-    #bottom-nav {
-        display: none !important; 
-    }
-    #main-menu, #game-screen, #profile-screen, #level-select, #leaderboard-screen {
-        padding-top: 20px;
-    }
+    background-color: rgba(255, 255, 255, 0.1);
 }
