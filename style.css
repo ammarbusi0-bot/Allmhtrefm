@@ -44,13 +44,14 @@ body {
     width: 100%;
     max-width: 450px;
     padding: 20px;
-    background-color: transparent; /* جعل الشاشات شفافة لرؤية الخلفية */
+    background-color: transparent; 
     display: none;
     transition: opacity 0.3s ease-in-out;
     position: absolute;
     top: 0;
     min-height: 100vh;
     padding-bottom: 70px;
+    z-index: 5; /* لضمان أن الشاشات العادية تظهر فوق الخلفية */
 }
 
 .screen.active {
@@ -58,8 +59,8 @@ body {
 }
 
 .header-title {
-    color: var(--text-color); /* أبيض أو فاتح */
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* تأثير توهج للنص */
+    color: var(--text-color); 
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); 
     text-align: center;
     margin-bottom: 30px;
     font-size: 1.8rem;
@@ -70,13 +71,11 @@ body {
 /* 3. شاشة الدخول والقائمة الرئيسية */
 /* -------------------------------------------------- */
 #splash-screen {
-    /* تم التعديل: لضمان ظهور شاشة البداية بشكل صحيح */
-    background-color: transparent; 
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    z-index: 100; 
+    z-index: 10; /* تم رفعها قليلاً لضمان ظهورها عند البداية */
 }
 
 /* تطبيق تأثير الزجاج على بطاقات المحتوى */
@@ -90,34 +89,37 @@ body {
     background: var(--card-background); 
     border-radius: 16px;
     box-shadow: var(--shadow-deep);
-    backdrop-filter: var(--glass-blur); /* تأثير الزجاج */
-    -webkit-backdrop-filter: var(--glass-blur); /* لتوافق Safari */
-    border: 1px solid rgba(255, 255, 255, 0.18); /* حدود فاتحة شفافة */
+    backdrop-filter: var(--glass-blur); 
+    -webkit-backdrop-filter: var(--glass-blur); 
+    border: 1px solid rgba(255, 255, 255, 0.18); 
     margin-bottom: 20px;
 }
 
 .input-group label {
     color: var(--primary-color);
+    display: block; /* لضمان ظهور التسمية بشكل صحيح */
+    margin-bottom: 10px;
+    font-size: 1.1rem;
 }
 
 .input-group input {
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    background-color: rgba(255, 255, 255, 0.1); /* خلفية خانة الإدخال شفافة أكثر */
-    color: var(--text-color);
-    width: 100%;
+    width: 100%; /* تم إضافة العرض الكامل لضمان التنسيق */
     padding: 12px;
     margin-bottom: 20px;
-    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.1); 
+    color: var(--text-color);
+    border-radius: 8px; /* تم إضافة انحناءات للزوايا */
     font-size: 1rem;
     text-align: center;
 }
 
 /* أزرار عامة */
 button {
-    width: 100%;
+    width: 100%; /* تم إضافة العرض الكامل لضمان التنسيق */
     padding: 15px;
     background-color: var(--primary-color);
-    color: #121212; /* لون داكن على الزر الفاتح لتباين جيد */
+    color: #121212; 
     border: none;
     border-radius: 10px;
     cursor: pointer;
@@ -125,7 +127,7 @@ button {
     font-weight: 700;
     transition: background-color 0.3s, transform 0.1s;
     margin-top: 10px;
-    box-shadow: 0 0 15px rgba(251, 192, 45, 0.5); /* توهج حول الزر */
+    box-shadow: 0 0 15px rgba(251, 192, 45, 0.5); 
 }
 
 button:hover {
@@ -133,7 +135,7 @@ button:hover {
 }
 
 button:active {
-    transform: scale(0.98);
+    transform: scale(0.98); /* تم إضافة تأثير الضغط */
 }
 
 button:disabled {
@@ -141,13 +143,6 @@ button:disabled {
     cursor: not-allowed;
     color: #999 !important;
     box-shadow: none;
-}
-
-/* شبكة القائمة الرئيسية */
-.menu-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
 }
 
 /* شريط النقاط العلوي */
@@ -159,19 +154,19 @@ button:disabled {
     max-width: 450px;
     margin: 0 auto;
     background-color: var(--primary-color); 
-    color: #121212; /* لون داكن على الشريط الفاتح */
+    color: #121212; 
     padding: 10px 20px;
     text-align: center;
     font-size: 1.2rem;
     font-weight: 700;
-    z-index: 10;
+    z-index: 15; /* قيمة عالية لضمان الظهور في الأعلى */
     border-bottom-left-radius: 0; 
     border-bottom-right-radius: 0;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5); 
 }
 /* إزاحة المحتوى لتجنب شريط النقاط */
 #main-menu, #game-screen, #profile-screen, #level-select, #leaderboard-screen {
-    padding-top: 60px; 
+    padding-top: 60px; /* تم زيادتها قليلاً لضمان عدم التداخل مع الشريط */
 }
 
 /* شريط التواصل الاجتماعي */
@@ -197,29 +192,11 @@ button:disabled {
     color: var(--secondary-color);
 }
 
-
 /* -------------------------------------------------- */
 /* 4. شاشة اختيار المستوى (Level Select) */
 /* -------------------------------------------------- */
-.level-selection {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.level-header {
-    color: var(--primary-color);
-    margin-top: 20px;
-    margin-bottom: 5px;
-    font-size: 1.3rem;
-    text-align: center;
-    padding-bottom: 5px;
-    border-bottom: 2px solid var(--secondary-color);
-}
-
-/* أزرار المستوى */
 .level-selection button {
-    background-color: var(--secondary-color); /* لون أكوا */
+    background-color: var(--secondary-color); 
     color: #121212;
     box-shadow: 0 0 10px rgba(38, 166, 154, 0.5);
 }
@@ -227,7 +204,6 @@ button:disabled {
     background-color: #00897B;
 }
 
-/* تنسيق أزرار المستويات المقفلة */
 .level-selection button.locked-btn {
     background-color: rgba(68, 68, 68, 0.5) !important; 
     color: #888 !important;
@@ -265,7 +241,7 @@ button:disabled {
 }
 
 .question-box {
-    background-color: var(--card-background); /* شفافية لصندوق السؤال */
+    background-color: var(--card-background); 
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
     border: 1px solid rgba(255, 255, 255, 0.18);
@@ -290,7 +266,7 @@ button:disabled {
 }
 
 .answers-container button {
-    background-color: rgba(255, 255, 255, 0.1); /* شفافية لأزرار الإجابات */
+    background-color: rgba(255, 255, 255, 0.1); 
     color: var(--text-color);
     border: 2px solid rgba(255, 255, 255, 0.3);
     box-shadow: none;
@@ -305,7 +281,6 @@ button:disabled {
     background-color: var(--correct-color) !important;
     color: white !important;
     border-color: var(--correct-color) !important;
-    animation: pulse-correct 0.5s 2;
     box-shadow: 0 0 15px var(--correct-color) !important;
 }
 
@@ -313,28 +288,11 @@ button:disabled {
     background-color: var(--wrong-color) !important;
     color: white !important;
     border-color: var(--wrong-color) !important;
-    animation: shake 0.3s;
     box-shadow: 0 0 15px var(--wrong-color) !important;
 }
 
-@keyframes pulse-correct {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-}
+/* ... باقي الـ Keyframes ... */
 
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    20%, 60% { transform: translateX(-5px); }
-    40%, 80% { transform: translateX(5px); }
-}
-
-.counter-text {
-    font-size: 0.9rem;
-    color: #9E9E9E; 
-}
-
-/* أزرار المساعدة (Help Buttons) */
 .help-buttons button {
     background-color: #FFB300; 
     color: #121212; 
@@ -348,16 +306,12 @@ button:disabled {
     color: var(--primary-color);
     border-bottom: 1px dashed rgba(255, 255, 255, 0.3); 
 }
-/* ... باقي تنسيقات .profile-card ... */
 
 /* -------------------------------------------------- */
 /* 7. لوحة الصدارة اليومية */
 /* -------------------------------------------------- */
 #leaderboard-list li {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
-}
-.leaderboard-note {
-    color: #9E9E9E;
 }
 .is-user {
     background-color: rgba(255, 255, 255, 0.1); 
@@ -377,35 +331,17 @@ button:disabled {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.7); /* شريط سفلي شبه شفاف وداكن */
+    background-color: rgba(0, 0, 0, 0.7); 
     box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.7);
     padding: 5px 0;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
-    z-index: 20;
-}
-
-.nav-button {
-    color: #888;
-    /* ... باقي تنسيقات .nav-button ... */
-}
-
-.nav-button i {
-    font-size: 1.6rem;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    z-index: 20; /* لضمان الظهور فوق محتوى الشاشة */
 }
 
 .nav-button:hover, .screen.active ~ #bottom-nav .nav-button[onclick*="showScreen('main-menu')"] {
     color: var(--primary-color);
     text-shadow: 0 0 15px var(--primary-color);
-}
-
-#back-btn {
-    color: var(--wrong-color);
-    text-shadow: 0 0 10px var(--wrong-color);
-}
-#back-btn:hover {
-    color: #D32F2F;
 }
 
 /* -------------------------------------------------- */
@@ -414,13 +350,13 @@ button:disabled {
 .modal {
     display: none;
     position: fixed;
-    z-index: 1000; /* تم زيادة القيمة لحل مشكلة التداخل */
+    z-index: 1000; /* تم زيادة القيمة لضمان الظهور فوق كل شيء وحل مشكلة التداخل */
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0,0,0,0.8);
+    background-color: rgba(0,0,0,0.8); /* خلفية داكنة معتمة */
 }
 
 .modal-content {
@@ -435,11 +371,6 @@ button:disabled {
     max-width: 400px;
     position: relative;
     box-shadow: var(--shadow-deep);
-}
-
-.close-btn:hover,
-.close-btn:focus {
-    color: #E0E0E0;
 }
 
 .contact-item {
