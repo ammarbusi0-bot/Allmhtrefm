@@ -1,4 +1,4 @@
-// script.js - الكود الموحد (إصلاح القرآن + تحسين العداد)
+// script.js - الكود المعدل والنهائي (إصلاح القرآن وإزالة الأذكار)
 
 document.addEventListener('DOMContentLoaded', () => {
     // --------------------------------------
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let QURAN_DATA_FULL = null; 
 
     // --------------------------------------
-    // 2. ميزة: جلب بيانات القرآن من الإنترنت (تم إصلاح المسار هنا)
+    // 2. ميزة: جلب بيانات القرآن من الإنترنت (تم إصلاح المسار)
     // --------------------------------------
     const fetchQuranData = async () => {
         try {
@@ -29,8 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             const data = await response.json();
             
-            // ************ التعديل الحاسم ************
-            // تم إصلاح المسار: البيانات الكاملة هي مصفوفة السور مباشرة
+            // ************ تم إصلاح المسار: البيانات الكاملة هي مصفوفة السور مباشرة ************
             QURAN_DATA_FULL = data; 
             
             document.getElementById('last-read-status').textContent = '✅ تم تحميل القرآن الكريم. ابدأ البحث!';
@@ -58,44 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     // --------------------------------------
-    // 4. ميزة: عداد الأذكار التفاعلي (مع رسائل فخمة)
-    // --------------------------------------
-    const countDisplay = document.getElementById('zekr-count');
-    const incrementBtn = document.getElementById('increment-btn');
-    const resetBtn = document.getElementById('reset-btn');
-    const progressBar = document.getElementById('progress-bar');
-    const DAILY_TARGET = 100;
-    const COUNT_KEY = 'dailyZekrCount';
-
-    let currentCount = parseInt(localStorage.getItem(COUNT_KEY)) || 0;
-    
-    const updateCounterAndProgress = () => {
-        countDisplay.textContent = currentCount;
-        let progressPercentage = Math.min(100, (currentCount / DAILY_TARGET) * 100);
-        progressBar.style.width = `${progressPercentage}%`;
-        
-        const currentZekrElement = document.querySelector('.current-zekr'); 
-        
-        if (currentCount >= DAILY_TARGET) {
-            progressBar.style.backgroundColor = '#ffd700'; // ذهبي عند الإنجاز
-            currentZekrElement.textContent = '🏅 مبروك! لقد أتممت وردك اليومي (فوق الهدف).';
-        } else {
-            progressBar.style.backgroundColor = 'var(--progress-color)';
-            currentZekrElement.textContent = `سبحان الله وبحمده، سبحان الله العظيم (باقٍ ${DAILY_TARGET - currentCount} تسبيحة)`;
-        }
-        
-        localStorage.setItem(COUNT_KEY, currentCount.toString());
-    };
-
-    incrementBtn.addEventListener('click', () => { currentCount++; updateCounterAndProgress(); });
-    resetBtn.addEventListener('click', () => {
-        if (confirm("هل أنت متأكد من إعادة تعيين الورد اليومي؟")) {
-            currentCount = 0; updateCounterAndProgress();
-        }
-    });
-
-    // --------------------------------------
-    // 5. ميزة: حفظ مكان القراءة والبحث المحلي (تم إصلاحه)
+    // 4. ميزة: حفظ مكان القراءة والبحث المحلي (تم إصلاح البحث)
     // --------------------------------------
     
     const displayLastRead = () => {
@@ -116,12 +78,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         } else {
-            // عرض رسالة ترحيبية أو أول آية افتراضية في حال عدم وجود بيانات قراءة سابقة
              statusElement.textContent = 'أهلاً بك! ابدأ البحث أو انقر على أي آية لحفظ آخر قراءة.';
         }
     };
 
-    quranSearchInput.addEventListener('input', (e) => {
+    const handleQuranSearch = (e) => {
         if (!QURAN_DATA_FULL) {
             document.getElementById('last-read-status').textContent = 'الرجاء الانتظار حتى اكتمال تحميل القرآن.';
             return;
@@ -136,11 +97,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const results = [];
-        // جعل البحث أكثر شمولاً (يستخدم UTF-8)
-        const regex = new RegExp(searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i'); 
+        const regex = new RegExp(searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'); 
 
         QURAN_DATA_FULL.forEach(surah => {
-            if (surah.verses) { // تأكد من وجود خاصية الآيات
+            if (surah.verses) { 
                 surah.verses.forEach(ayah => {
                     if (regex.test(ayah.text)) {
                         results.push({
@@ -153,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // عرض النتائج
         document.getElementById('last-read-status').textContent = `عدد النتائج: ${results.length} آية`;
-        const displayLimit = 15; // زيادة حد العرض
+        const displayLimit = 15; 
         results.slice(0, displayLimit).forEach(item => { 
             const ayahElement = document.createElement('p');
             ayahElement.className = 'ayah-text';
@@ -171,16 +131,19 @@ document.addEventListener('DOMContentLoaded', () => {
         if (results.length === 0) {
             quranContentDiv.innerHTML = `<p>لا توجد نتائج مطابقة لبحثك عن "${searchTerm}".</p>`;
         }
-    });
+    };
+    
+    // ربط مستمع الحدث (Event Listener)
+    quranSearchInput.addEventListener('input', handleQuranSearch);
+
 
     // --------------------------------------
-    // 6. ميزة: مواقيت الصلاة (كما هي)
+    // 5. ميزة: مواقيت الصلاة
     // --------------------------------------
     const prayerDisplay = document.getElementById('prayer-display');
 
     const getPrayerTimes = (latitude, longitude) => {
         const date = new Date();
-        // ... (بقية كود مواقيت الصلاة كما هو) ...
         const API_URL = `https://api.aladhan.com/v1/calendar/${date.getFullYear()}/${date.getMonth() + 1}?latitude=${latitude}&longitude=${longitude}&method=2`;
 
         fetch(API_URL)
@@ -217,9 +180,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --------------------------------------
-    // 7. بدء تشغيل الموقع
+    // 6. بدء تشغيل الموقع
     // --------------------------------------
     loadTheme();
-    updateCounterAndProgress();
     fetchQuranData(); 
 });
