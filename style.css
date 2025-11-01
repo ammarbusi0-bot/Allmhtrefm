@@ -1,389 +1,393 @@
-// =======================================================
-// متغیرات التخزين
-// =======================================================
-let userName = localStorage.getItem('userName') || '';
-let userPoints = parseInt(localStorage.getItem('userPoints')) || 0;
-let totalAnswered = parseInt(localStorage.getItem('totalAnswered')) || 0;
-let totalCorrect = parseInt(localStorage.getItem('totalCorrect')) || 0;
-let totalWrong = parseInt(localStorage.getItem('totalWrong')) || 0;
-
-// متغیرات اللعب
-let currentQuestionIndex = 0;
-let currentQuestions = [];
-let timerInterval;
-let TIME_LIMIT = 15;
-const HISTORY = ['splash-screen']; // تتبع تاريخ الشاشات
-
-// =======================================================
-// الوظائف المساعدة
-// =======================================================
-
-function saveUserData() {
-    localStorage.setItem('userName', userName);
-    localStorage.setItem('userPoints', userPoints);
-    localStorage.setItem('totalAnswered', totalAnswered);
-    localStorage.setItem('totalCorrect', totalCorrect);
-    localStorage.setItem('totalWrong', totalWrong);
+/* -------------------------------------------------- */
+/* 1. المتغيرات ونظام الألوان الحديث */
+/* -------------------------------------------------- */
+:root {
+  --primary-color: #00796B; /* أخضر غامق */
+  --secondary-color: #4DB6AC; /* أخضر فاتح للمستويات */
+  --background-color: #F0F2F5; /* خلفية فاتحة */
+  --card-background: #FFFFFF; /* خلفية البطاقات والأزرار */
+  --text-color: #212121; /* لون النص */
+  --correct-color: #4CAF50; /* أخضر للإجابات الصحيحة */
+  --wrong-color: #F44336; /* أحمر للإجابات الخاطئة */
+  --accent-color: #D4AF37; /* ذهبي للنقاط والمؤقت */
+  --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-deep: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-function updatePointsDisplay() {
-    document.getElementById('user-points').textContent = userPoints;
-    document.getElementById('profile-points').textContent = userPoints;
+/* ----------------------------------------------------
+   الخطوط العامة والتهيئة (تم التحديث)
+---------------------------------------------------- */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Tajawal', sans-serif;
+    /* تطبيق الخلفية المتدرجة */
+    background: linear-gradient(135deg, var(--background-color) 0%, #E8EAEF 100%);
+    color: var(--text-color);
+    min-height: 100vh;
+    direction: rtl; /* التأكد من الاتجاه العربي */
+    padding-bottom: 70px; /* لترك مساحة للشريط السفلي */
+    display: flex;
+    justify-content: center;
 }
 
-// =======================================================
-// وظيفة تبديل وعرض الشاشات (الحل لمشكلة عدم الإخفاء)
-// =======================================================
+button {
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    padding: 15px 20px; /* زيادة حجم البادينغ */
+    margin: 5px;
+    font-size: 1.1rem; /* تكبير الخط قليلاً */
+    font-weight: 700;
+    transition: all 0.2s ease;
+    /* تأثير الزوم عند الضغط */
+    transform: scale(1);
+}
 
-function updateBackButton(currentScreenId) {
-    const backBtn = document.getElementById('back-btn');
-    if (currentScreenId !== 'main-menu' && currentScreenId !== 'splash-screen') {
-        backBtn.style.display = 'flex';
-    } else {
-        backBtn.style.display = 'none';
+button:active {
+    transform: scale(0.96);
+    opacity: 0.9;
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: #BDBDBD !important;
+}
+
+/* ----------------------------------------------------
+   الشاشات الرئيسية (تم التحديث)
+---------------------------------------------------- */
+.screen {
+    display: none;
+    padding: 20px;
+    max-width: 450px; /* تحديد عرض مناسب للجوال */
+    margin: 0 auto;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    min-height: 100vh;
+    padding-top: 60px; /* مساحة لشريط النقاط العلوي */
+}
+
+.screen.active {
+    display: block;
+    animation: fade-in 0.4s ease-out;
+}
+@keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* شريط التنقل السفلي (تم تصحيح الأبعاد) */
+#bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-width: 450px; /* التأكد من محاذاة العرض مع الشاشات */
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: var(--card-background);
+    padding: 5px 0;
+    box-shadow: 0 -4px 12px rgba(0,0,0,0.1);
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    z-index: 20;
+}
+
+.nav-button {
+    background: none;
+    border: none;
+    color: #9E9E9E;
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 10px 0;
+    font-size: 0.8rem;
+    font-weight: 500;
+    transition: color 0.3s;
+    /* تقسيم المساحة بالتساوي على 3 أزرار */
+    width: 33.33%; 
+}
+.nav-button i { font-size: 1.4rem; }
+.nav-button:hover { color: var(--primary-color); }
+
+
+/* ----------------------------------------------------
+   القائمة الرئيسية والأزرار
+---------------------------------------------------- */
+.header-title {
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+/* شريط النقاط العلوي */
+.points-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    max-width: none;
+    margin: 0;
+    background-color: var(--accent-color);
+    color: white;
+    padding: 12px 20px;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 700;
+    z-index: 10;
+    box-shadow: var(--shadow-deep);
+}
+
+.menu-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+    background: var(--card-background);
+    border-radius: 10px;
+    box-shadow: var(--shadow-light);
+}
+
+/* الأزرار الرئيسية */
+button.main-btn, 
+.menu-grid button {
+    background-color: var(--primary-color);
+    color: #fff;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+}
+
+button.main-btn:hover,
+.menu-grid button:hover {
+    background-color: #004D40;
+}
+
+.locked-btn {
+    background-color: #9E9E9E !important;
+    color: #424242 !important;
+    cursor: not-allowed;
+    border: 2px dashed #757575;
+}
+
+/* ----------------------------------------------------
+   شاشة السؤال (تم التحديث)
+---------------------------------------------------- */
+#question-text {
+    /* تم تغيير التنسيق إلى Question Box */
+    background-color: var(--primary-color);
+    color: white;
+    padding: 25px; 
+    border-radius: 15px; 
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3); 
+    font-size: 1.2rem;
+    text-align: center;
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+#answers-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+#answers-container button {
+    width: 100%;
+    max-width: none;
+    background-color: var(--card-background);
+    color: var(--text-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    font-size: 1rem;
+    padding: 15px;
+    font-weight: 500;
+}
+#answers-container button:hover:not(:disabled) {
+    background-color: #E0F2F1;
+}
+
+.correct-answer {
+    background-color: var(--correct-color) !important;
+    color: #fff !important;
+    border: 4px solid white !important;
+}
+
+.wrong-answer {
+    background-color: var(--wrong-color) !important;
+    color: #fff !important;
+    border: 4px solid white !important;
+}
+
+/* ----------------------------------------------------
+   المؤقت الدائري (تم التحديث)
+---------------------------------------------------- */
+#timer-circle {
+    width: 80px;
+    height: 80px;
+    border: 5px solid var(--accent-color);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 20px;
+    font-size: 1.8rem; /* تكبير الخط */
+    font-weight: 700;
+    color: var(--primary-color);
+    box-shadow: var(--shadow-light);
+}
+
+/* ----------------------------------------------------
+   أزرار المساعدة (تم التحديث)
+---------------------------------------------------- */
+.help-buttons {
+    display: flex;
+    justify-content: space-around;
+    margin: 15px 0;
+    gap: 10px;
+    width: 100%;
+}
+
+.help-buttons button {
+    flex: 1;
+    background-color: #FFB300;
+    color: var(--text-color);
+    font-weight: bold;
+    font-size: 0.85rem;
+    padding: 10px;
+}
+
+.help-buttons button:hover:not(:disabled) {
+    background-color: #FF8F00;
+}
+
+/* ----------------------------------------------------
+   لوحة الصدارة (تم التحديث)
+---------------------------------------------------- */
+#leaderboard-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#leaderboard-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--card-background);
+    padding: 12px 15px;
+    margin-bottom: 5px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    font-size: 1.1rem;
+}
+
+#leaderboard-list li.is-user {
+    background-color: #E0F2F1; /* لون أفتح لتمييز المستخدم */
+    border: 2px solid var(--primary-color);
+    font-weight: 700;
+}
+.rank { font-weight: 700; color: var(--primary-color); width: 30px; text-align: center; }
+.points { color: var(--accent-color); font-weight: 700; }
+
+/* ----------------------------------------------------
+   نموذج التواصل (تم التحديث)
+---------------------------------------------------- */
+#contact-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+#contact-modal .modal-content {
+    background-color: var(--card-background);
+    padding: 20px;
+    border-radius: 12px;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: var(--shadow-deep);
+}
+.close-btn { color: #aaa; float: left; font-size: 28px; font-weight: bold; }
+.close-btn:hover, .close-btn:focus { color: #000; text-decoration: none; cursor: pointer; }
+
+
+/* ----------------------------------------------------
+   شاشة البروفايل (تم التحديث)
+---------------------------------------------------- */
+#profile-screen .profile-card {
+    background: var(--card-background);
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: var(--shadow-light);
+    line-height: 1.8;
+}
+
+#profile-screen p {
+    font-size: 1.05rem;
+    margin: 5px 0;
+}
+#profile-screen p strong {
+    color: var(--primary-color);
+}
+
+
+/* ----------------------------------------------------
+   أزرار العودة (تم حل مشكلة التخربط)
+---------------------------------------------------- */
+#back-btn {
+    position: fixed;
+    top: 10px; /* موقعه العلوي */
+    left: 10px; /* موقعه في أعلى اليسار */
+    right: auto;
+    padding: 0;
+    width: 45px;
+    height: 45px;
+    background-color: var(--wrong-color); /* لون واضح للرجوع */
+    color: #fff;
+    border-radius: 50%; /* زر دائري */
+    display: none; /* يتم التحكم بظهوره عبر JS */
+    justify-content: center;
+    align-items: center;
+    box-shadow: var(--shadow-deep);
+    z-index: 25; /* ليبقى فوق كل شيء */
+    transition: background-color 0.3s;
+}
+
+#back-btn:hover {
+    background-color: #D32F2F;
+}
+
+#back-btn i {
+    font-size: 1.4rem;
+}
+
+/* ----------------------------------------------------
+   استجابة للشاشات الصغيرة
+---------------------------------------------------- */
+@media (max-width: 480px) {
+    #answers-container button {
+        width: 100%;
+    }
+
+    #timer-circle {
+        width: 60px;
+        height: 60px;
+        font-size: 18px;
     }
 }
-
-function showScreen(screenId, pushHistory = true) {
-    // 1. إيقاف أي مؤقتات نشطة عند مغادرة شاشة اللعب
-    if (screenId !== 'game-screen') {
-        clearInterval(timerInterval);
-    }
-
-    // 2. إخفاء جميع الشاشات (هذا يحل مشكلة ظهور الشاشة تحت الأخرى)
-    const screens = document.querySelectorAll('.screen');
-    screens.forEach(screen => {
-        screen.classList.remove('active');
-    });
-
-    // 3. إظهار الشاشة المطلوبة
-    const targetScreen = document.getElementById(screenId);
-    if (targetScreen) {
-        targetScreen.classList.add('active');
-    }
-
-    // 4. تحديث سجل التصفح
-    if (pushHistory) {
-        // منع تكرار الشاشة الحالية في السجل
-        if (HISTORY[HISTORY.length - 1] !== screenId) {
-            HISTORY.push(screenId);
-        }
-    } else {
-        // إذا لم يتم الدفع، يجب أن تكون هذه عملية رجوع لذا نحذف آخر عنصر
-        HISTORY.pop();
-    }
-    
-    // 5. تحديث محتويات الشاشات إذا كانت تتطلب ذلك
-    if (screenId === 'profile-screen') {
-        updateProfileScreen();
-    }
-    if (screenId === 'leaderboard-screen') {
-        fetchLeaderboard();
-    }
-    
-    // 6. تحديث زر الرجوع
-    updateBackButton(screenId);
-}
-
-function goBack() {
-    // نضمن أن شاشة البداية لا يمكن الرجوع إليها
-    if (HISTORY.length > 1) {
-        HISTORY.pop(); // حذف الشاشة الحالية من السجل
-        const previousScreenId = HISTORY[HISTORY.length - 1];
-        showScreen(previousScreenId, false); // إظهار الشاشة السابقة دون إضافة إلى السجل
-    }
-}
-
-
-// =======================================================
-// شاشة الدخول (Splash Screen)
-// =======================================================
-
-function saveAndEnter() {
-    const inputName = document.getElementById('user-name').value.trim();
-    if (inputName) {
-        userName = inputName;
-        saveUserData();
-        document.getElementById('display-user-name').textContent = userName;
-        showScreen('main-menu');
-    } else {
-        alert("الرجاء إدخال اسمك الكريم للمتابعة!");
-    }
-}
-
-// =======================================================
-// شاشة اللعب
-// =======================================================
-
-function startGame(level, type) {
-    currentQuestions = getRandomQuestions(level, type);
-    currentQuestionIndex = 0;
-    showQuestion();
-    showScreen('game-screen');
-}
-
-function showQuestion() {
-    if (currentQuestionIndex >= currentQuestions.length) {
-        endGame();
-        return;
-    }
-
-    clearInterval(timerInterval);
-    startTimer();
-
-    const q = currentQuestions[currentQuestionIndex];
-    document.getElementById('question-text').textContent = q.question;
-    document.getElementById('question-counter').textContent = `السؤال ${currentQuestionIndex + 1} من ${currentQuestions.length}`;
-    
-    const answersContainer = document.getElementById('answers-container');
-    answersContainer.innerHTML = '';
-    
-    // خلط الإجابات
-    const answers = shuffleArray(q.answers.slice());
-
-    answers.forEach(answer => {
-        const button = document.createElement('button');
-        button.textContent = answer;
-        button.onclick = () => checkAnswer(button, answer, q.correctAnswer);
-        answersContainer.appendChild(button);
-    });
-}
-
-function startTimer() {
-    let timeLeft = TIME_LIMIT;
-    const timerCircle = document.getElementById('timer-circle');
-    const timerText = document.getElementById('timer-text');
-    timerText.textContent = timeLeft;
-
-    timerInterval = setInterval(() => {
-        timeLeft--;
-        timerText.textContent = timeLeft;
-        if (timeLeft <= 5) {
-            timerCircle.style.borderColor = 'var(--wrong-color)';
-        } else {
-            timerCircle.style.borderColor = 'var(--accent-color)';
-        }
-        
-        if (timeLeft <= 0) {
-            clearInterval(timerInterval);
-            handleTimeout();
-        }
-    }, 1000);
-}
-
-function handleTimeout() {
-    // نمنع المستخدم من الضغط على الأزرار بعد انتهاء الوقت
-    Array.from(document.getElementById('answers-container').children).forEach(btn => {
-        btn.disabled = true;
-        // إظهار الإجابة الصحيحة كمرجع
-        if (btn.textContent === currentQuestions[currentQuestionIndex].correctAnswer) {
-            btn.classList.add('correct-answer');
-        }
-    });
-
-    totalAnswered++;
-    totalWrong++;
-    saveUserData();
-
-    // ننتقل للسؤال التالي بعد ثانية ونصف
-    setTimeout(() => {
-        currentQuestionIndex++;
-        showQuestion();
-    }, 1500);
-}
-
-
-function checkAnswer(selectedButton, selectedAnswer, correctAnswer) {
-    clearInterval(timerInterval);
-
-    // تعطيل جميع الأزرار بعد الإجابة
-    Array.from(document.getElementById('answers-container').children).forEach(btn => {
-        btn.disabled = true;
-    });
-
-    totalAnswered++;
-
-    if (selectedAnswer === correctAnswer) {
-        selectedButton.classList.add('correct-answer');
-        totalCorrect++;
-        userPoints += 10; // زيادة النقاط
-    } else {
-        selectedButton.classList.add('wrong-answer');
-        totalWrong++;
-        // إظهار الإجابة الصحيحة
-        Array.from(document.getElementById('answers-container').children).forEach(btn => {
-            if (btn.textContent === correctAnswer) {
-                btn.classList.add('correct-answer');
-            }
-        });
-    }
-
-    saveUserData();
-    updatePointsDisplay();
-
-    // الانتقال للسؤال التالي
-    setTimeout(() => {
-        currentQuestionIndex++;
-        showQuestion();
-    }, 1500);
-}
-
-function endGame() {
-    alert(`انتهت الأسئلة! نقاطك النهائية: ${userPoints}`);
-    // وظيفة إرسال النتيجة إلى Google Sheets (تحتاج إلى تطبيق)
-    // saveScoreToLeaderboard(userName, userPoints); 
-    showScreen('main-menu');
-}
-
-
-// =======================================================
-// وظائف المساعدة (Help Buttons)
-// =======================================================
-function useRemoveOption() {
-    if (userPoints >= 20) {
-        // كود إزالة خيارين خاطئين (للاختيار من متعدد)
-        userPoints -= 20;
-        saveUserData();
-        updatePointsDisplay();
-        // (يجب تطبيق وظيفة الإزالة على أزرار الإجابة)
-        alert("تم إزالة خيار خاطئ! (نقص 20 نقطة)");
-        // تعطيل الزر مؤقتاً
-        event.target.disabled = true;
-    } else {
-        alert("نقاطك غير كافية لاستخدام هذه المساعدة.");
-    }
-}
-
-function useChangeQuestion() {
-    if (userPoints >= 30) {
-        userPoints -= 30;
-        saveUserData();
-        updatePointsDisplay();
-        currentQuestionIndex++; // تخطي السؤال الحالي
-        showQuestion();
-        alert("تم تغيير السؤال! (نقص 30 نقطة)");
-        event.target.disabled = true;
-    } else {
-        alert("نقاطك غير كافية لاستخدام هذه المساعدة.");
-    }
-}
-
-function useAddTime() {
-    if (userPoints >= 25) {
-        userPoints -= 25;
-        saveUserData();
-        updatePointsDisplay();
-        // إضافة 5 ثواني للمؤقت الحالي (تحتاج إلى الوصول لـ timeLeft)
-        clearInterval(timerInterval);
-        TIME_LIMIT += 5; 
-        startTimer(); // إعادة تشغيل المؤقت بالوقت الجديد
-        alert("تم إضافة 5 ثوانٍ! (نقص 25 نقطة)");
-        event.target.disabled = true;
-    } else {
-        alert("نقاطك غير كافية لاستخدام هذه المساعدة.");
-    }
-}
-
-// =======================================================
-// شاشة الملف الشخصي
-// =======================================================
-
-function updateProfileScreen() {
-    document.getElementById('profile-name').textContent = userName;
-    document.getElementById('total-answered').textContent = totalAnswered;
-    document.getElementById('total-correct').textContent = totalCorrect;
-    document.getElementById('total-wrong').textContent = totalWrong;
-    document.getElementById('profile-points').textContent = userPoints;
-}
-
-
-// =======================================================
-// لوحة الصدارة
-// =======================================================
-
-// وظيفة جلب البيانات من Google Apps Script (تحتاج لتعديل الرابط)
-const LEADERBOARD_API_URL = 'ادخل_هنا_رابط_API_الخاص_بك_من_Apps_Script';
-
-async function fetchLeaderboard() {
-    const listElement = document.getElementById('leaderboard-list');
-    listElement.innerHTML = '<li>جاري تحميل لوحة الصدارة...</li>';
-
-    try {
-        const response = await fetch(`${LEADERBOARD_API_URL}?action=getLeaderboard`);
-        const data = await response.json();
-        
-        if (data.status === 'success' && data.leaderboard) {
-            listElement.innerHTML = '';
-            data.leaderboard.forEach((item, index) => {
-                const li = document.createElement('li');
-                
-                // تحديد ما إذا كان المستخدم الحالي هو أحد الأوائل
-                const isCurrentUser = item.name === userName;
-                if (isCurrentUser) {
-                    li.classList.add('is-user');
-                }
-
-                li.innerHTML = `
-                    <span class="rank">#${index + 1}</span>
-                    <span class="name">${item.name}</span>
-                    <span class="points">${item.points} ⭐</span>
-                `;
-                listElement.appendChild(li);
-            });
-        } else {
-            listElement.innerHTML = '<li>عذراً، لم يتم العثور على بيانات الصدارة.</li>';
-        }
-    } catch (error) {
-        console.error('Error fetching leaderboard:', error);
-        listElement.innerHTML = '<li>حدث خطأ في الاتصال بالخادم.</li>';
-    }
-}
-
-
-// =======================================================
-// التواصل (Modal)
-// =======================================================
-function openContactModal() {
-    document.getElementById('contact-modal').style.display = 'block';
-}
-
-function closeContactModal() {
-    document.getElementById('contact-modal').style.display = 'none';
-}
-
-// =======================================================
-// تهيئة التطبيق عند البدء
-// =======================================================
-
-function initializeApp() {
-    updatePointsDisplay();
-
-    if (userName) {
-        document.getElementById('display-user-name').textContent = userName;
-        // إذا كان هناك اسم محفوظ، ننتقل مباشرة إلى القائمة الرئيسية
-        showScreen('main-menu', false);
-    } else {
-        // إذا لم يكن هناك اسم، نبقى في شاشة البداية
-        showScreen('splash-screen', false);
-    }
-}
-
-// =======================================================
-// وظائف أخرى (Shuffle)
-// =======================================================
-function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-}
-
-function getRandomQuestions(level, type) {
-    const filtered = QUESTIONS.filter(q => q.level === level && q.type === type);
-    return shuffleArray(filtered).slice(0, 10); // ناخذ 10 أسئلة عشوائية
-}
-
-
-// التشغيل عند تحميل الصفحة
-window.onload = initializeApp;
