@@ -1,5 +1,5 @@
 // ----------------------------------------------------
-// متغيرات اللعبة (تم التعديل)
+// متغيرات اللعبة
 // ----------------------------------------------------
 let currentQuestionIndex = 0;
 let currentQuestions = [];
@@ -13,10 +13,14 @@ const COST_REMOVE_OPTION = 20;
 const COST_CHANGE_QUESTION = 30;
 const COST_ADD_TIME = 25; 
 const SUCCESS_THRESHOLD = 7; 
+// 💡 نظام النقاط الإضافية: عند إعادة اللعب
+const REPLAY_POINTS_CORRECT = 5; // نقاط أقل عند إعادة اللعب
 
-// 🚨 تم حذف رابط خادم Google Apps Script API 
+// متغير لتتبع وضع اللعب (هل الجولة الحالية هي جولة إعادة لعب أم لا)
+let isCurrentGameReplay = false; 
+let correctAnswersInCurrentRound = 0; 
 
-// بيانات المستخدم (تم التعديل)
+// بيانات المستخدم (تم التعديل لدعم التقدم لفتح المستويات)
 let userStats = {
     name: '',
     totalAnswered: 0,
@@ -24,12 +28,38 @@ let userStats = {
     totalWrong: 0,
     points: 200, 
     unlockedLevel: 'normal', 
-    answeredQuestions: { normal: { tf: [], mc: [] }, medium: { tf: [], mc: [] }, hard: { tf: [], mc: [] } }, 
-    // 🚨 تم حذف الإحصائيات الأسبوعية
+    // الأسئلة التي تمت الإجابة عليها لتجنب تكرارها في اللعب العادي
+    answeredQuestions: { 
+        normal: { tf: [], mc: [] }, 
+        medium: { tf: [], mc: [] }, 
+        hard: { tf: [], mc: [] } 
+    }, 
+    // 💡 الأسئلة التي تم احتسابها كـ"تقدم" لفتح المستوى (مرة واحدة لكل سؤال)
+    unlockedProgress: { 
+        normal: { tf: [], mc: [] }, 
+        medium: { tf: [], mc: [] }, 
+        hard: { tf: [], mc: [] } 
+    },
 };
 
 // ----------------------------------------------------
-// تحميل البيانات (تم التعديل)
+// وظائف المؤثرات الصوتية الجديدة
+// ----------------------------------------------------
+function playSound(type) {
+    let audio;
+    if (type === 'correct') {
+        audio = document.getElementById('correct-sound');
+    } else if (type === 'wrong') {
+        audio = document.getElementById('wrong-sound');
+    }
+    if (audio) {
+        audio.currentTime = 0; 
+        audio.play().catch(e => console.error("Error playing sound:", e));
+    }
+}
+
+// ----------------------------------------------------
+// تحميل وحفظ البيانات
 // ----------------------------------------------------
 function loadInitialData(){
     const storedName = localStorage.getItem('userName');
@@ -50,16 +80,15 @@ function loadInitialData(){
             ...loadedStats,
             points: loadedStats.points || 200, 
             unlockedLevel: loadedStats.unlockedLevel || 'normal',
-            answeredQuestions: loadedStats.answeredQuestions || { normal: { tf: [], mc: [] }, medium: { tf: [], mc: [] }, hard: { tf: [], mc: [] } }
+            answeredQuestions: loadedStats.answeredQuestions || { normal: { tf: [], mc: [] }, medium: { tf: [], mc: [] }, hard: { tf: [], mc: [] } },
+            // 💡 تحميل حقل التقدم الجديد (أو تعيينه إذا لم يكن موجوداً)
+            unlockedProgress: loadedStats.unlockedProgress || { normal: { tf: [], mc: [] }, medium: { tf: [], mc: [] }, hard: { tf: [] } }
         };
         
         document.getElementById('user-points').textContent = userStats.points;
     }
 }
 
-// ----------------------------------------------------
-// حفظ البيانات
-// ----------------------------------------------------
 function saveUserStats(){
     localStorage.setItem('userName',userStats.name);
     localStorage.setItem('userStats',JSON.stringify(userStats));
@@ -72,7 +101,7 @@ function saveUserStats(){
 // ----------------------------------------------------
 function showScreen(screenId,isInitialLoad=false){
     clearTimer();
-    closeContactModal(); // 💡 إغلاق المودال عند التنقل بين الشاشات
+    closeContactModal();
     const currentActiveScreen=document.querySelector('.screen.active');
     if(currentActiveScreen && !isInitialLoad && currentActiveScreen.id!==screenId){ history.push(currentActiveScreen.id); }
     document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
@@ -97,7 +126,7 @@ function goBack(){
 }
 
 // ----------------------------------------------------
-// شاشة الدخول والتواصل (تم إصلاحها)
+// شاشة الدخول والتواصل
 // ----------------------------------------------------
 function saveAndEnter(){
     const name=document.getElementById('user-name').value.trim();
@@ -106,7 +135,6 @@ function saveAndEnter(){
 }
 
 function openContactModal() { 
-    // 💡 نستخدم 'flex' لإظهاره كبلوك مركزي
     document.getElementById('contact-modal').style.display = 'flex'; 
 }
 
@@ -122,11 +150,11 @@ function updateStats(isCorrect){
     userStats.totalAnswered++; 
     if(isCorrect){ 
         userStats.totalCorrect++; 
-        userStats.points += POINTS_CORRECT_ANSWER; 
     }
     else{ 
         userStats.totalWrong++; 
     }
+    // النقاط يتم تحديثها داخل checkAnswer
     saveUserStats();
 }
 
@@ -158,7 +186,7 @@ function startTimer() {
 
         if (timeLeft <= 0) {
             clearTimer();
-            checkAnswer(null, null, true); 
+            checkAnswer(null, null, true); // إجابة خاطئة بسبب انتهاء الوقت
         }
     }, 1000);
 }
@@ -173,8 +201,6 @@ function clearTimer() {
 // ----------------------------------------------------
 // وظائف أدوات المساعدة 
 // ----------------------------------------------------
-
-// مساعدة: إزالة خيارين خاطئين (متعدد فقط)
 function useRemoveOption() {
     if (gameType !== 'mc') {
         alert("هذه الميزة متاحة فقط في أسئلة الاختيار من متعدد.");
@@ -217,7 +243,6 @@ function useRemoveOption() {
     alert(`تم خصم ${COST_REMOVE_OPTION} نقطة. تم إزالة ${removedCount} خيار خاطئ.`);
 }
 
-// مساعدة: تغيير السؤال الحالي
 function useChangeQuestion() {
     if (userStats.points < COST_CHANGE_QUESTION) {
         alert(`نقاطك (${userStats.points}) لا تكفي. تحتاج لـ ${COST_CHANGE_QUESTION} نقطة لاستخدام هذه الميزة.`);
@@ -238,13 +263,13 @@ function useChangeQuestion() {
     if (currentQuestionIndex < currentQuestions.length) {
         loadQuestion();
     } else {
-        showEndGameMessage();
+        checkLevelUnlockCondition();
+        showEndGameMessage(true);
     }
     
     alert(`تم خصم ${COST_CHANGE_QUESTION} نقطة. تم تغيير السؤال.`);
 }
 
-// مساعدة: إضافة وقت (10 ثواني إضافية)
 function useAddTime() {
     if (userStats.points < COST_ADD_TIME) {
         alert(`نقاطك (${userStats.points}) لا تكفي. تحتاج لـ ${COST_ADD_TIME} نقطة لشراء وقت إضافي.`);
@@ -258,13 +283,10 @@ function useAddTime() {
     userStats.points -= COST_ADD_TIME;
     saveUserStats();
     
-    // إضافة 10 ثوانٍ للوقت المتبقي
     timeLeft += 10;
     
-    // تحديث الواجهة فوراً
     document.getElementById('timer-text').textContent = timeLeft;
     
-    // تعطيل زر الوقت الإضافي لهذه الجولة
     document.querySelectorAll('.help-buttons button')[2].disabled = true; 
 
     alert(`تم خصم ${COST_ADD_TIME} نقطة. تمت إضافة 10 ثوانٍ.`);
@@ -275,27 +297,38 @@ function useAddTime() {
 // وظائف اللعب الرئيسية 
 // ----------------------------------------------------
 
-function startGame(level, type) {
+function startGame(level, type, isReplay = false) {
     gameLevel = level;
     gameType = type;
-
-    // الحصول على الأسئلة التي لم يتم الإجابة عليها سابقاً في هذا المستوى/النوع
+    isCurrentGameReplay = isReplay; // تحديد وضع اللعب
+    
     const allQ = allQuestions[gameLevel][gameType];
     const answeredIds = userStats.answeredQuestions[gameLevel][gameType];
     
-    const availableQuestions = allQ.filter(q => !answeredIds.includes(q.question));
+    let availableQuestions = [];
 
-    // خلط الأسئلة واختيار العشرة الأوائل (أو أقل إذا لم تتوفر 10)
+    if (isReplay) {
+        // نمط إعادة اللعب: اختر من جميع الأسئلة
+        availableQuestions = allQ;
+    } else {
+        // نمط اللعب لأول مرة: اختر فقط من الأسئلة التي لم يتم الإجابة عليها
+        availableQuestions = allQ.filter(q => !answeredIds.includes(q.question));
+    }
+
     currentQuestions = availableQuestions.sort(() => Math.random() - 0.5).slice(0, 10);
     
-    if (currentQuestions.length === 0) {
+    if (currentQuestions.length === 0 && !isReplay) {
         showLevelCompletedMessage();
+        return;
+    } else if (currentQuestions.length === 0 && isReplay) {
+        alert("لا يوجد أسئلة متاحة لإعادة اللعب حاليًا.");
+        showScreen('main-menu');
         return;
     }
     
     currentQuestionIndex = 0;
-    // إعادة تعيين عدد الإجابات الصحيحة للجولة الجديدة
     correctAnswersInCurrentRound = 0; 
+    
     showScreen('game-screen');
     loadQuestion();
 }
@@ -305,13 +338,37 @@ function showLevelCompletedMessage() {
     const qText = document.getElementById('question-text');
     const container = document.getElementById('answers-container');
     
-    qText.textContent = `تهانينا! لقد استنفذت جميع أسئلة (${gameLevel.toUpperCase()} - ${gameType.toUpperCase()}).`;
-    container.innerHTML = '<button onclick="showScreen(\'level-select\')">العودة لاختيار مستوى أو نوع آخر</button>';
+    qText.textContent = `تهانينا! لقد استنفذت جميع أسئلة (${gameLevel.toUpperCase()} - ${gameType.toUpperCase()}) في اللعب العادي. يمكنك الآن إعادة اللعب لجمع نقاط إضافية.`;
+    container.innerHTML = `
+        <button onclick="showScreen('level-select')">العودة لاختيار مستوى</button>
+        <button onclick="startGame(gameLevel, gameType, true)">🔄 إعادة لعب لجمع نقاط إضافية</button>
+    `;
     document.getElementById('question-counter').textContent = "";
     history = [];
 }
 
-// دالة جديدة لتحديث حالة أزرار المستويات بناءً على المستوى المفتوح
+// دالة جديدة لعرض شاشة نهاية الجولة وإعادة اللعب
+function showEndGameMessage(isNormalEnd = false) {
+    const qText = document.getElementById('question-text');
+    const container = document.getElementById('answers-container');
+    
+    let message = isNormalEnd ? 
+        `انتهت جولة الأسئلة (${currentQuestions.length} سؤال)! لديك الآن ${userStats.points} نقطة.` :
+        `انتهت جولة الأسئلة! لديك الآن ${userStats.points} نقطة.`;
+    
+    qText.textContent = message;
+    
+    // زر إعادة اللعب للحصول على نقاط إضافية
+    container.innerHTML = `
+        <button onclick="showScreen('main-menu')">العودة للقائمة الرئيسية</button>
+        <button onclick="startGame(gameLevel, gameType, true)">🔄 إعادة لعب لجمع نقاط إضافية</button>
+    `;
+    
+    document.getElementById('question-counter').textContent = "";
+    history = [];
+}
+
+// دالة تحديث أزرار المستويات (إخفاء الأزرار المغلقة)
 function updateLevelButtons(){
     const levels = ['normal', 'medium', 'hard'];
     let currentUnlocked = userStats.unlockedLevel;
@@ -319,13 +376,17 @@ function updateLevelButtons(){
     levels.forEach(level => {
         const isLocked = levels.indexOf(level) > levels.indexOf(currentUnlocked);
         document.querySelectorAll(`.level-selection button[onclick*="'${level}'"]`).forEach(btn => {
-            btn.disabled = isLocked;
+            // يتم تطبيق كلاس locked-btn الذي تم تعريفه في CSS لخاصية display: none !important
             btn.classList.toggle('locked-btn', isLocked);
-            btn.textContent = btn.textContent.split('(')[0].trim();
-            if(isLocked) {
-                 btn.textContent += " (مغلق)";
-            }
         });
+        // إخفاء العنوان أيضًا إذا كانت كل الأزرار تحته مغلقة
+        if (isLocked) {
+             const h2 = document.querySelector(`.level-selection button[onclick*="'${level}'"]`).closest('.level-selection').querySelector(`h2:nth-of-type(${levels.indexOf(level) + 1})`);
+             if (h2) h2.style.display = 'none';
+        } else {
+             const h2 = document.querySelector(`.level-selection button[onclick*="'${level}'"]`).closest('.level-selection').querySelector(`h2:nth-of-type(${levels.indexOf(level) + 1})`);
+             if (h2) h2.style.display = 'block';
+        }
     });
 }
 
@@ -372,23 +433,6 @@ function loadQuestion() {
     }
 }
 
-function showEndGameMessage(isNormalEnd = false) {
-    const qText = document.getElementById('question-text');
-    const container = document.getElementById('answers-container');
-    
-    if (isNormalEnd) {
-        qText.textContent = `انتهت جولة الأسئلة (${currentQuestions.length} سؤال)! لديك الآن ${userStats.points} نقطة.`;
-    } else {
-         qText.textContent = `انتهت جولة الأسئلة! لديك الآن ${userStats.points} نقطة.`;
-    }
-    
-    container.innerHTML = '<button onclick="showScreen(\'main-menu\')">العودة للقائمة الرئيسية</button>';
-    document.getElementById('question-counter').textContent = "";
-    history = [];
-}
-
-let correctAnswersInCurrentRound = 0; 
-
 function checkAnswer(selectedAnswer, button, timedOut = false) {
     clearTimer();
     const q = currentQuestions[currentQuestionIndex];
@@ -398,43 +442,63 @@ function checkAnswer(selectedAnswer, button, timedOut = false) {
 
     if (timedOut) {
         isCorrect = false;
-        alert("انتهى وقت الإجابة! تم اعتبار الإجابة خاطئة.");
     } else {
         if (gameType === 'tf') {
             isCorrect = (selectedAnswer === q.answer);
         } else if (gameType === 'mc') {
             isCorrect = (selectedAnswer === q.correct);
         }
-
-        if (isCorrect && button) {
-            button.classList.add('correct-answer');
-        } else if (button) {
-            button.classList.add('wrong-answer');
-        }
     }
     
+    // 💡 تطبيق الأصوات والتأثيرات
     if (isCorrect) {
+        playSound('correct');
+        if (button) { button.classList.add('correct-answer'); }
         correctAnswersInCurrentRound++;
+    } else {
+        playSound('wrong');
+        if (button) { button.classList.add('wrong-answer'); }
     }
+    
+    // 💡 منطق احتساب النقاط وتتبع التقدم (منع تكرار نقاط فتح المستوى)
+    if (isCorrect) {
+        let pointsToAdd = POINTS_CORRECT_ANSWER;
+        const questionId = q.question;
+        
+        let isNewProgress = !userStats.unlockedProgress[gameLevel][gameType].includes(questionId);
+        
+        if (isCurrentGameReplay) {
+            // عند إعادة اللعب، النقاط أقل ولا تؤثر على التقدم لفتح المستوى
+            pointsToAdd = REPLAY_POINTS_CORRECT; 
+        } else if (!isNewProgress) {
+            // إذا كانت الإجابة صحيحة ولكن السؤال سبق وتم احتسابه (في جولة عادية)، نعطي نقاط إعادة اللعب
+            pointsToAdd = REPLAY_POINTS_CORRECT; 
+        } else if (isNewProgress && !isCurrentGameReplay) {
+            // جولة عادية وإجابة صحيحة لأول مرة: نمنح نقاط كاملة ونحدث التقدم
+            userStats.unlockedProgress[gameLevel][gameType].push(questionId);
+        }
 
-    // تحديث الإحصائيات (وإضافة النقاط)
+        userStats.points += pointsToAdd; 
+    }
+    
+    // تحديث الإحصائيات العامة (هنا يتم تحديث totalAnswered, totalCorrect, totalWrong)
     updateStats(isCorrect);
     
-    // حفظ السؤال الذي تم الإجابة عليه لتجنب التكرار
-    if (q && q.question) {
-        userStats.answeredQuestions[gameLevel][gameType].push(q.question);
+    // حفظ السؤال الذي تم الإجابة عليه لتجنب تكرار اللعب العادي
+    const questionId = q.question;
+    if (!userStats.answeredQuestions[gameLevel][gameType].includes(questionId)) {
+        userStats.answeredQuestions[gameLevel][gameType].push(questionId);
     }
     
-    // تمييز الإجابة الصحيحة
+    saveUserStats(); // حفظ الإحصائيات بعد تحديث النقاط
+
+    // 💡 تمييز الإجابة الصحيحة
     document.querySelectorAll('#answers-container button').forEach(btn => {
-        let isCorrectButton = false;
-        if (gameType === 'tf') {
-            isCorrectButton = (q.answer ? (btn.textContent === 'صح') : (btn.textContent === 'خطأ'));
-        } else if (gameType === 'mc') {
-            isCorrectButton = (btn.textContent === q.correct);
-        }
+        let isCorrectButton = (gameType === 'tf') 
+            ? (q.answer ? (btn.textContent === 'صح') : (btn.textContent === 'خطأ')) 
+            : (btn.textContent === q.correct);
         
-        if (isCorrectButton) {
+        if (isCorrectButton && !btn.classList.contains('correct-answer')) {
             btn.classList.add('correct-answer');
         }
         btn.disabled = true;
@@ -451,16 +515,22 @@ function checkAnswer(selectedAnswer, button, timedOut = false) {
 
 // دالة للتحقق من شرط فتح المستوى بعد انتهاء الجولة
 function checkLevelUnlockCondition() {
+    // هذه الدالة تعمل فقط عند انتهاء الجولة العادية (غير الإعادة)
+    if (isCurrentGameReplay) return; 
+
     const levels = ['normal', 'medium', 'hard'];
     const nextLevelIndex = levels.indexOf(gameLevel) + 1;
     
+    const questionsForUnlock = userStats.unlockedProgress[gameLevel][gameType];
     const allQ = allQuestions[gameLevel][gameType];
-    const answeredIds = userStats.answeredQuestions[gameLevel][gameType];
-
-    const allAnswered = (answeredIds.length === allQ.length);
+    
+    // الشرط الأول: الإجابة على جميع الأسئلة في هذا النوع والمستوى لمرة واحدة بنجاح
+    const allAnsweredForUnlock = (questionsForUnlock.length === allQ.length);
+    
+    // الشرط الثاني: تحقيق الحد الأدنى من الإجابات الصحيحة في هذه الجولة
     const passedThreshold = (correctAnswersInCurrentRound >= SUCCESS_THRESHOLD);
 
-    if (nextLevelIndex < levels.length && passedThreshold && allAnswered && levels.indexOf(userStats.unlockedLevel) < nextLevelIndex) {
+    if (nextLevelIndex < levels.length && passedThreshold && allAnsweredForUnlock && levels.indexOf(userStats.unlockedLevel) < nextLevelIndex) {
         const nextLevel = levels[nextLevelIndex];
         userStats.unlockedLevel = nextLevel;
         saveUserStats();
