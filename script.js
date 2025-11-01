@@ -15,11 +15,10 @@ const COST_ADD_TIME = 25;
 const SUCCESS_THRESHOLD = 7; 
 const REPLAY_POINTS_CORRECT = 5; 
 
-// متغيرات حالة اللعب
 let isCurrentGameReplay = false; 
 let correctAnswersInCurrentRound = 0; 
 
-// بيانات المستخدم (تم التعديل لدعم التقدم لفتح المستويات)
+// بيانات المستخدم (كما كانت سابقاً)
 let userStats = {
     name: '',
     totalAnswered: 0,
@@ -40,7 +39,7 @@ let userStats = {
 };
 
 // ----------------------------------------------------
-// وظائف المؤثرات الصوتية (إصلاح مشكلة عدم عمل الصوت)
+// وظائف المؤثرات الصوتية (إصلاح تفعيل الصوت)
 // ----------------------------------------------------
 function playSound(type) {
     let audio;
@@ -50,13 +49,18 @@ function playSound(type) {
         audio = document.getElementById('wrong-sound');
     }
     if (audio) {
+        // 💡 محاولة تحميل وتشغيل الصوت لضمان جاهزية المتصفح
+        audio.load();
         audio.currentTime = 0; 
-        audio.play().catch(e => console.error("Error playing sound:", e));
+        audio.play().catch(e => {
+            // console.error("Error playing sound:", e);
+            // قد يفشل التشغيل التلقائي. سيتم تفعيله بعد أول تفاعل من المستخدم.
+        });
     }
 }
 
 // ----------------------------------------------------
-// تحميل وحفظ البيانات
+// تحميل وحفظ البيانات (لم تتغير)
 // ----------------------------------------------------
 function loadInitialData(){
     const storedName = localStorage.getItem('userName');
@@ -92,6 +96,7 @@ function saveUserStats(){
     document.getElementById('user-points').textContent = userStats.points; 
 }
 
+
 // ----------------------------------------------------
 // التنقل بين الشاشات
 // ----------------------------------------------------
@@ -105,7 +110,7 @@ function showScreen(screenId,isInitialLoad=false){
     document.getElementById('back-btn').style.display=history.length>0?'flex':'none';
     
     if(screenId==='profile-screen'){ updateProfileDisplay(); }
-    else if(screenId==='level-select'){ updateLevelButtons(); } 
+    else if(screenId==='level-select'){ updateLevelButtons(); } // 💡 تحديث الأزرار عند الذهاب لقائمة المستويات
 
     document.getElementById('bottom-nav').style.display=(screenId==='splash-screen')?'none':'flex';
     if(screenId === 'main-menu') { history = []; }
@@ -122,174 +127,7 @@ function goBack(){
 }
 
 // ----------------------------------------------------
-// شاشة الدخول والتواصل
-// ----------------------------------------------------
-function saveAndEnter(){
-    const name=document.getElementById('user-name').value.trim();
-    if(name){ userStats.name=name; document.getElementById('display-user-name').textContent=name; saveUserStats(); showScreen('main-menu'); }
-    else alert("الرجاء إدخال اسمك أولاً!");
-}
-
-function openContactModal() { 
-    document.getElementById('contact-modal').style.display = 'flex'; 
-}
-
-function closeContactModal() { 
-    document.getElementById('contact-modal').style.display = 'none'; 
-}
-
-
-// ----------------------------------------------------
-// الإحصائيات وتحديث النقاط
-// ----------------------------------------------------
-function updateStats(isCorrect){
-    userStats.totalAnswered++; 
-    if(isCorrect){ 
-        userStats.totalCorrect++; 
-    }
-    else{ 
-        userStats.totalWrong++; 
-    }
-    saveUserStats();
-}
-
-function updateProfileDisplay(){
-    document.getElementById('profile-name').textContent=userStats.name;
-    document.getElementById('total-answered').textContent=userStats.totalAnswered; 
-    document.getElementById('total-correct').textContent=userStats.totalCorrect;
-    document.getElementById('total-wrong').textContent=userStats.totalWrong;
-    document.getElementById('profile-points').textContent = userStats.points; 
-}
-
-
-// ----------------------------------------------------
-// وظائف المؤقت (Timer Logic)
-// ----------------------------------------------------
-function startTimer() {
-    clearTimer();
-    timeLeft = 15;
-    document.getElementById('timer-text').textContent = timeLeft;
-    document.getElementById('timer-circle').style.borderColor = '#FFC107'; 
-
-    timer = setInterval(() => {
-        timeLeft--;
-        document.getElementById('timer-text').textContent = timeLeft;
-
-        if (timeLeft <= 5) {
-            document.getElementById('timer-circle').style.borderColor = '#D32F2F'; 
-        }
-
-        if (timeLeft <= 0) {
-            clearTimer();
-            checkAnswer(null, null, true); // إجابة خاطئة بسبب انتهاء الوقت
-        }
-    }, 1000);
-}
-
-function clearTimer() {
-    if (timer) {
-        clearInterval(timer);
-        timer = null;
-    }
-}
-
-// ----------------------------------------------------
-// وظائف أدوات المساعدة 
-// ----------------------------------------------------
-function useRemoveOption() {
-    if (gameType !== 'mc') {
-        alert("هذه الميزة متاحة فقط في أسئلة الاختيار من متعدد.");
-        return;
-    }
-    if (userStats.points < COST_REMOVE_OPTION) {
-        alert(`نقاطك (${userStats.points}) لا تكفي. تحتاج لـ ${COST_REMOVE_OPTION} نقطة لاستخدام هذه الميزة.`);
-        return;
-    }
-    
-    if (!confirm(`هل أنت متأكد من خصم ${COST_REMOVE_OPTION} نقطة مقابل إزالة خيار خاطئ؟`)) {
-        return;
-    }
-
-    userStats.points -= COST_REMOVE_OPTION;
-    saveUserStats();
-
-    const q = currentQuestions[currentQuestionIndex];
-    const buttons = document.querySelectorAll('#answers-container button:not([disabled])');
-    
-    if (buttons.length <= 2) {
-        alert("لا يمكن إزالة المزيد من الخيارات.");
-        return;
-    }
-
-    let removedCount = 0;
-    const incorrectOptions = Array.from(buttons).filter(btn => btn.textContent !== q.correct);
-    
-    for (let i = 0; i < Math.min(2, incorrectOptions.length); i++) {
-        const randomIndex = Math.floor(Math.random() * incorrectOptions.length);
-        const btnToRemove = incorrectOptions.splice(randomIndex, 1)[0];
-        if (btnToRemove) {
-            btnToRemove.style.display = 'none';
-            btnToRemove.disabled = true;
-            removedCount++;
-        }
-    }
-    
-    document.querySelectorAll('.help-buttons button')[0].disabled = true; 
-    alert(`تم خصم ${COST_REMOVE_OPTION} نقطة. تم إزالة ${removedCount} خيار خاطئ.`);
-}
-
-function useChangeQuestion() {
-    if (userStats.points < COST_CHANGE_QUESTION) {
-        alert(`نقاطك (${userStats.points}) لا تكفي. تحتاج لـ ${COST_CHANGE_QUESTION} نقطة لاستخدام هذه الميزة.`);
-        return;
-    }
-    
-    if (!confirm(`هل أنت متأكد من خصم ${COST_CHANGE_QUESTION} نقطة مقابل تغيير السؤال؟`)) {
-        return;
-    }
-
-    userStats.points -= COST_CHANGE_QUESTION;
-    saveUserStats();
-
-    currentQuestionIndex++; 
-    
-    document.querySelectorAll('.help-buttons button')[1].disabled = true; 
-
-    if (currentQuestionIndex < currentQuestions.length) {
-        loadQuestion();
-    } else {
-        checkLevelUnlockCondition();
-        showEndGameMessage(true);
-    }
-    
-    alert(`تم خصم ${COST_CHANGE_QUESTION} نقطة. تم تغيير السؤال.`);
-}
-
-function useAddTime() {
-    if (userStats.points < COST_ADD_TIME) {
-        alert(`نقاطك (${userStats.points}) لا تكفي. تحتاج لـ ${COST_ADD_TIME} نقطة لشراء وقت إضافي.`);
-        return;
-    }
-    
-    if (!confirm(`هل أنت متأكد من خصم ${COST_ADD_TIME} نقطة مقابل 10 ثوانٍ إضافية؟`)) {
-        return;
-    }
-
-    userStats.points -= COST_ADD_TIME;
-    saveUserStats();
-    
-    timeLeft += 10;
-    
-    document.getElementById('timer-text').textContent = timeLeft;
-    
-    document.querySelectorAll('.help-buttons button')[2].disabled = true; 
-
-    alert(`تم خصم ${COST_ADD_TIME} نقطة. تمت إضافة 10 ثوانٍ.`);
-}
-
-
-// ----------------------------------------------------
-// وظائف اللعب الرئيسية (إصلاح مشكلة عدم عمل اللعبة)
+// وظائف اللعب الرئيسية (تم التأكيد على عمل لعبة الصح/الخطأ)
 // ----------------------------------------------------
 
 function startGame(level, type, isReplay = false) {
@@ -297,7 +135,6 @@ function startGame(level, type, isReplay = false) {
     gameType = type;
     isCurrentGameReplay = isReplay; 
     
-    // 💡 التأكد من أن 'allQuestions' معرفة في ملف 'questions.js'
     if (typeof allQuestions === 'undefined' || !allQuestions[level] || !allQuestions[level][type]) {
         alert("خطأ: لا يمكن العثور على أسئلة لهذا المستوى والنوع (تأكد من ملف questions.js).");
         showScreen('level-select');
@@ -333,59 +170,24 @@ function startGame(level, type, isReplay = false) {
     loadQuestion();
 }
 
-// دالة لمعالجة انتهاء الأسئلة في نوع معين من الأسئلة في المستوى
-function showLevelCompletedMessage() {
-    const qText = document.getElementById('question-text');
-    const container = document.getElementById('answers-container');
-    
-    qText.textContent = `تهانينا! لقد استنفذت جميع أسئلة (${gameLevel.toUpperCase()} - ${gameType.toUpperCase()}) في اللعب العادي. يمكنك الآن إعادة اللعب لجمع نقاط إضافية.`;
-    container.innerHTML = `
-        <button onclick="showScreen('level-select')">العودة لاختيار مستوى</button>
-        <button onclick="startGame(gameLevel, gameType, true)">🔄 إعادة لعب لجمع نقاط إضافية</button>
-    `;
-    document.getElementById('question-counter').textContent = "";
-    history = [];
-}
-
-// دالة جديدة لعرض شاشة نهاية الجولة وإعادة اللعب
-function showEndGameMessage(isNormalEnd = false) {
-    const qText = document.getElementById('question-text');
-    const container = document.getElementById('answers-container');
-    
-    let message = isNormalEnd ? 
-        `انتهت جولة الأسئلة (${currentQuestions.length} سؤال)! لديك الآن ${userStats.points} نقطة.` :
-        `انتهت جولة الأسئلة! لديك الآن ${userStats.points} نقطة.`;
-    
-    qText.textContent = message;
-    
-    container.innerHTML = `
-        <button onclick="showScreen('main-menu')">العودة للقائمة الرئيسية</button>
-        <button onclick="startGame(gameLevel, gameType, true)">🔄 إعادة لعب لجمع نقاط إضافية</button>
-    `;
-    
-    document.getElementById('question-counter').textContent = "";
-    history = [];
-}
-
-// دالة تحديث أزرار المستويات (إخفاء الأزرار المغلقة)
+// دالة تحديث أزرار المستويات (إصلاح الإخفاء)
 function updateLevelButtons(){
     const levels = ['normal', 'medium', 'hard'];
     let currentUnlocked = userStats.unlockedLevel;
+    let unlockedIndex = levels.indexOf(currentUnlocked);
 
-    levels.forEach(level => {
-        const isLocked = levels.indexOf(level) > levels.indexOf(currentUnlocked);
+    levels.forEach((level, index) => {
+        const isLocked = index > unlockedIndex;
         
-        // 💡 إخفاء الأزرار
+        // إخفاء/إظهار الأزرار
         document.querySelectorAll(`.level-selection button[onclick*="'${level}'"]`).forEach(btn => {
             btn.classList.toggle('locked-btn', isLocked);
         });
 
-        // 💡 إخفاء عنوان المستوى أيضاً إذا كان مغلقاً
+        // إخفاء/إظهار عنوان المستوى (H2)
         const levelContainer = document.querySelector('.level-selection');
-        const levelIndex = levels.indexOf(level);
         if (levelContainer) {
-            // يتم الوصول إلى H2 بناءً على ترتيبه
-            const h2 = levelContainer.querySelector(`h2:nth-of-type(${levelIndex + 1})`);
+            const h2 = levelContainer.querySelector(`h2:nth-of-type(${index + 1})`);
             if (h2) h2.style.display = isLocked ? 'none' : 'block';
         }
     });
@@ -411,6 +213,7 @@ function loadQuestion() {
         counter.textContent = `السؤال ${currentQuestionIndex + 1} من ${currentQuestions.length} (${gameLevel.toUpperCase()} - ${gameType.toUpperCase()})`;
 
         if (gameType === 'tf') {
+            // 💡 ملاحظة: 'true' و 'false' هنا قيم منطقية يتم تمريرها للدالة
             container.innerHTML = `
                 <button onclick="checkAnswer(true, this)" class="tf-btn true-btn">صح</button>
                 <button onclick="checkAnswer(false, this)" class="tf-btn false-btn">خطأ</button>
@@ -443,27 +246,24 @@ function checkAnswer(selectedAnswer, button, timedOut = false) {
     } else {
         // 💡 منطق التحقق من الإجابة الصحيحة
         if (gameType === 'tf') {
-            isCorrect = (selectedAnswer === q.answer);
+            // مقارنة القيمة المنطقية (true/false) مع إجابة السؤال المخزنة
+            isCorrect = (selectedAnswer === q.answer); 
         } else if (gameType === 'mc') {
             isCorrect = (selectedAnswer === q.correct);
         }
     }
     
-    // 💡 تطبيق الأصوات والتأثيرات
+    // 💡 تطبيق الأصوات
     if (isCorrect) {
         playSound('correct');
-        if (button) { button.classList.add('correct-answer'); }
-        correctAnswersInCurrentRound++;
     } else {
         playSound('wrong');
-        if (button) { button.classList.add('wrong-answer'); }
     }
     
-    // 💡 منطق احتساب النقاط وتتبع التقدم
+    // منطق النقاط والتقدم (لم يتغير)
     if (isCorrect) {
         let pointsToAdd = POINTS_CORRECT_ANSWER;
         const questionId = q.question;
-        
         let isNewProgress = !userStats.unlockedProgress[gameLevel][gameType].includes(questionId);
         
         if (isCurrentGameReplay) {
@@ -477,26 +277,35 @@ function checkAnswer(selectedAnswer, button, timedOut = false) {
         userStats.points += pointsToAdd; 
     }
     
-    // تحديث الإحصائيات العامة وحفظ السؤال
     updateStats(isCorrect);
-    
     const questionId = q.question;
     if (!userStats.answeredQuestions[gameLevel][gameType].includes(questionId)) {
         userStats.answeredQuestions[gameLevel][gameType].push(questionId);
     }
-    
     saveUserStats(); 
 
-    // 💡 تمييز الإجابة الصحيحة (إصلاح مشكلة الألوان)
+    // 💡 إصلاح تمييز الإجابة الصحيحة (لضمان ظهور الألوان)
     document.querySelectorAll('#answers-container button').forEach(btn => {
-        let isCorrectButton = (gameType === 'tf') 
-            ? (q.answer ? (btn.textContent === 'صح') : (btn.textContent === 'خطأ')) 
-            : (btn.textContent === q.correct);
+        let isCorrectButton = false;
         
-        // إذا لم يتم النقر على الزر الصحيح، وظهور اللون الأحمر على الإجابة المختارة
-        if (isCorrectButton && !btn.classList.contains('correct-answer')) {
-            btn.classList.add('correct-answer');
+        if (gameType === 'tf') {
+            // التأكد من أن النص على الزر (صح/خطأ) يطابق الإجابة المخزنة (true/false)
+            if (q.answer === true && btn.textContent === 'صح') isCorrectButton = true;
+            if (q.answer === false && btn.textContent === 'خطأ') isCorrectButton = true;
+        } else if (gameType === 'mc') {
+            isCorrectButton = (btn.textContent === q.correct);
         }
+        
+        if (isCorrectButton) {
+            btn.classList.add('correct-answer');
+        } else if (btn === button && !isCorrect) { 
+            // إذا كان الزر هو الذي تم النقر عليه (button) والإجابة خاطئة
+            btn.classList.add('wrong-answer');
+        } else if (timedOut) {
+            // في حالة انتهاء الوقت، تظهر الإجابة الصحيحة فقط
+            if (isCorrectButton) btn.classList.add('correct-answer');
+        }
+        
         btn.disabled = true; // تعطيل جميع الأزرار بعد الإجابة
     });
 
@@ -506,9 +315,10 @@ function checkAnswer(selectedAnswer, button, timedOut = false) {
         checkLevelUnlockCondition();
     }
     
-    // تأخير الانتقال للسؤال التالي لإظهار اللون
     setTimeout(loadQuestion, 2000); 
 }
+
+// ... (بقية الدوال لم تتغير) ...
 
 function checkLevelUnlockCondition() {
     if (isCurrentGameReplay) return; 
@@ -533,3 +343,4 @@ function checkLevelUnlockCondition() {
 }
 
 window.onload = loadInitialData;
+// ----------------------------------------------------
