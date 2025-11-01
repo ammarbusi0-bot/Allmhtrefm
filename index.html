@@ -3,63 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الموقع الديني الثابت - القرآن والأذكار</title>
+    <title>موقع النور الفخم</title>
     
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;700&display=swap');
+        
         :root {
-            --main-bg-color: #f7f7f7; --text-color: #1a1a1a;
-            --card-bg-color: #ffffff; --accent-color: #4a6fa5; 
-            --progress-color: #4CAF50; --shadow-color: rgba(0, 0, 0, 0.05);
+            /* ألوان الوضع النهاري الفخم (أزرق غامق وذهبي) */
+            --main-bg-color: #f0f4f8;        
+            --text-color: #1a1a1a;
+            --card-bg-color: #ffffff;
+            --accent-color: #b8860b;         /* ذهبي غامق */
+            --accent-color-light: #ffd700;   /* ذهبي فاتح */
+            --progress-color: #008080;       /* Dark Teal */
+            --shadow-color: rgba(0, 0, 0, 0.15);
+            --font-family: 'Cairo', 'Amiri', serif;
         }
         .dark-mode {
-            --main-bg-color: #1e1e1e; --text-color: #e0e0e0;
-            --card-bg-color: #2a2a2a; --accent-color: #8ab4f8; 
-            --shadow-color: rgba(255, 255, 255, 0.05);
+            /* ألوان الوضع الليلي الفخم (Deep Navy و Gold) */
+            --main-bg-color: #0e1628;        
+            --text-color: #f0e68c;           /* Pale Gold Text */
+            --card-bg-color: #1a243a;
+            --accent-color: #ffd700;         /* ذهبي ساطع */
+            --accent-color-light: #b8860b;
+            --progress-color: #00ced1;       
+            --shadow-color: rgba(0, 0, 0, 0.5);
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            font-family: 'Amiri', 'Traditional Arabic', serif;
+            font-family: var(--font-family);
             background-color: var(--main-bg-color); color: var(--text-color);
-            line-height: 1.8; transition: background-color 0.3s, color 0.3s;
+            line-height: 1.8; transition: background-color 0.5s, color 0.5s;
             padding: 20px; direction: rtl;
         }
-        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; margin-bottom: 20px; border-bottom: 1px solid var(--text-color); }
-        header h1 { font-size: 2rem; color: var(--accent-color); }
+        header { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 20px 0; margin-bottom: 30px; border-bottom: 2px solid var(--accent-color); 
+        }
+        header h1 { 
+            font-size: 2.5rem; color: var(--accent-color); 
+            text-shadow: 1px 1px 3px var(--accent-color-light); 
+        }
         #theme-toggle { 
-            background-color: var(--card-bg-color); color: var(--text-color); border: 1px solid var(--text-color); 
-            padding: 8px 15px; border-radius: 20px; cursor: pointer; transition: background-color 0.3s, color 0.3s; 
+            background-color: var(--accent-color); color: var(--card-bg-color); border: none; 
+            padding: 10px 20px; border-radius: 25px; cursor: pointer; font-weight: bold;
+            transition: all 0.3s; 
         }
-        #theme-toggle:hover { background-color: var(--accent-color); color: var(--card-bg-color); }
-        main { max-width: 1000px; margin: 0 auto; display: grid; gap: 30px; }
+        #theme-toggle:hover { 
+            background-color: var(--accent-color-light); color: var(--text-color);
+            box-shadow: 0 4px 10px var(--shadow-color);
+        }
+        main { max-width: 1100px; margin: 0 auto; display: grid; gap: 30px; }
+        /* تصميم الكروت الفخم */
         .card { 
-            background-color: var(--card-bg-color); padding: 30px; border-radius: 12px; 
-            box-shadow: 0 4px 15px var(--shadow-color); 
+            background-color: var(--card-bg-color); padding: 30px; border-radius: 15px; 
+            box-shadow: 0 8px 25px var(--shadow-color); 
+            border-top: 5px solid var(--accent-color); /* شريط علوي فخم */
         }
-        .card h2 { color: var(--accent-color); margin-bottom: 15px; border-bottom: 2px solid var(--accent-color); padding-bottom: 5px; font-size: 1.5rem; }
+        .card h2 { 
+            color: var(--accent-color); margin-bottom: 20px; 
+            border-bottom: 2px solid var(--accent-color-light); 
+            padding-bottom: 8px; font-size: 1.8rem; font-weight: 700;
+        }
         input[type="text"], button { 
-            width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; 
-            border: 1px solid #ccc; font-size: 1rem; text-align: right; 
+            width: 100%; padding: 15px; margin-bottom: 15px; border-radius: 10px; 
+            border: 2px solid #ccc; font-size: 1.1rem; text-align: right; 
+            background-color: var(--main-bg-color); color: var(--text-color);
         }
-        button { cursor: pointer; background-color: var(--accent-color); color: white; font-weight: bold; border: none; transition: background-color 0.2s; }
-        button:hover { background-color: #35537e; }
-        button.reset { background-color: #cc3333; }
-        button.reset:hover { background-color: #a32a2a; }
+        button { cursor: pointer; background-color: var(--accent-color); color: var(--card-bg-color); font-weight: bold; border: none; transition: background-color 0.2s, transform 0.1s; }
+        button:hover { background-color: var(--accent-color-light); transform: translateY(-2px); }
+        button.reset { background-color: #a32a2a; }
+        button.reset:hover { background-color: #cc3333; }
+        
+        /* تصميم العداد الفخم */
         .counter-container { text-align: center; }
-        #zekr-count { font-size: 4rem; font-weight: bold; color: var(--accent-color); margin: 10px 0; }
-        .progress-bar-container { height: 15px; background-color: #ddd; border-radius: 10px; overflow: hidden; margin: 20px 0; }
+        #zekr-count { 
+            font-size: 6rem; font-weight: 800; 
+            color: var(--accent-color); margin: 20px 0;
+            text-shadow: 0 0 15px var(--accent-color-light), 0 0 30px rgba(255, 215, 0, 0.5); 
+        }
+        .current-zekr { font-size: 1.2rem; font-weight: 700; color: var(--text-color); }
+        .progress-bar-container { height: 20px; background-color: #ddd; border-radius: 10px; overflow: hidden; margin: 25px 0; }
         .dark-mode .progress-bar-container { background-color: #444; }
         #progress-bar { height: 100%; background-color: var(--progress-color); transition: width 0.3s ease-in-out; }
-        #quran-content { margin-top: 20px; padding: 15px; border: 1px solid #ccc; border-radius: 8px; background-color: var(--main-bg-color); max-height: 400px; overflow-y: auto; }
-        .ayah-text { display: block; padding: 10px 0; border-bottom: 1px dashed #ccc; }
+
+        /* نتائج القرآن */
+        #quran-content { 
+            margin-top: 20px; padding: 15px; border: 1px solid var(--accent-color-light); 
+            border-radius: 8px; background-color: var(--main-bg-color); max-height: 400px; 
+            overflow-y: auto; font-size: 1.1rem;
+        }
+        .ayah-text { 
+            display: block; padding: 12px 0; 
+            border-bottom: 1px dashed var(--accent-color); 
+            text-align: justify;
+        }
+        .ayah-text:last-child { border-bottom: none; }
+        .ayah-ref { font-size: 0.85rem; color: #777; font-style: italic; }
+        mark { background-color: var(--accent-color-light); color: var(--text-color); padding: 2px 4px; border-radius: 3px; }
+
+        /* تخطيط ديناميكي (Grid) */
         @media (min-width: 768px) {
             main { grid-template-columns: 1fr 1fr; }
-            #quran-viewer { grid-column: 1 / span 2; }
+            #quran-viewer { grid-column: 1 / span 2; } /* القرآن يأخذ عرض الشاشة بالكامل */
         }
+        
+        /* تعديل للموبايل (لتكون ديناميكية) */
+        @media (max-width: 767px) {
+            main { grid-template-columns: 1fr; }
+            header { flex-direction: column; gap: 15px; }
+        }
+        
+        /* إخفاء الروابط المؤقتة */
+        nav { display: none; }
     </style>
 </head>
 <body class="light-mode">
     <header>
-        <h1>📖 موقع النور الثابت</h1>
+        <nav style="display: none;"> 
+            <a href="index.html">الصفحة الرئيسية</a> |
+            <a href="hadith.html">الأحاديث النبوية</a>
+        </nav>
+        <h1>📖 موقع النور الفخم</h1>
         <button id="theme-toggle">🌙 الوضع الليلي</button>
     </header>
 
@@ -96,7 +161,7 @@
     </main>
 
     <footer>
-        <p>&copy; 2025 مشروع موقع ثابت (Static Site) - GitHub Pages</p>
+        <p>&copy; 2025 موقع النور</p>
     </footer>
 
     <script src="script.js"></script>
