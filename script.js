@@ -1,4 +1,4 @@
-// script.js - الكود النهائي لجلب المصحف من ملف خارجي (quran_data.json)
+// script.js - الكود النهائي لربط المصحف مباشرة من المصدر الخارجي (API)
 
 document.addEventListener('DOMContentLoaded', () => {
     // --------------------------------------
@@ -10,47 +10,45 @@ document.addEventListener('DOMContentLoaded', () => {
     const quranDisplayDiv = document.getElementById('quran-display');
     const loadingStatusElement = document.getElementById('loading-status');
 
-    // ** تم تغيير هذا ليكون اسم الملف المحلي الذي سيتم جلبه **
-    const QURAN_DATA_FILE = 'quran_data.json'; 
+    // ** الرابط المباشر للمصحف الشريف كاملاً (114 سورة) **
+    const QURAN_API_URL = 'https://cdn.jsdelivr.net/npm/quran-json@3.1.2/dist/quran.json'; 
     
     let QURAN_FULL_TEXT = null; 
     
     // --------------------------------------
-    // 2. ميزة: جلب بيانات القرآن من الملف المحلي المنفصل
+    // 2. ميزة: جلب بيانات القرآن من المصدر المباشر
     // --------------------------------------
     const loadQuranData = async () => {
         try {
-            loadingStatusElement.textContent = '⚠️ جاري تحميل المصحف الشريف من الملف المحلي...';
+            loadingStatusElement.textContent = '⚠️ جاري تحميل المصحف الشريف من الإنترنت...';
             
-            // جلب البيانات من الملف المحلي الجديد
-            const response = await fetch(QURAN_DATA_FILE);
+            // جلب البيانات مباشرة من الرابط الموثوق
+            const response = await fetch(QURAN_API_URL);
             
             if (!response.ok) {
-                // إذا فشل التحميل المحلي، قد يكون الملف غير موجود أو المسار خاطئ
-                throw new Error('فشل جلب ملف القرآن المحلي. تأكد من وجود quran_data.json في نفس المجلد.');
+                 throw new Error('فشل جلب ملف القرآن من المصدر الخارجي. تحقق من اتصالك.');
             }
             
             const data = await response.json();
             
-            // يجب أن يكون 114 سورة الآن
             if (Array.isArray(data) && data.length === 114) {
                  QURAN_FULL_TEXT = data; 
                  loadingStatusElement.textContent = '✅ تم تحميل المصحف الشريف كاملاً (114 سورة).';
                  displaySurahIndex(); 
             } else {
-                 throw new Error('هيكل ملف quran_data.json غير صحيح. (يجب أن يحتوي على مصفوفة 114 سورة).');
+                 throw new Error('هيكل البيانات المستلمة غير صحيح.');
             }
             
         } catch (error) {
             console.error('خطأ في تحميل بيانات القرآن:', error);
             quranDisplayDiv.innerHTML = `<p style="color: red;">عفواً، فشل تحميل بيانات القرآن: ${error.message}</p>`;
-            loadingStatusElement.textContent = '❌ فشل التحميل. يرجى مراجعة console للتفاصيل.';
+            loadingStatusElement.textContent = '❌ فشل التحميل. يرجى التأكد من اتصالك بالإنترنت.';
         }
     };
 
 
     // --------------------------------------
-    // 3. ميزة: تبديل الوضع الليلي
+    // 3. ميزة: تبديل الوضع الليلي (بدون تغيير)
     // --------------------------------------
     const loadTheme = () => {
         const savedTheme = localStorage.getItem(THEME_KEY) || 'light-mode';
@@ -78,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
         QURAN_FULL_TEXT.forEach(surah => {
             const button = document.createElement('button');
             button.className = 'surah-name-button';
-            // نستخدم 'name' و 'name_en' للتأكد من وجود اسم
+            // نستخدم 'name' و 'name_ar' للتأكد من وجود اسم
             const surahName = surah.name_ar || surah.name || 'سورة غير معروفة';
             
             button.textContent = `${surahName} (السورة رقم ${surah.id})`;
@@ -93,7 +91,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const displaySurah = (surah) => {
         const surahName = surah.name_ar || surah.name || 'سورة غير معروفة';
         
-        // يجب أن نستخدم خاصية الآيات الصحيحة من ملف JSON (عادةً 'verses')
         const versesArray = surah.verses || surah.array || []; 
         
         quranDisplayDiv.innerHTML = `
@@ -101,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <button id="back-to-index" style="width: auto; margin-bottom: 20px;">العودة لقائمة السور</button>
             <div id="surah-content" style="font-family: 'Amiri', serif; font-size: 1.5rem;">
                 ${versesArray.map((ayah, index) => {
-                    const ayahText = ayah.text || ayah.ar || ayah; // محاولة جلب النص
+                    const ayahText = ayah.text || ayah.ar || ayah; 
                     return `<span class="ayah-line">${ayahText} <sup class="ayah-number">﴿${index + 1}﴾</sup></span>`;
                 }).join(' ')}
             </div>
@@ -157,5 +154,5 @@ document.addEventListener('DOMContentLoaded', () => {
     // 6. بدء تشغيل الموقع
     // --------------------------------------
     loadTheme();
-    loadQuranData(); // بدء تحميل ملف القرآن المنفصل
+    loadQuranData(); // بدء تحميل القرآن مباشرة من الرابط
 });
