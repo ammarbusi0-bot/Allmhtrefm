@@ -53,15 +53,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const loadTheme = () => {
         const savedTheme = localStorage.getItem(THEME_KEY) || 'light-mode';
         body.className = savedTheme;
-        themeToggleBtn.textContent = savedTheme === 'dark-mode' ? '☀️ الوضع النهاري' : '🌙 الوضع الليلي';
+        // التحقق من وجود الزر قبل محاولة تغيير نصه
+        if (themeToggleBtn) {
+            themeToggleBtn.textContent = savedTheme === 'dark-mode' ? '☀️ الوضع النهاري' : '🌙 الوضع الليلي';
+        }
     };
     
-    themeToggleBtn.addEventListener('click', () => {
-        const newTheme = body.classList.contains('light-mode') ? 'dark-mode' : 'light-mode';
-        body.className = newTheme;
-        localStorage.setItem(THEME_KEY, newTheme);
-        loadTheme();
-    });
+    // التحقق من وجود الزر قبل إضافة المستمع (مهم لصفحة Hadith.html في حال تم استخدام هذا الملف فيها)
+    if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', () => {
+            const newTheme = body.classList.contains('light-mode') ? 'dark-mode' : 'light-mode';
+            body.className = newTheme;
+            localStorage.setItem(THEME_KEY, newTheme);
+            loadTheme();
+        });
+    }
 
     // --------------------------------------
     // 4. ميزة: عرض المصحف كاملاً (فهرس وتصفح)
@@ -94,13 +100,13 @@ document.addEventListener('DOMContentLoaded', () => {
         
         quranDisplayDiv.innerHTML = `
             <h2 style="text-align: center; color: var(--accent-color);">سورة ${surahName}</h2>
-            <button id="back-to-index" style="width: auto; margin-bottom: 20px;">العودة لقائمة السور</button>
+            <button id="back-to-index">العودة لقائمة السور</button>
             <div id="surah-content" style="font-family: 'Amiri', serif; font-size: 1.5rem;">
                 ${versesArray.map((ayah, index) => {
                     const ayahText = ayah.text || ayah.ar || ayah; 
                     return `<span class="ayah-line">${ayahText} <sup class="ayah-number">﴿${index + 1}﴾</sup></span>`;
-                }).join(' ')}
-            </div>
+                }).join('')} 
+                </div>
         `;
         loadingStatusElement.textContent = `جاري تصفح سورة ${surahName}.`;
 
@@ -109,19 +115,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // --------------------------------------
-    // 5. ميزة: مواقيت الصلاة (بدون تغيير)
+    // 5. ميزة: مواقيت الصلاة 
     // --------------------------------------
     const prayerDisplay = document.getElementById('prayer-display');
 
     const getPrayerTimes = (latitude, longitude) => {
+        // التحقق من وجود عنصر عرض أوقات الصلاة قبل التنفيذ
+        if (!prayerDisplay) return; 
+
         const date = new Date();
-        const API_URL = `https://api.aladhan.com/v1/calendar/${date.getFullYear()}/${date.getMonth() + 1}?latitude=${latitude}&longitude=${longitude}&method=2`;
+        // تم تغيير الرابط لضمان جلب مواقيت اليوم الحالي بشكل دقيق (data[0] غالباً)
+        const API_URL = `https://api.aladhan.com/v1/timings/${Math.floor(date.getTime() / 1000)}?latitude=${latitude}&longitude=${longitude}&method=2`;
 
         fetch(API_URL)
             .then(response => response.json())
             .then(data => {
-                if (data.data && data.data.length > 0) {
-                    const timings = data.data[date.getDate() - 1].timings;
+                if (data.data && data.data.timings) {
+                    const timings = data.data.timings;
                     prayerDisplay.innerHTML = `
                         <table style="width: 100%; border-collapse: collapse;">
                             <tr><th style="color: var(--accent-color);">صلاة الفجر</th><td>${timings.Fajr}</td></tr>
@@ -139,19 +149,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 prayerDisplay.innerHTML = `<p>خطأ في الاتصال بالإنترنت أو API.</p>`;
             });
     };
-
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            (position) => { getPrayerTimes(position.coords.latitude, position.coords.longitude); },
-            () => { prayerDisplay.innerHTML = `<p>يرجى السماح بالوصول لموقعك الجغرافي.</p>`; }
-        );
-    } else {
-        prayerDisplay.innerHTML = `<p>متصفحك لا يدعم تحديد الموقع الجغرافي.</p>`;
+    
+    // يتم تنفيذ هذه الكتلة فقط في الصفحة التي تحتوي على prayer-display (index.html)
+    if (prayerDisplay) {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => { getPrayerTimes(position.coords.latitude, position.coords.longitude); },
+                () => { prayerDisplay.innerHTML = `<p>يرجى السماح بالوصول لموقعك الجغرافي.</p>`; }
+            );
+        } else {
+            prayerDisplay.innerHTML = `<p>متصفحك لا يدعم تحديد الموقع الجغرافي.</p>`;
+        }
     }
+
 
     // --------------------------------------
     // 6. بدء تشغيل الموقع
     // --------------------------------------
     loadTheme();
-    loadQuranData(); // بدء تحميل القرآن مباشرة من الرابط
+    // يتم تحميل القرآن فقط إذا كان العنصر موجوداً (في index.html)
+    if (quranDisplayDiv) { 
+        loadQuranData(); 
+    }
 });
