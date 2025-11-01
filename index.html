@@ -15,7 +15,6 @@
             --card-bg-color: #ffffff;
             --accent-color: #b8860b;         /* ذهبي غامق */
             --accent-color-light: #ffd700;   /* ذهبي فاتح */
-            --progress-color: #008080;       /* Dark Teal */
             --shadow-color: rgba(0, 0, 0, 0.15);
             --font-family: 'Cairo', 'Amiri', serif;
         }
@@ -26,7 +25,6 @@
             --card-bg-color: #1a243a;
             --accent-color: #ffd700;         /* ذهبي ساطع */
             --accent-color-light: #b8860b;
-            --progress-color: #00ced1;       
             --shadow-color: rgba(0, 0, 0, 0.5);
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -38,7 +36,7 @@
         }
         header { 
             display: flex; justify-content: space-between; align-items: center; 
-            padding: 20px 0; margin-bottom: 30px; border-bottom: 2px solid var(--accent-color); 
+            padding: 20px 0; margin-bottom: 20px; 
         }
         header h1 { 
             font-size: 2.5rem; color: var(--accent-color); 
@@ -53,12 +51,34 @@
             background-color: var(--accent-color-light); color: var(--text-color);
             box-shadow: 0 4px 10px var(--shadow-color);
         }
+        /* تنسيق القائمة الرئيسية (الفهرس) */
+        nav { 
+            display: flex; gap: 20px; 
+            margin-bottom: 30px; 
+            padding: 10px 0;
+            justify-content: center;
+            border-bottom: 2px solid var(--accent-color);
+            border-top: 2px solid var(--accent-color);
+        }
+        nav a {
+            color: var(--accent-color); 
+            text-decoration: none; 
+            font-size: 1.1rem; 
+            padding: 5px 10px;
+            border-bottom: 2px solid transparent;
+            transition: color 0.3s, border-bottom 0.3s;
+            font-weight: 700;
+        }
+        nav a:hover {
+            color: var(--accent-color-light);
+            border-bottom: 2px solid var(--accent-color-light);
+        }
         main { max-width: 1100px; margin: 0 auto; display: grid; gap: 30px; }
         /* تصميم الكروت الفخم */
         .card { 
             background-color: var(--card-bg-color); padding: 30px; border-radius: 15px; 
             box-shadow: 0 8px 25px var(--shadow-color); 
-            border-top: 5px solid var(--accent-color); /* شريط علوي فخم */
+            border-top: 5px solid var(--accent-color);
         }
         .card h2 { 
             color: var(--accent-color); margin-bottom: 20px; 
@@ -72,21 +92,7 @@
         }
         button { cursor: pointer; background-color: var(--accent-color); color: var(--card-bg-color); font-weight: bold; border: none; transition: background-color 0.2s, transform 0.1s; }
         button:hover { background-color: var(--accent-color-light); transform: translateY(-2px); }
-        button.reset { background-color: #a32a2a; }
-        button.reset:hover { background-color: #cc3333; }
         
-        /* تصميم العداد الفخم */
-        .counter-container { text-align: center; }
-        #zekr-count { 
-            font-size: 6rem; font-weight: 800; 
-            color: var(--accent-color); margin: 20px 0;
-            text-shadow: 0 0 15px var(--accent-color-light), 0 0 30px rgba(255, 215, 0, 0.5); 
-        }
-        .current-zekr { font-size: 1.2rem; font-weight: 700; color: var(--text-color); }
-        .progress-bar-container { height: 20px; background-color: #ddd; border-radius: 10px; overflow: hidden; margin: 25px 0; }
-        .dark-mode .progress-bar-container { background-color: #444; }
-        #progress-bar { height: 100%; background-color: var(--progress-color); transition: width 0.3s ease-in-out; }
-
         /* نتائج القرآن */
         #quran-content { 
             margin-top: 20px; padding: 15px; border: 1px solid var(--accent-color-light); 
@@ -104,29 +110,28 @@
 
         /* تخطيط ديناميكي (Grid) */
         @media (min-width: 768px) {
-            main { grid-template-columns: 1fr 1fr; }
-            #quran-viewer { grid-column: 1 / span 2; } /* القرآن يأخذ عرض الشاشة بالكامل */
+            main { grid-template-columns: 1fr 2fr; } 
         }
         
         /* تعديل للموبايل (لتكون ديناميكية) */
         @media (max-width: 767px) {
             main { grid-template-columns: 1fr; }
             header { flex-direction: column; gap: 15px; }
+            nav { flex-direction: column; gap: 10px; }
         }
-        
-        /* إخفاء الروابط المؤقتة */
-        nav { display: none; }
     </style>
 </head>
 <body class="light-mode">
     <header>
-        <nav style="display: none;"> 
-            <a href="index.html">الصفحة الرئيسية</a> |
-            <a href="hadith.html">الأحاديث النبوية</a>
-        </nav>
         <h1>📖 موقع النور الفخم</h1>
         <button id="theme-toggle">🌙 الوضع الليلي</button>
     </header>
+    
+    <nav> 
+        <a href="index.html">القرآن الكريم (البحث)</a>
+        <a href="hadith.html">الأحاديث النبوية</a>
+        <a href="quiz.html">الأسئلة الدينية</a> 
+    </nav>
 
     <main>
         <section id="prayer-times" class="card">
@@ -136,22 +141,8 @@
             </div>
         </section>
 
-        <section id="azkar-counter" class="card">
-            <h2>📿 عداد الأذكار اليومي</h2>
-            <p>هدف الورد اليومي: <span id="daily-target">100</span> تسبيحة</p>
-            <div class="counter-container">
-                <p class="current-zekr">سبحان الله وبحمده، سبحان الله العظيم</p>
-                <h1 id="zekr-count">0</h1>
-                <div class="progress-bar-container">
-                    <div id="progress-bar" style="width: 0%;"></div>
-                </div>
-                <button id="increment-btn">تسبيحة جديدة (+1)</button>
-                <button id="reset-btn" class="reset">إعادة تعيين الورد اليومي</button>
-            </div>
-        </section>
-
         <section id="quran-viewer" class="card">
-            <h2>🕋 تصفح القرآن الكريم</h2>
+            <h2>🕋 تصفح وبحث القرآن الكريم</h2>
             <input type="text" id="quran-search" placeholder="ابحث في آيات القرآن الكريم..." aria-label="بحث القرآن">
             <div id="quran-result-container">
                 <p id="last-read-status">⚠️ جاري تحميل ملف القرآن الكريم (تحقق من اتصالك)...</p>
