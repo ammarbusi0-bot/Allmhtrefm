@@ -3,32 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حابس ابليس بالكيس</title>
-    <link rel="stylesheet" href="style.css">
+    <title>حابس إبليس بالكيس</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
 
     <div id="splash-screen" class="screen active">
-        <h1 class="header-title">حابس ابليس بالكيس</h1>
+        <h1 class="header-title">🎯 حابس إبليس بالكيس 🎯</h1>
         <div class="input-group">
             <label for="user-name">أدخل اسمك الكريم:</label>
-            <input type="text" id="user-name" placeholder="الاسم">
-            <button onclick="saveAndEnter()">ابدأ التحدي</button>
+            <input type="text" id="user-name" placeholder="اكتب اسمك هنا...">
+            <button onclick="saveAndEnter()">ابدأ التحدي 🚀</button>
         </div>
     </div>
 
     <div id="main-menu" class="screen">
-        <h1 class="header-title">أهلاً بك يا <span id="display-user-name"></span>!</h1>
-        
+        <h1 class="header-title">مرحباً يا <span id="display-user-name"></span>!</h1>
+
         <div class="points-bar">
-            <p>تحدي المعرفة: <span id="user-points">0</span> ⭐</p>
+            <p>نقاطك الحالية: <span id="user-points">0</span> ⭐</p>
         </div>
 
         <div class="menu-grid">
-            <button onclick="showScreen('level-select')">ابدأ اللعب</button>
-            <button onclick="showScreen('leaderboard-screen')">🏆 لوحة الصدارة اليومية</button>
+            <button onclick="showScreen('level-select')">🎮 ابدأ اللعب</button>
+            <button onclick="showScreen('leaderboard-screen')">🏆 لوحة الصدارة</button>
         </div>
 
         <div class="social-bar">
@@ -45,20 +45,19 @@
     </div>
 
     <div id="level-select" class="screen">
-        <h1 class="header-title">اختر مستوى الصعوبة ونوع السؤال</h1>
+        <h1 class="header-title">اختر مستوى الصعوبة</h1>
 
         <div class="level-selection">
-            
-            <h2 class="level-header">المستوى العادي (Normal)</h2>
-            <button onclick="startGame('normal', 'tf')">صح وخطأ</button>
+            <h2>المستوى العادي 🟢</h2>
+            <button onclick="startGame('normal', 'tf')">صح أو خطأ</button>
             <button onclick="startGame('normal', 'mc')">اختيار من متعدد</button>
 
-            <h2 class="level-header">المستوى المتوسط (Medium)</h2>
-            <button onclick="startGame('medium', 'tf')">صح وخطأ</button>
+            <h2>المستوى المتوسط 🟠</h2>
+            <button onclick="startGame('medium', 'tf')">صح أو خطأ</button>
             <button onclick="startGame('medium', 'mc')">اختيار من متعدد</button>
 
-            <h2 class="level-header">المستوى الصعب (Hard)</h2>
-            <button onclick="startGame('hard', 'tf')">صح وخطأ</button>
+            <h2>المستوى الصعب 🔴</h2>
+            <button onclick="startGame('hard', 'tf')">صح أو خطأ</button>
             <button onclick="startGame('hard', 'mc')">اختيار من متعدد</button>
         </div>
     </div>
@@ -71,28 +70,27 @@
             <p id="question-counter" class="counter-text"></p>
 
             <div class="help-buttons">
-                <button onclick="useRemoveOption()">إزالة خيار (-20 نقطة)</button>
-                <button onclick="useChangeQuestion()">تغيير السؤال (-30 نقطة)</button>
-                <button onclick="useAddTime()">وقت إضافي (+10 ثواني / -25 نقطة)</button>
+                <button onclick="useRemoveOption()">🧹 إزالة خيار (-20)</button>
+                <button onclick="useChangeQuestion()">🔄 تغيير السؤال (-30)</button>
+                <button onclick="useAddTime()">⏳ وقت إضافي (-25)</button>
             </div>
         </div>
     </div>
 
     <div id="profile-screen" class="screen">
-        <h1 class="header-title">ملفي الشخصي</h1>
+        <h1 class="header-title">👤 ملفي الشخصي</h1>
         <div class="profile-card">
-            <h2>الاسم: <span id="profile-name"></span></h2>
-            <h3>إحصائيات هذا الأسبوع:</h3>
-            <p><strong>الأسئلة التي تم الإجابة عليها:</strong> <span id="total-answered">0</span></p>
-            <p class="correct"><strong>الإجابات الصحيحة:</strong> <span id="total-correct">0</span></p>
-            <p class="wrong"><strong>الإجابات الخاطئة:</strong> <span id="total-wrong">0</span></p>
-            <p><strong>النقاط الحالية:</strong> <span id="profile-points">0</span> ⭐</p>
+            <p><strong>الاسم:</strong> <span id="profile-name"></span></p>
+            <p><strong>إجمالي الأسئلة:</strong> <span id="total-answered">0</span></p>
+            <p class="correct"><strong>الصحيحة:</strong> <span id="total-correct">0</span></p>
+            <p class="wrong"><strong>الخاطئة:</strong> <span id="total-wrong">0</span></p>
+            <p><strong>النقاط:</strong> <span id="profile-points">0</span> ⭐</p>
         </div>
     </div>
-    
+
     <div id="leaderboard-screen" class="screen">
-        <h1 class="header-title">🏆 لوحة الصدارة اليومية (المحاكاة)</h1>
-        <p class="leaderboard-note">هذه القائمة تتغير يومياً. تحتاج 200 نقطة للظهور!</p>
+        <h1 class="header-title">🏆 لوحة الصدارة اليومية</h1>
+        <p class="leaderboard-note">يتم تحديث النتائج كل 24 ساعة 🔁</p>
         <div class="leaderboard-card">
             <ol id="leaderboard-list"></ol>
         </div>
@@ -101,26 +99,16 @@
     <div id="contact-modal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeContactModal()">&times;</span>
-            <h2 class="contact-header">المساعدة والتواصل</h2>
+            <h2>📞 المساعدة والتواصل</h2>
             <div class="contact-details">
-                <a href="https://wa.me/905510651347" target="_blank" class="contact-item whatsapp">
-                    <i class="fab fa-whatsapp"></i>
-                    <span>تواصل واتساب</span>
-                    <span class="number-text">00905510651347</span>
+                <a href="https://wa.me/905510651347" target="_blank" class="contact-item">
+                    <i class="fab fa-whatsapp"></i> واتساب
                 </a>
-                <a href="mailto:ammarbusi338@gmail.com" class="contact-item email">
-                    <i class="fas fa-envelope"></i>
-                    <span>البريد الإلكتروني</span>
-                    <span class="number-text">ammarbusi338@gmail.com</span>
+                <a href="https://t.me/bootcadid" target="_blank" class="contact-item">
+                    <i class="fab fa-telegram-plane"></i> تيليجرام
                 </a>
-                <a href="https://t.me/bootcadid" target="_blank" class="contact-item telegram">
-                    <i class="fab fa-telegram-plane"></i>
-                    <span>قناة تيليجرام</span>
-                    <span class="number-text">@bootcadid</span>
-                </a>
-                <a href="https://tiktok.com/@allmhtref" target="_blank" class="contact-item tiktok">
-                    <i class="fab fa-tiktok"></i>
-                    <span>حساب تيك توك الرسمي</span>
+                <a href="https://tiktok.com/@allmhtref" target="_blank" class="contact-item">
+                    <i class="fab fa-tiktok"></i> تيك توك
                 </a>
             </div>
         </div>
@@ -128,25 +116,20 @@
 
     <div id="bottom-nav">
         <button id="back-btn" class="nav-button" onclick="goBack()" style="display:none;">
-            <i class="fas fa-arrow-right"></i>
-            <span>رجوع</span>
+            <i class="fas fa-arrow-right"></i> رجوع
         </button>
         <button class="nav-button" onclick="showScreen('main-menu')">
-            <i class="fas fa-home"></i>
-            <span>الرئيسية</span>
+            <i class="fas fa-home"></i> الرئيسية
         </button>
         <button class="nav-button" onclick="showScreen('profile-screen')">
-            <i class="fas fa-user-circle"></i>
-            <span>ملفي</span>
+            <i class="fas fa-user-circle"></i> ملفي
         </button>
         <button class="nav-button" onclick="openContactModal()">
-            <i class="fas fa-headset"></i>
-            <span>تواصل</span>
+            <i class="fas fa-headset"></i> تواصل
         </button>
     </div>
 
     <script src="questions.js"></script>
     <script src="script.js"></script>
-
 </body>
 </html>
