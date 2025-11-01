@@ -12,8 +12,8 @@
             --main-bg-color: #f0f4f8;        
             --text-color: #1a1a1a;
             --card-bg-color: #ffffff;
-            --accent-color: #b8860b;         /* ذهبي غامق */
-            --accent-color-light: #ffd700;   /* ذهبي فاتح */
+            --accent-color: #b8860b;         
+            --accent-color-light: #ffd700;   
             --shadow-color: rgba(0, 0, 0, 0.15);
             --font-family: 'Cairo', 'Amiri', serif;
         }
@@ -40,12 +40,12 @@
             font-size: 2.5rem; color: var(--accent-color); 
             text-shadow: 1px 1px 3px var(--accent-color-light); 
         }
-        #theme-toggle { 
+        #theme-toggle, #back-to-index { 
             background-color: var(--accent-color); color: var(--card-bg-color); border: none; 
             padding: 10px 20px; border-radius: 25px; cursor: pointer; font-weight: bold;
             transition: all 0.3s; 
         }
-        #theme-toggle:hover { 
+        #theme-toggle:hover, #back-to-index:hover { 
             background-color: var(--accent-color-light); color: var(--text-color);
             box-shadow: 0 4px 10px var(--shadow-color);
         }
@@ -118,7 +118,7 @@
 
         /* تنسيق الآيات */
         .ayah-line {
-            display: block;
+            display: block; /* هام لضمان ظهور كل آية في سطر جديد */
             padding: 15px 0;
             border-bottom: 1px dashed var(--accent-color);
             text-align: justify;
@@ -129,6 +129,14 @@
             color: var(--accent-color);
             margin-right: 5px;
             font-weight: bold;
+        }
+        
+        /* تنسيق زر العودة */
+        #back-to-index {
+            display: block;
+            width: fit-content;
+            margin-bottom: 20px;
+            margin-top: 10px;
         }
 
         /* تخطيط ديناميكي (Grid) */
