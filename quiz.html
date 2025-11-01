@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>موقع النور الفخم - أسئلة دينية</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;700&display=swap');
+        
+        :root {
+            --main-bg-color: #f0f4f8;        
+            --text-color: #1a1a1a;
+            --card-bg-color: #ffffff;
+            --accent-color: #b8860b;         
+            --accent-color-light: #ffd700;   
+            --shadow-color: rgba(0, 0, 0, 0.15);
+            --font-family: 'Cairo', 'Amiri', serif;
+        }
+        .dark-mode {
+            --main-bg-color: #0e1628;        
+            --text-color: #f0e68c;           
+            --card-bg-color: #1a243a;
+            --accent-color: #ffd700;         
+            --accent-color-light: #b8860b;
+            --shadow-color: rgba(0, 0, 0, 0.5);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: var(--font-family);
+            background-color: var(--main-bg-color); color: var(--text-color);
+            line-height: 1.8; transition: background-color 0.5s, color 0.5s;
+            padding: 20px; direction: rtl;
+        }
+        header { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 20px 0; margin-bottom: 20px; 
+        }
+        header h1 { 
+            font-size: 2.5rem; color: var(--accent-color); 
+            text-shadow: 1px 1px 3px var(--accent-color-light); 
+        }
+        #theme-toggle { 
+            background-color: var(--accent-color); color: var(--card-bg-color); border: none; 
+            padding: 10px 20px; border-radius: 25px; cursor: pointer; font-weight: bold;
+            transition: all 0.3s; 
+        }
+        #theme-toggle:hover { 
+            background-color: var(--accent-color-light); color: var(--text-color);
+            box-shadow: 0 4px 10px var(--shadow-color);
+        }
+        nav { 
+            display: flex; flex-wrap: wrap; gap: 20px; 
+            margin-bottom: 30px; 
+            padding: 10px 0;
+            justify-content: center;
+            border-bottom: 2px solid var(--accent-color);
+            border-top: 2px solid var(--accent-color);
+        }
+        nav a {
+            color: var(--accent-color); 
+            text-decoration: none; 
+            font-size: 1.1rem; 
+            padding: 5px 10px;
+            border-bottom: 2px solid transparent;
+            transition: color 0.3s, border-bottom 0.3s;
+            font-weight: 700;
+        }
+        nav a:hover {
+            color: var(--accent-color-light);
+            border-bottom: 2px solid var(--accent-color-light);
+        }
+        main { max-width: 900px; margin: 0 auto; }
+        .card { 
+            background-color: var(--card-bg-color); padding: 30px; border-radius: 15px; 
+            box-shadow: 0 8px 25px var(--shadow-color); 
+            border-top: 5px solid var(--accent-color);
+            margin-bottom: 30px;
+        }
+        .card h2 { 
+            color: var(--accent-color); margin-bottom: 20px; 
+            border-bottom: 2px solid var(--accent-color-light); 
+            padding-bottom: 8px; font-size: 1.8rem; font-weight: 700;
+        }
+        .question-box {
+            background-color: var(--main-bg-color);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .question-box p {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+        .answer-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            border: 2px solid var(--accent-color-light);
+            border-radius: 8px;
+            background: none;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+            text-align: right;
+            font-size: 1rem;
+        }
+        .answer-btn:hover {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        /* تعديل للموبايل */
+        @media (max-width: 767px) {
+            header { flex-direction: column; gap: 15px; }
+            nav { flex-direction: column; gap: 10px; }
+        }
+    </style>
+</head>
+<body class="light-mode">
+    <header>
+        <h1>❓ أسئلة دينية واختبارات</h1>
+        <button id="theme-toggle">🌙 الوضع الليلي</button>
+    </header>
+    
+    <nav> 
+        <a href="index.html">القرآن الكريم (المصحف)</a>
+        <a href="hadith.html">الأحاديث النبوية</a>
+        <a href="quiz.html">الأسئلة الدينية</a> 
+    </nav>
+
+    <main>
+        <section class="card">
+            <h2>🧠 اختبار معلوماتك الدينية</h2>
+            <p>اختر الإجابة الصحيحة لكل سؤال:</p>
+            
+            <div class="question-box">
+                <p>1. كم عدد سور القرآن الكريم؟</p>
+                <button class="answer-btn">أ) 113 سورة</button>
+                <button class="answer-btn" style="background-color: #28a745; color: white;">ب) 114 سورة (الإجابة الصحيحة)</button>
+                <button class="answer-btn">ج) 120 سورة</button>
+            </div>
+
+            <div class="question-box">
+                <p>2. من هو النبي الملقب بـ "خليل الله"؟</p>
+                <button class="answer-btn">أ) موسى عليه السلام</button>
+                <button class="answer-btn" style="background-color: #28a745; color: white;">ب) إبراهيم عليه السلام (الإجابة الصحيحة)</button>
+                <button class="answer-btn">ج) عيسى عليه السلام</button>
+            </div>
+            
+            <p style="text-align: center; margin-top: 20px;">المزيد من الأسئلة ستضاف قريباً...</p>
+
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 موقع النور</p>
+    </footer>
+
+    <script>
+        // كود بسيط لتشغيل الوضع الليلي على هذه الصفحة أيضاً
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const body = document.body;
+        const THEME_KEY = 'appTheme';
+        
+        const loadTheme = () => {
+            const savedTheme = localStorage.getItem(THEME_KEY) || 'light-mode';
+            body.className = savedTheme;
+            themeToggleBtn.textContent = savedTheme === 'dark-mode' ? '☀️ الوضع النهاري' : '🌙 الوضع الليلي';
+        };
+        
+        themeToggleBtn.addEventListener('click', () => {
+            const newTheme = body.classList.contains('light-mode') ? 'dark-mode' : 'light-mode';
+            body.className = newTheme;
+            localStorage.setItem(THEME_KEY, newTheme);
+            loadTheme();
+        });
+        
+        document.addEventListener('DOMContentLoaded', loadTheme);
+    </script>
+</body>
+</html>
