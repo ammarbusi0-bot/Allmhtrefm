@@ -1,32 +1,37 @@
 /* -------------------------------------------------- */
-/* 1. المتغيرات ونظام الألوان الحديث */
+/* 1. المتغيرات ونظام الألوان الحديث (تم التعديل) */
 /* -------------------------------------------------- */
 :root {
-  --primary-color: #00796B; /* أخضر غامق */
-  --secondary-color: #4DB6AC; /* أخضر فاتح للمستويات */
-  --background-color: #F0F2F5; /* خلفية فاتحة */
+  --primary-color: #0D47A1; /* أزرق داكن (شيك) */
+  --secondary-color: #42A5F5; /* أزرق فاتح للمستويات */
+  --background-color: #ECEFF1; /* خلفية رمادية فاتحة فاخرة */
   --card-background: #FFFFFF; /* خلفية البطاقات والأزرار */
   --text-color: #212121; /* لون النص */
-  --correct-color: #4CAF50; /* أخضر للإجابات الصحيحة */
-  --wrong-color: #F44336; /* أحمر للإجابات الخاطئة */
-  --accent-color: #D4AF37; /* ذهبي للنقاط والمؤقت */
-  --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.1);
-  --shadow-deep: 0 8px 16px rgba(0, 0, 0, 0.2);
+  /* ألوان جديدة ومختلفة للـ TF لتكون أكثر تميزاً */
+  --tf-true-color: #00C853; /* أخضر ناصع لـ (صح) */
+  --tf-false-color: #FF1744; /* أحمر لـ (خطأ) */
+  
+  --correct-color: #00C853; /* أخضر للإجابات الصحيحة (MC) */
+  --wrong-color: #FF1744; /* أحمر للإجابات الخاطئة (MC) */
+  --accent-color: #FFB300; /* ذهبي/برتقالي للنقاط والمؤقت */
+  
+  --shadow-light: 0 4px 15px rgba(0, 0, 0, 0.15); /* ظلال أكثر عمقاً */
+  --shadow-deep: 0 10px 30px rgba(0, 0, 0, 0.3); /* ظلال فخمة */
 }
 
 /* ----------------------------------------------------
-   الخطوط العامة والتهيئة (تم التحديث)
+   الخطوط العامة والتهيئة (تحسين)
 ---------------------------------------------------- */
 body {
     margin: 0;
     padding: 0;
     font-family: 'Tajawal', sans-serif;
-    /* تطبيق الخلفية المتدرجة */
-    background: linear-gradient(135deg, var(--background-color) 0%, #E8EAEF 100%);
+    /* تطبيق الخلفية المتدرجة بشكل فخم */
+    background: linear-gradient(135deg, var(--background-color) 0%, #CFD8DC 100%);
     color: var(--text-color);
     min-height: 100vh;
-    direction: rtl; /* التأكد من الاتجاه العربي */
-    padding-bottom: 70px; /* لترك مساحة للشريط السفلي */
+    direction: rtl; 
+    padding-bottom: 70px; 
     display: flex;
     justify-content: center;
 }
@@ -34,87 +39,87 @@ body {
 button {
     cursor: pointer;
     border: none;
-    border-radius: 8px;
-    padding: 15px 20px; /* زيادة حجم البادينغ */
+    border-radius: 10px; /* زيادة الانحناء */
+    padding: 15px 25px; 
     margin: 5px;
-    font-size: 1.1rem; /* تكبير الخط قليلاً */
+    font-size: 1.1rem; 
     font-weight: 700;
-    transition: all 0.2s ease;
-    /* تأثير الزوم عند الضغط */
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* انتقال سلس */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.15); /* إضافة ظل افتراضي */
     transform: scale(1);
 }
 
 button:active {
-    transform: scale(0.96);
-    opacity: 0.9;
+    transform: scale(0.95);
+    opacity: 0.95;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 button:disabled {
-    opacity: 0.5;
+    opacity: 0.6;
     cursor: not-allowed;
-    background-color: #BDBDBD !important;
+    background-color: #B0BEC5 !important;
+    color: #455A64 !important;
+    box-shadow: none;
 }
 
 /* ----------------------------------------------------
-   الشاشات الرئيسية (تم التحديث)
+   الشاشات الرئيسية 
 ---------------------------------------------------- */
 .screen {
     display: none;
     padding: 20px;
-    max-width: 450px; /* تحديد عرض مناسب للجوال */
+    max-width: 450px; 
     margin: 0 auto;
     position: absolute;
     top: 0;
     width: 100%;
     min-height: 100vh;
-    padding-top: 60px; /* مساحة لشريط النقاط العلوي */
+    padding-top: 60px; 
 }
 
 .screen.active {
     display: block;
-    animation: fade-in 0.4s ease-out;
+    animation: fade-in-up 0.5s ease-out; /* تأثير دخول فخم */
 }
-@keyframes fade-in {
-    from { opacity: 0; }
-    to { opacity: 1; }
+@keyframes fade-in-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-/* شريط التنقل السفلي (تم تصحيح الأبعاد) */
+/* شريط التنقل السفلي */
 #bottom-nav {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    max-width: 450px; /* التأكد من محاذاة العرض مع الشاشات */
+    max-width: 450px; 
     margin: 0 auto;
     display: flex;
     justify-content: space-around;
     align-items: center;
     background-color: var(--card-background);
     padding: 5px 0;
-    box-shadow: 0 -4px 12px rgba(0,0,0,0.1);
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
+    box-shadow: 0 -8px 20px rgba(0,0,0,0.15); /* ظل أعمق */
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
     z-index: 20;
 }
 
 .nav-button {
     background: none;
     border: none;
-    color: #9E9E9E;
+    color: #90A4AE; /* لون رمادي أنيق */
     flex-direction: column;
     display: flex;
     align-items: center;
-    gap: 2px;
+    gap: 3px;
     padding: 10px 0;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     font-weight: 500;
-    transition: color 0.3s;
-    /* تقسيم المساحة بالتساوي على 3 أزرار */
-    width: 33.33%; 
 }
-.nav-button i { font-size: 1.4rem; }
-.nav-button:hover { color: var(--primary-color); }
+.nav-button i { font-size: 1.5rem; }
+.nav-button:hover, .nav-button.active { color: var(--primary-color); }
 
 
 /* ----------------------------------------------------
@@ -123,9 +128,10 @@ button:disabled {
 .header-title {
     color: var(--primary-color);
     text-align: center;
-    margin-bottom: 30px;
-    font-size: 1.8rem;
-    font-weight: 700;
+    margin-bottom: 40px;
+    font-size: 2rem;
+    font-weight: 900;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 /* شريط النقاط العلوي */
@@ -134,13 +140,13 @@ button:disabled {
     top: 0;
     left: 0;
     right: 0;
-    max-width: none;
-    margin: 0;
+    max-width: 450px;
+    margin: 0 auto;
     background-color: var(--accent-color);
     color: white;
     padding: 12px 20px;
     text-align: center;
-    font-size: 1.2rem;
+    font-size: 1.25rem;
     font-weight: 700;
     z-index: 10;
     box-shadow: var(--shadow-deep);
@@ -149,232 +155,261 @@ button:disabled {
 .menu-grid {
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    padding: 20px;
+    gap: 18px;
+    padding: 25px;
     background: var(--card-background);
-    border-radius: 10px;
-    box-shadow: var(--shadow-light);
+    border-radius: 15px; /* زوايا مدورة أكثر */
+    box-shadow: var(--shadow-deep);
 }
 
 /* الأزرار الرئيسية */
-button.main-btn, 
 .menu-grid button {
-    background-color: var(--primary-color);
+    background: linear-gradient(90deg, var(--primary-color), #1976D2); /* تدرج فخم */
     color: #fff;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+    border: 1px solid #0D47A1;
 }
 
-button.main-btn:hover,
 .menu-grid button:hover {
-    background-color: #004D40;
+    background: linear-gradient(90deg, #1976D2, var(--primary-color));
+    box-shadow: 0 6px 15px rgba(0,0,0,0.25);
 }
 
 .locked-btn {
-    background-color: #9E9E9E !important;
-    color: #424242 !important;
+    background-color: #B0BEC5 !important;
+    color: #455A64 !important;
     cursor: not-allowed;
-    border: 2px dashed #757575;
+    border: 2px dashed #78909C;
+    box-shadow: none;
+}
+/* أزرار اختيار المستوى */
+.level-selection h2 {
+    color: var(--primary-color);
+    margin-top: 30px;
+    border-bottom: 2px solid var(--secondary-color);
+    padding-bottom: 5px;
+    font-weight: 700;
 }
 
+
 /* ----------------------------------------------------
-   شاشة السؤال (تم التحديث)
+   شاشة السؤال 
 ---------------------------------------------------- */
 #question-text {
-    /* تم تغيير التنسيق إلى Question Box */
     background-color: var(--primary-color);
     color: white;
-    padding: 25px; 
-    border-radius: 15px; 
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3); 
-    font-size: 1.2rem;
+    padding: 30px; /* بادينغ أكبر */
+    border-radius: 20px; /* زوايا مدورة جداً */
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4); /* ظل عميق جداً */
+    font-size: 1.3rem;
     text-align: center;
-    min-height: 100px;
+    min-height: 120px;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
+    /* تأثير طفيف ثلاثي الأبعاد */
+    border-bottom: 5px solid #001f3f; 
 }
 
 #answers-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
 }
 
 #answers-container button {
     width: 100%;
-    max-width: none;
     background-color: var(--card-background);
     color: var(--text-color);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    font-size: 1rem;
-    padding: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    font-size: 1.1rem;
+    padding: 18px;
     font-weight: 500;
+    border: 2px solid transparent;
 }
 #answers-container button:hover:not(:disabled) {
-    background-color: #E0F2F1;
+    background-color: #E3F2FD;
+    border-color: var(--secondary-color);
 }
 
+/* 🚨 ألوان جديدة ومميزة للإجابة الصحيحة والخاطئة */
 .correct-answer {
     background-color: var(--correct-color) !important;
     color: #fff !important;
-    border: 4px solid white !important;
+    border: 5px solid #E0F7FA !important; /* إطار أبيض فاتح لتمييز إضافي */
+    animation: correct-pulse 0.5s ease-out;
 }
 
 .wrong-answer {
     background-color: var(--wrong-color) !important;
     color: #fff !important;
-    border: 4px solid white !important;
+    border: 5px solid #FBE9E7 !important;
+    animation: wrong-shake 0.3s ease-in-out;
+}
+
+/* ألوان خاصة بأزرار الصح والخطأ */
+.tf-btn {
+    width: 100%;
+    flex: 1; /* لتوزيع المساحة بينهما */
+    padding: 20px;
+    font-size: 1.2rem;
+}
+
+.true-btn { background-color: var(--tf-true-color); color: white; }
+.false-btn { background-color: var(--tf-false-color); color: white; }
+
+/* ----------------------------------------------------
+   تأثيرات بصرية فخمة
+---------------------------------------------------- */
+@keyframes correct-pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+@keyframes wrong-shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-5px); }
+    40%, 80% { transform: translateX(5px); }
 }
 
 /* ----------------------------------------------------
-   المؤقت الدائري (تم التحديث)
+   المؤقت الدائري 
 ---------------------------------------------------- */
 #timer-circle {
-    width: 80px;
-    height: 80px;
-    border: 5px solid var(--accent-color);
+    width: 90px; /* حجم أكبر */
+    height: 90px;
+    border: 6px solid var(--accent-color);
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 0 auto 20px;
-    font-size: 1.8rem; /* تكبير الخط */
-    font-weight: 700;
+    margin: 0 auto 30px;
+    font-size: 2rem; 
+    font-weight: 900;
     color: var(--primary-color);
-    box-shadow: var(--shadow-light);
+    box-shadow: 0 0 15px var(--accent-color), 0 0 25px rgba(0, 0, 0, 0.2); /* ظل متوهج */
 }
 
 /* ----------------------------------------------------
-   أزرار المساعدة (تم التحديث)
+   أزرار المساعدة 
 ---------------------------------------------------- */
 .help-buttons {
     display: flex;
     justify-content: space-around;
-    margin: 15px 0;
-    gap: 10px;
+    margin: 25px 0;
+    gap: 12px;
     width: 100%;
 }
 
 .help-buttons button {
     flex: 1;
-    background-color: #FFB300;
-    color: var(--text-color);
+    background-color: #FFECB3; /* لون فاتح مميز */
+    color: #455A64;
     font-weight: bold;
-    font-size: 0.85rem;
-    padding: 10px;
+    font-size: 0.9rem;
+    padding: 12px;
+    border: 2px solid var(--accent-color);
+    box-shadow: 0 4px 8px rgba(255, 179, 0, 0.4);
 }
 
 .help-buttons button:hover:not(:disabled) {
-    background-color: #FF8F00;
+    background-color: var(--accent-color);
+    color: white;
 }
 
 /* ----------------------------------------------------
-   لوحة الصدارة (تم التحديث)
+   لوحة الصدارة (تم إخفائها بالكامل)
 ---------------------------------------------------- */
-#leaderboard-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+#leaderboard-screen {
+    display: none !important; 
 }
-
-#leaderboard-list li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: var(--card-background);
-    padding: 12px 15px;
-    margin-bottom: 5px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    font-size: 1.1rem;
+/* إبقاء هذا التنسيق نظيفاً تحسباً لإعادة استخدامه لاحقاً إذا تغير رأي المستخدم */
+.leaderboard-card {
+    display: none; 
 }
-
-#leaderboard-list li.is-user {
-    background-color: #E0F2F1; /* لون أفتح لتمييز المستخدم */
-    border: 2px solid var(--primary-color);
-    font-weight: 700;
-}
-.rank { font-weight: 700; color: var(--primary-color); width: 30px; text-align: center; }
-.points { color: var(--accent-color); font-weight: 700; }
-
 /* ----------------------------------------------------
-   نموذج التواصل (تم التحديث)
+   نموذج التواصل 
 ---------------------------------------------------- */
-#contact-modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.5);
-    justify-content: center;
-    align-items: center;
-    z-index: 100;
-}
-
 #contact-modal .modal-content {
-    background-color: var(--card-background);
-    padding: 20px;
-    border-radius: 12px;
+    background: linear-gradient(135deg, var(--card-background), #F5F5F5);
+    padding: 30px;
+    border-radius: 15px;
     max-width: 400px;
     width: 90%;
     box-shadow: var(--shadow-deep);
 }
-.close-btn { color: #aaa; float: left; font-size: 28px; font-weight: bold; }
-.close-btn:hover, .close-btn:focus { color: #000; text-decoration: none; cursor: pointer; }
-
+.contact-item {
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    margin: 10px 0;
+    display: block;
+    text-decoration: none;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s;
+}
+.contact-item:hover {
+    background-color: #1976D2;
+}
 
 /* ----------------------------------------------------
-   شاشة البروفايل (تم التحديث)
+   شاشة البروفايل 
 ---------------------------------------------------- */
 #profile-screen .profile-card {
     background: var(--card-background);
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: var(--shadow-light);
-    line-height: 1.8;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: var(--shadow-deep);
+    line-height: 2;
 }
 
 #profile-screen p {
-    font-size: 1.05rem;
-    margin: 5px 0;
+    font-size: 1.1rem;
+    margin: 8px 0;
+    padding: 5px 0;
+    border-bottom: 1px dashed #CFD8DC;
+}
+#profile-screen p:last-child {
+    border-bottom: none;
 }
 #profile-screen p strong {
     color: var(--primary-color);
 }
+.correct span { color: var(--tf-true-color); font-weight: 700; }
+.wrong span { color: var(--tf-false-color); font-weight: 700; }
 
 
 /* ----------------------------------------------------
-   أزرار العودة (تم حل مشكلة التخربط)
+   أزرار العودة 
 ---------------------------------------------------- */
 #back-btn {
     position: fixed;
-    top: 10px; /* موقعه العلوي */
-    left: 10px; /* موقعه في أعلى اليسار */
+    top: 15px; /* رفع الموضع */
+    left: 15px; 
     right: auto;
     padding: 0;
-    width: 45px;
-    height: 45px;
-    background-color: var(--wrong-color); /* لون واضح للرجوع */
+    width: 50px; /* حجم أكبر */
+    height: 50px;
+    background-color: #FF5252; 
     color: #fff;
-    border-radius: 50%; /* زر دائري */
-    display: none; /* يتم التحكم بظهوره عبر JS */
+    border-radius: 50%; 
+    display: none; 
     justify-content: center;
     align-items: center;
-    box-shadow: var(--shadow-deep);
-    z-index: 25; /* ليبقى فوق كل شيء */
-    transition: background-color 0.3s;
+    box-shadow: 0 6px 15px rgba(255, 82, 82, 0.6); /* ظل متوهج */
+    z-index: 25; 
 }
 
 #back-btn:hover {
-    background-color: #D32F2F;
+    background-color: #E04040;
 }
 
 #back-btn i {
-    font-size: 1.4rem;
+    font-size: 1.6rem;
 }
 
 /* ----------------------------------------------------
@@ -382,12 +417,22 @@ button.main-btn:hover,
 ---------------------------------------------------- */
 @media (max-width: 480px) {
     #answers-container button {
-        width: 100%;
+        padding: 15px;
+        font-size: 1rem;
     }
 
     #timer-circle {
-        width: 60px;
-        height: 60px;
-        font-size: 18px;
+        width: 70px;
+        height: 70px;
+        font-size: 1.6rem;
+    }
+    
+    .help-buttons button {
+        font-size: 0.8rem;
+        padding: 10px;
+    }
+    
+    .header-title {
+        font-size: 1.6rem;
     }
 }
