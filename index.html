@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>موقع النور الفخم - المصحف</title>
+    <title>موقع النور الفخم - الأحاديث</title>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;700&display=swap');
@@ -12,8 +12,8 @@
             --main-bg-color: #f0f4f8;        
             --text-color: #1a1a1a;
             --card-bg-color: #ffffff;
-            --accent-color: #b8860b;         /* ذهبي غامق */
-            --accent-color-light: #ffd700;   /* ذهبي فاتح */
+            --accent-color: #b8860b;         
+            --accent-color-light: #ffd700;   
             --shadow-color: rgba(0, 0, 0, 0.15);
             --font-family: 'Cairo', 'Amiri', serif;
         }
@@ -49,7 +49,6 @@
             background-color: var(--accent-color-light); color: var(--text-color);
             box-shadow: 0 4px 10px var(--shadow-color);
         }
-        /* تنسيق القائمة الرئيسية (الفهرس) */
         nav { 
             display: flex; flex-wrap: wrap; gap: 20px; 
             margin-bottom: 30px; 
@@ -71,83 +70,40 @@
             color: var(--accent-color-light);
             border-bottom: 2px solid var(--accent-color-light);
         }
-        main { max-width: 1100px; margin: 0 auto; display: grid; gap: 30px; }
-        /* تصميم الكروت الفخم */
+        main { max-width: 900px; margin: 0 auto; }
         .card { 
             background-color: var(--card-bg-color); padding: 30px; border-radius: 15px; 
             box-shadow: 0 8px 25px var(--shadow-color); 
             border-top: 5px solid var(--accent-color);
+            margin-bottom: 30px;
         }
         .card h2 { 
             color: var(--accent-color); margin-bottom: 20px; 
             border-bottom: 2px solid var(--accent-color-light); 
             padding-bottom: 8px; font-size: 1.8rem; font-weight: 700;
         }
-        
-        /* تصميم خاص لعرض القرآن (يستخدم خط المصحف) */
-        #quran-viewer { grid-column: 1 / span 2; } /* القرآن يأخذ عرض أكبر */
-        #quran-content-container { 
-            margin-top: 20px; padding: 15px; 
-            border: 1px solid var(--accent-color-light); 
-            border-radius: 8px; 
-            background-color: var(--main-bg-color); 
-            max-height: 600px; 
-            overflow-y: auto; 
+        .hadith-container {
+            border: 1px dashed var(--accent-color-light);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        .hadith-container h3 {
+            color: var(--accent-color-light);
+            margin-bottom: 10px;
             font-size: 1.3rem;
-            line-height: 2.2; /* تباعد أكبر للآيات */
-        }
-        
-        .surah-name-button {
-            display: block;
-            background: var(--card-bg-color);
-            color: var(--text-color);
-            padding: 12px 15px;
-            margin-bottom: 8px;
-            border: 1px solid var(--accent-color-light);
-            border-radius: 8px;
-            cursor: pointer;
-            text-align: right;
-            transition: background 0.3s, border-color 0.3s;
-            font-size: 1.1rem;
-            font-weight: 700;
-        }
-        .surah-name-button:hover {
-            background: var(--accent-color-light);
-            color: var(--card-bg-color);
         }
 
-        /* تنسيق الآيات */
-        .ayah-line {
-            display: block;
-            padding: 15px 0;
-            border-bottom: 1px dashed var(--accent-color);
-            text-align: justify;
-        }
-        .ayah-line:last-child { border-bottom: none; }
-        .ayah-number {
-            font-size: 0.9em;
-            color: var(--accent-color);
-            margin-right: 5px;
-            font-weight: bold;
-        }
-
-        /* تخطيط ديناميكي (Grid) */
-        @media (min-width: 768px) {
-            main { grid-template-columns: 1fr 2fr; } 
-        }
-        
-        /* تعديل للموبايل (لتكون ديناميكية) */
+        /* تعديل للموبايل */
         @media (max-width: 767px) {
-            main { grid-template-columns: 1fr; }
             header { flex-direction: column; gap: 15px; }
             nav { flex-direction: column; gap: 10px; }
-            #quran-viewer { grid-column: 1 / span 1; }
         }
     </style>
 </head>
 <body class="light-mode">
     <header>
-        <h1>📖 موقع النور الفخم</h1>
+        <h1>📚 الأحاديث النبوية</h1>
         <button id="theme-toggle">🌙 الوضع الليلي</button>
     </header>
     
@@ -158,20 +114,24 @@
     </nav>
 
     <main>
-        <section id="prayer-times" class="card">
-            <h2>⏱️ مواقيت الصلاة اليوم</h2>
-            <div id="prayer-display">
-                <p>جارٍ جلب موقعك ومواقيت الصلاة...</p>
-            </div>
-        </section>
-
-        <section id="quran-viewer" class="card">
-            <h2>🕋 المصحف الشريف</h2>
+        <section class="card">
+            <h2>📜 الأربعون النووية</h2>
+            <p>تصفح مجموعة من الأحاديث النبوية المهمة.</p>
             
-            <div id="quran-content-container">
-                <p id="loading-status">⚠️ جاري تحميل المصحف الشريف...</p>
-                <div id="quran-display"></div>
+            <div class="hadith-container">
+                <h3>الحديث الأول: إنما الأعمال بالنيات</h3>
+                <p>عن عمر بن الخطاب رضي الله عنه قال: سمعت رسول الله صلى الله عليه وسلم يقول: "إنما الأعمال بالنيات، وإنما لكل امرئ ما نوى..."</p>
+                <p style="font-size: 0.9rem; color: #777;">(رواه البخاري ومسلم)</p>
             </div>
+
+            <div class="hadith-container">
+                <h3>الحديث الثاني: الإسلام والإيمان والإحسان</h3>
+                <p>عن عمر رضي الله عنه أيضاً قال: بينما نحن جلوس عند رسول الله صلى الله عليه وسلم ذات يوم، إذ طلع علينا رجل شديد بياض الثياب، شديد سواد الشعر...</p>
+                <p style="font-size: 0.9rem; color: #777;">(رواه مسلم)</p>
+            </div>
+            
+            <p style="text-align: center; margin-top: 20px;">المزيد من الأحاديث ستضاف قريباً...</p>
+
         </section>
     </main>
 
@@ -179,6 +139,26 @@
         <p>&copy; 2025 موقع النور</p>
     </footer>
 
-    <script src="script.js"></script>
+    <script>
+        // كود بسيط لتشغيل الوضع الليلي على هذه الصفحة أيضاً
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const body = document.body;
+        const THEME_KEY = 'appTheme';
+        
+        const loadTheme = () => {
+            const savedTheme = localStorage.getItem(THEME_KEY) || 'light-mode';
+            body.className = savedTheme;
+            themeToggleBtn.textContent = savedTheme === 'dark-mode' ? '☀️ الوضع النهاري' : '🌙 الوضع الليلي';
+        };
+        
+        themeToggleBtn.addEventListener('click', () => {
+            const newTheme = body.classList.contains('light-mode') ? 'dark-mode' : 'light-mode';
+            body.className = newTheme;
+            localStorage.setItem(THEME_KEY, newTheme);
+            loadTheme();
+        });
+        
+        document.addEventListener('DOMContentLoaded', loadTheme);
+    </script>
 </body>
 </html>
