@@ -12,13 +12,9 @@ const POINTS_CORRECT_ANSWER = 10;
 const COST_REMOVE_OPTION = 20;
 const COST_CHANGE_QUESTION = 30;
 const COST_ADD_TIME = 25; 
-// 🚨 تم إلغاء الحد الأدنى لعرض النقاط وشرط النجاح لعدم الحاجة للخادم
-// const MIN_POINTS_TO_SHOW_ON_LEADERBOARD = 200; 
 const SUCCESS_THRESHOLD = 7; 
 
-// ****************************************************
 // 🚨 تم حذف رابط خادم Google Apps Script API 
-// ****************************************************
 
 // بيانات المستخدم (تم التعديل)
 let userStats = {
@@ -29,8 +25,7 @@ let userStats = {
     points: 200, 
     unlockedLevel: 'normal', 
     answeredQuestions: { normal: { tf: [], mc: [] }, medium: { tf: [], mc: [] }, hard: { tf: [], mc: [] } }, 
-    // 🚨 تم حذف الإحصائيات الأسبوعية لتبسيطها
-    // weeklyStats:{answered:0,correct:0,wrong:0,lastWeekReset:new Date().getTime()}
+    // 🚨 تم حذف الإحصائيات الأسبوعية
 };
 
 // ----------------------------------------------------
@@ -50,7 +45,6 @@ function loadInitialData(){
 
     if(storedStats){
         const loadedStats=JSON.parse(storedStats);
-        // دمج الإحصائيات المحملة مع القيم الافتراضية الجديدة (للميزات الجديدة)
         userStats = {
             ...userStats,
             ...loadedStats,
@@ -60,8 +54,6 @@ function loadInitialData(){
         };
         
         document.getElementById('user-points').textContent = userStats.points;
-        
-        // 🚨 تم حذف منطق إعادة تعيين الإحصائيات الأسبوعية
     }
 }
 
@@ -73,7 +65,6 @@ function saveUserStats(){
     localStorage.setItem('userStats',JSON.stringify(userStats));
     updateProfileDisplay();
     document.getElementById('user-points').textContent = userStats.points; 
-    
     // 🚨 تم حذف إرسال النقاط للخادم
 }
 
@@ -89,7 +80,6 @@ function showScreen(screenId,isInitialLoad=false){
     document.getElementById('back-btn').style.display=history.length>0?'flex':'none';
     
     if(screenId==='profile-screen'){ updateProfileDisplay(); }
-    // 🚨 تم حذف استدعاء دالة الصدارة
     else if(screenId==='level-select'){ updateLevelButtons(); } 
 
     document.getElementById('bottom-nav').style.display=(screenId==='splash-screen')?'none':'flex';
@@ -120,7 +110,7 @@ function closeContactModal() { document.getElementById('contact-modal').style.di
 
 
 // ----------------------------------------------------
-// الإحصائيات وتحديث النقاط (تم التعديل لتبسيط الإحصائيات)
+// الإحصائيات وتحديث النقاط
 // ----------------------------------------------------
 function updateStats(isCorrect){
     userStats.totalAnswered++; 
@@ -136,7 +126,6 @@ function updateStats(isCorrect){
 
 function updateProfileDisplay(){
     document.getElementById('profile-name').textContent=userStats.name;
-    // 🚨 تم عرض الإحصائيات الإجمالية بدلاً من الأسبوعية
     document.getElementById('total-answered').textContent=userStats.totalAnswered; 
     document.getElementById('total-correct').textContent=userStats.totalCorrect;
     document.getElementById('total-wrong').textContent=userStats.totalWrong;
@@ -372,7 +361,7 @@ function loadQuestion() {
         startTimer();
     } else {
         // انتهت الأسئلة المتاحة في هذه الجولة
-        checkLevelUnlockCondition(); // للتأكد من التحقق من فتح المستوى قبل إنهاء اللعبة
+        checkLevelUnlockCondition(); 
         showEndGameMessage(true);
     }
 }
@@ -462,11 +451,9 @@ function checkLevelUnlockCondition() {
     const allQ = allQuestions[gameLevel][gameType];
     const answeredIds = userStats.answeredQuestions[gameLevel][gameType];
 
-    // ملاحظة: تم تبسيط الشرط ليكون: يجب الإجابة على جميع الأسئلة المتاحة في هذا النوع/المستوى والنجاح في هذه الجولة.
     const allAnswered = (answeredIds.length === allQ.length);
     const passedThreshold = (correctAnswersInCurrentRound >= SUCCESS_THRESHOLD);
 
-    // التحقق من أن المستوى التالي موجود والمستوى الحالي هو المستوى الأقصى المفتوح حالياً
     if (nextLevelIndex < levels.length && passedThreshold && allAnswered && levels.indexOf(userStats.unlockedLevel) < nextLevelIndex) {
         const nextLevel = levels[nextLevelIndex];
         userStats.unlockedLevel = nextLevel;
@@ -476,8 +463,6 @@ function checkLevelUnlockCondition() {
     
     correctAnswersInCurrentRound = 0; // إعادة تعيين لعد الجولة التالية
 }
-
-// 🚨 تم حذف جميع وظائف لوحة الصدارة والتواصل مع الخادم
 
 // تشغيل وظيفة التحميل عند فتح الصفحة
 window.onload = loadInitialData;
