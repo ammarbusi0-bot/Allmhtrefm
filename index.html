@@ -3,117 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حابس إبليس بالكيس</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>الموقع الديني الثابت - القرآن والأذكار</title>
+    
+    <style>
+        :root {
+            --main-bg-color: #f7f7f7; --text-color: #1a1a1a;
+            --card-bg-color: #ffffff; --accent-color: #4a6fa5; 
+            --progress-color: #4CAF50; --shadow-color: rgba(0, 0, 0, 0.05);
+        }
+        .dark-mode {
+            --main-bg-color: #1e1e1e; --text-color: #e0e0e0;
+            --card-bg-color: #2a2a2a; --accent-color: #8ab4f8; 
+            --shadow-color: rgba(255, 255, 255, 0.05);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Amiri', 'Traditional Arabic', serif;
+            background-color: var(--main-bg-color); color: var(--text-color);
+            line-height: 1.8; transition: background-color 0.3s, color 0.3s;
+            padding: 20px; direction: rtl;
+        }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; margin-bottom: 20px; border-bottom: 1px solid var(--text-color); }
+        header h1 { font-size: 2rem; color: var(--accent-color); }
+        #theme-toggle { 
+            background-color: var(--card-bg-color); color: var(--text-color); border: 1px solid var(--text-color); 
+            padding: 8px 15px; border-radius: 20px; cursor: pointer; transition: background-color 0.3s, color 0.3s; 
+        }
+        #theme-toggle:hover { background-color: var(--accent-color); color: var(--card-bg-color); }
+        main { max-width: 1000px; margin: 0 auto; display: grid; gap: 30px; }
+        .card { 
+            background-color: var(--card-bg-color); padding: 30px; border-radius: 12px; 
+            box-shadow: 0 4px 15px var(--shadow-color); 
+        }
+        .card h2 { color: var(--accent-color); margin-bottom: 15px; border-bottom: 2px solid var(--accent-color); padding-bottom: 5px; font-size: 1.5rem; }
+        input[type="text"], button { 
+            width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; 
+            border: 1px solid #ccc; font-size: 1rem; text-align: right; 
+        }
+        button { cursor: pointer; background-color: var(--accent-color); color: white; font-weight: bold; border: none; transition: background-color 0.2s; }
+        button:hover { background-color: #35537e; }
+        button.reset { background-color: #cc3333; }
+        button.reset:hover { background-color: #a32a2a; }
+        .counter-container { text-align: center; }
+        #zekr-count { font-size: 4rem; font-weight: bold; color: var(--accent-color); margin: 10px 0; }
+        .progress-bar-container { height: 15px; background-color: #ddd; border-radius: 10px; overflow: hidden; margin: 20px 0; }
+        .dark-mode .progress-bar-container { background-color: #444; }
+        #progress-bar { height: 100%; background-color: var(--progress-color); transition: width 0.3s ease-in-out; }
+        #quran-content { margin-top: 20px; padding: 15px; border: 1px solid #ccc; border-radius: 8px; background-color: var(--main-bg-color); max-height: 400px; overflow-y: auto; }
+        .ayah-text { display: block; padding: 10px 0; border-bottom: 1px dashed #ccc; }
+        @media (min-width: 768px) {
+            main { grid-template-columns: 1fr 1fr; }
+            #quran-viewer { grid-column: 1 / span 2; }
+        }
+    </style>
 </head>
-<body>
+<body class="light-mode">
+    <header>
+        <h1>📖 موقع النور الثابت</h1>
+        <button id="theme-toggle">🌙 الوضع الليلي</button>
+    </header>
 
-    <div id="splash-screen" class="screen active">
-        <h1 class="header-title">🎯 حابس إبليس بالكيس 🎯</h1>
-        <div class="input-group">
-            <label for="user-name">أدخل اسمك الكريم:</label>
-            <input type="text" id="user-name" placeholder="اكتب اسمك هنا...">
-            <button onclick="saveAndEnter()">ابدأ التحدي 🚀</button>
-        </div>
-    </div>
-
-    <div id="main-menu" class="screen">
-        <h1 class="header-title">مرحباً يا <span id="display-user-name"></span>!</h1>
-
-        <div class="points-bar">
-            <p>نقاطك الحالية: <span id="user-points">0</span> ⭐</p>
-        </div>
-
-        <div class="menu-grid">
-            <button onclick="showScreen('level-select')">🎮 ابدأ اللعب</button>
-        </div>
-
-        </div>
-
-    <div id="level-select" class="screen">
-        <h1 class="header-title">اختر مستوى الصعوبة</h1>
-
-        <div class="level-selection">
-            <h2>المستوى العادي 🟢</h2>
-            <button onclick="startGame('normal', 'tf')">صح أو خطأ</button>
-            <button onclick="startGame('normal', 'mc')">اختيار من متعدد</button>
-
-            <h2>المستوى المتوسط 🟠</h2>
-            <button onclick="startGame('medium', 'tf')">صح أو خطأ</button>
-            <button onclick="startGame('medium', 'mc')">اختيار من متعدد</button>
-
-            <h2>المستوى الصعب 🔴</h2>
-            <button onclick="startGame('hard', 'tf')">صح أو خطأ</button>
-            <button onclick="startGame('hard', 'mc')">اختيار من متعدد</button>
-        </div>
-    </div>
-
-    <div id="game-screen" class="screen">
-        <div class="game-area">
-            <div id="timer-circle"><span id="timer-text">15</span>s</div>
-            <p id="question-text" class="question-box"></p>
-            <div id="answers-container" class="answers-container"></div>
-            <p id="question-counter" class="counter-text"></p>
-
-            <div class="help-buttons">
-                <button onclick="useRemoveOption()">🧹 إزالة خيار (-20)</button>
-                <button onclick="useChangeQuestion()">🔄 تغيير السؤال (-30)</button>
-                <button onclick="useAddTime()">⏳ وقت إضافي (-25)</button>
+    <main>
+        <section id="prayer-times" class="card">
+            <h2>⏱️ مواقيت الصلاة اليوم</h2>
+            <div id="prayer-display">
+                <p>جارٍ جلب موقعك ومواقيت الصلاة...</p>
             </div>
-        </div>
-    </div>
+        </section>
 
-    <div id="profile-screen" class="screen">
-        <h1 class="header-title">👤 ملفي الشخصي</h1>
-        <div class="profile-card">
-            <p><strong>الاسم:</strong> <span id="profile-name"></span></p>
-            <p><strong>إجمالي الأسئلة:</strong> <span id="total-answered">0</span></p>
-            <p class="correct"><strong>الصحيحة:</strong> <span id="total-correct">0</span></p>
-            <p class="wrong"><strong>الخاطئة:</strong> <span id="total-wrong">0</span></p>
-            <p><strong>النقاط:</strong> <span id="profile-points">0</span> ⭐</p>
-        </div>
-    </div>
-
-    <div id="contact-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeContactModal()">&times;</span>
-            <h2>📞 المساعدة والتواصل</h2>
-            <div class="contact-details">
-                <a href="https://wa.me/905510651347" target="_blank" class="contact-item">
-                    <i class="fab fa-whatsapp"></i> واتساب
-                </a>
-                <a href="https://t.me/bootcadid" target="_blank" class="contact-item">
-                    <i class="fab fa-telegram-plane"></i> تيليجرام
-                </a>
-                <a href="https://tiktok.com/@allmhtref" target="_blank" class="contact-item">
-                    <i class="fab fa-tiktok"></i> تيك توك
-                </a>
+        <section id="azkar-counter" class="card">
+            <h2>📿 عداد الأذكار اليومي</h2>
+            <p>هدف الورد اليومي: <span id="daily-target">100</span> تسبيحة</p>
+            <div class="counter-container">
+                <p class="current-zekr">سبحان الله وبحمده، سبحان الله العظيم</p>
+                <h1 id="zekr-count">0</h1>
+                <div class="progress-bar-container">
+                    <div id="progress-bar" style="width: 0%;"></div>
+                </div>
+                <button id="increment-btn">تسبيحة جديدة (+1)</button>
+                <button id="reset-btn" class="reset">إعادة تعيين الورد اليومي</button>
             </div>
-        </div>
-    </div>
+        </section>
 
-    <button id="back-btn" onclick="goBack()" style="display:none;">
-        <i class="fas fa-arrow-right"></i> رجوع
-    </button>
+        <section id="quran-viewer" class="card">
+            <h2>🕋 تصفح القرآن الكريم</h2>
+            <input type="text" id="quran-search" placeholder="ابحث في آيات القرآن الكريم..." aria-label="بحث القرآن">
+            <div id="quran-result-container">
+                <p id="last-read-status">⚠️ جاري تحميل ملف القرآن الكريم (تحقق من اتصالك)...</p>
+                <div id="quran-content"></div>
+            </div>
+        </section>
+    </main>
 
-    <div id="bottom-nav">
-        <button class="nav-button" onclick="showScreen('main-menu')">
-            <i class="fas fa-home"></i> الرئيسية
-        </button>
-        <button class="nav-button" onclick="showScreen('profile-screen')">
-            <i class="fas fa-user-circle"></i> ملفي
-        </button>
-        <button class="nav-button" onclick="openContactModal()">
-            <i class="fas fa-headset"></i> تواصل
-        </button>
-    </div>
+    <footer>
+        <p>&copy; 2025 مشروع موقع ثابت (Static Site) - GitHub Pages</p>
+    </footer>
 
-    <audio id="correct-sound" src="correct.mp3"></audio>
-    <audio id="wrong-sound" src="wrong.mp3"></audio>
-
-    <script src="questions.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
