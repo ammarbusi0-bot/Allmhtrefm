@@ -226,6 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 5. ميزة: عرض الأحاديث والبحث فيها 📚
     // --------------------------------------
     const displayHadiths = (filterTerm = '') => {
+        // يتم التحقق من وجود المتغير PROPHET_HADITHS الذي يتم تحميله من ملف data/hadiths.js
         if (!hadithListDiv || typeof PROPHET_HADITHS === 'undefined') return;
 
         hadithListDiv.innerHTML = ''; 
@@ -270,8 +271,9 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     if (quizContainer) {
+        // تم تعديل رسالة الخطأ هنا لجعلها أعم وأكثر دقة للملفات الجديدة
         if (typeof QUIZ_QUESTIONS === 'undefined' || QUIZ_QUESTIONS.length === 0) {
-             quizContainer.innerHTML = '<p style="color: red; text-align: center;">خطأ: ملف الأسئلة (data/questions.js) لم يتم تحميله أو فارغ.</p>';
+             quizContainer.innerHTML = '<p style="color: red; text-align: center;">خطأ: لم يتم تحميل بيانات الأسئلة بشكل صحيح.</p>';
         } else {
             questionsPool = [...QUIZ_QUESTIONS];
             shuffleArray(questionsPool);
