@@ -104,7 +104,7 @@
             background: none;
             color: var(--text-color);
             cursor: pointer;
-            transition: background 0.2s, color 0.2s;
+            transition: background 0.2s, color 0.2s, opacity 0.2s;
             text-align: right;
             font-size: 1rem;
         }
@@ -112,9 +112,14 @@
             background: var(--accent-color);
             color: white;
         }
+        /* تنسيق الأزرار المعطلة بسبب الإجابة أو الـ 50/50 */
         .answer-btn:disabled {
-            opacity: 0.7;
+            opacity: 0.5;
             cursor: default;
+        }
+
+        #fifty-fifty-btn:disabled {
+            background-color: #6c757d !important;
         }
 
         /* تعديل للموبايل */
@@ -141,9 +146,17 @@
             <h2>🧠 اختبار معلوماتك الدينية</h2>
             <p>اختر الإجابة الصحيحة لكل سؤال (الجولة رقم <span id="round-number">1</span>):</p>
             
-            <div id="quiz-container">
-                <p>جارٍ تحميل الأسئلة...</p>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <button id="fifty-fifty-btn" style="
+                    background-color: #dc3545; color: white; border: none; padding: 8px 15px; border-radius: 8px; 
+                    cursor: pointer; font-weight: bold; transition: opacity 0.3s;
+                ">50/50 (حذف إجابتين)</button>
+                <div id="timer-display" style="
+                    font-size: 1.5rem; color: var(--accent-color); font-weight: bold;
+                ">20</div>
             </div>
+
+            <div id="quiz-container"></div>
             
             <p style="text-align: center; margin-top: 20px;">النتيجة: <span id="score-display">0</span> / 10</p>
         </section>
