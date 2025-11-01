@@ -324,7 +324,6 @@ button:disabled {
 #leaderboard-screen {
     display: none !important; 
 }
-/* إبقاء هذا التنسيق نظيفاً تحسباً لإعادة استخدامه لاحقاً إذا تغير رأي المستخدم */
 .leaderboard-card {
     display: none; 
 }
