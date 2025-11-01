@@ -226,7 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 5. ميزة: عرض الأحاديث والبحث فيها 📚
     // --------------------------------------
     const displayHadiths = (filterTerm = '') => {
-        // يتم التحقق من وجود المتغير PROPHET_HADITHS الذي يتم تحميله من ملف data/hadiths.js
+        // نستخدم PROPHET_HADITHS المتغير الذي تم تعريفه في hadith-data.js
         if (!hadithListDiv || typeof PROPHET_HADITHS === 'undefined') return;
 
         hadithListDiv.innerHTML = ''; 
@@ -271,19 +271,20 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     if (quizContainer) {
-        // تم تعديل رسالة الخطأ هنا لجعلها أعم وأكثر دقة للملفات الجديدة
-        if (typeof QUIZ_QUESTIONS === 'undefined' || QUIZ_QUESTIONS.length === 0) {
-             quizContainer.innerHTML = '<p style="color: red; text-align: center;">خطأ: لم يتم تحميل بيانات الأسئلة بشكل صحيح.</p>';
+        // تم تغيير QUIZ_QUESTIONS إلى ALL_QUIZ_QUESTIONS
+        if (typeof ALL_QUIZ_QUESTIONS === 'undefined' || ALL_QUIZ_QUESTIONS.length === 0) {
+             quizContainer.innerHTML = '<p style="color: red; text-align: center;">خطأ: لم يتم تحميل بيانات الأسئلة بشكل صحيح. (تأكد من وجود questions.js)</p>';
         } else {
-            questionsPool = [...QUIZ_QUESTIONS];
+            questionsPool = [...ALL_QUIZ_QUESTIONS]; // استخدام المتغير الصحيح
             shuffleArray(questionsPool);
             startQuiz();
         }
     }
 
     const startQuiz = () => {
+        // تم تغيير QUIZ_QUESTIONS إلى ALL_QUIZ_QUESTIONS
         if (questionsPool.length < 10) {
-            questionsPool = [...QUIZ_QUESTIONS];
+            questionsPool = [...ALL_QUIZ_QUESTIONS]; // استخدام المتغير الصحيح
             shuffleArray(questionsPool);
         }
         
@@ -461,7 +462,7 @@ document.addEventListener('DOMContentLoaded', () => {
         getLocationAndPrayers(); // محاولة جلب المواقيت
     }
     if (hadithListDiv) {
-        // تأخير بسيط للتأكد من تحميل ملف hadiths.js
+        // تأخير بسيط للتأكد من تحميل ملف hadith-data.js
         setTimeout(() => displayHadiths(), 50); 
     }
     // منطق الاختبار يبدأ تلقائيًا عبر الدالة startQuiz إذا كان quizContainer موجودًا
