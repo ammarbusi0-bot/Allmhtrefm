@@ -17,8 +17,8 @@ const SUCCESS_THRESHOLD = 7;
 
 // ****************************************************
 // *** مفتاح التعديل هنا ***
-// رابط خادم Google Apps Script API الخاص بك
-const GOOGLE_API_URL = 'ادخل_هنا_رابط_النشر_الجديد_لخادم_جوجل'; 
+// رابط خادم Google Apps Script API الخاص بك (تم التحديث بالرابط الجديد)
+const GOOGLE_API_URL = 'https://script.google.com/macros/s/AKfycby-1EYO6DioH6YBkjLi1Cmun284ochbn4exXSwHgHndDBzz7v3Up3Osu2R9I4EWAJsL5Q/exec'; 
 // ****************************************************
 
 // بيانات المستخدم (تم التعديل)
@@ -497,8 +497,7 @@ function sendScoreToServer() {
     
     const url = `${GOOGLE_API_URL}?action=saveScore&name=${encodeURIComponent(userStats.name)}&points=${userStats.points}`;
 
-    // نستخدم navigator.sendBeacon للإرسال في الخلفية عند الخروج/التحديث
-    // لكن هنا نستخدم Fetch API لضمان الإرسال الفوري بعد كل تحديث مهم للنقاط
+    // نستخدم Fetch API لضمان الإرسال الفوري بعد كل تحديث مهم للنقاط
     fetch(url, { method: 'POST' })
         .then(response => response.json())
         .then(data => {
@@ -578,4 +577,3 @@ async function updateLeaderboardDisplay() {
 
 // تشغيل وظيفة التحميل عند فتح الصفحة
 window.onload = loadInitialData;
-
