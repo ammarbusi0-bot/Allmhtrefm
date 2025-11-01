@@ -12,13 +12,12 @@ const POINTS_CORRECT_ANSWER = 10;
 const COST_REMOVE_OPTION = 20;
 const COST_CHANGE_QUESTION = 30;
 const COST_ADD_TIME = 25; 
-const MIN_POINTS_TO_SHOW_ON_LEADERBOARD = 200; 
+// 🚨 تم إلغاء الحد الأدنى لعرض النقاط وشرط النجاح لعدم الحاجة للخادم
+// const MIN_POINTS_TO_SHOW_ON_LEADERBOARD = 200; 
 const SUCCESS_THRESHOLD = 7; 
 
 // ****************************************************
-// *** مفتاح التعديل هنا ***
-// رابط خادم Google Apps Script API الخاص بك (تم التحديث بالرابط الجديد)
-const GOOGLE_API_URL = 'https://script.google.com/macros/s/AKfycby-1EYO6DioH6YBkjLi1Cmun284ochbn4exXSwHgHndDBzz7v3Up3Osu2R9I4EWAJsL5Q/exec'; 
+// 🚨 تم حذف رابط خادم Google Apps Script API 
 // ****************************************************
 
 // بيانات المستخدم (تم التعديل)
@@ -30,11 +29,9 @@ let userStats = {
     points: 200, 
     unlockedLevel: 'normal', 
     answeredQuestions: { normal: { tf: [], mc: [] }, medium: { tf: [], mc: [] }, hard: { tf: [], mc: [] } }, 
-    weeklyStats:{answered:0,correct:0,wrong:0,lastWeekReset:new Date().getTime()}
+    // 🚨 تم حذف الإحصائيات الأسبوعية لتبسيطها
+    // weeklyStats:{answered:0,correct:0,wrong:0,lastWeekReset:new Date().getTime()}
 };
-
-// بيانات لوحة الصدارة الوهمية (تم إلغاؤها الآن)
-// const BASE_LEADERS = [...]; 
 
 // ----------------------------------------------------
 // تحميل البيانات (تم التعديل)
@@ -64,11 +61,7 @@ function loadInitialData(){
         
         document.getElementById('user-points').textContent = userStats.points;
         
-        const now=new Date().getTime(),oneWeek=7*24*60*60*1000;
-        if(now-userStats.weeklyStats.lastWeekReset>=oneWeek){
-            userStats.weeklyStats={answered:0,correct:0,wrong:0,lastWeekReset:now};
-            saveUserStats();
-        }
+        // 🚨 تم حذف منطق إعادة تعيين الإحصائيات الأسبوعية
     }
 }
 
@@ -81,12 +74,11 @@ function saveUserStats(){
     updateProfileDisplay();
     document.getElementById('user-points').textContent = userStats.points; 
     
-    // إرسال النقاط للخادم بعد كل تحديث مهم (لكي يظهر المستخدم في لوحة الصدارة بآخر نقاط)
-    sendScoreToServer(); 
+    // 🚨 تم حذف إرسال النقاط للخادم
 }
 
 // ----------------------------------------------------
-// التنقل بين الشاشات (تم التعديل)
+// التنقل بين الشاشات (تم التعديل لإلغاء لوحة الصدارة)
 // ----------------------------------------------------
 function showScreen(screenId,isInitialLoad=false){
     clearTimer();
@@ -97,7 +89,7 @@ function showScreen(screenId,isInitialLoad=false){
     document.getElementById('back-btn').style.display=history.length>0?'flex':'none';
     
     if(screenId==='profile-screen'){ updateProfileDisplay(); }
-    else if(screenId==='leaderboard-screen'){ updateLeaderboardDisplay(); } // تم تعديل استدعاء دالة الصدارة
+    // 🚨 تم حذف استدعاء دالة الصدارة
     else if(screenId==='level-select'){ updateLevelButtons(); } 
 
     document.getElementById('bottom-nav').style.display=(screenId==='splash-screen')?'none':'flex';
@@ -128,27 +120,26 @@ function closeContactModal() { document.getElementById('contact-modal').style.di
 
 
 // ----------------------------------------------------
-// الإحصائيات وتحديث النقاط
+// الإحصائيات وتحديث النقاط (تم التعديل لتبسيط الإحصائيات)
 // ----------------------------------------------------
 function updateStats(isCorrect){
-    userStats.totalAnswered++; userStats.weeklyStats.answered++;
+    userStats.totalAnswered++; 
     if(isCorrect){ 
         userStats.totalCorrect++; 
-        userStats.weeklyStats.correct++;
         userStats.points += POINTS_CORRECT_ANSWER; 
     }
     else{ 
         userStats.totalWrong++; 
-        userStats.weeklyStats.wrong++; 
     }
     saveUserStats();
 }
 
 function updateProfileDisplay(){
     document.getElementById('profile-name').textContent=userStats.name;
-    document.getElementById('total-answered').textContent=userStats.weeklyStats.answered;
-    document.getElementById('total-correct').textContent=userStats.weeklyStats.correct;
-    document.getElementById('total-wrong').textContent=userStats.weeklyStats.wrong;
+    // 🚨 تم عرض الإحصائيات الإجمالية بدلاً من الأسبوعية
+    document.getElementById('total-answered').textContent=userStats.totalAnswered; 
+    document.getElementById('total-correct').textContent=userStats.totalCorrect;
+    document.getElementById('total-wrong').textContent=userStats.totalWrong;
     document.getElementById('profile-points').textContent = userStats.points; 
 }
 
@@ -286,7 +277,7 @@ function useAddTime() {
 
 
 // ----------------------------------------------------
-// وظائف اللعب الرئيسية (تم التعديل لعدم تكرار الأسئلة وفتح المستويات)
+// وظائف اللعب الرئيسية 
 // ----------------------------------------------------
 
 function startGame(level, type) {
@@ -308,6 +299,8 @@ function startGame(level, type) {
     }
     
     currentQuestionIndex = 0;
+    // إعادة تعيين عدد الإجابات الصحيحة للجولة الجديدة
+    correctAnswersInCurrentRound = 0; 
     showScreen('game-screen');
     loadQuestion();
 }
@@ -364,8 +357,8 @@ function loadQuestion() {
 
         if (gameType === 'tf') {
             container.innerHTML = `
-                <button onclick="checkAnswer(true, this)">صح</button>
-                <button onclick="checkAnswer(false, this)">خطأ</button>
+                <button onclick="checkAnswer(true, this)" class="tf-btn true-btn">صح</button>
+                <button onclick="checkAnswer(false, this)" class="tf-btn false-btn">خطأ</button>
             `;
         } else if (gameType === 'mc') {
             const shuffledOptions = q.options.sort(() => Math.random() - 0.5);
@@ -379,6 +372,7 @@ function loadQuestion() {
         startTimer();
     } else {
         // انتهت الأسئلة المتاحة في هذه الجولة
+        checkLevelUnlockCondition(); // للتأكد من التحقق من فتح المستوى قبل إنهاء اللعبة
         showEndGameMessage(true);
     }
 }
@@ -468,6 +462,7 @@ function checkLevelUnlockCondition() {
     const allQ = allQuestions[gameLevel][gameType];
     const answeredIds = userStats.answeredQuestions[gameLevel][gameType];
 
+    // ملاحظة: تم تبسيط الشرط ليكون: يجب الإجابة على جميع الأسئلة المتاحة في هذا النوع/المستوى والنجاح في هذه الجولة.
     const allAnswered = (answeredIds.length === allQ.length);
     const passedThreshold = (correctAnswersInCurrentRound >= SUCCESS_THRESHOLD);
 
@@ -482,98 +477,7 @@ function checkLevelUnlockCondition() {
     correctAnswersInCurrentRound = 0; // إعادة تعيين لعد الجولة التالية
 }
 
-// ----------------------------------------------------
-// وظائف لوحة الصدارة (التواصل مع خادم جوجل) 
-// ----------------------------------------------------
-
-/**
- * دالة جديدة لإرسال نقاط المستخدم إلى خادم Google Apps Script.
- */
-function sendScoreToServer() {
-    // نتأكد من أن المستخدم قد سجل اسمه ولديه الحد الأدنى من النقاط
-    if (!userStats.name || userStats.points < MIN_POINTS_TO_SHOW_ON_LEADERBOARD) {
-        return; 
-    }
-    
-    const url = `${GOOGLE_API_URL}?action=saveScore&name=${encodeURIComponent(userStats.name)}&points=${userStats.points}`;
-
-    // نستخدم Fetch API لضمان الإرسال الفوري بعد كل تحديث مهم للنقاط
-    fetch(url, { method: 'POST' })
-        .then(response => response.json())
-        .then(data => {
-            // يمكن تجاهل الاستجابة هنا، المهم هو إرسال البيانات
-            // console.log('Score send result:', data);
-        })
-        .catch(error => {
-            // console.error('Error sending score:', error);
-        });
-}
-
-
-/**
- * دالة جديدة لجلب لوحة الصدارة من خادم Google Apps Script.
- */
-async function getLeaderboardFromServer() {
-    const url = `${GOOGLE_API_URL}?action=getLeaderboard`;
-    
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
-
-        if (data.status === 'success' && data.leaderboard) {
-            return data.leaderboard;
-        } else {
-            console.error('API Error:', data.message || 'Failed to fetch leaderboard.');
-            return [];
-        }
-    } catch (error) {
-        console.error('Fetch Error:', error);
-        return [];
-    }
-}
-
-
-/**
- * دالة لتحديث عرض لوحة الصدارة (تم تعديلها لاستخدام API).
- */
-async function updateLeaderboardDisplay() {
-    const container = document.getElementById('leaderboard-list');
-    container.innerHTML = '<li>جاري تحميل لوحة الصدارة...</li>'; 
-
-    const leaderboard = await getLeaderboardFromServer();
-    container.innerHTML = '';
-    
-    if (leaderboard.length === 0) {
-        container.innerHTML = '<li>لا توجد بيانات متاحة حالياً.</li>';
-        return;
-    }
-
-    // إضافة المستخدم الحالي يدوياً إذا لم يكن ضمن العشرة الأوائل (لضمان ظهوره)
-    let finalLeaderboard = [...leaderboard];
-    const userIsInList = leaderboard.some(leader => leader.name === userStats.name);
-    
-    if (!userIsInList && userStats.points >= MIN_POINTS_TO_SHOW_ON_LEADERBOARD) {
-        finalLeaderboard.push({ name: userStats.name, points: userStats.points, isCurrentUser: true });
-        // فرز القائمة النهائية مرة أخرى وضمان بقائها ضمن حدود معقولة
-        finalLeaderboard.sort((a, b) => b.points - a.points);
-    }
-    
-    // عرض القائمة النهائية
-    finalLeaderboard.slice(0, 10).forEach((leader, index) => {
-        const listItem = document.createElement('li');
-        listItem.innerHTML = `
-            <span class="rank">${index + 1}</span>
-            <span class="name">${leader.name}</span>
-            <span class="points">${leader.points} ⭐</span>
-        `;
-        // تمييز المستخدم الحالي
-        if (leader.name === userStats.name || leader.isCurrentUser) {
-            listItem.classList.add('is-user');
-        }
-        container.appendChild(listItem);
-    });
-}
-
+// 🚨 تم حذف جميع وظائف لوحة الصدارة والتواصل مع الخادم
 
 // تشغيل وظيفة التحميل عند فتح الصفحة
 window.onload = loadInitialData;
