@@ -3,37 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حابس إبليس بالكيس - الأحاديث النبوية</title>
-    
-    <link rel="stylesheet" href="style.css"> 
+    <title>أحاديث نبوية</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="light-mode">
+<body>
     <header>
-        <h1>📜 الأحاديث النبوية</h1>
-        <button id="theme-toggle">🌙 الوضع الليلي</button>
+        <nav>
+            <a href="index.html">القرآن الكريم</a>
+            <a href="hadith.html" class="active">الأحاديث النبوية</a>
+            <a href="quiz.html">اختبارات إسلامية</a>
+        </nav>
     </header>
-    
-    <nav> 
-        <a href="index.html">القرآن الكريم (المصحف)</a>
-        <a href="hadith.html">الأحاديث النبوية</a>
-        <a href="quiz.html">الأسئلة الدينية</a> 
-    </nav>
 
-    <main>
-        <section class="card">
-            <h2>📚 مختارات من الأحاديث الصحيحة</h2>
-            
-            <input type="text" id="hadith-search" class="search-bar" placeholder="ابحث عن حديث...">
-            
-            <div id="hadith-list">
-                <p style="text-align: center; color: var(--accent-color);">جاري تحميل الأحاديث...</p>
-            </div>
-        </section>
+    <main class="hadith-container">
+        <h1>صحيح الأحاديث النبوية</h1>
+        <div id="hadith-display">
+            <p id="current-hadith-text" class="hadith-text"></p>
+            <p id="hadith-source" class="hadith-source"></p>
+        </div>
+        <div class="controls">
+            <button id="prev-hadith">الحديث السابق</button>
+            <button id="next-hadith">الحديث التالي</button>
+        </div>
     </main>
-
-    <footer>
-        <p>&copy; 2025 حابس إبليس بالكيس</p>
-    </footer>
 
     <script src="data/hadiths.js"></script> 
     <script src="script.js"></script>
