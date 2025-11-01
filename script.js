@@ -13,10 +13,9 @@ const COST_REMOVE_OPTION = 20;
 const COST_CHANGE_QUESTION = 30;
 const COST_ADD_TIME = 25; 
 const SUCCESS_THRESHOLD = 7; 
-// 💡 نظام النقاط الإضافية: عند إعادة اللعب
-const REPLAY_POINTS_CORRECT = 5; // نقاط أقل عند إعادة اللعب
+const REPLAY_POINTS_CORRECT = 5; 
 
-// متغير لتتبع وضع اللعب (هل الجولة الحالية هي جولة إعادة لعب أم لا)
+// متغيرات حالة اللعب
 let isCurrentGameReplay = false; 
 let correctAnswersInCurrentRound = 0; 
 
@@ -28,22 +27,20 @@ let userStats = {
     totalWrong: 0,
     points: 200, 
     unlockedLevel: 'normal', 
-    // الأسئلة التي تمت الإجابة عليها لتجنب تكرارها في اللعب العادي
     answeredQuestions: { 
         normal: { tf: [], mc: [] }, 
         medium: { tf: [], mc: [] }, 
         hard: { tf: [], mc: [] } 
     }, 
-    // 💡 الأسئلة التي تم احتسابها كـ"تقدم" لفتح المستوى (مرة واحدة لكل سؤال)
     unlockedProgress: { 
         normal: { tf: [], mc: [] }, 
         medium: { tf: [], mc: [] }, 
-        hard: { tf: [], mc: [] } 
+        hard: { tf: [] } 
     },
 };
 
 // ----------------------------------------------------
-// وظائف المؤثرات الصوتية الجديدة
+// وظائف المؤثرات الصوتية (إصلاح مشكلة عدم عمل الصوت)
 // ----------------------------------------------------
 function playSound(type) {
     let audio;
@@ -81,7 +78,6 @@ function loadInitialData(){
             points: loadedStats.points || 200, 
             unlockedLevel: loadedStats.unlockedLevel || 'normal',
             answeredQuestions: loadedStats.answeredQuestions || { normal: { tf: [], mc: [] }, medium: { tf: [], mc: [] }, hard: { tf: [], mc: [] } },
-            // 💡 تحميل حقل التقدم الجديد (أو تعيينه إذا لم يكن موجوداً)
             unlockedProgress: loadedStats.unlockedProgress || { normal: { tf: [], mc: [] }, medium: { tf: [], mc: [] }, hard: { tf: [] } }
         };
         
@@ -154,7 +150,6 @@ function updateStats(isCorrect){
     else{ 
         userStats.totalWrong++; 
     }
-    // النقاط يتم تحديثها داخل checkAnswer
     saveUserStats();
 }
 
@@ -294,24 +289,29 @@ function useAddTime() {
 
 
 // ----------------------------------------------------
-// وظائف اللعب الرئيسية 
+// وظائف اللعب الرئيسية (إصلاح مشكلة عدم عمل اللعبة)
 // ----------------------------------------------------
 
 function startGame(level, type, isReplay = false) {
     gameLevel = level;
     gameType = type;
-    isCurrentGameReplay = isReplay; // تحديد وضع اللعب
+    isCurrentGameReplay = isReplay; 
     
+    // 💡 التأكد من أن 'allQuestions' معرفة في ملف 'questions.js'
+    if (typeof allQuestions === 'undefined' || !allQuestions[level] || !allQuestions[level][type]) {
+        alert("خطأ: لا يمكن العثور على أسئلة لهذا المستوى والنوع (تأكد من ملف questions.js).");
+        showScreen('level-select');
+        return;
+    }
+
     const allQ = allQuestions[gameLevel][gameType];
     const answeredIds = userStats.answeredQuestions[gameLevel][gameType];
     
     let availableQuestions = [];
 
     if (isReplay) {
-        // نمط إعادة اللعب: اختر من جميع الأسئلة
         availableQuestions = allQ;
     } else {
-        // نمط اللعب لأول مرة: اختر فقط من الأسئلة التي لم يتم الإجابة عليها
         availableQuestions = allQ.filter(q => !answeredIds.includes(q.question));
     }
 
@@ -358,7 +358,6 @@ function showEndGameMessage(isNormalEnd = false) {
     
     qText.textContent = message;
     
-    // زر إعادة اللعب للحصول على نقاط إضافية
     container.innerHTML = `
         <button onclick="showScreen('main-menu')">العودة للقائمة الرئيسية</button>
         <button onclick="startGame(gameLevel, gameType, true)">🔄 إعادة لعب لجمع نقاط إضافية</button>
@@ -375,17 +374,19 @@ function updateLevelButtons(){
 
     levels.forEach(level => {
         const isLocked = levels.indexOf(level) > levels.indexOf(currentUnlocked);
+        
+        // 💡 إخفاء الأزرار
         document.querySelectorAll(`.level-selection button[onclick*="'${level}'"]`).forEach(btn => {
-            // يتم تطبيق كلاس locked-btn الذي تم تعريفه في CSS لخاصية display: none !important
             btn.classList.toggle('locked-btn', isLocked);
         });
-        // إخفاء العنوان أيضًا إذا كانت كل الأزرار تحته مغلقة
-        if (isLocked) {
-             const h2 = document.querySelector(`.level-selection button[onclick*="'${level}'"]`).closest('.level-selection').querySelector(`h2:nth-of-type(${levels.indexOf(level) + 1})`);
-             if (h2) h2.style.display = 'none';
-        } else {
-             const h2 = document.querySelector(`.level-selection button[onclick*="'${level}'"]`).closest('.level-selection').querySelector(`h2:nth-of-type(${levels.indexOf(level) + 1})`);
-             if (h2) h2.style.display = 'block';
+
+        // 💡 إخفاء عنوان المستوى أيضاً إذا كان مغلقاً
+        const levelContainer = document.querySelector('.level-selection');
+        const levelIndex = levels.indexOf(level);
+        if (levelContainer) {
+            // يتم الوصول إلى H2 بناءً على ترتيبه
+            const h2 = levelContainer.querySelector(`h2:nth-of-type(${levelIndex + 1})`);
+            if (h2) h2.style.display = isLocked ? 'none' : 'block';
         }
     });
 }
@@ -402,9 +403,7 @@ function loadQuestion() {
         qText.textContent = q.question;
         container.innerHTML = '';
         
-        // تفعيل أزرار المساعدة للجولة الجديدة
         document.querySelectorAll('.help-buttons button').forEach(btn => btn.disabled = false);
-        // تعطيل زر الإزالة في أسئلة الصح والخطأ
         if (gameType === 'tf') {
             document.querySelectorAll('.help-buttons button')[0].disabled = true;
         }
@@ -427,7 +426,6 @@ function loadQuestion() {
         }
         startTimer();
     } else {
-        // انتهت الأسئلة المتاحة في هذه الجولة
         checkLevelUnlockCondition(); 
         showEndGameMessage(true);
     }
@@ -443,6 +441,7 @@ function checkAnswer(selectedAnswer, button, timedOut = false) {
     if (timedOut) {
         isCorrect = false;
     } else {
+        // 💡 منطق التحقق من الإجابة الصحيحة
         if (gameType === 'tf') {
             isCorrect = (selectedAnswer === q.answer);
         } else if (gameType === 'mc') {
@@ -460,7 +459,7 @@ function checkAnswer(selectedAnswer, button, timedOut = false) {
         if (button) { button.classList.add('wrong-answer'); }
     }
     
-    // 💡 منطق احتساب النقاط وتتبع التقدم (منع تكرار نقاط فتح المستوى)
+    // 💡 منطق احتساب النقاط وتتبع التقدم
     if (isCorrect) {
         let pointsToAdd = POINTS_CORRECT_ANSWER;
         const questionId = q.question;
@@ -468,40 +467,37 @@ function checkAnswer(selectedAnswer, button, timedOut = false) {
         let isNewProgress = !userStats.unlockedProgress[gameLevel][gameType].includes(questionId);
         
         if (isCurrentGameReplay) {
-            // عند إعادة اللعب، النقاط أقل ولا تؤثر على التقدم لفتح المستوى
             pointsToAdd = REPLAY_POINTS_CORRECT; 
         } else if (!isNewProgress) {
-            // إذا كانت الإجابة صحيحة ولكن السؤال سبق وتم احتسابه (في جولة عادية)، نعطي نقاط إعادة اللعب
             pointsToAdd = REPLAY_POINTS_CORRECT; 
         } else if (isNewProgress && !isCurrentGameReplay) {
-            // جولة عادية وإجابة صحيحة لأول مرة: نمنح نقاط كاملة ونحدث التقدم
             userStats.unlockedProgress[gameLevel][gameType].push(questionId);
         }
 
         userStats.points += pointsToAdd; 
     }
     
-    // تحديث الإحصائيات العامة (هنا يتم تحديث totalAnswered, totalCorrect, totalWrong)
+    // تحديث الإحصائيات العامة وحفظ السؤال
     updateStats(isCorrect);
     
-    // حفظ السؤال الذي تم الإجابة عليه لتجنب تكرار اللعب العادي
     const questionId = q.question;
     if (!userStats.answeredQuestions[gameLevel][gameType].includes(questionId)) {
         userStats.answeredQuestions[gameLevel][gameType].push(questionId);
     }
     
-    saveUserStats(); // حفظ الإحصائيات بعد تحديث النقاط
+    saveUserStats(); 
 
-    // 💡 تمييز الإجابة الصحيحة
+    // 💡 تمييز الإجابة الصحيحة (إصلاح مشكلة الألوان)
     document.querySelectorAll('#answers-container button').forEach(btn => {
         let isCorrectButton = (gameType === 'tf') 
             ? (q.answer ? (btn.textContent === 'صح') : (btn.textContent === 'خطأ')) 
             : (btn.textContent === q.correct);
         
+        // إذا لم يتم النقر على الزر الصحيح، وظهور اللون الأحمر على الإجابة المختارة
         if (isCorrectButton && !btn.classList.contains('correct-answer')) {
             btn.classList.add('correct-answer');
         }
-        btn.disabled = true;
+        btn.disabled = true; // تعطيل جميع الأزرار بعد الإجابة
     });
 
     currentQuestionIndex++;
@@ -510,12 +506,11 @@ function checkAnswer(selectedAnswer, button, timedOut = false) {
         checkLevelUnlockCondition();
     }
     
+    // تأخير الانتقال للسؤال التالي لإظهار اللون
     setTimeout(loadQuestion, 2000); 
 }
 
-// دالة للتحقق من شرط فتح المستوى بعد انتهاء الجولة
 function checkLevelUnlockCondition() {
-    // هذه الدالة تعمل فقط عند انتهاء الجولة العادية (غير الإعادة)
     if (isCurrentGameReplay) return; 
 
     const levels = ['normal', 'medium', 'hard'];
@@ -524,10 +519,7 @@ function checkLevelUnlockCondition() {
     const questionsForUnlock = userStats.unlockedProgress[gameLevel][gameType];
     const allQ = allQuestions[gameLevel][gameType];
     
-    // الشرط الأول: الإجابة على جميع الأسئلة في هذا النوع والمستوى لمرة واحدة بنجاح
     const allAnsweredForUnlock = (questionsForUnlock.length === allQ.length);
-    
-    // الشرط الثاني: تحقيق الحد الأدنى من الإجابات الصحيحة في هذه الجولة
     const passedThreshold = (correctAnswersInCurrentRound >= SUCCESS_THRESHOLD);
 
     if (nextLevelIndex < levels.length && passedThreshold && allAnsweredForUnlock && levels.indexOf(userStats.unlockedLevel) < nextLevelIndex) {
@@ -537,8 +529,7 @@ function checkLevelUnlockCondition() {
         alert(`🎉 تهانينا! لقد تجاوزت شرط النجاح في مستوى ${gameLevel.toUpperCase()} وتم فتح المستوى ${nextLevel.toUpperCase()}!`);
     }
     
-    correctAnswersInCurrentRound = 0; // إعادة تعيين لعد الجولة التالية
+    correctAnswersInCurrentRound = 0; 
 }
 
-// تشغيل وظيفة التحميل عند فتح الصفحة
 window.onload = loadInitialData;
