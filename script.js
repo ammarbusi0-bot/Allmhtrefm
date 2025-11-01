@@ -1,4 +1,4 @@
-// script.js - الكود المعدل لعرض المصحف كاملاً
+// script.js - الكود النهائي لجلب المصحف من ملف خارجي (quran_data.json)
 
 document.addEventListener('DOMContentLoaded', () => {
     // --------------------------------------
@@ -10,21 +10,44 @@ document.addEventListener('DOMContentLoaded', () => {
     const quranDisplayDiv = document.getElementById('quran-display');
     const loadingStatusElement = document.getElementById('loading-status');
 
-    // المصدر: النص الكامل للمصحف (لضمان ظهور كل الآيات بما فيها 'ق' و 'الرحمن')
-    // تم جلب هذا النص من مصدر موثوق ووضعه مباشرة في الكود لضمان العمل بدون مشاكل API أو CORS
-    const QURAN_FULL_TEXT = [
-        // قائمة بـ 114 سورة، كل سورة هي مصفوفة من الآيات
-        // بسبب الحد الأقصى لطول الرد، سنضع هنا فقط بعض الأمثلة
-        // لكن هذا الكود يعرض كيفية عمل الوظيفة. (في التطبيق الفعلي، ستكون جميع السور الـ 114 موجودة هنا)
-        { "id": 1, "name": "الفاتحة", "verses": ["بسم الله الرحمن الرحيم", "الحمد لله رب العالمين", "الرحمن الرحيم", "مالك يوم الدين", "إياك نعبد وإياك نستعين", "اهدنا الصراط المستقيم", "صراط الذين أنعمت عليهم غير المغضوب عليهم ولا الضالين"] },
-        { "id": 50, "name": "ق", "verses": ["ق والقرآن المجيد", "بل عجبوا أن جاءهم منذر منهم فقال الكافرون هذا شيء عجيب", "أإذا متنا وكنا ترابا ذلك رجع بعيد", "قد علمنا ما تنقص الأرض منهم وعندنا كتاب حفيظ"] },
-        { "id": 55, "name": "الرحمن", "verses": ["الرحمن", "علم القرآن", "خلق الإنسان", "علمه البيان", "الشمس والقمر بحسبان", "والنجم والشجر يسجدان"] },
-        { "id": 112, "name": "الإخلاص", "verses": ["قل هو الله أحد", "الله الصمد", "لم يلد ولم يولد", "ولم يكن له كفوا أحد"] },
-        { "id": 113, "name": "الفلق", "verses": ["قل أعوذ برب الفلق", "من شر ما خلق", "ومن شر غاسق إذا وقب", "ومن شر النفاثات في العقد", "ومن شر حاسد إذا حسد"] },
-        { "id": 114, "name": "الناس", "verses": ["قل أعوذ برب الناس", "ملك الناس", "إله الناس", "من شر الوسواس الخناس", "الذي يوسوس في صدور الناس", "من الجنة والناس"] }
-        // ... (هنا يجب وضع باقي السور الـ 114 كاملة ليعمل المصحف بالكامل)
-    ]; 
+    // ** تم تغيير هذا ليكون اسم الملف المحلي الذي سيتم جلبه **
+    const QURAN_DATA_FILE = 'quran_data.json'; 
     
+    let QURAN_FULL_TEXT = null; 
+    
+    // --------------------------------------
+    // 2. ميزة: جلب بيانات القرآن من الملف المحلي المنفصل
+    // --------------------------------------
+    const loadQuranData = async () => {
+        try {
+            loadingStatusElement.textContent = '⚠️ جاري تحميل المصحف الشريف من الملف المحلي...';
+            
+            // جلب البيانات من الملف المحلي الجديد
+            const response = await fetch(QURAN_DATA_FILE);
+            
+            if (!response.ok) {
+                // إذا فشل التحميل المحلي، قد يكون الملف غير موجود أو المسار خاطئ
+                throw new Error('فشل جلب ملف القرآن المحلي. تأكد من وجود quran_data.json في نفس المجلد.');
+            }
+            
+            const data = await response.json();
+            
+            // يجب أن يكون 114 سورة الآن
+            if (Array.isArray(data) && data.length === 114) {
+                 QURAN_FULL_TEXT = data; 
+                 loadingStatusElement.textContent = '✅ تم تحميل المصحف الشريف كاملاً (114 سورة).';
+                 displaySurahIndex(); 
+            } else {
+                 throw new Error('هيكل ملف quran_data.json غير صحيح. (يجب أن يحتوي على مصفوفة 114 سورة).');
+            }
+            
+        } catch (error) {
+            console.error('خطأ في تحميل بيانات القرآن:', error);
+            quranDisplayDiv.innerHTML = `<p style="color: red;">عفواً، فشل تحميل بيانات القرآن: ${error.message}</p>`;
+            loadingStatusElement.textContent = '❌ فشل التحميل. يرجى مراجعة console للتفاصيل.';
+        }
+    };
+
 
     // --------------------------------------
     // 3. ميزة: تبديل الوضع الليلي
@@ -47,13 +70,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // --------------------------------------
 
     const displaySurahIndex = () => {
+        if (!QURAN_FULL_TEXT) return;
+        
         quranDisplayDiv.innerHTML = '';
         loadingStatusElement.textContent = 'اختر سورة للتصفح:';
         
         QURAN_FULL_TEXT.forEach(surah => {
             const button = document.createElement('button');
             button.className = 'surah-name-button';
-            button.textContent = `${surah.name} (السورة رقم ${surah.id})`;
+            // نستخدم 'name' و 'name_en' للتأكد من وجود اسم
+            const surahName = surah.name_ar || surah.name || 'سورة غير معروفة';
+            
+            button.textContent = `${surahName} (السورة رقم ${surah.id})`;
             
             button.addEventListener('click', () => {
                 displaySurah(surah);
@@ -63,23 +91,29 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const displaySurah = (surah) => {
+        const surahName = surah.name_ar || surah.name || 'سورة غير معروفة';
+        
+        // يجب أن نستخدم خاصية الآيات الصحيحة من ملف JSON (عادةً 'verses')
+        const versesArray = surah.verses || surah.array || []; 
+        
         quranDisplayDiv.innerHTML = `
-            <h2 style="text-align: center; color: var(--accent-color);">سورة ${surah.name}</h2>
+            <h2 style="text-align: center; color: var(--accent-color);">سورة ${surahName}</h2>
             <button id="back-to-index" style="width: auto; margin-bottom: 20px;">العودة لقائمة السور</button>
             <div id="surah-content" style="font-family: 'Amiri', serif; font-size: 1.5rem;">
-                ${surah.verses.map((ayahText, index) => 
-                    `<span class="ayah-line">${ayahText} <sup class="ayah-number">﴿${index + 1}﴾</sup></span>`
-                ).join(' ')}
+                ${versesArray.map((ayah, index) => {
+                    const ayahText = ayah.text || ayah.ar || ayah; // محاولة جلب النص
+                    return `<span class="ayah-line">${ayahText} <sup class="ayah-number">﴿${index + 1}﴾</sup></span>`;
+                }).join(' ')}
             </div>
         `;
-        loadingStatusElement.textContent = `جاري تصفح سورة ${surah.name}.`;
+        loadingStatusElement.textContent = `جاري تصفح سورة ${surahName}.`;
 
         document.getElementById('back-to-index').addEventListener('click', displaySurahIndex);
     };
 
 
     // --------------------------------------
-    // 5. ميزة: مواقيت الصلاة
+    // 5. ميزة: مواقيت الصلاة (بدون تغيير)
     // --------------------------------------
     const prayerDisplay = document.getElementById('prayer-display');
 
@@ -123,5 +157,5 @@ document.addEventListener('DOMContentLoaded', () => {
     // 6. بدء تشغيل الموقع
     // --------------------------------------
     loadTheme();
-    displaySurahIndex(); // عرض قائمة السور بدلاً من البحث
+    loadQuranData(); // بدء تحميل ملف القرآن المنفصل
 });
