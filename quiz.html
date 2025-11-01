@@ -108,9 +108,13 @@
             text-align: right;
             font-size: 1rem;
         }
-        .answer-btn:hover {
+        .answer-btn:hover:not(:disabled) {
             background: var(--accent-color);
             color: white;
+        }
+        .answer-btn:disabled {
+            opacity: 0.7;
+            cursor: default;
         }
 
         /* تعديل للموبايل */
@@ -135,24 +139,13 @@
     <main>
         <section class="card">
             <h2>🧠 اختبار معلوماتك الدينية</h2>
-            <p>اختر الإجابة الصحيحة لكل سؤال:</p>
+            <p>اختر الإجابة الصحيحة لكل سؤال (الجولة رقم <span id="round-number">1</span>):</p>
             
-            <div class="question-box">
-                <p>1. كم عدد سور القرآن الكريم؟</p>
-                <button class="answer-btn">أ) 113 سورة</button>
-                <button class="answer-btn" style="background-color: #28a745; color: white;">ب) 114 سورة (الإجابة الصحيحة)</button>
-                <button class="answer-btn">ج) 120 سورة</button>
-            </div>
-
-            <div class="question-box">
-                <p>2. من هو النبي الملقب بـ "خليل الله"؟</p>
-                <button class="answer-btn">أ) موسى عليه السلام</button>
-                <button class="answer-btn" style="background-color: #28a745; color: white;">ب) إبراهيم عليه السلام (الإجابة الصحيحة)</button>
-                <button class="answer-btn">ج) عيسى عليه السلام</button>
+            <div id="quiz-container">
+                <p>جارٍ تحميل الأسئلة...</p>
             </div>
             
-            <p style="text-align: center; margin-top: 20px;">المزيد من الأسئلة ستضاف قريباً...</p>
-
+            <p style="text-align: center; margin-top: 20px;">النتيجة: <span id="score-display">0</span> / 10</p>
         </section>
     </main>
 
