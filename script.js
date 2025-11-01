@@ -19,6 +19,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const quizContainer = document.getElementById('quiz-container');
     const scoreDisplay = document.getElementById('score-display');
     const roundNumberDisplay = document.getElementById('round-number');
+    const timerDisplay = document.getElementById('timer-display');
+    const fiftyFiftyBtn = document.getElementById('fifty-fifty-btn'); 
+
+    // متغيرات ميزات الاختبار الجديدة
+    const QUESTION_TIME = 20; // 20 ثانية لكل سؤال
+    let countdown;
+    let helpUsedInRound = false; 
 
 
     // --------------------------------------
@@ -160,26 +167,27 @@ document.addEventListener('DOMContentLoaded', () => {
     // --------------------------------------
 
     const QUIZ_QUESTIONS = [
-        { question: "1. كم عدد سور القرآن الكريم؟", options: ["113 سورة", "114 سورة", "120 سورة"], correctIndex: 1 },
-        { question: "2. من هو النبي الملقب بـ 'خليل الله'؟", options: ["موسى عليه السلام", "إبراهيم عليه السلام", "عيسى عليه السلام"], correctIndex: 1 },
-        { question: "3. ما هي أطول سورة في القرآن الكريم؟", options: ["سورة آل عمران", "سورة البقرة", "سورة النساء"], correctIndex: 1 },
-        { question: "4. متى فُرض صيام شهر رمضان؟", options: ["السنة الثانية للهجرة", "السنة الأولى للهجرة", "السنة الثالثة للهجرة"], correctIndex: 0 },
-        { question: "5. من هو أول الخلفاء الراشدين؟", options: ["عمر بن الخطاب", "علي بن أبي طالب", "أبو بكر الصديق"], correctIndex: 2 },
-        { question: "6. ما هو عدد أركان الإسلام؟", options: ["أربعة", "خمسة", "ستة"], correctIndex: 1 },
-        { question: "7. ما اسم ناقة الرسول صلى الله عليه وسلم؟", options: ["القصواء", "العضباء", "الجدعاء"], correctIndex: 0 },
-        { question: "8. في أي عام هجري كانت غزوة بدر الكبرى؟", options: ["الثانية", "الثالثة", "الخامسة"], correctIndex: 0 },
-        { question: "9. من هو الصحابي الذي اهتز لموته عرش الرحمن؟", options: ["عمر بن الخطاب", "سعد بن معاذ", "بلال بن رباح"], correctIndex: 1 },
-        { question: "10. ما معنى كلمة 'الفرقان'؟", options: ["النور", "الهدى", "الفاصل بين الحق والباطل"], correctIndex: 2 },
-        { question: "11. كم عدد الصلوات المفروضة في اليوم؟", options: ["أربعة", "خمسة", "ستة"], correctIndex: 1 },
-        { question: "12. كم يوم يبقى الدجال في الأرض؟", options: ["أربعون يوماً", "سبعون يوماً", "عام كامل"], correctIndex: 0 },
-        { question: "13. من هي أم المؤمنين التي تزوجها الرسول وهي بكر؟", options: ["عائشة بنت أبي بكر", "خديجة بنت خويلد", "حفصة بنت عمر"], correctIndex: 0 },
-        { question: "14. ما هو أول ما يحاسب عليه العبد يوم القيامة؟", options: ["الزكاة", "الصلاة", "الصيام"], correctIndex: 1 },
-        { question: "15. في أي شهر يؤدي المسلمون فريضة الحج؟", options: ["شوال", "ذو القعدة", "ذو الحجة"], correctIndex: 2 },
-        { question: "16. ما اسم الملك الموكل بالنفخ في الصور؟", options: ["جبريل", "ميكائيل", "إسرافيل"], correctIndex: 2 },
-        { question: "17. من الذي أشار على الرسول بحفر الخندق؟", options: ["أبو بكر الصديق", "سلمان الفارسي", "حمزة بن عبد المطلب"], correctIndex: 1 },
-        { question: "18. أين تقع الكعبة المشرفة؟", options: ["المدينة المنورة", "القدس", "مكة المكرمة"], correctIndex: 2 },
-        { question: "19. كم سنة استمر نزول القرآن الكريم؟", options: ["حوالي 23 سنة", "حوالي 10 سنوات", "حوالي 30 سنة"], correctIndex: 0 },
-        { question: "20. ما هي السورة التي لا تبدأ بالبسملة؟", options: ["سورة الفاتحة", "سورة التوبة", "سورة النمل"], correctIndex: 1 },
+        // ⚠️ تأكد من أن جميع الأسئلة تحتوي على 4 خيارات
+        { question: "1. كم عدد سور القرآن الكريم؟", options: ["113 سورة", "114 سورة", "116 سورة", "120 سورة"], correctIndex: 1 },
+        { question: "2. من هو النبي الملقب بـ 'خليل الله'؟", options: ["موسى عليه السلام", "إبراهيم عليه السلام", "يوسف عليه السلام", "عيسى عليه السلام"], correctIndex: 1 },
+        { question: "3. ما هي أطول سورة في القرآن الكريم؟", options: ["سورة آل عمران", "سورة البقرة", "سورة النساء", "سورة الكهف"], correctIndex: 1 },
+        { question: "4. متى فُرض صيام شهر رمضان؟", options: ["السنة الثانية للهجرة", "السنة الأولى للهجرة", "السنة الثالثة للهجرة", "السنة الرابعة للهجرة"], correctIndex: 0 },
+        { question: "5. من هو أول الخلفاء الراشدين؟", options: ["عمر بن الخطاب", "علي بن أبي طالب", "أبو بكر الصديق", "عثمان بن عفان"], correctIndex: 2 },
+        { question: "6. ما هو عدد أركان الإسلام؟", options: ["أربعة", "خمسة", "ستة", "سبعة"], correctIndex: 1 },
+        { question: "7. ما اسم ناقة الرسول صلى الله عليه وسلم؟", options: ["القصواء", "العضباء", "الجدعاء", "البراء"], correctIndex: 0 },
+        { question: "8. في أي عام هجري كانت غزوة بدر الكبرى؟", options: ["الثانية", "الثالثة", "الخامسة", "السادسة"], correctIndex: 0 },
+        { question: "9. من هو الصحابي الذي اهتز لموته عرش الرحمن؟", options: ["عمر بن الخطاب", "سعد بن معاذ", "بلال بن رباح", "أبو عبيدة بن الجراح"], correctIndex: 1 },
+        { question: "10. ما معنى كلمة 'الفرقان'؟", options: ["النور", "الهدى", "الفاصل بين الحق والباطل", "العلم"], correctIndex: 2 },
+        { question: "11. كم عدد الصلوات المفروضة في اليوم؟", options: ["أربعة", "خمسة", "ستة", "سبعة"], correctIndex: 1 },
+        { question: "12. كم يوم يبقى الدجال في الأرض؟", options: ["أربعون يوماً", "سبعون يوماً", "عام كامل", "مائة يوم"], correctIndex: 0 },
+        { question: "13. من هي أم المؤمنين التي تزوجها الرسول وهي بكر؟", options: ["عائشة بنت أبي بكر", "خديجة بنت خويلد", "حفصة بنت عمر", "زينب بنت خزيمة"], correctIndex: 0 },
+        { question: "14. ما هو أول ما يحاسب عليه العبد يوم القيامة؟", options: ["الزكاة", "الصلاة", "الصيام", "الشهادتان"], correctIndex: 1 },
+        { question: "15. في أي شهر يؤدي المسلمون فريضة الحج؟", options: ["شوال", "ذو القعدة", "ذو الحجة", "رجب"], correctIndex: 2 },
+        { question: "16. ما اسم الملك الموكل بالنفخ في الصور؟", options: ["جبريل", "ميكائيل", "إسرافيل", "ملك الموت"], correctIndex: 2 },
+        { question: "17. من الذي أشار على الرسول بحفر الخندق؟", options: ["أبو بكر الصديق", "سلمان الفارسي", "حمزة بن عبد المطلب", "علي بن أبي طالب"], correctIndex: 1 },
+        { question: "18. أين تقع الكعبة المشرفة؟", options: ["المدينة المنورة", "القدس", "مكة المكرمة", "الطائف"], correctIndex: 2 },
+        { question: "19. كم سنة استمر نزول القرآن الكريم؟", options: ["حوالي 23 سنة", "حوالي 10 سنوات", "حوالي 30 سنة", "حوالي 15 سنة"], correctIndex: 0 },
+        { question: "20. ما هي السورة التي لا تبدأ بالبسملة؟", options: ["سورة الفاتحة", "سورة التوبة", "سورة النمل", "سورة الإخلاص"], correctIndex: 1 },
         // ... يرجى إضافة 30 سؤالاً إضافياً لتغطية حد الـ 50 سؤالاً ...
     ];
 
@@ -189,6 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let score = 0;
     let roundNumber = 1;
 
+    // دالة خلط المصفوفة (Fisher-Yates Shuffle)
     const shuffleArray = (array) => {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -197,7 +206,6 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     if (quizContainer) {
-        // إعداد مجموعة الأسئلة عند تحميل الصفحة لأول مرة
         questionsPool = [...QUIZ_QUESTIONS];
         shuffleArray(questionsPool);
         startQuiz();
@@ -208,16 +216,61 @@ document.addEventListener('DOMContentLoaded', () => {
         if (questionsPool.length < 10) {
             questionsPool = [...QUIZ_QUESTIONS];
             shuffleArray(questionsPool);
-            roundNumber = 1; // إعادة تعيين رقم الجولة عند تكرار الأسئلة
         }
         
         questionsForRound = questionsPool.splice(0, 10); 
         currentQuestionIndex = 0;
         score = 0;
         
+        // إعادة ضبط حالة المساعدة عند بدء جولة جديدة
+        helpUsedInRound = false; 
+        if (fiftyFiftyBtn) {
+            fiftyFiftyBtn.disabled = false;
+            fiftyFiftyBtn.style.opacity = '1';
+        }
+        
         roundNumberDisplay.textContent = roundNumber;
         scoreDisplay.textContent = score;
         displayQuestion();
+    };
+
+    const startTimer = () => {
+        let timeLeft = QUESTION_TIME;
+        if (timerDisplay) timerDisplay.textContent = timeLeft;
+
+        countdown = setInterval(() => {
+            timeLeft--;
+            if (timerDisplay) timerDisplay.textContent = timeLeft;
+
+            if (timeLeft <= 0) {
+                clearInterval(countdown);
+                handleTimeout();
+            }
+        }, 1000);
+    };
+    
+    const handleTimeout = () => {
+        // إيقاف أي مؤقت سابق
+        clearInterval(countdown);
+        
+        // تعطيل الأزرار وتحديد الإجابة الصحيحة باللون الأخضر
+        document.querySelectorAll('.answer-btn').forEach(btn => {
+            btn.disabled = true;
+            const qData = questionsForRound[currentQuestionIndex];
+            if (parseInt(btn.getAttribute('data-original-index')) === qData.correctIndex) {
+                btn.style.backgroundColor = '#28a745'; 
+                btn.style.color = 'white';
+            }
+        });
+
+        // رسالة تنبيه لانتهاء الوقت
+        quizContainer.insertAdjacentHTML('beforeend', '<p style="color: red; text-align: center; margin-top: 15px;">انتهى الوقت! السؤال لم يحتسب.</p>');
+
+        // الانتقال للسؤال التالي
+        setTimeout(() => {
+            currentQuestionIndex++;
+            displayQuestion();
+        }, 1500);
     };
 
     const displayQuestion = () => {
@@ -225,6 +278,10 @@ document.addEventListener('DOMContentLoaded', () => {
             endRound();
             return;
         }
+        
+        // إيقاف المؤقت السابق وبدء مؤقت جديد
+        clearInterval(countdown);
+        startTimer();
 
         const qData = questionsForRound[currentQuestionIndex];
         
@@ -237,24 +294,66 @@ document.addEventListener('DOMContentLoaded', () => {
             optionsHTML += `<button class="answer-btn" data-original-index="${opt.index}">${opt.text}</button>`;
         });
 
+        // إزالة الرقم التسلسلي للسؤال من النص المخزن ثم إضافة الرقم التسلسلي للجولة
+        const questionText = qData.question.split('.').slice(1).join('.');
+
         quizContainer.innerHTML = `
             <div class="question-box" id="current-question-box">
-                <p>${(currentQuestionIndex + 1)}. ${qData.question.split('.').slice(1).join('.')}</p>
+                <p>${(currentQuestionIndex + 1)}. ${questionText.trim()}</p>
                 ${optionsHTML}
             </div>
         `;
 
+        // ربط مستمعي الأحداث بالأزرار الجديدة
         document.querySelectorAll('.answer-btn').forEach(button => {
             button.addEventListener('click', handleAnswer);
         });
+
+        if (fiftyFiftyBtn && !helpUsedInRound) {
+            fiftyFiftyBtn.onclick = useFiftyFifty;
+        }
+    };
+
+    const useFiftyFifty = () => {
+        if (helpUsedInRound) return;
+
+        const qData = questionsForRound[currentQuestionIndex];
+        const correctIndex = qData.correctIndex;
+        let incorrectButtons = [];
+
+        // جمع الأزرار الخاطئة
+        document.querySelectorAll('.answer-btn').forEach(button => {
+            if (parseInt(button.getAttribute('data-original-index')) !== correctIndex) {
+                incorrectButtons.push(button);
+            }
+        });
+
+        // خلط الأزرار الخاطئة واختيار اثنين لحذفهما
+        shuffleArray(incorrectButtons);
+        
+        // حذف أول إجابتين خاطئتين (بافتراض وجود 3 إجابات خاطئة على الأقل)
+        for (let i = 0; i < 2 && i < incorrectButtons.length; i++) {
+            incorrectButtons[i].disabled = true;
+            incorrectButtons[i].style.opacity = '0.3'; 
+            incorrectButtons[i].style.textDecoration = 'line-through';
+        }
+
+        // تعطيل الزر ومنع استخدامه مرة أخرى في نفس الجولة
+        helpUsedInRound = true;
+        if (fiftyFiftyBtn) {
+            fiftyFiftyBtn.disabled = true;
+            fiftyFiftyBtn.style.opacity = '0.5';
+        }
     };
 
     const handleAnswer = (event) => {
+        clearInterval(countdown); // 🛑 إيقاف المؤقت فور الإجابة
+        
         const selectedButton = event.target;
         const originalIndex = parseInt(selectedButton.getAttribute('data-original-index'));
         const qData = questionsForRound[currentQuestionIndex];
         
-        // تعطيل جميع الأزرار ومنع النقر مرة أخرى
+        // تعطيل جميع الأزرار لمنع النقر مرة أخرى
         document.querySelectorAll('.answer-btn').forEach(btn => btn.disabled = true);
         
         // 1. تحديد الإجابة الصحيحة وتلوينها بالأخضر
@@ -284,6 +383,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const endRound = () => {
         roundNumber++;
+        clearInterval(countdown); // إيقاف المؤقت عند نهاية الجولة
+        if (timerDisplay) timerDisplay.textContent = QUESTION_TIME; // إعادة ضبط المؤقت للعرض
+
         quizContainer.innerHTML = `
             <div style="text-align: center;">
                 <h2>🎉 انتهت الجولة ${roundNumber - 1}</h2>
@@ -292,7 +394,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <button id="next-round-btn" style="
                     background-color: var(--accent-color); color: white; border: none; 
                     padding: 10px 20px; border-radius: 25px; cursor: pointer; margin-top: 15px; font-weight: bold;
-                ">ابدأ الجولة التالية (${roundNumber - 1})</button>
+                ">ابدأ الجولة التالية (${roundNumber})</button>
             </div>
         `;
         document.getElementById('next-round-btn').addEventListener('click', startQuiz);
