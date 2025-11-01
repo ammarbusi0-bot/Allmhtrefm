@@ -160,26 +160,6 @@
         <p>&copy; 2025 موقع النور</p>
     </footer>
 
-    <script>
-        // كود بسيط لتشغيل الوضع الليلي على هذه الصفحة أيضاً
-        const themeToggleBtn = document.getElementById('theme-toggle');
-        const body = document.body;
-        const THEME_KEY = 'appTheme';
-        
-        const loadTheme = () => {
-            const savedTheme = localStorage.getItem(THEME_KEY) || 'light-mode';
-            body.className = savedTheme;
-            themeToggleBtn.textContent = savedTheme === 'dark-mode' ? '☀️ الوضع النهاري' : '🌙 الوضع الليلي';
-        };
-        
-        themeToggleBtn.addEventListener('click', () => {
-            const newTheme = body.classList.contains('light-mode') ? 'dark-mode' : 'light-mode';
-            body.className = newTheme;
-            localStorage.setItem(THEME_KEY, newTheme);
-            loadTheme();
-        });
-        
-        document.addEventListener('DOMContentLoaded', loadTheme);
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
