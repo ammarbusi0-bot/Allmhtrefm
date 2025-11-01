@@ -65,14 +65,14 @@ function saveUserStats(){
     localStorage.setItem('userStats',JSON.stringify(userStats));
     updateProfileDisplay();
     document.getElementById('user-points').textContent = userStats.points; 
-    // 🚨 تم حذف إرسال النقاط للخادم
 }
 
 // ----------------------------------------------------
-// التنقل بين الشاشات (تم التعديل لإلغاء لوحة الصدارة)
+// التنقل بين الشاشات
 // ----------------------------------------------------
 function showScreen(screenId,isInitialLoad=false){
     clearTimer();
+    closeContactModal(); // 💡 إغلاق المودال عند التنقل بين الشاشات
     const currentActiveScreen=document.querySelector('.screen.active');
     if(currentActiveScreen && !isInitialLoad && currentActiveScreen.id!==screenId){ history.push(currentActiveScreen.id); }
     document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
@@ -97,7 +97,7 @@ function goBack(){
 }
 
 // ----------------------------------------------------
-// شاشة الدخول والتواصل
+// شاشة الدخول والتواصل (تم إصلاحها)
 // ----------------------------------------------------
 function saveAndEnter(){
     const name=document.getElementById('user-name').value.trim();
@@ -105,8 +105,14 @@ function saveAndEnter(){
     else alert("الرجاء إدخال اسمك أولاً!");
 }
 
-function openContactModal() { document.getElementById('contact-modal').style.display = 'block'; }
-function closeContactModal() { document.getElementById('contact-modal').style.display = 'none'; }
+function openContactModal() { 
+    // 💡 نستخدم 'flex' لإظهاره كبلوك مركزي
+    document.getElementById('contact-modal').style.display = 'flex'; 
+}
+
+function closeContactModal() { 
+    document.getElementById('contact-modal').style.display = 'none'; 
+}
 
 
 // ----------------------------------------------------
@@ -140,14 +146,14 @@ function startTimer() {
     clearTimer();
     timeLeft = 15;
     document.getElementById('timer-text').textContent = timeLeft;
-    document.getElementById('timer-circle').style.borderColor = '#D4AF37'; 
+    document.getElementById('timer-circle').style.borderColor = '#FFC107'; 
 
     timer = setInterval(() => {
         timeLeft--;
         document.getElementById('timer-text').textContent = timeLeft;
 
         if (timeLeft <= 5) {
-            document.getElementById('timer-circle').style.borderColor = '#F44336'; 
+            document.getElementById('timer-circle').style.borderColor = '#D32F2F'; 
         }
 
         if (timeLeft <= 0) {
