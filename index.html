@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>موقع النور الفخم</title>
+    <title>موقع النور الفخم - المصحف</title>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;700&display=swap');
         
         :root {
-            /* ألوان الوضع النهاري الفخم (أزرق غامق وذهبي) */
             --main-bg-color: #f0f4f8;        
             --text-color: #1a1a1a;
             --card-bg-color: #ffffff;
@@ -19,11 +18,10 @@
             --font-family: 'Cairo', 'Amiri', serif;
         }
         .dark-mode {
-            /* ألوان الوضع الليلي الفخم (Deep Navy و Gold) */
             --main-bg-color: #0e1628;        
-            --text-color: #f0e68c;           /* Pale Gold Text */
+            --text-color: #f0e68c;           
             --card-bg-color: #1a243a;
-            --accent-color: #ffd700;         /* ذهبي ساطع */
+            --accent-color: #ffd700;         
             --accent-color-light: #b8860b;
             --shadow-color: rgba(0, 0, 0, 0.5);
         }
@@ -53,7 +51,7 @@
         }
         /* تنسيق القائمة الرئيسية (الفهرس) */
         nav { 
-            display: flex; gap: 20px; 
+            display: flex; flex-wrap: wrap; gap: 20px; 
             margin-bottom: 30px; 
             padding: 10px 0;
             justify-content: center;
@@ -85,28 +83,53 @@
             border-bottom: 2px solid var(--accent-color-light); 
             padding-bottom: 8px; font-size: 1.8rem; font-weight: 700;
         }
-        input[type="text"], button { 
-            width: 100%; padding: 15px; margin-bottom: 15px; border-radius: 10px; 
-            border: 2px solid #ccc; font-size: 1.1rem; text-align: right; 
-            background-color: var(--main-bg-color); color: var(--text-color);
-        }
-        button { cursor: pointer; background-color: var(--accent-color); color: var(--card-bg-color); font-weight: bold; border: none; transition: background-color 0.2s, transform 0.1s; }
-        button:hover { background-color: var(--accent-color-light); transform: translateY(-2px); }
         
-        /* نتائج القرآن */
-        #quran-content { 
-            margin-top: 20px; padding: 15px; border: 1px solid var(--accent-color-light); 
-            border-radius: 8px; background-color: var(--main-bg-color); max-height: 400px; 
-            overflow-y: auto; font-size: 1.1rem;
+        /* تصميم خاص لعرض القرآن (يستخدم خط المصحف) */
+        #quran-viewer { grid-column: 1 / span 2; } /* القرآن يأخذ عرض أكبر */
+        #quran-content-container { 
+            margin-top: 20px; padding: 15px; 
+            border: 1px solid var(--accent-color-light); 
+            border-radius: 8px; 
+            background-color: var(--main-bg-color); 
+            max-height: 600px; 
+            overflow-y: auto; 
+            font-size: 1.3rem;
+            line-height: 2.2; /* تباعد أكبر للآيات */
         }
-        .ayah-text { 
-            display: block; padding: 12px 0; 
-            border-bottom: 1px dashed var(--accent-color); 
+        
+        .surah-name-button {
+            display: block;
+            background: var(--card-bg-color);
+            color: var(--text-color);
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            border: 1px solid var(--accent-color-light);
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: right;
+            transition: background 0.3s, border-color 0.3s;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+        .surah-name-button:hover {
+            background: var(--accent-color-light);
+            color: var(--card-bg-color);
+        }
+
+        /* تنسيق الآيات */
+        .ayah-line {
+            display: block;
+            padding: 15px 0;
+            border-bottom: 1px dashed var(--accent-color);
             text-align: justify;
         }
-        .ayah-text:last-child { border-bottom: none; }
-        .ayah-ref { font-size: 0.85rem; color: #777; font-style: italic; }
-        mark { background-color: var(--accent-color-light); color: var(--text-color); padding: 2px 4px; border-radius: 3px; }
+        .ayah-line:last-child { border-bottom: none; }
+        .ayah-number {
+            font-size: 0.9em;
+            color: var(--accent-color);
+            margin-right: 5px;
+            font-weight: bold;
+        }
 
         /* تخطيط ديناميكي (Grid) */
         @media (min-width: 768px) {
@@ -118,6 +141,7 @@
             main { grid-template-columns: 1fr; }
             header { flex-direction: column; gap: 15px; }
             nav { flex-direction: column; gap: 10px; }
+            #quran-viewer { grid-column: 1 / span 1; }
         }
     </style>
 </head>
@@ -128,7 +152,7 @@
     </header>
     
     <nav> 
-        <a href="index.html">القرآن الكريم (البحث)</a>
+        <a href="index.html">القرآن الكريم (المصحف)</a>
         <a href="hadith.html">الأحاديث النبوية</a>
         <a href="quiz.html">الأسئلة الدينية</a> 
     </nav>
@@ -142,11 +166,13 @@
         </section>
 
         <section id="quran-viewer" class="card">
-            <h2>🕋 تصفح وبحث القرآن الكريم</h2>
-            <input type="text" id="quran-search" placeholder="ابحث في آيات القرآن الكريم..." aria-label="بحث القرآن">
-            <div id="quran-result-container">
-                <p id="last-read-status">⚠️ جاري تحميل ملف القرآن الكريم (تحقق من اتصالك)...</p>
-                <div id="quran-content"></div>
+            <h2>🕋 المصحف الشريف</h2>
+            
+            <div id="quran-content-container">
+                <p id="loading-status">⚠️ جاري تحميل المصحف الشريف...</p>
+                
+                <div id="quran-display"></div>
+                
             </div>
         </section>
     </main>
