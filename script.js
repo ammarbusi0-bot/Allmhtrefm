@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // --------------------------------------
-    // 3. ميزة: تبديل الوضع الليلي (بدون تغيير)
+    // 3. ميزة: تبديل الوضع الليلي 
     // --------------------------------------
     const loadTheme = () => {
         const savedTheme = localStorage.getItem(THEME_KEY) || 'light-mode';
@@ -76,7 +76,6 @@ document.addEventListener('DOMContentLoaded', () => {
         QURAN_FULL_TEXT.forEach(surah => {
             const button = document.createElement('button');
             button.className = 'surah-name-button';
-            // نستخدم 'name' و 'name_ar' للتأكد من وجود اسم
             const surahName = surah.name_ar || surah.name || 'سورة غير معروفة';
             
             button.textContent = `${surahName} (السورة رقم ${surah.id})`;
