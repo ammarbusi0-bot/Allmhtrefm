@@ -1,4 +1,4 @@
-// hadith-data.js
+// data/hadiths.js
 // يحتوي هذا الملف على 70 حديثًا مختلفًا
 
 const PROPHET_HADITHS = [
