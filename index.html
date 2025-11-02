@@ -23,10 +23,32 @@
 
     <main>
         
-        <section id="bookmark-section" class="card">
-            <h2>🔖 آخر موضع قراءة</h2>
-            <p id="last-read-location" style="color: var(--accent-color-light);">لم يتم الحفظ بعد.</p>
-            <button id="clear-bookmark-btn" class="main-action-btn" style="padding: 8px 15px; font-size: 0.9rem; margin-top: 10px;">مسح الحفظ</button>
+        <section id="settings" class="card">
+            <h2>⚙️ إعدادات القراءة</h2>
+            
+            <div style="margin-bottom: 20px;">
+                <p style="font-weight: bold; color: var(--accent-color-light); margin-bottom: 10px;">اختر خط القراءة:</p>
+                <div id="font-selector" style="display: flex; flex-wrap: wrap; gap: 5px;">
+                    <button class="font-btn" data-font="Amiri" style="font-family: 'Amiri', serif;">خط الأميري</button>
+                    <button class="font-btn" data-font="Traditional Arabic" style="font-family: 'Traditional Arabic', serif;">خط عربي تقليدي</button>
+                    <button class="font-btn" data-font="Droid Arabic Naskh" style="font-family: 'Droid Arabic Naskh', serif;">خط النسخ</button>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+                <p style="font-weight: bold; color: var(--accent-color-light); margin-bottom: 10px;">التحكم بحجم الخط:</p>
+                <div id="size-selector" style="display: flex; flex-wrap: wrap; gap: 5px; align-items: center;">
+                    <button class="size-btn" data-size="decrease">تصغير الخط (A-)</button>
+                    <span id="current-font-size" style="font-weight: bold; color: var(--text-color); margin: 0 10px;">100%</span>
+                    <button class="size-btn" data-size="increase">تكبير الخط (A+)</button>
+                </div>
+            </div>
+            
+            <div style="border-top: 1px dashed var(--accent-color); padding-top: 15px;">
+                <p style="font-weight: bold; color: var(--accent-color-light);">📍 حفظ موضع القراءة:</p>
+                <p id="current-bookmark" style="color: var(--text-color); margin-top: 5px; font-size: 0.9rem;">لا يوجد موضع محفوظ حالياً.</p>
+                <button id="clear-bookmark-btn" class="secondary-action-btn" style="padding: 5px 15px; font-size: 0.9rem; margin-top: 10px;">مسح الحفظ</button>
+            </div>
         </section>
         
         <section id="prayer-times" class="card">
@@ -40,29 +62,18 @@
             </div>
         </section>
 
-        <section id="quran-reader" class="card">
-            <h2>🕋 المصحف الشريف (قراءة واستماع)</h2>
+        <section id="quran-reader" class="card" style="grid-column: 1 / 3;">
+            <h2>🕋 المصحف الشريف (قراءة)</h2>
             
-            <div id="audio-controls" style="margin-bottom: 20px; padding: 10px; border: 1px solid var(--accent-color); border-radius: 8px; background-color: rgba(218, 165, 32, 0.05);">
-                <label for="reciter-select" style="font-weight: bold; color: var(--accent-color-light);">اختر القارئ:</label>
-                <select id="reciter-select" class="search-bar" style="width: 100%; margin-top: 5px; margin-bottom: 10px;">
-                    </select>
-                <button id="play-pause-btn" class="main-action-btn" disabled>▶️ تشغيل/إيقاف الآية</button>
-            </div>
-
             <input type="text" id="ayah-search" class="search-bar" placeholder="ابحث عن آية في السورة المفتوحة..." style="display: none;">
             
-            <p id="loading-status" style="text-align: center; margin-top: 15px; color: var(--accent-color);">جاري التحميل...</p>
+            <p id="loading-status" style="text-align: center; margin-top: 15px; color: var(--accent-color);">جاري تحميل المصحف الشريف...</p>
             
-            <div id="quran-display" style="text-align: center;">
+            <div id="quran-display" style="margin-top: 20px;">
                 </div>
         </section>
         
     </main>
-    
-    <footer>
-        <p>&copy; 2025 منصة إشراق النور. كل الحقوق محفوظة.</p>
-    </footer>
 
     <script src="script.js"></script>
 </body>
