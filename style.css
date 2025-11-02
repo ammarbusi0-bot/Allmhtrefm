@@ -1,79 +1,207 @@
-/* ========================
-   تحسينات التصميم الذهبي الأنيق
-   ======================== */
+/* ======================================================
+   منصة إشراق النور - تحسينات التصميم الذهبي الفخم
+   ====================================================== */
 
 :root {
-    /* تغيير الألوان الرئيسية لزيادة الأناقة */
+    /* الألوان الرئيسية */
     --accent-color: #DAA520;        /* الذهبي الداكن (Goldenrod) */
     --accent-color-light: #FFD700;   /* الذهبي الفاتح (Gold) */
     --text-color-light: #F8F8FF;     /* نص فاتح (روحاني) */
+    --shadow-gold-heavy: 0 0 25px rgba(255, 215, 0, 0.7); /* توهج ذهبي عميق */
+    
+    /* الخط الافتراضي */
+    --default-font: 'Amiri', 'Traditional Arabic', serif; 
+    font-family: var(--default-font); 
+    font-size: 100%; /* حجم الخط الأساسي */
 }
 
-/* 1. تحسين الوضع الداكن */
+/* 1. تحسين جسم الصفحة والوضع الداكن */
+body {
+    transition: background-color 0.4s, color 0.4s;
+    background-color: var(--main-bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    direction: rtl;
+}
+
+.light-mode {
+    --main-bg-color: #f7f7f7;
+    --text-color: #1c1c1c;
+    --card-bg-color: #ffffff;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
 .dark-mode {
-    --main-bg-color: #1c1c1c;        /* خلفية داكنة جداً */
-    --text-color: var(--text-color-light); /* نص أبيض مائل للذهبي */
-    --card-bg-color: #282828;        /* خلفية البطاقات داكنة */
-    --shadow-color: rgba(255, 215, 0, 0.2); /* ظل ذهبي خفيف */
+    --main-bg-color: #0d0d0d;        /* خلفية داكنة جداً للمزيد من الفخامة */
+    --text-color: var(--text-color-light); 
+    --card-bg-color: #1a1a1a;        /* خلفية البطاقات داكنة */
+    --shadow-color: rgba(255, 215, 0, 0.1); 
 }
 
-/* 2. الأزرار (تبديل المظهر وعودة للقائمة) */
-#theme-toggle, #back-to-index { 
-    border: 2px solid var(--accent-color-light); /* حدود ذهبية */
-    box-shadow: 0 0 10px var(--accent-color-light); /* توهج ذهبي */
-    background: linear-gradient(145deg, var(--accent-color), #B8860B); /* تدرج لوني */
-    color: var(--text-color-light); 
+/* 2. العنوان الرئيسي (Header) */
+header {
+    background-color: var(--card-bg-color);
+    padding: 20px;
+    box-shadow: 0 4px 15px var(--shadow-color);
+    border-bottom: 5px solid var(--accent-color);
 }
-#theme-toggle:hover, #back-to-index:hover { 
-    background: linear-gradient(145deg, #B8860B, var(--accent-color));
-    transform: scale(1.05); /* تأثير عند المرور */
+header h1 {
+    text-shadow: 0 0 20px var(--accent-color-light), 0 0 8px var(--accent-color); /* توهج عميق */
+    color: var(--accent-color-light);
+    letter-spacing: 2px;
+    font-size: 2.5rem;
+    transition: all 0.5s;
 }
 
-/* 3. شريط التنقل */
+/* 3. شريط التنقل (Navigation) */
 nav {
-    border-bottom: 3px solid var(--accent-color-light); 
-    border-top: 3px solid var(--accent-color-light);
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+    margin-bottom: 25px;
+    border-bottom: 3px solid var(--accent-color); 
+    border-top: 3px solid var(--accent-color);
+    background-color: var(--card-bg-color);
 }
 nav a {
-    font-size: 1.2rem; /* حجم أكبر قليلاً */
+    font-size: 1.3rem; 
     color: var(--accent-color); 
-    transition: all 0.4s;
+    padding: 0 20px;
+    text-decoration: none;
+    transition: all 0.3s;
+    font-weight: bold;
 }
 nav a:hover {
     color: var(--accent-color-light);
-    text-shadow: 0 0 5px var(--accent-color-light); /* توهج خفيف على النص */
+    text-shadow: 0 0 10px var(--accent-color-light); 
 }
 
-/* 4. البطاقات (الـ card) */
+/* 4. البطاقات (Card Style - الفخامة) */
 .card { 
-    border-top: 8px solid var(--accent-color-light); /* شريط علوي أسمك وأكثر لمعاناً */
-    border-radius: 20px; /* حواف أكثر استدارة */
+    background-color: var(--card-bg-color);
+    border-top: 15px solid var(--accent-color-light); /* شريط علوي سميك ولامع */
+    border-radius: 30px; /* حواف أكثر استدارة وجمالية */
+    padding: 30px 40px; 
+    margin-bottom: 30px;
+    box-shadow: 0 10px 30px var(--shadow-color), var(--shadow-gold-heavy); /* ظل فخم وتوهج ذهبي إضافي */
+    transition: all 0.5s;
+}
+.card:hover {
+    box-shadow: 0 12px 35px var(--shadow-color), 0 0 30px rgba(255, 215, 0, 0.8);
+    transform: translateY(-3px);
 }
 .card h2 { 
-    color: var(--accent-color-light); /* عناوين ذهبية لامعة */
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-    border-bottom: 2px solid var(--accent-color);
+    color: var(--accent-color-light); 
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); 
+    border-bottom: 3px solid var(--accent-color);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
 }
 
-/* 5. أيقونات المواقيت والمصحف (لإضافة لمسة) */
-#prayer-times h2::before { content: "⏱️"; margin-left: 10px; }
-#quran-reader h2::before { content: "📜"; margin-left: 10px; }
-#hadith-viewer h2::before { content: "💡"; margin-left: 10px; }
-#quiz-game h2::before { content: "🏆"; margin-left: 10px; }
+/* 5. أيقونات العناوين */
+#prayer-times h2::before { content: "🕌 "; margin-left: 10px; }
+#quran-reader h2::before { content: "🕋 "; margin-left: 10px; }
+#hadith-viewer h2::before { content: "💡 "; margin-left: 10px; }
+#quiz-game h2::before { content: "🏆 "; margin-left: 10px; }
+#settings h2::before { content: "⚙️ "; margin-left: 10px; }
+#azkar-section h2::before { content: "🌙 "; margin-left: 10px; }
 
 
-/* 6. تحسين زر الحديث الجديد (Action Button) */
+/* 6. الأزرار الرئيسية (Action Buttons) */
 .main-action-btn {
     background-color: var(--accent-color-light);
-    color: #1c1c1c; /* لون داكن للتباين */
+    color: #1c1c1c; 
     font-weight: bold;
-    padding: 12px 25px;
+    padding: 15px 30px; 
     border-radius: 50px;
-    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.6); 
     transition: all 0.3s;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
 }
 .main-action-btn:hover {
     background-color: var(--accent-color);
     color: var(--text-color-light);
-    transform: translateY(-3px);
+    transform: translateY(-5px) scale(1.02); 
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.8);
+}
+
+/* 7. تنسيق القراءة (القرآن) */
+.quran-content-wrapper {
+    padding: 15px;
+    border: 1px solid var(--accent-color);
+    border-radius: 15px;
+    font-size: 1.6rem;
+    line-height: 2.2;
+    text-align: justify;
+}
+.ayah-line {
+    display: block;
+    margin-bottom: 15px;
+    border-bottom: 2px solid var(--accent-color); /* الخط الذهبي المعزز */
+    padding-bottom: 5px;
+    position: relative;
+    cursor: pointer;
+}
+.ayah-number {
+    color: var(--accent-color-light);
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+/* 8. أدوات الآية الجديدة (تفسير، حفظ، مشاركة) */
+.ayah-options-btn {
+    background-color: transparent;
+    border: none;
+    color: var(--accent-color);
+    font-size: 1.1rem;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: color 0.3s;
+    line-height: 1;
+}
+.ayah-options-btn:hover {
+    color: var(--accent-color-light);
+    transform: scale(1.1);
+}
+
+/* 9. تنسيق أزرار الخطوط والتحكم بالحجم */
+.font-btn, .size-btn {
+    background-color: var(--card-bg-color);
+    color: var(--accent-color);
+    border: 2px solid var(--accent-color);
+    padding: 8px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: bold;
+    margin: 5px;
+}
+.font-btn.active, .size-btn:hover {
+    background-color: var(--accent-color-light);
+    color: #1c1c1c;
+    border-color: var(--accent-color-light);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+/* 10. تنسيقات خاصة للخطوط العربية */
+.font-Amiri { font-family: 'Amiri', serif !important; }
+.font-Traditional\ Arabic { font-family: 'Traditional Arabic', serif !important; }
+.font-Droid\ Arabic\ Naskh { font-family: 'Droid Arabic Naskh', 'Amiri', serif !important; }
+
+/* 11. تمييز الصلاة القادمة (مؤشر الصلاة القادمة) */
+.next-prayer {
+    color: var(--accent-color-light) !important;
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(255, 215, 0, 0.8);
+    background-color: rgba(255, 215, 0, 0.1);
+    border-radius: 5px;
+}
+.countdown {
+    color: #dc3545; /* لون مختلف للعداد التنازلي */
+    font-weight: bold;
+    margin-right: 10px;
 }
