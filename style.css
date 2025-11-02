@@ -1,52 +1,79 @@
 /* ========================
-   أنماط صفحة الدعم والتواصل
+   تحسينات التصميم الذهبي الأنيق
    ======================== */
 
-.contact-links {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    padding: 10px;
+:root {
+    /* تغيير الألوان الرئيسية لزيادة الأناقة */
+    --accent-color: #DAA520;        /* الذهبي الداكن (Goldenrod) */
+    --accent-color-light: #FFD700;   /* الذهبي الفاتح (Gold) */
+    --text-color-light: #F8F8FF;     /* نص فاتح (روحاني) */
 }
 
-.contact-item {
-    display: flex;
-    align-items: center;
-    padding: 15px 20px;
-    border-radius: 8px;
-    text-decoration: none;
+/* 1. تحسين الوضع الداكن */
+.dark-mode {
+    --main-bg-color: #1c1c1c;        /* خلفية داكنة جداً */
+    --text-color: var(--text-color-light); /* نص أبيض مائل للذهبي */
+    --card-bg-color: #282828;        /* خلفية البطاقات داكنة */
+    --shadow-color: rgba(255, 215, 0, 0.2); /* ظل ذهبي خفيف */
+}
+
+/* 2. الأزرار (تبديل المظهر وعودة للقائمة) */
+#theme-toggle, #back-to-index { 
+    border: 2px solid var(--accent-color-light); /* حدود ذهبية */
+    box-shadow: 0 0 10px var(--accent-color-light); /* توهج ذهبي */
+    background: linear-gradient(145deg, var(--accent-color), #B8860B); /* تدرج لوني */
+    color: var(--text-color-light); 
+}
+#theme-toggle:hover, #back-to-index:hover { 
+    background: linear-gradient(145deg, #B8860B, var(--accent-color));
+    transform: scale(1.05); /* تأثير عند المرور */
+}
+
+/* 3. شريط التنقل */
+nav {
+    border-bottom: 3px solid var(--accent-color-light); 
+    border-top: 3px solid var(--accent-color-light);
+}
+nav a {
+    font-size: 1.2rem; /* حجم أكبر قليلاً */
+    color: var(--accent-color); 
+    transition: all 0.4s;
+}
+nav a:hover {
+    color: var(--accent-color-light);
+    text-shadow: 0 0 5px var(--accent-color-light); /* توهج خفيف على النص */
+}
+
+/* 4. البطاقات (الـ card) */
+.card { 
+    border-top: 8px solid var(--accent-color-light); /* شريط علوي أسمك وأكثر لمعاناً */
+    border-radius: 20px; /* حواف أكثر استدارة */
+}
+.card h2 { 
+    color: var(--accent-color-light); /* عناوين ذهبية لامعة */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    border-bottom: 2px solid var(--accent-color);
+}
+
+/* 5. أيقونات المواقيت والمصحف (لإضافة لمسة) */
+#prayer-times h2::before { content: "⏱️"; margin-left: 10px; }
+#quran-reader h2::before { content: "📜"; margin-left: 10px; }
+#hadith-viewer h2::before { content: "💡"; margin-left: 10px; }
+#quiz-game h2::before { content: "🏆"; margin-left: 10px; }
+
+
+/* 6. تحسين زر الحديث الجديد (Action Button) */
+.main-action-btn {
+    background-color: var(--accent-color-light);
+    color: #1c1c1c; /* لون داكن للتباين */
     font-weight: bold;
-    color: white; /* لون النص الافتراضي */
-    transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 12px 25px;
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+    transition: all 0.3s;
 }
-
-.contact-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
-}
-
-.contact-item i {
-    font-size: 1.5rem;
-    margin-left: 15px; /* مسافة بين الأيقونة والنص */
-}
-
-/* ألوان مخصصة لكل رابط */
-.phone-link, .whatsapp-link {
-    background-color: #25D366; /* أخضر واتساب */
-}
-.email-link {
-    background-color: #D44638; /* أحمر جيميل */
-}
-.telegram-link {
-    background-color: #0088CC; /* أزرق تيليجرام */
-}
-.instagram-link {
-    background-color: #E1306C; /* وردي إنستغرام */
-}
-.tiktok-link {
-    background-color: #000000; /* أسود تيك توك */
-}
-.facebook-link {
-    background-color: #1877F2; /* أزرق فيسبوك */
+.main-action-btn:hover {
+    background-color: var(--accent-color);
+    color: var(--text-color-light);
+    transform: translateY(-3px);
 }
