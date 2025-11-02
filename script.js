@@ -1,5 +1,59 @@
 // script.js - الكود الرئيسي الموحد لجميع الصفحات
 
+// مصفوفة الأسئلة الدينية (تم دمجها هنا لعدم الحاجة لملف questions.js)
+const ALL_QUIZ_QUESTIONS = [
+    {
+        question: "ما هي أول سورة نزلت كاملة في القرآن الكريم؟",
+        options: ["سورة الفاتحة", "سورة المدثر", "سورة العلق", "سورة النصر"],
+        correctIndex: 1 // سورة المدثر
+    },
+    {
+        question: "كم عدد أركان الإسلام؟",
+        options: ["ثلاثة", "أربعة", "خمسة", "ستة"],
+        correctIndex: 2 // خمسة
+    },
+    {
+        question: "من هو أول الخلفاء الراشدين؟",
+        options: ["علي بن أبي طالب", "عمر بن الخطاب", "أبو بكر الصديق", "عثمان بن عفان"],
+        correctIndex: 2 // أبو بكر الصديق
+    },
+    {
+        question: "ما هو الشهر الذي يصومه المسلمون كل عام؟",
+        options: ["شوال", "شعبان", "رمضان", "محرم"],
+        correctIndex: 2 // رمضان
+    },
+    {
+        question: "ما هو اسم النبي الذي ألقاه قومه في النار؟",
+        options: ["يونس", "موسى", "إبراهيم", "عيسى"],
+        correctIndex: 2 // إبراهيم
+    },
+    {
+        question: "في أي ركن من أركان الإسلام يتم الوقوف بعرفة؟",
+        options: ["الصلاة", "الزكاة", "الحج", "الصوم"],
+        correctIndex: 2 // الحج
+    },
+    {
+        question: "من هو صاحب لقب 'فاروق الأمة'؟",
+        options: ["أبو بكر الصديق", "عمر بن الخطاب", "عثمان بن عفان", "علي بن أبي طالب"],
+        correctIndex: 1 // عمر بن الخطاب
+    },
+    {
+        question: "ما هي السورة التي بدأت بالتسبيح وختمت به؟",
+        options: ["الحديد", "الواقعة", "الرحمن", "الإخلاص"],
+        correctIndex: 0 // الحديد
+    },
+    {
+        question: "ما هي قبلة المسلمين الأولى؟",
+        options: ["الكعبة المشرفة", "المسجد الأقصى", "المسجد النبوي", "مسجد قباء"],
+        correctIndex: 1 // المسجد الأقصى
+    },
+    {
+        question: "كم سنة استغرقت الدعوة السرية للإسلام؟",
+        options: ["سنتان", "ثلاث سنوات", "أربع سنوات", "خمس سنوات"],
+        correctIndex: 1 // ثلاث سنوات
+    }
+];
+
 document.addEventListener('DOMContentLoaded', () => {
     // --------------------------------------
     // 1. المتغيرات الرئيسية والثوابت
@@ -16,12 +70,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const QURAN_API_URL = 'https://cdn.jsdelivr.net/npm/quran-json@3.1.2/dist/quran.json'; 
     const PRAYER_API_URL = 'https://api.aladhan.com/v1/timings';
     let QURAN_FULL_TEXT = null; 
-    let CURRENT_SURAH = null; // لتتبع السورة المعروضة حالياً
+    let CURRENT_SURAH = null;
 
     // عناصر صفحة الأحاديث (hadith.html)
     const hadithListDiv = document.getElementById('hadith-list');
     const hadithSearchInput = document.getElementById('hadith-search');
-    
+    // 👈 API جديد لجلب الأحاديث
+    const HADITH_API_URL = 'https://api.hadith.gading.dev/books/bukhari'; 
+    const HADITH_RANGE = '1-50'; // نجلب أول 50 حديثاً
+    window.FULL_HADITH_DATA = null; // لتخزين الأحاديث بعد جلبها
+
     // عناصر صفحة الاختبار (quiz.html)
     const quizContainer = document.getElementById('quiz-container');
     const scoreDisplay = document.getElementById('score-display');
@@ -66,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const today = new Date();
         const year = today.getFullYear();
         const month = today.getMonth() + 1;
-        const method = 2; // طريقة حساب معتمدة (مثل ISNA)
+        const method = 2; 
 
         try {
             const response = await fetch(`${PRAYER_API_URL}/${today.getDate()}-${month}-${year}?latitude=${latitude}&longitude=${longitude}&method=${method}`);
@@ -111,7 +169,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     fetchPrayerTimes(position.coords.latitude, position.coords.longitude);
                 },
                 (error) => {
-                    // رسالة خطأ عند رفض الإذن
                     prayerDisplay.innerHTML = `<p style="color: #dc3545;">❌ تعذر تحديد موقعك. يرجى تفعيل إذن الموقع.</p>`;
                     console.error("Geolocation Error:", error);
                 }
@@ -151,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
         quranDisplayDiv.innerHTML = '';
         loadingStatusElement.textContent = 'اختر سورة للتصفح:';
         
-        if (ayahSearchInput) ayahSearchInput.style.display = 'none'; // إخفاء البحث في قائمة السور
+        if (ayahSearchInput) ayahSearchInput.style.display = 'none';
 
         QURAN_FULL_TEXT.forEach(surah => {
             const button = document.createElement('button');
@@ -163,6 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
+    // 👈 تم تعديل هذه الدالة لحل مشكلة اختفاء الفهرس
     const displaySurah = (surah) => {
         CURRENT_SURAH = surah;
         const surahName = surah.name_ar || surah.name || 'سورة غير معروفة';
@@ -173,7 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ayahSearchInput.value = '';
         }
         
-        // 👈 التعديل هنا: مسح محتوى quranDisplayDiv بالكامل
+        // **التعديل الهام**: مسح محتوى quranDisplayDiv بالكامل
         quranDisplayDiv.innerHTML = ''; 
 
         renderSurahContent(surah.verses || surah.array || []);
@@ -228,15 +286,42 @@ document.addEventListener('DOMContentLoaded', () => {
     // --------------------------------------
     // 5. ميزة: عرض الأحاديث والبحث فيها 📚
     // --------------------------------------
+    
+    // 👈 دالة جديدة لجلب الأحاديث من الإنترنت
+    const loadHadithData = async () => {
+        if (!hadithListDiv) return; 
+
+        hadithListDiv.innerHTML = '<p style="text-align: center;">جاري تحميل الأحاديث من الإنترنت...</p>';
+
+        try {
+            const response = await fetch(`${HADITH_API_URL}?range=${HADITH_RANGE}`);
+            const data = await response.json();
+
+            if (data.code !== 200 || !data.data || !data.data.hadiths) {
+                throw new Error('فشل في جلب بيانات الأحاديث.');
+            }
+
+            window.FULL_HADITH_DATA = data.data.hadiths;
+            displayHadiths(); // عرض الأحاديث بعد التحميل
+        } catch (error) {
+            console.error('خطأ في تحميل بيانات الأحاديث:', error);
+            hadithListDiv.innerHTML = `<p style="color: red; text-align: center;">❌ فشل تحميل الأحاديث. يرجى التأكد من الاتصال.</p>`;
+        }
+    };
+    
+
     const displayHadiths = (filterTerm = '') => {
-        // نستخدم PROPHET_HADITHS المتغير الذي تم تعريفه في hadith-data.js
-        if (!hadithListDiv || typeof PROPHET_HADITHS === 'undefined') return;
+        // نستخدم FULL_HADITH_DATA المتغير الذي تم جلبه
+        if (!hadithListDiv || !window.FULL_HADITH_DATA) {
+            hadithListDiv.innerHTML = `<p style="text-align: center;">يرجى الانتظار حتى يتم تحميل الأحاديث...</p>`;
+            return;
+        }
 
         hadithListDiv.innerHTML = ''; 
         const lowerCaseFilter = filterTerm.toLowerCase();
 
-        const filteredHadiths = PROPHET_HADITHS.filter(hadith => 
-            hadith.text.toLowerCase().includes(lowerCaseFilter)
+        const filteredHadiths = window.FULL_HADITH_DATA.filter(hadith => 
+            hadith.arab.toLowerCase().includes(lowerCaseFilter)
         );
 
         if (filteredHadiths.length === 0) {
@@ -247,8 +332,8 @@ document.addEventListener('DOMContentLoaded', () => {
         filteredHadiths.forEach(hadith => {
             const htmlContent = `
                 <div class="hadith-container">
-                    <p class="hadith-text">${hadith.text}</p>
-                    <span class="hadith-source">${hadith.source}</span>
+                    <p class="hadith-text">${hadith.arab}</p>
+                    <span class="hadith-source">صحيح البخاري - رقم: ${hadith.number}</span>
                 </div>
             `;
             hadithListDiv.insertAdjacentHTML('beforeend', htmlContent);
@@ -274,20 +359,20 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     if (quizContainer) {
-        // تم تغيير QUIZ_QUESTIONS إلى ALL_QUIZ_QUESTIONS
-        if (typeof ALL_QUIZ_QUESTIONS === 'undefined' || ALL_QUIZ_QUESTIONS.length === 0) {
-             quizContainer.innerHTML = '<p style="color: red; text-align: center;">خطأ: لم يتم تحميل بيانات الأسئلة بشكل صحيح. (تأكد من وجود questions.js)</p>';
+        // 👈 تم تبسيط هذا الجزء بعد دمج مصفوفة الأسئلة
+        if (ALL_QUIZ_QUESTIONS.length === 0) {
+             quizContainer.innerHTML = '<p style="color: red; text-align: center;">خطأ: مصفوفة الأسئلة فارغة.</p>';
         } else {
-            questionsPool = [...ALL_QUIZ_QUESTIONS]; // استخدام المتغير الصحيح
+            questionsPool = [...ALL_QUIZ_QUESTIONS]; 
             shuffleArray(questionsPool);
             startQuiz();
         }
     }
 
     const startQuiz = () => {
-        // تم تغيير QUIZ_QUESTIONS إلى ALL_QUIZ_QUESTIONS
+        // إذا نقصت الأسئلة المتاحة، نعيد تعبئتها
         if (questionsPool.length < 10) {
-            questionsPool = [...ALL_QUIZ_QUESTIONS]; // استخدام المتغير الصحيح
+            questionsPool = [...ALL_QUIZ_QUESTIONS]; 
             shuffleArray(questionsPool);
         }
         
@@ -360,7 +445,6 @@ document.addEventListener('DOMContentLoaded', () => {
             optionsHTML += `<button class="answer-btn" data-original-index="${opt.index}">${opt.text}</button>`;
         });
 
-        // تم تصحيح طريقة عرض السؤال لتجنب مشاكل الترقيم
         quizContainer.innerHTML = `
             <div class="question-box" id="current-question-box">
                 <p>${(currentQuestionIndex + 1)}. ${qData.question}</p>
@@ -462,11 +546,9 @@ document.addEventListener('DOMContentLoaded', () => {
     loadTheme();
     if (quranDisplayDiv) { 
         loadQuranData();
-        getLocationAndPrayers(); // محاولة جلب المواقيت
+        getLocationAndPrayers();
     }
     if (hadithListDiv) {
-        // تأخير بسيط للتأكد من تحميل ملف hadith-data.js
-        setTimeout(() => displayHadiths(), 50); 
+        loadHadithData(); // 👈 جلب الأحاديث من الإنترنت
     }
-    // منطق الاختبار يبدأ تلقائيًا عبر الدالة startQuiz إذا كان quizContainer موجودًا
 });
