@@ -1,43 +1,20 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة الإشراق | المصحف الذهبي</title>
-    <link rel="stylesheet" href="style.css">
-    </head>
-<body>
-
-    <header class="app-header">
-        <h1>منصة الإشراق</h1>
-        <div class="header-controls">
-            <button id="dark-mode-toggle" title="الوضع الليلي">🌙</button>
-            <button id="settings-btn" title="الإعدادات">⚙️</button>
-        </div>
-    </header>
-
-    <main class="container">
-        <section id="daily-hadith-section" class="hadith-card">
-            <h2>✨ حديث اليوم</h2>
-            <p id="hadith-text">جارٍ التحميل...</p>
+        <section id="daily-progress" class="quran-container">
+            <h2>🏆 وردك اليومي وإنجازاتك</h2>
+            <div class="progress-info">
+                <p>هدف اليوم: قراءة <span id="target-ayahs">50</span> آية</p>
+                <div class="progress-bar-container">
+                    <div id="progress-bar" class="progress-bar"></div>
+                </div>
+                <p id="progress-text">تم قراءة 0 آية (0%)</p>
+                <button id="complete-daily-btn" class="gold-btn" disabled>إتمام ورد اليوم</button>
+            </div>
+            
+            <div id="achievement-badge" class="hadith-card" style="margin-top: 20px; display:none;">
+                <h3>تهانينا! 🌟</h3>
+                <p id="achievement-message"></p>
+            </div>
         </section>
 
-        <section id="quran-display" class="quran-container">
-            <div id="surah-title"></div>
-            <div id="quran-verses"></div>
-        </section>
+        <div id="insight-card-container">
+            </div>
 
-        <div id="audio-player-container">
-            <audio id="quran-audio" controls></audio>
-        </div>
-
-        <div id="tafseer-popup" class="popup">
-            <span class="close-btn">&times;</span>
-            <h3 id="tafseer-title"></h3>
-            <p id="tafseer-content"></p>
-        </div>
-    </main>
-
-    <script src="script.js"></script>
-</body>
-</html>
