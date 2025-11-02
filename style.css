@@ -1,4 +1,4 @@
-/* ======================================================
+/* =======================================================
    منصة إشراق النور - تحسينات التصميم الذهبي الفخم
    ====================================================== */
 
@@ -9,7 +9,7 @@
     --text-color-light: #F8F8FF;     /* نص فاتح (روحاني) */
     --shadow-gold-heavy: 0 0 25px rgba(255, 215, 0, 0.7); /* توهج ذهبي عميق */
     
-    /* الخط الافتراضي (الخط الذهبي الأصلي للموقع) */
+    /* الخط الافتراضي */
     --default-font: 'Amiri', 'Traditional Arabic', serif; 
     font-family: var(--default-font); 
     font-size: 100%; /* حجم الخط الأساسي */
@@ -34,159 +34,259 @@ body {
 }
 
 .dark-mode {
-    --main-bg-color: #121212;
-    --text-color: #E0E0E0;
-    --card-bg-color: #1c1c1c;
-    --shadow-color: rgba(255, 215, 0, 0.05); /* ظل ذهبي خفيف */
+    --main-bg-color: #1c1c1c;
+    --text-color: #F8F8FF;
+    --card-bg-color: #2a2a2a;
+    --shadow-color: rgba(255, 215, 0, 0.1);
 }
 
-
-/* 2. التنسيق العام لجميع النصوص (الخط الذهبي الموحد) */
-body, h1, h2, h3, p, a, button, input, select {
-    font-family: var(--default-font) !important; /* ضمان استخدام الخط الموحد */
-}
-
-h1, h2 {
-    color: var(--accent-color-light);
-    text-shadow: 0 0 5px rgba(255, 215, 0, 0.5); /* إضافة لمسة ذهبية للعناوين */
-    border-bottom: 1px solid var(--accent-color);
-    padding-bottom: 5px;
-}
-
-/* 3. الهيدر (Header) */
+/* 2. تنسيق الهيدر (Header) والناف بار (Nav) */
 header {
     background-color: var(--card-bg-color);
-    color: var(--text-color);
     padding: 15px 5%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 10px var(--shadow-color);
     border-bottom: 3px solid var(--accent-color);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+    box-shadow: 0 2px 15px var(--shadow-color);
 }
 
-/* 4. قائمة التنقل (Nav) */
+header h1 {
+    margin: 0;
+    color: var(--accent-color-light);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
 nav {
-    background-color: var(--main-bg-color);
-    padding: 10px 5%;
-    text-align: center;
-    border-bottom: 1px solid var(--accent-color-light);
-    box-shadow: inset 0 -1px 5px var(--shadow-color);
+    display: flex;
+    justify-content: center;
+    background-color: var(--accent-color);
+    padding: 10px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 nav a {
-    color: var(--text-color);
+    color: #1c1c1c;
     text-decoration: none;
-    padding: 8px 15px;
+    padding: 8px 20px;
     margin: 0 10px;
-    border-radius: 5px;
-    transition: background-color 0.3s, color 0.3s, transform 0.2s;
+    border-radius: 20px;
+    transition: background-color 0.3s, transform 0.2s;
     font-weight: bold;
 }
 
 nav a:hover, nav a.active {
-    background-color: var(--accent-color);
-    color: var(--card-bg-color);
+    background-color: var(--accent-color-light);
     transform: translateY(-2px);
-    box-shadow: 0 3px 10px rgba(255, 215, 0, 0.5);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
 }
 
-/* 5. المحتوى الرئيسي (Main) */
+/* 3. تنسيق المحتوى الرئيسي (Main) والبطاقات (Cards) */
 main {
-    padding: 20px 5%;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: 1fr 1fr;
     gap: 20px;
+    padding: 20px 5%;
+    max-width: 1300px;
+    margin: 20px auto;
 }
 
 .card {
     background-color: var(--card-bg-color);
     padding: 25px;
     border-radius: 12px;
-    box-shadow: 0 5px 15px var(--shadow-color);
-    border: 1px solid rgba(255, 215, 0, 0.2);
-    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 5px 20px var(--shadow-color);
+    border-right: 5px solid var(--accent-color-light); /* لمسة جمالية */
+    transition: background-color 0.4s;
 }
 
-.card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(255, 215, 0, 0.2);
+.card h2 {
+    color: var(--accent-color);
+    border-bottom: 2px dashed var(--accent-color);
+    padding-bottom: 10px;
+    margin-top: 0;
 }
 
-/* 6. الأزرار وعناصر التحكم */
-.main-action-btn, .search-bar {
+/* 4. تنسيق الأزرار الرئيسية (Actions) */
+.main-action-btn {
     background-color: var(--accent-color);
     color: #1c1c1c;
     border: none;
     padding: 10px 20px;
     border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
     font-weight: bold;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    display: block;
-    width: auto;
-    text-align: center;
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
 }
 
-.main-action-btn:hover {
+.main-action-btn:hover:not(:disabled) {
     background-color: var(--accent-color-light);
-    transform: scale(1.02);
-    box-shadow: 0 4px 10px rgba(255, 215, 0, 0.6);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(255, 215, 0, 0.5);
 }
 
-.search-bar, select.search-bar {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 12px;
-    margin-bottom: 15px;
-    background-color: var(--main-bg-color);
-    color: var(--text-color);
-    border: 2px solid var(--accent-color);
-    font-size: 1rem;
+.main-action-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
-.search-bar::placeholder {
-    color: #999;
-}
-
-
-/* 7. الفوتر (Footer) */
-footer {
-    text-align: center;
-    padding: 15px 5%;
-    margin-top: 20px;
-    background-color: var(--card-bg-color);
-    border-top: 3px solid var(--accent-color);
-    color: var(--text-color);
-}
-
-/* 8. تنسيق خاص لآيات القرآن */
-#quran-display p {
-    font-family: 'Traditional Arabic', serif; /* خط مخصص للقرآن لجمالية القراءة */
-    font-size: 1.5rem; 
-    line-height: 2.5;
-    text-align: justify;
-    padding: 20px;
-    margin: 15px 0;
-    border: 1px dashed var(--accent-color);
-    border-radius: 8px;
-}
-
-/* 9. تنسيق الأحاديث والأذكار */
-.hadith-item, .azkar-display {
-    border-right: 5px solid var(--accent-color-light);
-    padding-right: 15px;
-    margin-top: 15px;
-}
-.azkar-item {
-    background-color: var(--main-bg-color);
+.secondary-action-btn {
+    background: none;
+    color: var(--accent-color);
     border: 1px solid var(--accent-color);
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
 }
 
+.secondary-action-btn:hover {
+    background-color: rgba(255, 215, 0, 0.1);
+}
 
-/* 10. إزالة تنسيقات الخطوط غير المستخدمة */
-/* تم حذف جميع الأكواد الخاصة بـ .font-btn و .font-Amiri وغيرها بناءً على طلبك */
+/* 5. تنسيق شريط البحث (Search) */
+.search-bar {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border: 2px solid var(--accent-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: var(--card-bg-color);
+    color: var(--text-color);
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+.search-bar:focus {
+    outline: none;
+    border-color: var(--accent-color-light);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+/* 6. تنسيق الأحاديث والأذكار (Hadith & Azkar) */
+.hadith-text {
+    font-size: 1.15rem;
+    padding: 15px;
+    border-right: 5px solid var(--accent-color);
+    background-color: rgba(255, 215, 0, 0.05);
+    border-radius: 5px;
+    line-height: 2;
+    margin-bottom: 20px;
+}
+
+.azkar-display .azkar-item {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-bottom: 1px dashed var(--text-color);
+}
+
+.azkar-item strong {
+    color: var(--accent-color-light);
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* 7. تنسيق منطقة عرض القرآن (Quran Display) */
+#quran-reader {
+    font-size: 100%; /* لتبدأ من الحجم الافتراضي */
+    transition: font-size 0.3s;
+}
+
+.ayah-line {
+    font-size: 1.5rem; /* حجم خط مناسب للقرآن */
+    line-height: 2.5; /* تباعد كبير للوضوح */
+    text-align: justify;
+    padding: 10px 0;
+    margin: 0;
+    border-bottom: 1px dashed rgba(255, 215, 0, 0.3);
+}
+
+.ayah-number {
+    font-size: 1rem;
+    color: var(--accent-color);
+    margin-right: 5px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.ayah-options-btn {
+    background-color: transparent;
+    border: none;
+    color: var(--accent-color);
+    font-size: 1.1rem;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: color 0.3s;
+    line-height: 1;
+    display: inline-block; /* لضمان ظهور الأيقونة بشكل صحيح داخل السطر */
+}
+.ayah-options-btn:hover {
+    color: var(--accent-color-light);
+    transform: scale(1.1);
+}
+
+/* 8. تنسيق أزرار الخطوط والتحكم بالحجم */
+.font-btn, .size-btn {
+    background-color: var(--card-bg-color);
+    color: var(--accent-color);
+    border: 2px solid var(--accent-color);
+    padding: 8px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: bold;
+    margin: 5px;
+    font-family: inherit; 
+}
+.font-btn.active, .size-btn:hover {
+    background-color: var(--accent-color-light);
+    color: #1c1c1c;
+    border-color: var(--accent-color-light);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+/* 9. تنسيقات خاصة لتطبيق الخطوط العربية على عنصر القراءة (Quran Reader) */
+.font-Amiri {
+    font-family: 'Amiri', serif !important;
+}
+.font-Traditional\ Arabic {
+    font-family: 'Traditional Arabic', serif !important;
+}
+.font-Droid\ Arabic\ Naskh {
+    font-family: 'Droid Arabic Naskh', serif !important;
+}
+
+/* 10. تنسيق شاشة الجوال (Responsive Design) */
+@media (max-width: 768px) {
+    main {
+        grid-template-columns: 1fr;
+        padding: 10px;
+    }
+
+    header {
+        flex-direction: column;
+        text-align: center;
+    }
+    header h1 {
+        margin-bottom: 10px;
+    }
+    
+    nav {
+        flex-wrap: wrap;
+    }
+    nav a {
+        margin: 5px;
+    }
+    
+    .card {
+        padding: 15px;
+    }
+    
+    /* لضمان عرض عناصر إعدادات الخطوط بشكل صحيح على شاشة صغيرة */
+    #font-selector, #size-selector {
+        flex-direction: row; 
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
