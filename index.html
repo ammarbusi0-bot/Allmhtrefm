@@ -3,57 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📖 موقع النور الفخم - الصفحة الرئيسية</title>
-
-    <link rel="stylesheet" href="style.css">
+    <title>منصة إشراق النور - القرآن الكريم ومواقيت الصلاة</title>
+    
+    <link rel="stylesheet" href="style.css"> 
+    
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Droid+Arabic+Naskh&family=Traditional+Arabic&display=swap" rel="stylesheet">
 </head>
-
 <body class="light-mode">
     <header>
-        <h1>✨ موقع النور الفخم</h1>
-        <button id="theme-toggle">🌙 الوضع الليلي</button>
+        <h1>📖 منصة إشراق النور</h1>
+        <button id="theme-toggle" class="main-action-btn">🌙 الوضع الليلي</button>
     </header>
-
-    <nav>
-        <a href="index.html" class="active">🏠 الرئيسية</a>
-        <a href="quran.html">📜 المصحف الشريف</a>
-        <a href="hadith.html">💬 الأحاديث اليومية</a>
-        <a href="quiz.html">🧠 الألعاب الدينية</a>
+    
+    <nav> 
+        <a href="index.html">القرآن الكريم (المصحف)</a>
+        <a href="hadith.html">الأحاديث والأذكار</a>
+        <a href="quiz.html">الأسئلة الدينية</a> 
     </nav>
 
     <main>
-        <section class="dashboard">
-            <div class="card fade-in" id="daily-hadith">
-                <h2>💡 حديث اليوم</h2>
-                <p id="hadith-text">جاري جلب الحديث...</p>
-                <button id="refresh-hadith" class="main-action-btn">🔄 تحديث الحديث</button>
-            </div>
-
-            <div class="card fade-in" id="quran-progress">
-                <h2>📖 متابعة آخر قراءة</h2>
-                <p id="last-surah">لم تبدأ القراءة بعد.</p>
-                <a href="quran.html" class="main-action-btn">📜 الذهاب للمصحف</a>
-            </div>
-
-            <div class="card fade-in" id="prayer-times">
-                <h2>🕌 مواقيت الصلاة</h2>
-                <div id="prayer-display">
-                    <p>جاري تحديد موقعك...</p>
+        
+        <section id="settings" class="card">
+            <h2>⚙️ إعدادات القراءة</h2>
+            <div style="margin-bottom: 20px;">
+                <p style="font-weight: bold; color: var(--accent-color-light); margin-bottom: 10px;">اختر خط القراءة:</p>
+                <div id="font-selector" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button class="font-btn" data-font="Amiri">خط الأميري</button>
+                    <button class="font-btn" data-font="Traditional Arabic">خط التقليدي</button>
+                    <button class="font-btn" data-font="Droid Arabic Naskh">خط النسخ</button>
                 </div>
             </div>
 
-            <div class="card fade-in" id="quiz-preview">
-                <h2>🏆 جرب معلوماتك</h2>
-                <p>اختبر معرفتك في الدين وتحدى نفسك!</p>
-                <a href="quiz.html" class="main-action-btn">ابدأ اللعبة 🔥</a>
+            <div style="margin-top: 20px;">
+                <p style="font-weight: bold; color: var(--accent-color-light); margin-bottom: 10px;">التحكم بحجم الخط:</p>
+                <div id="size-selector" style="display: flex; gap: 10px; align-items: center;">
+                    <button class="size-btn" data-size="decrease">A-</button>
+                    <span id="current-font-size" style="color: var(--text-color);">متوسط</span>
+                    <button class="size-btn" data-size="increase">A+</button>
+                </div>
+            </div>
+            
+             <div id="bookmark-status" style="margin-top: 25px; padding-top: 15px; border-top: 1px dashed var(--accent-color);">
+                <p style="font-weight: bold; color: var(--accent-color);">آخر موضع قراءة محفوظ:</p>
+                <p id="last-read-location" style="color: var(--accent-color-light);">لم يتم الحفظ بعد.</p>
+                <button id="clear-bookmark-btn" class="main-action-btn" style="padding: 8px 15px; font-size: 0.9rem; margin-top: 10px;">مسح الحفظ</button>
             </div>
         </section>
+        
+        <section id="prayer-times" class="card">
+            <h2>🕌 مواقيت الصلاة</h2>
+            <div id="next-prayer-info" style="text-align: center; margin-bottom: 15px; padding: 10px; background-color: rgba(255, 215, 0, 0.05); border-radius: 8px; border: 1px solid var(--accent-color);">
+                <p>الصلاة القادمة: <span id="next-prayer-name" class="next-prayer">جاري التحميل...</span></p>
+                <p>يتبقى: <span id="time-to-next" class="countdown">--:--:--</span></p>
+            </div>
+            <div id="prayer-display">
+                <p>جاري تحديد موقعك وجلب المواقيت...</p>
+            </div>
+        </section>
+
+        <section id="quran-reader" class="card">
+            <h2>🕋 المصحف الشريف (قراءة)</h2>
+            
+            <input type="text" id="ayah-search" class="search-bar" placeholder="ابحث عن آية في السورة المفتوحة..." style="display: none;">
+
+            <div id="loading-status"></div>
+            <div id="quran-display" class="quran-content-wrapper">
+                </div>
+        </section>
+        
     </main>
 
     <footer>
-        <p>&copy; 2025 موقع النور الفخم | تصميم ذهبي أنيق 💫</p>
+        <p>جميع الحقوق محفوظة لمنصة إشراق النور &copy; 2025</p>
     </footer>
 
-    <script src="main.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
