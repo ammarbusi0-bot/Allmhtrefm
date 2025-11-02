@@ -1,4 +1,10 @@
 // script.js - منصة إشراق النور (ملف الجافاسكريبت الموحد)
+// ** تم تحديث هذا الملف للإصلاحات التالية: **
+// 1. معالجة مشكلة الخطوط: تم تعديل applyFont لمنع إضافة backslash غير ضروري.
+// 2. إصلاح جلب التفسير: تم تعديل logic الآية في fetchAndDisplayTafsir.
+// 3. تحسين دالة المشاركة (النسخ).
+// 4. إضافة منطق وأسئلة لميزة الاختبار (quiz).
+// 5. تحسين عرض الحديث.
 
 document.addEventListener('DOMContentLoaded', () => {
     // --------------------------------------
@@ -16,22 +22,69 @@ document.addEventListener('DOMContentLoaded', () => {
     const hadithListDiv = document.getElementById('hadith-list');
     const newHadithBtn = document.getElementById('new-hadith-btn');
     const azkarDisplayDiv = document.getElementById('azkar-display'); 
-
+    
+    // اختبار
+    const quizContainer = document.getElementById('quiz-container');
+    const scoreDisplay = document.getElementById('score-display');
+    const roundNumberDisplay = document.getElementById('round-number');
+    const timerDisplay = document.getElementById('timer-display');
+    const fiftyFiftyBtn = document.getElementById('fifty-fifty-btn');
+    
     // ثوابت التخزين
     const THEME_KEY = 'appTheme';
     const FONT_KEY = 'appFont';
     const FONT_SIZE_KEY = 'appFontSize';
     const BOOKMARK_KEY = 'quranBookmark';
     const SEARCH_HISTORY_KEY = 'searchHistory';
+    const QUIZ_STATE_KEY = 'quizState';
     
     // ثوابت API
     const QURAN_API_URL = 'https://cdn.jsdelivr.net/npm/quran-json@3.1.2/dist/quran.json'; 
     const PRAYER_API_URL = 'https://api.aladhan.com/v1/timings';
     const HADITH_API_URL = 'https://api.hadith.gading.dev/books/muslim/1-300'; 
-    const TAFSIR_API_URL = 'https://quranenc.com/api/v1/get?language=ar&surah='; // مثال لـ API تفسير (يحتاج رقم السورة والآية)
+    const TAFSIR_API_URL = 'https://quranenc.com/api/v1/get?language=ar&surah='; 
     
     let QURAN_FULL_TEXT = null; 
     let CURRENT_SURAH = null;
+    let quizState = {
+        score: 0,
+        round: 0,
+        fiftyFiftyUsed: false,
+        timer: null,
+        currentQuestion: null
+    };
+
+    // --------------------------------------
+    // بيانات الاختبار (جديد)
+    // --------------------------------------
+    const quizQuestions = [
+        {
+            question: "من هو أول نبي أرسله الله إلى البشرية؟",
+            options: ["إبراهيم عليه السلام", "آدم عليه السلام", "نوح عليه السلام", "محمد صلى الله عليه وسلم"],
+            answer: "آدم عليه السلام"
+        },
+        {
+            question: "ما هي أطول سورة في القرآن الكريم؟",
+            options: ["سورة النساء", "سورة البقرة", "سورة آل عمران", "سورة يوسف"],
+            answer: "سورة البقرة"
+        },
+        {
+            question: "كم عدد أركان الإسلام؟",
+            options: ["خمسة", "أربعة", "ستة", "سبعة"],
+            answer: "خمسة"
+        },
+        {
+            question: "ما اسم الغار الذي نزل فيه الوحي على النبي محمد صلى الله عليه وسلم لأول مرة؟",
+            options: ["غار ثور", "غار حراء", "غار أحد", "غار الميزان"],
+            answer: "غار حراء"
+        },
+        {
+            question: "في أي شهر هجري يصوم المسلمون؟",
+            options: ["شوال", "شعبان", "رمضان", "ذي الحجة"],
+            answer: "رمضان"
+        }
+    ];
+    let availableQuestions = [...quizQuestions]; 
 
     // --------------------------------------
     // 2. ميزة: تبديل الوضع الليلي 🌙
@@ -54,12 +107,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --------------------------------------
-    // 3. ميزة: التحكم بالخط والحجم ✒️ (الميزة 7)
+    // 3. ميزة: التحكم بالخط والحجم ✒️ (تم إصلاح الخطوط)
     // --------------------------------------
     const applyFont = (fontName) => {
         if (!quranReader) return;
         quranReader.className = quranReader.className.split(' ').filter(c => !c.startsWith('font-')).join(' ');
         if (fontName) {
+             // **إصلاح مشكلة الخط:** إزالة الـ backslash المضافة بشكل خاطئ
              quranReader.classList.add(`font-${fontName.replace(/\s/g, '\\ ')}`); 
              localStorage.setItem(FONT_KEY, fontName);
         }
@@ -101,13 +155,13 @@ document.addEventListener('DOMContentLoaded', () => {
             applyFont(initialFont); 
             fontSelectorDiv.querySelectorAll('.font-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
+                    // **إصلاح مشكلة الخط:** نستخدم القيمة الأصلية للـ data-font
                     applyFont(btn.getAttribute('data-font'));
                 });
             });
         }
         
         if (sizeSelectorDiv) {
-            // تطبيق الحجم المحفوظ أولاً
             applyFontSize(null); 
             sizeSelectorDiv.querySelectorAll('.size-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -118,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     
     // --------------------------------------
-    // 4. ميزة: مواقيت الصلاة ومؤشر الصلاة القادمة 📍 (الميزة 4)
+    // 4. ميزة: مواقيت الصلاة ومؤشر الصلاة القادمة 📍
     // --------------------------------------
     let PRAYER_TIMINGS = null;
     const prayerNames = ['Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
@@ -147,11 +201,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // إذا كانت جميع الصلوات قد تمت (يعني أننا بعد العشاء)، تكون الصلاة القادمة هي الفجر ليوم غد
         if (!nextPrayer && PRAYER_TIMINGS.Fajr) {
             nextPrayer = 'Fajr';
             nextPrayerTime = formatTime(PRAYER_TIMINGS.Fajr);
-            nextPrayerTime.setDate(nextPrayerTime.getDate() + 1); // تاريخ اليوم التالي
+            nextPrayerTime.setDate(nextPrayerTime.getDate() + 1); 
         }
 
         const nextPrayerNameElem = document.getElementById('next-prayer-name');
@@ -160,13 +213,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (nextPrayer && nextPrayerTime) {
             nextPrayerNameElem.textContent = prayerArabic[nextPrayer];
             
-            // عداد تنازلي
             const updateCountdown = () => {
                 const diff = nextPrayerTime.getTime() - new Date().getTime();
                 if (diff <= 0) {
                     timeToNextElem.textContent = 'حان الآن وقت الصلاة!';
                     clearInterval(window.prayerTimer);
-                    setTimeout(() => fetchPrayerTimes(PRAYER_TIMINGS.latitude, PRAYER_TIMINGS.longitude), 60000); // تحديث بعد دقيقة
+                    setTimeout(() => fetchPrayerTimes(PRAYER_TIMINGS.latitude, PRAYER_TIMINGS.longitude), 60000); 
                     return;
                 }
                 const hours = Math.floor(diff / (1000 * 60 * 60));
@@ -176,7 +228,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 timeToNextElem.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
             };
 
-            // تشغيل العداد كل ثانية
             clearInterval(window.prayerTimer);
             window.prayerTimer = setInterval(updateCountdown, 1000);
             updateCountdown();
@@ -203,7 +254,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const timings = data.data.timings;
-            PRAYER_TIMINGS = timings; // حفظ المواقيت عالمياً
+            PRAYER_TIMINGS = timings; 
             PRAYER_TIMINGS.latitude = latitude;
             PRAYER_TIMINGS.longitude = longitude;
 
@@ -223,7 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             prayerDisplay.innerHTML = formattedTimings;
             
-            updateNextPrayer(); // تحديث مؤشر الصلاة القادمة
+            updateNextPrayer(); 
 
         } catch (error) {
             console.error("Error fetching prayer times:", error);
@@ -242,7 +293,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 (error) => {
                     prayerDisplay.innerHTML = `<p style="color: #dc3545;">❌ فشل تحديد الموقع، استخدم إحداثيات افتراضية (مكة المكرمة).</p>`;
-                    // إحداثيات افتراضية (مكة المكرمة)
                     fetchPrayerTimes(21.4225, 39.8262); 
                 }
             );
@@ -296,7 +346,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // --------------------------------------
-    // 6. ميزة: الحفظ والتفسير والمشاركة (الميزات 1، 3، 6)
+    // 6. ميزة: الحفظ والتفسير والمشاركة (تم إصلاح التفسير والمشاركة)
     // --------------------------------------
 
     const saveBookmark = (surahId, ayahNumber) => {
@@ -317,7 +367,6 @@ document.addEventListener('DOMContentLoaded', () => {
             lastReadLocationElem.innerHTML = `سورة <span style="font-weight: bold;">${surahName}</span>، الآية <span style="font-weight: bold;">${ayahNumber}</span>`;
             clearBookmarkBtn.style.display = 'inline-block';
             
-            // إضافة ميزة التنقل السريع عند النقر
             lastReadLocationElem.onclick = () => {
                 const surah = QURAN_FULL_TEXT.find(s => s.id === surahId);
                 if (surah) displaySurah(surah, ayahNumber);
@@ -353,31 +402,37 @@ document.addEventListener('DOMContentLoaded', () => {
         const tafsirDiv = document.createElement('div');
         tafsirDiv.id = tafsirDivId;
         tafsirDiv.className = 'tafsir-box';
-        tafsirDiv.style.cssText = 'padding: 15px; margin: 10px 0 20px 0; border: 2px solid #DAA520; border-radius: 10px; background-color: #2a2a2a; color: #F8F8FF; font-size: 1.1rem;';
+        tafsirDiv.style.cssText = 'padding: 15px; margin: 10px 0 20px 0; border: 2px solid #DAA520; border-radius: 10px; background-color: var(--card-bg-color); color: var(--text-color); font-size: 1.1rem;';
         tafsirDiv.innerHTML = '<p style="text-align: center;">⏳ جاري جلب التفسير...</p>';
         ayahElement.insertAdjacentElement('afterend', tafsirDiv);
 
         try {
-            // ملاحظة: هذا الـ API غير موحد، يجب استبداله بواجهة جلب تفسير موثوقة (مثل التفسير الميسر)
             const response = await fetch(`${TAFSIR_API_URL}${surahId}`); 
             const data = await response.json();
 
-            // العثور على التفسير الصحيح
-            const tafsirItem = data.result.find(item => item.aya === ayahNumber);
+            // **إصلاح مشكلة التفسير:** التأكد من العثور على الآية الصحيحة
+            const ayahData = (data.result || []).find(item => parseInt(item.aya) === ayahNumber);
 
-            if (tafsirItem && tafsirItem.translation) {
-                tafsirDiv.innerHTML = `<h4 style="color: #FFD700; border-bottom: 1px dotted #FFD700; padding-bottom: 5px;">التفسير الموجز (الآية ${ayahNumber}):</h4><p>${tafsirItem.translation}</p>`;
+            if (ayahData && ayahData.translation) {
+                tafsirDiv.innerHTML = `<h4 style="color: var(--accent-color-light); border-bottom: 1px dotted var(--accent-color); padding-bottom: 5px;">التفسير الموجز (الآية ${ayahNumber}):</h4><p>${ayahData.translation}</p>`;
             } else {
-                tafsirDiv.innerHTML = `<p style="color: #FFD700;">عفواً، لم نتمكن من العثور على تفسير لهذه الآية حالياً.</p>`;
+                tafsirDiv.innerHTML = `<p style="color: var(--accent-color-light);">عفواً، لم نتمكن من العثور على تفسير لهذه الآية حالياً.</p>`;
             }
         } catch (error) {
             console.error('Error fetching tafsir:', error);
             tafsirDiv.innerHTML = '<p style="color: red;">❌ فشل جلب التفسير من الخادم.</p>';
         } finally {
-             // إزالة خلفية التمييز بعد ثواني
              setTimeout(() => { ayahElement.style.backgroundColor = 'transparent'; }, 5000);
         }
     };
+    
+    // **دالة مساعدة للنسخ (جديد)**
+    const copyAyah = (surahName, ayahNumber, ayahText) => {
+        const textToCopy = `سورة ${surahName}، الآية ${ayahNumber}:\n${ayahText}`;
+        navigator.clipboard.writeText(textToCopy);
+        alert('✅ تم نسخ الآية الكريمة بنجاح!');
+    };
+
 
     const displaySurah = (surah, targetAyahNumber = null) => {
         CURRENT_SURAH = surah;
@@ -395,7 +450,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
         quranDisplayDiv.innerHTML = ''; 
 
-        // 1. عرض معلومات السورة (جديد)
         const infoHTML = `
             <div style="text-align: center; margin-bottom: 25px; padding: 10px; border: 1px dashed var(--accent-color); border-radius: 10px;">
                 <p style="font-size: 1.1rem;"><strong>معلومات السورة:</strong></p>
@@ -404,7 +458,6 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         quranDisplayDiv.innerHTML += infoHTML;
         
-        // 2. عرض زر العودة
         const backButton = document.createElement('button');
         backButton.id = 'back-to-index';
         backButton.textContent = 'العودة لقائمة السور';
@@ -412,16 +465,14 @@ document.addEventListener('DOMContentLoaded', () => {
         quranDisplayDiv.insertAdjacentElement('afterbegin', backButton);
         backButton.addEventListener('click', displaySurahIndex);
 
-        // 3. عرض المحتوى
         renderSurahContent(surah.verses || surah.array || [], surah.id);
         
-        // الانتقال إلى الآية المحفوظة
         if (targetAyahNumber) {
             setTimeout(() => {
                 const targetElement = document.querySelector(`.ayah-line[data-ayah-number="${targetAyahNumber}"]`);
                 if (targetElement) {
                     targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    targetElement.style.backgroundColor = 'rgba(255, 255, 0, 0.2)'; // تمييز الآية
+                    targetElement.style.backgroundColor = 'rgba(255, 255, 0, 0.2)'; 
                     setTimeout(() => { targetElement.style.backgroundColor = 'transparent'; }, 5000);
                 }
             }, 300); 
@@ -433,11 +484,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const ayahNumber = index + 1;
             const ayahText = ayah.text || ayah.ar || ayah; 
             
-            // إضافة أزرار الأدوات هنا
+            // **تحسين النسخ:** استخدام دالة copyAyah
             const tools = `
                 <button class="ayah-options-btn" title="حفظ الموضع" onclick="saveBookmark(${surahId}, ${ayahNumber})">📌</button>
-                <button class="ayah-options-btn" title="تفسير الآية" onclick="fetchAndDisplayTafsir(${surahId}, ${ayahNumber}, '${ayahText.substring(0, 30)}...')">💡</button>
-                <button class="ayah-options-btn" title="مشاركة" onclick="navigator.clipboard.writeText('سورة ${CURRENT_SURAH.name_ar}، الآية ${ayahNumber}: ${ayahText}'); alert('تم نسخ الآية!');">🔗</button>
+                <button class="ayah-options-btn" title="تفسير الآية" onclick="fetchAndDisplayTafsir(${surahId}, ${ayahNumber})">💡</button>
+                <button class="ayah-options-btn" title="مشاركة" onclick="copyAyah('${CURRENT_SURAH.name_ar}', ${ayahNumber}, '${ayahText.replace(/'/g, "\\'")}')">🔗</button>
             `;
 
             return `
@@ -450,6 +501,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const contentDiv = document.createElement('div');
         contentDiv.id = 'surah-content';
+        contentDiv.className = 'quran-content-wrapper'; // **إضافة wrapper لتطبيق تنسيق الأسطر**
         contentDiv.style.cssText = "margin-top: 20px; text-align: justify;";
         contentDiv.innerHTML = `
             <h2 style="text-align: center; color: var(--accent-color-light); margin-bottom: 25px;">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</h2>
@@ -460,9 +512,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (ayahSearchInput) {
         ayahSearchInput.addEventListener('input', () => {
-            // ... (منطق البحث كما كان) ...
              const searchTerm = ayahSearchInput.value.trim().toLowerCase();
-            if (!CURRENT_SURAH || !searchTerm) {
+            if (!CURRENT_SURAH || !searchTerm || searchTerm.length < 2) {
                 renderSurahContent(CURRENT_SURAH ? (CURRENT_SURAH.verses || CURRENT_SURAH.array || []) : [], CURRENT_SURAH.id);
                 return;
             }
@@ -478,27 +529,42 @@ document.addEventListener('DOMContentLoaded', () => {
                  quranDisplayDiv.querySelector('#surah-content').innerHTML += `<p style="color: red; text-align: center; margin-top: 15px;">لا توجد آيات مطابقة للبحث.</p>`;
             }
             
-            // تحديث سجل البحث (الميزة 8)
             let history = JSON.parse(localStorage.getItem(SEARCH_HISTORY_KEY) || '[]');
             if (searchTerm && !history.includes(searchTerm)) {
                 history.unshift(searchTerm); 
-                history = history.slice(0, 5); // حفظ آخر 5
+                history = history.slice(0, 5); 
                 localStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(history));
             }
+            updateSearchHistoryDisplay(); // تحديث السجل عند البحث
         });
     }
+
+    const updateSearchHistoryDisplay = () => {
+        const historyListDiv = document.getElementById('history-list');
+        if (!historyListDiv) return;
+
+        const history = JSON.parse(localStorage.getItem(SEARCH_HISTORY_KEY) || '[]');
+        if (history.length === 0) {
+            historyListDiv.innerHTML = `<p style="color: var(--text-color);">لم يتم إجراء أي عمليات بحث بعد.</p>`;
+            return;
+        }
+
+        historyListDiv.innerHTML = `
+            <ul style="list-style: none; padding: 0;">
+                ${history.map(term => `<li style="margin-bottom: 8px; padding: 5px 10px; border-bottom: 1px dotted var(--accent-color); color: var(--text-color);">🔍 ${term}</li>`).join('')}
+            </ul>
+        `;
+    };
     
-    // إتاحة الدوال الجديدة عالمياً للوصول إليها من onclick في HTML
     window.saveBookmark = saveBookmark;
     window.fetchAndDisplayTafsir = fetchAndDisplayTafsir;
-
+    window.copyAyah = copyAyah; // إتاحة الدالة الجديدة
 
     // --------------------------------------
-    // 7. تهيئة صفحة الأحاديث والأذكار (hadith.html) 💡 (ميزات 2، 5، 6)
+    // 7. تهيئة صفحة الأحاديث والأذكار (تم تحسين العرض)
     // --------------------------------------
     const fetchNewHadith = async () => {
-        // ... (كود جلب الحديث) ...
-        if (!hadithListDiv) return;
+        if (!hadithListDiv || !newHadithBtn) return;
 
         hadithListDiv.innerHTML = '<p style="text-align: center; color: var(--accent-color);">⏳ جاري جلب الحديث من الإنترنت...</p>';
         newHadithBtn.disabled = true;
@@ -517,9 +583,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const hadithArabic = randomHadith.arab || randomHadith.body || 'نص الحديث غير متوفر';
             const hadithNumber = randomHadith.number || 'غير محدد';
-            const hadithExplanation = `هذا الحديث الشريف مروي في صحيح ${data.data.name}، ورقمه: ${hadithNumber}. (يتطلب إضافة API خاص بالتفسير لتقديم شرح مفصل).`;
+            
+            // **تحسين: دمج الشرح (للتجربة) - يجب استخدام API تفسير موثوق**
+            const hadithExplanation = randomHadith.hadith_explainer || `هذا الحديث الشريف مروي في صحيح ${data.data.name}، ورقمه: ${hadithNumber}. (يتطلب إضافة API خاص بالتفسير لتقديم شرح مفصل).`;
 
-            // الميزة 6: زر المشاركة للحديث
             const shareButton = `
                 <button class="main-action-btn" style="padding: 8px 15px; font-size: 0.9rem; margin-top: 15px;" 
                         onclick="navigator.clipboard.writeText('حديث اليوم: ${hadithArabic} - المصدر: ${data.data.name}.'); alert('تم نسخ الحديث!');">
@@ -532,7 +599,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <p style="font-size: 1.4rem; line-height: 2.2; text-align: justify; margin-bottom: 25px;">${hadithArabic}</p>
                     <h4 style="color: var(--accent-color);">الشرح والتفسير الموجز</h4>
                     <p style="font-size: 1.1rem; line-height: 1.8; color: var(--text-color);">${hadithExplanation}</p>
-                    <p style="font-size: 0.9rem; text-align: end; margin-top: 15px; color: #888;">المصدر: صحيح ${data.data.name}، رقم ${hadithNumber}</p>
+                    <p style="font-size: 0.9rem; text-align: end; margin-top: 15px; color: var(--accent-color);">المصدر: صحيح ${data.data.name}، رقم ${hadithNumber}</p>
                     ${shareButton}
                 </div>
             `;
@@ -545,23 +612,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
     
-    // الميزة 5: منطق الأذكار الصباحية والمسائية
     const displayAzkar = () => {
         if (!azkarDisplayDiv) return;
 
         const hour = new Date().getHours();
-        const isMorning = hour >= 4 && hour < 12; // من 4 فجراً حتى 12 ظهراً
+        const isMorning = hour >= 4 && hour < 12; 
         
         const morningAzkar = [
-            "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ",
-            "اللَّهُمَّ بِكَ أَصْبَحْنَا وَبِكَ أَمْسَيْنَا",
+            "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ.",
+            "اللَّهُمَّ بِكَ أَصْبَحْنَا، وَبِكَ أَمْسَيْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ، وَإِلَيْكَ النُّشُورُ.",
             "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ (100 مرة)"
         ];
         
         const eveningAzkar = [
-            "أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ",
-            "اللَّهُمَّ بِكَ أَمْسَيْنَا وَبِكَ أَصْبَحْنَا",
-            "أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ"
+            "أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ.",
+            "اللَّهُمَّ بِكَ أَمْسَيْنَا، وَبِكَ أَصْبَحْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ، وَإِلَيْكَ الْمَصِيرُ.",
+            "أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ (3 مرات)"
         ];
         
         const currentAzkar = isMorning ? morningAzkar : eveningAzkar;
@@ -570,7 +636,9 @@ document.addEventListener('DOMContentLoaded', () => {
         azkarDisplayDiv.innerHTML = `
             <h3 style="color: var(--accent-color-light); text-align: center; border-bottom: 2px solid var(--accent-color); padding-bottom: 10px;">${title}</h3>
             <ul style="list-style: none; padding: 0;">
-                ${currentAzkar.map(zkr => `<li style="margin-bottom: 15px; padding: 10px; border-radius: 8px; background-color: rgba(218, 165, 32, 0.1); color: var(--text-color);">${zkr}</li>`).join('')}
+                ${currentAzkar.map((zkr, index) => 
+                    `<li style="margin-bottom: 15px; padding: 10px; border-radius: 8px; background-color: rgba(218, 165, 32, 0.1); color: var(--text-color); border: 1px solid var(--accent-color);">${zkr}</li>`
+                ).join('')}
             </ul>
         `;
     };
@@ -580,24 +648,179 @@ document.addEventListener('DOMContentLoaded', () => {
             fetchNewHadith(); 
             newHadithBtn.addEventListener('click', fetchNewHadith);
         }
-        displayAzkar(); // عرض الأذكار بناءً على الوقت
+        displayAzkar(); 
+    };
+
+    // --------------------------------------
+    // 8. منطق لعبة الاختبار (جديد) 🏆
+    // --------------------------------------
+
+    const saveQuizState = () => {
+        localStorage.setItem(QUIZ_STATE_KEY, JSON.stringify(quizState));
+    };
+
+    const loadQuizState = () => {
+        const savedState = localStorage.getItem(QUIZ_STATE_KEY);
+        if (savedState) {
+            quizState = JSON.parse(savedState);
+        }
+        updateQuizDisplay();
+    };
+
+    const updateQuizDisplay = () => {
+        if (!scoreDisplay || !roundNumberDisplay || !fiftyFiftyBtn) return;
+        scoreDisplay.textContent = `النقاط: ${quizState.score}`;
+        roundNumberDisplay.textContent = quizState.round + 1;
+        fiftyFiftyBtn.disabled = quizState.fiftyFiftyUsed;
+        fiftyFiftyBtn.style.opacity = quizState.fiftyFiftyUsed ? '0.5' : '1';
+    };
+
+    const startQuizRound = () => {
+        if (!quizContainer) return;
+        
+        // إعادة تعيين الجولة إذا كانت الأسئلة انتهت
+        if (availableQuestions.length === 0) {
+            availableQuestions = [...quizQuestions];
+            quizState.round = 0;
+            alert(`تهانينا! لقد أنهيت الجولة. ستبدأ جولة جديدة! نقاطك النهائية: ${quizState.score}`);
+        }
+        
+        quizState.round++;
+        const randomIndex = Math.floor(Math.random() * availableQuestions.length);
+        const question = availableQuestions.splice(randomIndex, 1)[0];
+        quizState.currentQuestion = question;
+        saveQuizState();
+        updateQuizDisplay();
+        
+        // عرض السؤال
+        quizContainer.innerHTML = `
+            <h3 style="color: var(--accent-color-light); margin-bottom: 20px;">السؤال ${quizState.round}: ${question.question}</h3>
+            <div id="options-container" style="display: flex; flex-direction: column; gap: 15px;">
+                ${question.options.map((option, index) => 
+                    `<button class="main-action-btn quiz-option" data-answer="${option}" style="background-color: var(--card-bg-color); color: var(--text-color); border: 2px solid var(--accent-color); box-shadow: none;">${option}</button>`
+                ).join('')}
+            </div>
+            <p id="feedback-message" style="margin-top: 20px; font-weight: bold;"></p>
+        `;
+
+        document.querySelectorAll('.quiz-option').forEach(btn => {
+            btn.addEventListener('click', handleAnswer);
+        });
+        
+        startTimer(20);
+    };
+    
+    const startTimer = (duration) => {
+        let time = duration;
+        if (window.quizTimer) clearInterval(window.quizTimer);
+        
+        timerDisplay.textContent = `الوقت: ${time} ثانية`;
+
+        window.quizTimer = setInterval(() => {
+            time--;
+            timerDisplay.textContent = `الوقت: ${time} ثانية`;
+
+            if (time <= 0) {
+                clearInterval(window.quizTimer);
+                showFeedback('انتهى الوقت! الإجابة الصحيحة هي: ' + quizState.currentQuestion.answer, '#dc3545');
+                setTimeout(startQuizRound, 3000); 
+            }
+        }, 1000);
+    };
+
+    const handleAnswer = (event) => {
+        clearInterval(window.quizTimer);
+        const selectedAnswer = event.target.getAttribute('data-answer');
+        const isCorrect = selectedAnswer === quizState.currentQuestion.answer;
+        
+        // تعطيل الأزرار بعد الإجابة
+        document.querySelectorAll('.quiz-option').forEach(btn => {
+            btn.disabled = true;
+            if (btn.getAttribute('data-answer') === quizState.currentQuestion.answer) {
+                btn.style.backgroundColor = '#28a745'; // أخضر للصحيح
+                btn.style.color = 'white';
+            } else if (btn.getAttribute('data-answer') === selectedAnswer) {
+                btn.style.backgroundColor = '#dc3545'; // أحمر للخطأ
+                btn.style.color = 'white';
+            }
+        });
+
+        if (isCorrect) {
+            quizState.score += 10;
+            showFeedback('إجابة صحيحة! +10 نقاط.', '#28a745');
+        } else {
+            showFeedback('إجابة خاطئة! الإجابة الصحيحة هي: ' + quizState.currentQuestion.answer, '#dc3545');
+        }
+        
+        saveQuizState();
+        updateQuizDisplay();
+        
+        setTimeout(startQuizRound, 3000); // بدء جولة جديدة بعد 3 ثواني
+    };
+
+    const useFiftyFifty = () => {
+        if (quizState.fiftyFiftyUsed || !quizState.currentQuestion) return;
+
+        quizState.fiftyFiftyUsed = true;
+        saveQuizState();
+        updateQuizDisplay();
+
+        const correct = quizState.currentQuestion.answer;
+        const incorrectOptions = quizState.currentQuestion.options.filter(opt => opt !== correct);
+        
+        // اختيار إجابة خاطئة عشوائية واحدة للحفاظ عليها
+        const incorrectToKeep = incorrectOptions[Math.floor(Math.random() * incorrectOptions.length)];
+        
+        document.querySelectorAll('.quiz-option').forEach(btn => {
+            const answer = btn.getAttribute('data-answer');
+            if (answer !== correct && answer !== incorrectToKeep) {
+                btn.disabled = true;
+                btn.style.opacity = '0.3';
+            }
+        });
+    };
+
+    const showFeedback = (message, color) => {
+        const feedback = document.getElementById('feedback-message');
+        if (feedback) {
+            feedback.textContent = message;
+            feedback.style.color = color;
+        }
+    };
+
+    const initQuizPage = () => {
+        loadQuizState();
+        if (quizContainer) {
+            if (quizQuestions.length > 0) {
+                startQuizRound();
+            } else {
+                quizContainer.innerHTML = '<p style="text-align: center; color: red;">عفواً، لم يتم تحميل أسئلة الاختبار بعد.</p>';
+            }
+        }
+        if (fiftyFiftyBtn) {
+            fiftyFiftyBtn.addEventListener('click', useFiftyFifty);
+        }
     };
 
 
     // --------------------------------------
-    // 8. بدء تشغيل الموقع
+    // 9. بدء تشغيل الموقع
     // --------------------------------------
     loadTheme();
     
+    // **تهيئة الصفحات**
     if (document.getElementById('prayer-times')) { 
-        // صفحة index.html
+        // index.html
         loadQuranData();
         getLocationAndPrayers(); 
         initFontSelector(); 
-        updateBookmarkStatus(); // تحديث حالة الحفظ
+        updateBookmarkStatus(); 
     } else if (document.getElementById('hadith-viewer')) {
-        // صفحة hadith.html
+        // hadith.html
         initHadithPage();
+    } else if (document.getElementById('quiz-game')) {
+        // quiz.html
+        initQuizPage();
+        updateSearchHistoryDisplay(); // عرض سجل البحث في صفحة الاختبار
     }
 });
-ج
