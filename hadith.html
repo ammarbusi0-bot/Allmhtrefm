@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>موقع النور الفخم - الأحاديث النبوية</title>
+    <title>موقع النور الفخم - الأحاديث النبوية والأذكار</title>
     
     <link rel="stylesheet" href="style.css"> 
 </head>
@@ -17,16 +17,23 @@
         <a href="index.html">القرآن الكريم (المصحف)</a>
         <a href="hadith.html">الأحاديث النبوية</a>
         <a href="quiz.html">الأسئلة الدينية</a> 
-    </nav>
+        <a href="support.html">الدعم والتواصل</a> </nav>
 
     <main>
+        <section id="azkar-section" class="card">
+            <h2>🌙 أذكار من السنة النبوية</h2>
+            <div id="azkar-display">
+                <p>جاري تحميل الأذكار...</p>
+            </div>
+        </section>
+
         <section id="hadith-viewer" class="card">
-            <h2>📚 الأحاديث النبوية الشريفة</h2>
+            <h2>📚 حديث اليوم النبوي الشريف</h2>
             
-            <input type="text" id="hadith-search" class="search-bar" placeholder="ابحث عن حديث...">
+            <button id="new-hadith-btn" class="main-action-btn">🔄 حديث جديد</button>
 
             <div id="hadith-list">
-                <p style="text-align: center;">المرجو الانتظار بينما يتم تحميل بيانات الأحاديث...</p>
+                <p style="text-align: center;">جاري جلب الحديث والتفسير من الإنترنت...</p>
             </div>
         </section>
     </main>
@@ -35,6 +42,7 @@
         <p>&copy; 2025 موقع النور</p>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="main.js"></script> 
+    <script src="features.js"></script>
 </body>
 </html>
