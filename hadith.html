@@ -3,45 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>موقع النور الفخم - الأحاديث النبوية والأذكار</title>
-    
-    <link rel="stylesheet" href="style.css"> 
+    <title>💬 موقع النور الفخم - الأحاديث اليومية</title>
+
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body class="light-mode">
     <header>
-        <h1>📖 موقع النور الفخم</h1>
+        <h1>💬 الأحاديث اليومية</h1>
         <button id="theme-toggle">🌙 الوضع الليلي</button>
     </header>
-    
-    <nav> 
-        <a href="index.html">القرآن الكريم (المصحف)</a>
-        <a href="hadith.html">الأحاديث النبوية</a>
-        <a href="quiz.html">الأسئلة الدينية</a> 
+
+    <nav>
+        <a href="index.html">🏠 الرئيسية</a>
+        <a href="quran.html">📜 المصحف الشريف</a>
+        <a href="hadith.html" class="active">💡 الأحاديث</a>
+        <a href="quiz.html">🧠 الألعاب</a>
     </nav>
 
     <main>
-        <section id="azkar-section" class="card">
-            <h2>🌙 أذكار من السنة النبوية</h2>
-            <div id="azkar-display">
-                <p>جاري تحميل الأذكار...</p>
-            </div>
+        <section class="card fade-in" id="hadith-section">
+            <h2>📚 حديث اليوم الشريف</h2>
+            <p id="hadith-content">جاري تحميل الحديث...</p>
+            <p id="hadith-source" class="source"></p>
+            <button id="new-hadith-btn" class="main-action-btn">🔄 حديث جديد</button>
         </section>
 
-        <section id="hadith-viewer" class="card">
-            <h2>📚 حديث اليوم النبوي الشريف</h2>
-            
-            <button id="new-hadith-btn" class="main-action-btn">🔄 حديث جديد</button>
-
-            <div id="hadith-list">
-                <p style="text-align: center;">جاري جلب الحديث والتفسير من الإنترنت...</p>
+        <section class="card fade-in" id="azkar-section">
+            <h2>🌙 أذكار من السنة</h2>
+            <div id="azkar-display">
+                <p>جاري تحميل الأذكار...</p>
             </div>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2025 موقع النور</p>
+        <p>&copy; 2025 موقع النور الفخم | أحاديث من نور النبوة 🌟</p>
     </footer>
 
-    <script src="script.js"></script> 
-    </body>
+    <script src="hadith.js"></script>
+</body>
 </html>
