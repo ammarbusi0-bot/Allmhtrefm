@@ -1,8 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // 🔗 رابط مستودع GitHub الخارجي لبيانات القرآن (تم تعديله بناءً على طلبك)
+    // 🔗 رابط مستودع GitHub الخارجي لبيانات القرآن (تم تعديله للعمل من الرابط)
     const QURAN_DATA_URL = 'https://raw.githubusercontent.com/rn0x/Quran-Json/main/Quran.json';
     const HADITH_COUNT = 50; 
+    const DAILY_TARGET_AYAH = 50; // هدف القراءة اليومي (قابل للتعديل)
     
     // العناصر الأساسية
     const body = document.body;
@@ -14,6 +15,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const hadithTextElement = document.getElementById('hadith-text');
     const surahSelector = document.getElementById('surah-selector');
     const tafseerPopup = document.getElementById('tafseer-popup');
+    const progressBar = document.getElementById('progress-bar');
+    const progressText = document.getElementById('progress-text');
+    const completeDailyBtn = document.getElementById('complete-daily-btn');
+    const achievementBadge = document.getElementById('achievement-badge');
+    const achievementMessage = document.getElementById('achievement-message');
+
+    // عناصر النافذة المنبثقة للتفسير
     const tafseerContent = tafseerPopup ? tafseerPopup.querySelector('#tafseer-content') : null;
     const tafseerTitle = tafseerPopup ? tafseerPopup.querySelector('#tafseer-title') : null;
     const closePopupBtn = tafseerPopup ? tafseerPopup.querySelector('.close-btn') : null;
@@ -39,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // =========================================================
-    // 2. عرض الحديث النبوي اليومي (من 50 حديثاً)
+    // 2. عرض الحديث النبوي اليومي 
     // =========================================================
     function getDailyHadithIndex() {
         const startDate = new Date('2025-01-01');
@@ -62,12 +70,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } catch (error) {
             console.error('فشل في جلب الأحاديث:', error);
-            hadithTextElement.textContent = 'تعذر تحميل حديث اليوم.';
+            hadithTextElement.textContent = 'تعذر تحميل حديث اليوم. (تأكد من مجلد data/ahadith.json)';
         }
     }
     displayDailyHadith();
     
-
     // =========================================================
     // 3. إدارة القرآن والتفاعل (عرض، تفسير، تلاوة، حفظ الموضع)
     // =========================================================
@@ -84,6 +91,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // دالة بناء قائمة التنقل بين السور
     function buildSurahList(surahs) {
+        if (!surahSelector) return; // تأكد من وجود العنصر
+
         surahs.forEach(surah => {
             const option = document.createElement('option');
             option.value = surah.number;
@@ -108,7 +117,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 buildSurahList(allSurahsData);
             }
 
-            // تحديد السورة المراد عرضها
             const savedSurah = loadLastRead();
             currentSurahNumber = surahNumber || savedSurah || 1; 
 
@@ -119,20 +127,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // تحديث القيمة المختارة في القائمة
             surahSelector.value = currentSurahNumber;
             
-            // عرض اسم السورة
             surahTitleElement.innerHTML = `<h2>سورة ${currentSurah.name_ar}</h2><p class="revelation-info">${currentSurah.revelation_type}</p>`;
             
-            // بناء الآيات (نفترض أن الآيات موجودة في مصفوفة verses داخل كل سورة)
             let versesHTML = '';
             currentSurah.verses.forEach(verse => {
-                // يجب أن تكون بيانات tafseer و audio_url موجودة في ملف quran.json
+                // نستخدم التفسير الأول الموجود في المصدر كافتراضي
+                const verseTafseer = Array.isArray(verse.tafseer) ? verse.tafseer[0].text : (verse.tafseer || 'التفسير غير متوفر في هذا المصدر.');
+                const verseAudio = verse.audio_url || '';
+
                 versesHTML += `
                     <p class="verse-text" 
-                       data-tafseer="${verse.tafseer || 'التفسير غير متوفر في هذا المصدر.'}" 
-                       data-audio="${verse.audio_url || ''}" 
+                       data-tafseer="${verseTafseer}" 
+                       data-audio="${verseAudio}" 
                        data-surah="${currentSurah.number}"
                        data-id="${verse.id}">
                         ${verse.text} ﴿${verse.id}﴾
@@ -142,14 +150,15 @@ document.addEventListener('DOMContentLoaded', () => {
             quranDisplay.innerHTML = versesHTML;
             
             addVerseInteractionListeners(currentSurah.number);
+            displayInsightCard(currentSurah); // عرض بطاقة المفاهيم
             
         } catch (error) {
             console.error('فشل في جلب بيانات القرآن من الرابط:', error);
-            quranDisplay.innerHTML = '<p style="color:red;">**⚠️ فشل في تحميل المصحف الشريف من الرابط الخارجي. يرجى التأكد من أن الرابط (QURAN_DATA_URL) صحيح وأن الملف بصيغة JSON موحدة. ⚠️**</p>';
+            quranDisplay.innerHTML = '<p style="color:red;">**⚠️ فشل في تحميل المصحف الشريف. تأكد من أن رابط المستودع الخارجي يعمل وهيكل البيانات صحيح. ⚠️**</p>';
         }
     }
-
-    // دالة التفاعل: النقر على الآية يعرض التفسير ويشغل التلاوة
+    
+    // دالة التفاعل: النقر على الآية
     function addVerseInteractionListeners(surahNumber) {
         document.querySelectorAll('.verse-text').forEach(verseElement => {
             verseElement.addEventListener('click', () => {
@@ -170,24 +179,115 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     quranAudio.pause();
                     audioPlayerContainer.style.display = 'none';
-                    alert('عذراً، لا يوجد رابط تلاوة لهذه الآية في ملف البيانات.');
                 }
 
                 // 3. حفظ الموضع الحالي وتسليط الضوء
                 saveLastRead(surahNumber);
                 document.querySelectorAll('.verse-text').forEach(el => el.classList.remove('active-playing'));
                 verseElement.classList.add('active-playing');
+                
+                // 4. تسجيل قراءة الآية هنا!
+                recordAyahRead(); 
             });
         });
     }
 
-    // إغلاق النافذة المنبثقة عند الضغط خارجها
+    // إغلاق النافذة المنبثقة عند الضغط على زر الإغلاق أو خارج النافذة
     if (tafseerPopup) {
+        closePopupBtn.addEventListener('click', () => {
+            tafseerPopup.style.display = 'none';
+        });
         window.addEventListener('click', (event) => {
             if (event.target === tafseerPopup) {
                 tafseerPopup.style.display = 'none';
             }
         });
+    }
+
+    // =========================================================
+    // 4. نظام تتبع الإنجازات (الورد اليومي)
+    // =========================================================
+
+    function updateProgress(newAyahCount) {
+        const readAyahCount = newAyahCount;
+        const percentage = Math.min(100, (readAyahCount / DAILY_TARGET_AYAH) * 100);
+        
+        progressBar.style.width = `${percentage}%`;
+        progressText.textContent = `تم قراءة ${readAyahCount} آية (${Math.round(percentage)}%)`;
+
+        if (percentage >= 100) {
+            completeDailyBtn.disabled = false;
+            completeDailyBtn.textContent = 'أنجزت ورد اليوم! اضغط للتأكيد';
+        } else {
+            completeDailyBtn.disabled = true;
+            completeDailyBtn.textContent = 'إتمام ورد اليوم';
+        }
+    }
+    
+    function recordAyahRead() {
+        const todayKey = new Date().toDateString();
+        let dailyReads = JSON.parse(localStorage.getItem('dailyReads')) || {};
+
+        if (dailyReads.date !== todayKey) {
+            dailyReads = { date: todayKey, count: 0, completed: false };
+        }
+
+        if (!dailyReads.completed) {
+            dailyReads.count++;
+            localStorage.setItem('dailyReads', JSON.stringify(dailyReads));
+            updateProgress(dailyReads.count);
+        }
+    }
+
+    // ربط زر "إتمام الورد"
+    completeDailyBtn.addEventListener('click', () => {
+        let dailyReads = JSON.parse(localStorage.getItem('dailyReads')) || {};
+        dailyReads.completed = true;
+        localStorage.setItem('dailyReads', JSON.stringify(dailyReads));
+
+        completeDailyBtn.disabled = true;
+        completeDailyBtn.textContent = '✅ تم إنجاز ورد اليوم';
+        showAchievement('أكملت قراءة وردك اليومي بنجاح! أسأل الله أن يتقبل منك.');
+    });
+
+    function showAchievement(message) {
+        achievementMessage.textContent = message;
+        achievementBadge.style.display = 'block';
+        setTimeout(() => {
+            achievementBadge.style.display = 'none';
+        }, 5000);
+    }
+    
+    // تحميل حالة التقدم عند بدء تشغيل التطبيق
+    const todayKey = new Date().toDateString();
+    let initialReads = JSON.parse(localStorage.getItem('dailyReads')) || { date: '', count: 0, completed: false };
+    if (initialReads.date === todayKey) {
+        updateProgress(initialReads.count);
+        if (initialReads.completed) {
+            completeDailyBtn.disabled = true;
+            completeDailyBtn.textContent = '✅ تم إنجاز ورد اليوم';
+        }
+    } else {
+        localStorage.removeItem('dailyReads'); 
+        updateProgress(0);
+    }
+    
+    // =========================================================
+    // 5. بطاقة المفاهيم (Insight Cards)
+    // =========================================================
+    
+    function displayInsightCard(surah) {
+        const insightContainer = document.getElementById('insight-card-container');
+        
+        // سنفترض وجود حقل 'summary_insight' في بيانات السورة 
+        const insightText = surah.summary_insight || `لا يتوفر ملخص مفاهيم لسورة ${surah.name_ar} في هذا المصدر.`;
+
+        insightContainer.innerHTML = `
+            <div class="insight-card">
+                <h3>💎 دروس مستفادة من سورة ${surah.name_ar}</h3>
+                <p>${insightText}</p>
+            </div>
+        `;
     }
 
     // تشغيل دالة تحميل القرآن
