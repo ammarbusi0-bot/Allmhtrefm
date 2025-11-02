@@ -1,5 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+    // 🔗 رابط مستودع GitHub الخارجي لبيانات القرآن (تم تعديله بناءً على طلبك)
+    const QURAN_DATA_URL = 'https://raw.githubusercontent.com/rn0x/Quran-Json/main/Quran.json';
+    const HADITH_COUNT = 50; 
+    
     // العناصر الأساسية
     const body = document.body;
     const darkModeToggle = document.getElementById('dark-mode-toggle');
@@ -8,12 +12,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const quranAudio = document.getElementById('quran-audio');
     const audioPlayerContainer = document.getElementById('audio-player-container');
     const hadithTextElement = document.getElementById('hadith-text');
+    const surahSelector = document.getElementById('surah-selector');
+    const tafseerPopup = document.getElementById('tafseer-popup');
+    const tafseerContent = tafseerPopup ? tafseerPopup.querySelector('#tafseer-content') : null;
+    const tafseerTitle = tafseerPopup ? tafseerPopup.querySelector('#tafseer-title') : null;
+    const closePopupBtn = tafseerPopup ? tafseerPopup.querySelector('.close-btn') : null;
     
-    let allSurahsData = []; // لتخزين بيانات القرآن كاملاً
-    let currentSurahNumber = 1; // السورة الحالية المعروضة
+    let allSurahsData = []; 
+    let currentSurahNumber = 1;
 
     // =========================================================
-    // 1. تفعيل الوضع الليلي (Dark Mode) وحفظ التفضيل
+    // 1. تفعيل الوضع الليلي (Dark Mode)
     // =========================================================
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'dark') {
@@ -32,8 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // =========================================================
     // 2. عرض الحديث النبوي اليومي (من 50 حديثاً)
     // =========================================================
-    const HADITH_COUNT = 50; 
-    
     function getDailyHadithIndex() {
         const startDate = new Date('2025-01-01');
         const today = new Date();
@@ -53,7 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                  hadithTextElement.textContent = 'خطأ: عدد الأحاديث غير مكتمل أو غير متوفر.';
             }
-
         } catch (error) {
             console.error('فشل في جلب الأحاديث:', error);
             hadithTextElement.textContent = 'تعذر تحميل حديث اليوم.';
@@ -63,17 +69,43 @@ document.addEventListener('DOMContentLoaded', () => {
     
 
     // =========================================================
-    // 3. إدارة القرآن والتفاعل (عرض، تفسير، تلاوة)
+    // 3. إدارة القرآن والتفاعل (عرض، تفسير، تلاوة، حفظ الموضع)
     // =========================================================
+    
+    // دالة حفظ الموضع
+    function saveLastRead(surahNumber) {
+        localStorage.setItem('lastReadSurah', surahNumber);
+    }
+
+    // دالة تحميل الموضع
+    function loadLastRead() {
+        return parseInt(localStorage.getItem('lastReadSurah')) || 1;
+    }
+
+    // دالة بناء قائمة التنقل بين السور
+    function buildSurahList(surahs) {
+        surahs.forEach(surah => {
+            const option = document.createElement('option');
+            option.value = surah.number;
+            option.textContent = `${surah.number}. سورة ${surah.name_ar}`;
+            surahSelector.appendChild(option);
+        });
+
+        // إضافة معالج حدث لتغيير السورة عند الاختيار
+        surahSelector.addEventListener('change', (event) => {
+            const newSurahNumber = parseInt(event.target.value);
+            loadQuran(newSurahNumber);
+        });
+    }
 
     // دالة عرض القرآن الرئيسية
     async function loadQuran(surahNumber = null) {
         try {
-            // جلب بيانات القرآن مرة واحدة
             if (allSurahsData.length === 0) {
-                const response = await fetch('data/quran.json');
+                // جلب بيانات القرآن من الرابط الخارجي
+                const response = await fetch(QURAN_DATA_URL);
                 allSurahsData = await response.json();
-                buildSurahList(allSurahsData); // بناء قائمة التنقل بعد التحميل
+                buildSurahList(allSurahsData);
             }
 
             // تحديد السورة المراد عرضها
@@ -87,16 +119,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
+            // تحديث القيمة المختارة في القائمة
+            surahSelector.value = currentSurahNumber;
+            
             // عرض اسم السورة
             surahTitleElement.innerHTML = `<h2>سورة ${currentSurah.name_ar}</h2><p class="revelation-info">${currentSurah.revelation_type}</p>`;
             
-            // بناء الآيات
+            // بناء الآيات (نفترض أن الآيات موجودة في مصفوفة verses داخل كل سورة)
             let versesHTML = '';
             currentSurah.verses.forEach(verse => {
+                // يجب أن تكون بيانات tafseer و audio_url موجودة في ملف quran.json
                 versesHTML += `
                     <p class="verse-text" 
-                       data-tafseer="${verse.tafseer}" 
-                       data-audio="${verse.audio_url}" 
+                       data-tafseer="${verse.tafseer || 'التفسير غير متوفر في هذا المصدر.'}" 
+                       data-audio="${verse.audio_url || ''}" 
                        data-surah="${currentSurah.number}"
                        data-id="${verse.id}">
                         ${verse.text} ﴿${verse.id}﴾
@@ -108,13 +144,12 @@ document.addEventListener('DOMContentLoaded', () => {
             addVerseInteractionListeners(currentSurah.number);
             
         } catch (error) {
-            console.error('فشل في جلب بيانات القرآن:', error);
-            quranDisplay.innerHTML = '<p>تعذر تحميل المصحف الشريف. تأكد من وجود ملف quran.json في مجلد data/.</p>';
+            console.error('فشل في جلب بيانات القرآن من الرابط:', error);
+            quranDisplay.innerHTML = '<p style="color:red;">**⚠️ فشل في تحميل المصحف الشريف من الرابط الخارجي. يرجى التأكد من أن الرابط (QURAN_DATA_URL) صحيح وأن الملف بصيغة JSON موحدة. ⚠️**</p>';
         }
     }
 
-
-    // دالة التفاعل: النقر على الآية
+    // دالة التفاعل: النقر على الآية يعرض التفسير ويشغل التلاوة
     function addVerseInteractionListeners(surahNumber) {
         document.querySelectorAll('.verse-text').forEach(verseElement => {
             verseElement.addEventListener('click', () => {
@@ -122,13 +157,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const audioUrl = verseElement.getAttribute('data-audio');
                 const verseId = verseElement.getAttribute('data-id');
                 
-                // 1. عرض التفسير (تتطلب إعادة تعريف عناصر النافذة المنبثقة هنا أو جعلها عامة)
-                const tafseerPopup = document.getElementById('tafseer-popup');
-                const tafseerContent = tafseerPopup.querySelector('#tafseer-content');
-                const tafseerTitle = tafseerPopup.querySelector('#tafseer-title');
-                
+                // 1. عرض التفسير
                 tafseerTitle.textContent = `تفسير الآية رقم ${verseId} من سورة ${allSurahsData.find(s => s.number === surahNumber).name_ar}`;
-                tafseerContent.textContent = tafseer || 'لا يوجد تفسير متوفر لهذه الآية.';
+                tafseerContent.textContent = tafseer;
                 tafseerPopup.style.display = 'block';
 
                 // 2. تشغيل التلاوة
@@ -139,53 +170,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     quranAudio.pause();
                     audioPlayerContainer.style.display = 'none';
+                    alert('عذراً، لا يوجد رابط تلاوة لهذه الآية في ملف البيانات.');
                 }
 
-                // 3. حفظ الموضع الحالي
+                // 3. حفظ الموضع الحالي وتسليط الضوء
                 saveLastRead(surahNumber);
-                
-                // تسليط الضوء
                 document.querySelectorAll('.verse-text').forEach(el => el.classList.remove('active-playing'));
                 verseElement.classList.add('active-playing');
             });
         });
-        
-        // إغلاق النافذة المنبثقة (يجب أن يكون في DOMContentLoaded لكن نكرره لضمان الربط)
-        const closePopupBtn = document.getElementById('tafseer-popup').querySelector('.close-btn');
-        closePopupBtn.addEventListener('click', () => {
-            document.getElementById('tafseer-popup').style.display = 'none';
+    }
+
+    // إغلاق النافذة المنبثقة عند الضغط خارجها
+    if (tafseerPopup) {
+        window.addEventListener('click', (event) => {
+            if (event.target === tafseerPopup) {
+                tafseerPopup.style.display = 'none';
+            }
         });
-    }
-
-
-    // =========================================================
-    // 4. ميزة حفظ الموضع والقراءة الليلية
-    // =========================================================
-
-    function saveLastRead(surahNumber) {
-        localStorage.setItem('lastReadSurah', surahNumber);
-    }
-
-    function loadLastRead() {
-        return parseInt(localStorage.getItem('lastReadSurah')) || 1;
-    }
-
-
-    // =========================================================
-    // 5. بناء قائمة التنقل بين السور (يجب إضافة عنصر HTML لها أولاً)
-    // =========================================================
-
-    function buildSurahList(surahs) {
-        // نستخدم نافذة منبثقة بسيطة لعرض قائمة السور
-        const settingsBtn = document.getElementById('settings-btn');
-        settingsBtn.addEventListener('click', () => {
-            alert('ستظهر قائمة السور هنا في تحديث لاحق...'); //Placeholder
-        });
-        
-        // **ملاحظة:** ستحتاج إلى إضافة عنصر HTML لقائمة السور (مثل <select> أو popup قائمة)
-        // في ملف index.html في خطوة لاحقة، حالياً نركز على المنطق.
-
-        // المنطق: عند اختيار سورة من القائمة، يتم استدعاء loadQuran(رقم السورة)
     }
 
     // تشغيل دالة تحميل القرآن
