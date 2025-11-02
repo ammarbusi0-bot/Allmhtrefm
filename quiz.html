@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>موقع النور الفخم - أسئلة دينية</title>
+    <title>موقع النور الفخم - اختبارات دينية</title>
     
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css"> 
 </head>
 <body class="light-mode">
     <header>
-        <h1>❓ أسئلة دينية واختبارات</h1>
+        <h1>📖 موقع النور الفخم</h1>
         <button id="theme-toggle">🌙 الوضع الليلي</button>
     </header>
     
@@ -17,27 +17,21 @@
         <a href="index.html">القرآن الكريم (المصحف)</a>
         <a href="hadith.html">الأحاديث النبوية</a>
         <a href="quiz.html">الأسئلة الدينية</a> 
-    </nav>
+        <a href="support.html">الدعم والتواصل</a> </nav>
 
     <main>
-        <section class="card">
-            <h2>🧠 اختبار معلوماتك الدينية</h2>
-            <p>اختر الإجابة الصحيحة لكل سؤال (الجولة رقم <span id="round-number">1</span>):</p>
+        <section id="quiz-game" class="card">
+            <h2>🧠 اختبار المعلومات الدينية (جولة رقم <span id="round-number">1</span>)</h2>
             
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                <button id="fifty-fifty-btn" style="
-                    background-color: #dc3545; color: white; border: none; padding: 8px 15px; border-radius: 8px; 
-                    cursor: pointer; font-weight: bold; transition: opacity 0.3s;
-                ">50/50 (حذف إجابتين)</button>
-                <div id="timer-display" style="
-                    font-size: 1.5rem; color: var(--accent-color); font-weight: bold;
-                ">20</div>
+            <div class="quiz-status">
+                <span id="score-display">النقاط: 0</span>
+                <span id="timer-display">الوقت: 20 ثانية</span>
+                <button id="fifty-fifty-btn" class="help-btn">50/50 (مرة واحدة)</button>
             </div>
 
             <div id="quiz-container">
-                 </div>
-            
-            <p style="text-align: center; margin-top: 20px;">النتيجة: <span id="score-display">0</span> / 10</p>
+                <p style="text-align: center;">جاري تجهيز الاختبار...</p>
+            </div>
         </section>
     </main>
 
@@ -45,7 +39,7 @@
         <p>&copy; 2025 موقع النور</p>
     </footer>
 
-    <script src="questions.js"></script> 
-    <script src="script.js"></script>
+    <script src="main.js"></script> 
+    <script src="features.js"></script>
 </body>
 </html>
