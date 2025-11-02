@@ -23,29 +23,10 @@
 
     <main>
         
-        <section id="settings" class="card">
-            <h2>⚙️ إعدادات القراءة</h2>
-            
-            <div style="margin-bottom: 20px;">
-                <p style="font-weight: bold; color: var(--accent-color-light); margin-bottom: 10px;">اختر خط القراءة:</p>
-                <div id="font-selector" style="display: flex; gap: 10px; flex-wrap: wrap;">
-                    <button class="font-btn active" data-font="Amiri" style="font-family: 'Amiri', serif;">خط أميري</button>
-                    <button class="font-btn" data-font="Droid Arabic Naskh" style="font-family: 'Droid Arabic Naskh', sans-serif;">خط النسخ</button>
-                    <button class="font-btn" data-font="Traditional Arabic" style="font-family: 'Traditional Arabic', serif;">خط تقليدي</button>
-                </div>
-            </div>
-            
-            <div id="size-selector" style="margin-bottom: 20px;">
-                <p style="font-weight: bold; color: var(--accent-color-light); margin-bottom: 10px;">حجم الخط: <span id="current-font-size" style="font-weight: bold;">100%</span></p>
-                <button class="size-btn" data-size="increase">تكبير (+)</button>
-                <button class="size-btn" data-size="decrease">تصغير (-)</button>
-            </div>
-            
-            <div id="bookmark-section">
-                <p style="font-weight: bold; color: var(--accent-color-light);">آخر موضع قراءة:</p>
-                <p id="last-read-location" style="color: var(--accent-color-light);">لم يتم الحفظ بعد.</p>
-                <button id="clear-bookmark-btn" class="main-action-btn" style="padding: 8px 15px; font-size: 0.9rem; margin-top: 10px;">مسح الحفظ</button>
-            </div>
+        <section id="bookmark-section" class="card">
+            <h2>🔖 آخر موضع قراءة</h2>
+            <p id="last-read-location" style="color: var(--accent-color-light);">لم يتم الحفظ بعد.</p>
+            <button id="clear-bookmark-btn" class="main-action-btn" style="padding: 8px 15px; font-size: 0.9rem; margin-top: 10px;">مسح الحفظ</button>
         </section>
         
         <section id="prayer-times" class="card">
@@ -60,8 +41,15 @@
         </section>
 
         <section id="quran-reader" class="card">
-            <h2>🕋 المصحف الشريف (قراءة)</h2>
+            <h2>🕋 المصحف الشريف (قراءة واستماع)</h2>
             
+            <div id="audio-controls" style="margin-bottom: 20px; padding: 10px; border: 1px solid var(--accent-color); border-radius: 8px; background-color: rgba(218, 165, 32, 0.05);">
+                <label for="reciter-select" style="font-weight: bold; color: var(--accent-color-light);">اختر القارئ:</label>
+                <select id="reciter-select" class="search-bar" style="width: 100%; margin-top: 5px; margin-bottom: 10px;">
+                    </select>
+                <button id="play-pause-btn" class="main-action-btn" disabled>▶️ تشغيل/إيقاف الآية</button>
+            </div>
+
             <input type="text" id="ayah-search" class="search-bar" placeholder="ابحث عن آية في السورة المفتوحة..." style="display: none;">
             
             <p id="loading-status" style="text-align: center; margin-top: 15px; color: var(--accent-color);">جاري التحميل...</p>
