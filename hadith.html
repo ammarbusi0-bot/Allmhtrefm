@@ -3,44 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💬 موقع النور الفخم - الأحاديث اليومية</title>
-
-    <link rel="stylesheet" href="style.css">
+    <title>منصة إشراق النور - الأحاديث النبوية والأذكار</title>
+    
+    <link rel="stylesheet" href="style.css"> 
+    
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Droid+Arabic+Naskh&family=Traditional+Arabic&display=swap" rel="stylesheet">
 </head>
-
 <body class="light-mode">
     <header>
-        <h1>💬 الأحاديث اليومية</h1>
-        <button id="theme-toggle">🌙 الوضع الليلي</button>
+        <h1>📖 منصة إشراق النور</h1>
+        <button id="theme-toggle" class="main-action-btn">🌙 الوضع الليلي</button>
     </header>
-
-    <nav>
-        <a href="index.html">🏠 الرئيسية</a>
-        <a href="quran.html">📜 المصحف الشريف</a>
-        <a href="hadith.html" class="active">💡 الأحاديث</a>
-        <a href="quiz.html">🧠 الألعاب</a>
+    
+    <nav> 
+        <a href="index.html">القرآن الكريم (المصحف)</a>
+        <a href="hadith.html">الأحاديث والأذكار</a>
+        <a href="quiz.html">الأسئلة الدينية</a> 
     </nav>
 
     <main>
-        <section class="card fade-in" id="hadith-section">
-            <h2>📚 حديث اليوم الشريف</h2>
-            <p id="hadith-content">جاري تحميل الحديث...</p>
-            <p id="hadith-source" class="source"></p>
-            <button id="new-hadith-btn" class="main-action-btn">🔄 حديث جديد</button>
+        <section id="azkar-section" class="card">
+            <h2>🌙 أذكار من السنة النبوية</h2>
+            <div id="azkar-display">
+                <p style="text-align: center; color: var(--accent-color);">جاري تحديد الوقت وتحميل الأذكار (الصباحية أو المسائية)...</p>
+            </div>
         </section>
 
-        <section class="card fade-in" id="azkar-section">
-            <h2>🌙 أذكار من السنة</h2>
-            <div id="azkar-display">
-                <p>جاري تحميل الأذكار...</p>
+        <section id="hadith-viewer" class="card">
+            <h2>📚 حديث اليوم النبوي الشريف</h2>
+            
+            <button id="new-hadith-btn" class="main-action-btn">🔄 حديث جديد</button>
+
+            <div id="hadith-list">
+                <p style="text-align: center; color: var(--accent-color);">جاري جلب الحديث والتفسير الموجز من الإنترنت...</p>
             </div>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2025 موقع النور الفخم | أحاديث من نور النبوة 🌟</p>
+        <p>جميع الحقوق محفوظة لمنصة إشراق النور &copy; 2025</p>
     </footer>
 
-    <script src="hadith.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
