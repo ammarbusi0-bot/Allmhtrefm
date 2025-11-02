@@ -25,26 +25,24 @@
         
         <section id="settings" class="card">
             <h2>⚙️ إعدادات القراءة</h2>
+            
             <div style="margin-bottom: 20px;">
                 <p style="font-weight: bold; color: var(--accent-color-light); margin-bottom: 10px;">اختر خط القراءة:</p>
                 <div id="font-selector" style="display: flex; gap: 10px; flex-wrap: wrap;">
-                    <button class="font-btn" data-font="Amiri">خط الأميري</button>
-                    <button class="font-btn" data-font="Traditional Arabic">خط التقليدي</button>
-                    <button class="font-btn" data-font="Droid Arabic Naskh">خط النسخ</button>
-                </div>
-            </div>
-
-            <div style="margin-top: 20px;">
-                <p style="font-weight: bold; color: var(--accent-color-light); margin-bottom: 10px;">التحكم بحجم الخط:</p>
-                <div id="size-selector" style="display: flex; gap: 10px; align-items: center;">
-                    <button class="size-btn" data-size="decrease">A-</button>
-                    <span id="current-font-size" style="color: var(--text-color);">متوسط</span>
-                    <button class="size-btn" data-size="increase">A+</button>
+                    <button class="font-btn active" data-font="Amiri" style="font-family: 'Amiri', serif;">خط أميري</button>
+                    <button class="font-btn" data-font="Droid Arabic Naskh" style="font-family: 'Droid Arabic Naskh', sans-serif;">خط النسخ</button>
+                    <button class="font-btn" data-font="Traditional Arabic" style="font-family: 'Traditional Arabic', serif;">خط تقليدي</button>
                 </div>
             </div>
             
-             <div id="bookmark-status" style="margin-top: 25px; padding-top: 15px; border-top: 1px dashed var(--accent-color);">
-                <p style="font-weight: bold; color: var(--accent-color);">آخر موضع قراءة محفوظ:</p>
+            <div id="size-selector" style="margin-bottom: 20px;">
+                <p style="font-weight: bold; color: var(--accent-color-light); margin-bottom: 10px;">حجم الخط: <span id="current-font-size" style="font-weight: bold;">100%</span></p>
+                <button class="size-btn" data-size="increase">تكبير (+)</button>
+                <button class="size-btn" data-size="decrease">تصغير (-)</button>
+            </div>
+            
+            <div id="bookmark-section">
+                <p style="font-weight: bold; color: var(--accent-color-light);">آخر موضع قراءة:</p>
                 <p id="last-read-location" style="color: var(--accent-color-light);">لم يتم الحفظ بعد.</p>
                 <button id="clear-bookmark-btn" class="main-action-btn" style="padding: 8px 15px; font-size: 0.9rem; margin-top: 10px;">مسح الحفظ</button>
             </div>
@@ -53,8 +51,8 @@
         <section id="prayer-times" class="card">
             <h2>🕌 مواقيت الصلاة</h2>
             <div id="next-prayer-info" style="text-align: center; margin-bottom: 15px; padding: 10px; background-color: rgba(255, 215, 0, 0.05); border-radius: 8px; border: 1px solid var(--accent-color);">
-                <p>الصلاة القادمة: <span id="next-prayer-name" class="next-prayer">جاري التحميل...</span></p>
-                <p>يتبقى: <span id="time-to-next" class="countdown">--:--:--</span></p>
+                <p>الصلاة القادمة: <span id="next-prayer-name" style="font-weight: bold; color: var(--accent-color-light);">جاري التحميل...</span></p>
+                <p>يتبقى: <span id="time-to-next" style="font-size: 1.5rem; color: #dc3545;">--:--:--</span></p>
             </div>
             <div id="prayer-display">
                 <p>جاري تحديد موقعك وجلب المواقيت...</p>
@@ -65,16 +63,17 @@
             <h2>🕋 المصحف الشريف (قراءة)</h2>
             
             <input type="text" id="ayah-search" class="search-bar" placeholder="ابحث عن آية في السورة المفتوحة..." style="display: none;">
-
-            <div id="loading-status"></div>
-            <div id="quran-display" class="quran-content-wrapper">
+            
+            <p id="loading-status" style="text-align: center; margin-top: 15px; color: var(--accent-color);">جاري التحميل...</p>
+            
+            <div id="quran-display" style="text-align: center;">
                 </div>
         </section>
         
     </main>
-
+    
     <footer>
-        <p>جميع الحقوق محفوظة لمنصة إشراق النور &copy; 2025</p>
+        <p>&copy; 2025 منصة إشراق النور. كل الحقوق محفوظة.</p>
     </footer>
 
     <script src="script.js"></script>
