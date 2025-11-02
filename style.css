@@ -1,0 +1,278 @@
+/* تنسيقات عامة للهيكل */
+body {
+    font-family: 'Arial', sans-serif; /* يفضل استبداله بخط عربي فاخر */
+    margin: 0;
+    padding: 0;
+    color: #333;
+    background-color: #F8F4E3; /* لون أساس فاتح للموقع */
+    direction: rtl;
+    text-align: right;
+    transition: background-color 0.5s, color 0.5s;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 20px auto;
+    padding: 0 15px;
+}
+
+/* التنسيق الذهبي للواجهة */
+.app-header, .hadith-card, .quran-container, #audio-player-container, .insight-card {
+    background: #FFF;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    margin-bottom: 25px;
+    padding: 20px;
+    /* الحدود الذهبية */
+    border: 3px solid transparent;
+    border-image: linear-gradient(to right, #DAA520, #FFD700, #DAA520) 1;
+}
+
+/* تنسيق العنوان الرئيسي */
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    margin: 0;
+    border-radius: 0;
+    background: linear-gradient(145deg, #FFD700, #DAA520); /* خلفية ذهبية للمقدمة */
+    color: #4B0082; /* لون بنفسجي غامق أو بني ملكي للنص */
+    box-shadow: none;
+}
+.app-header h1 {
+    margin: 0;
+    font-size: 2.2em;
+    text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
+}
+
+/* تنسيق قائمة السور الذهبية */
+#surah-selector {
+    padding: 8px 15px;
+    border-radius: 8px;
+    border: 2px solid #DAA520; /* ذهبي */
+    background-color: #FFF;
+    color: #4B0082;
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+#surah-selector:hover {
+    background-color: #FFFACD;
+}
+.surah-label {
+    margin-left: 10px;
+    font-weight: bold;
+}
+
+/* تنسيق الآيات الفخمة */
+.verse-text {
+    font-size: 1.6em;
+    line-height: 2.5;
+    margin: 10px 0;
+    padding: 5px 0;
+    cursor: pointer; 
+    border-bottom: 1px dashed #DDD;
+}
+.verse-text:hover {
+    background-color: #FFFACD; /* لون ذهبي فاتح عند التمرير */
+}
+
+/* حالة الآية النشطة */
+.verse-text.active-playing {
+    background-color: #FFFACD !important; 
+    box-shadow: 0 0 10px rgba(218, 165, 32, 0.5);
+    border-radius: 5px;
+}
+
+/* تنسيق الأحاديث */
+.hadith-card {
+    text-align: center;
+}
+#hadith-text {
+    font-style: italic;
+    font-size: 1.1em;
+    color: #8B4513; /* لون بني ترابي */
+}
+
+/* --- تنسيق شريط التقدم والإنجازات --- */
+.progress-info {
+    text-align: center;
+    padding: 10px;
+}
+.progress-bar-container {
+    background-color: #EFEFEF;
+    border: 1px solid #DDD;
+    border-radius: 10px;
+    height: 20px;
+    margin: 10px auto;
+    width: 90%;
+    overflow: hidden;
+}
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(to right, #FFD700, #DAA520); /* تدرج ذهبي */
+    transition: width 0.5s ease-in-out;
+    border-radius: 10px 0 0 10px;
+}
+.gold-btn {
+    background-color: #FFD700;
+    color: #4B0082;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-top: 15px;
+    transition: background-color 0.3s, opacity 0.3s;
+}
+.gold-btn:hover:not(:disabled) {
+    background-color: #DAA520;
+}
+.gold-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* تنسيق بطاقة الإنجاز */
+#achievement-badge {
+    background: linear-gradient(135deg, #FFD700, #DAA520, #FFD700);
+    color: #4B0082;
+    text-align: center;
+    border: none;
+    padding: 20px;
+    font-size: 1.2em;
+    animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* تنسيق بطاقة المفاهيم (Insight Card) */
+.insight-card {
+    background-color: #FFF8E1;
+    border: 4px solid #DAA520;
+    border-radius: 12px;
+    padding: 25px;
+    margin-top: 30px;
+    text-align: right;
+    box-shadow: 0 4px 15px rgba(218, 165, 32, 0.4);
+}
+.insight-card h3 {
+    color: #8B4513;
+    border-bottom: 1px solid #DAA520;
+    padding-bottom: 10px;
+}
+
+
+/* --- تنسيق النافذة المنبثقة (Popup) للتفسير --- */
+.popup {
+    display: none;
+    position: fixed; 
+    z-index: 10;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.6); 
+}
+.popup-content {
+    background-color: #FFF;
+    margin: 10% auto;
+    padding: 30px;
+    border-radius: 15px;
+    width: 80%;
+    max-width: 600px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border: 5px solid #FFD700; 
+    animation: fadeIn 0.5s;
+}
+.popup h3 {
+    color: #DAA520;
+    border-bottom: 2px solid #EEE;
+    padding-bottom: 10px;
+    margin-top: 0;
+}
+.close-btn {
+    color: #aaa;
+    float: left;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.close-btn:hover, .close-btn:focus {
+    color: #DAA520;
+    text-decoration: none;
+}
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+
+/* --- الوضع الليلي (Dark Mode) --- */
+body.dark-mode {
+    background-color: #121212;
+    color: #E0E0E0;
+}
+body.dark-mode .app-header {
+    background: linear-gradient(145deg, #8B4513, #4B3621); 
+    color: #FFD700;
+}
+body.dark-mode .app-header h1 {
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+}
+body.dark-mode .quran-container, body.dark-mode .hadith-card, body.dark-mode #audio-player-container, body.dark-mode .insight-card {
+    background: #1E1E1E;
+    color: #E0E0E0;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.15); 
+}
+body.dark-mode .verse-text {
+    border-bottom: 1px dashed #444;
+}
+body.dark-mode .verse-text:hover {
+    background-color: #2A2A2A;
+}
+body.dark-mode .verse-text.active-playing {
+    background-color: #362817 !important;
+}
+body.dark-mode #surah-selector {
+    background-color: #2A2A2A;
+    color: #FFD700;
+    border-color: #DAA520;
+}
+body.dark-mode .popup-content {
+    background-color: #1E1E1E;
+    color: #E0E0E0;
+    border-color: #FFD700;
+}
+body.dark-mode .popup h3 {
+    color: #FFD700;
+    border-bottom-color: #333;
+}
+body.dark-mode .progress-bar-container {
+    background-color: #333;
+    border-color: #444;
+}
+body.dark-mode .gold-btn {
+    background-color: #B8860B; 
+    color: #EEE;
+}
+body.dark-mode .gold-btn:hover:not(:disabled) {
+    background-color: #FFD700;
+    color: #121212;
+}
+body.dark-mode .insight-card {
+    background-color: #2A2A2A;
+    border-color: #FFD700;
+    color: #E0E0E0;
+}
+body.dark-mode .insight-card h3 {
+    color: #FFD700;
+    border-bottom-color: #8B4513;
+}
