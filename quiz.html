@@ -18,7 +18,7 @@
     <nav> 
         <a href="index.html">القرآن الكريم (المصحف)</a>
         <a href="hadith.html">الأحاديث والأذكار</a>
-        <a href="quiz.html">الأسئلة الدينية</a> 
+        <a href="quiz.html" class="active">الأسئلة الدينية</a> 
     </nav>
 
     <main>
@@ -34,14 +34,18 @@
 
             <div id="quiz-container">
                 <p style="text-align: center; color: var(--accent-color);">جاري بدء جولة الاختبار الأولى...</p>
-                </div>
+            </div>
         </section>
         
-        </main>
-
-    <footer>
-        <p>&copy; 2025 منصة إشراق النور. كل الحقوق محفوظة.</p>
-    </footer>
+        <section id="search-history" class="card" style="grid-column: 1 / 3;">
+            <h2>📜 سجل البحث الأخير (في المصحف)</h2>
+            <div id="history-list">
+                <p style="color: var(--text-color);">يتم عرض سجل بحثك في المصحف هنا (مثال: بحثت عن "السجدة" في البقرة).</p>
+                <button id="clear-history-btn" class="secondary-action-btn" style="margin-top: 10px;">مسح السجل</button>
+            </div>
+        </section>
+        
+    </main>
 
     <script src="script.js"></script>
 </body>
