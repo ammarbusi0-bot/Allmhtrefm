@@ -4,51 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ShadowHack PRO v5.0 - منصة القرصنة الذكية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* الأساسيات */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            background: #000; 
-            color: #00ff88; 
-            font-family: Arial; 
-            text-align: center;
-        }
+        /* كل الـ CSS هنا */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI'; }
+        :root { --primary: #00ff88; --secondary: #ff0088; --accent: #8800ff; --dark: #0a0a0a; }
+        body { background: #000; color: #fff; text-align: center; }
         
-        /* الهيدر */
-        .header {
-            background: #111;
-            padding: 2rem;
-            border-bottom: 3px solid #00ff88;
-        }
-        .header h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            color: #00ff88;
-        }
+        .header { background: #111; padding: 2rem; border-bottom: 3px solid #00ff88; }
+        .header h1 { font-size: 3rem; color: #00ff88; margin-bottom: 1rem; }
         
-        /* الخدمات */
-        .services {
-            padding: 3rem 1rem;
-        }
-        .service-card {
-            background: #1a1a1a;
-            border: 2px solid #00ff88;
-            border-radius: 10px;
-            padding: 2rem;
-            margin: 1rem;
-            display: inline-block;
-            width: 300px;
-        }
-        .buy-btn {
-            background: #00ff88;
-            color: #000;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            font-weight: bold;
-            margin-top: 1rem;
-            cursor: pointer;
-        }
+        .services { padding: 3rem 1rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto; }
+        .service-card { background: #1a1a1a; border: 2px solid #00ff88; border-radius: 15px; padding: 2rem; transition: transform 0.3s; }
+        .service-card:hover { transform: translateY(-10px); border-color: #ff0088; }
+        .price { color: #ff0088; font-size: 1.8rem; font-weight: bold; margin: 1rem 0; }
+        .buy-btn { background: #00ff88; color: #000; padding: 12px 25px; border: none; border-radius: 25px; font-weight: bold; cursor: pointer; width: 100%; transition: all 0.3s; }
+        .buy-btn:hover { background: #ff0088; color: #fff; transform: scale(1.05); }
+        
+        .features { padding: 3rem 1rem; background: #0a0a0a; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto; }
+        .feature { background: #1a1a1a; padding: 2rem; border-radius: 10px; border: 1px solid #00ff88; }
+        
+        .testimonials { padding: 3rem 1rem; }
+        .testimonial { background: #1a1a1a; padding: 2rem; margin: 1rem; border-radius: 10px; border: 1px solid #8800ff; }
     </style>
 </head>
 <body>
@@ -58,28 +36,144 @@
     </div>
 
     <div class="services">
+        <!-- الخدمات الأساسية -->
         <div class="service-card">
+            <i class="fas fa-user-secret fa-3x" style="color: #00ff88; margin-bottom: 1rem;"></i>
             <h3>اختراق الحسابات</h3>
-            <p>اختراق فيسبوك، واتساب، إيميلات</p>
-            <div style="color: #ff0088; font-size: 1.5rem; margin: 1rem 0;">$150</div>
+            <p>اختراق فيسبوك، واتساب، إيميلات بأساليب متطورة</p>
+            <div class="price">$150</div>
             <button class="buy-btn" onclick="buyService('اختراق الحسابات', 150)">اشتري الآن</button>
         </div>
 
         <div class="service-card">
+            <i class="fas fa-camera fa-3x" style="color: #00ff88; margin-bottom: 1rem;"></i>
             <h3>اختراق الكاميرات</h3>
-            <p>وصول مباشر لكاميرات المراقبة</p>
-            <div style="color: #ff0088; font-size: 1.5rem; margin: 1rem 0;">$200</div>
+            <p>وصول مباشر لكاميرات المراقبة والهواتف</p>
+            <div class="price">$200</div>
             <button class="buy-btn" onclick="buyService('اختراق الكاميرات', 200)">اشتري الآن</button>
+        </div>
+
+        <!-- الخدمات الجديدة -->
+        <div class="service-card">
+            <i class="fas fa-university fa-3x" style="color: #00ff88; margin-bottom: 1rem;"></i>
+            <h3>اختراق البنوك</h3>
+            <p>سرقة بيانات مصرفية وتجاوز أنظمة الأمن</p>
+            <div class="price">$450</div>
+            <button class="buy-btn" onclick="buyService('اختراق البنوك', 450)">اشتري الآن</button>
+        </div>
+
+        <div class="service-card">
+            <i class="fas fa-shield-alt fa-3x" style="color: #00ff88; margin-bottom: 1rem;"></i>
+            <h3>حماية متقدمة</h3>
+            <p>أنظمة حماية متطورة من الاختراق</p>
+            <div class="price">$100</div>
+            <button class="buy-btn" onclick="buyService('حماية متقدمة', 100)">اشتري الآن</button>
+        </div>
+
+        <div class="service-card">
+            <i class="fas fa-code fa-3x" style="color: #00ff88; margin-bottom: 1rem;"></i>
+            <h3>تطوير أدوات مخصصة</h3>
+            <p>برامج قرصنة مخصصة لاحتياجاتك</p>
+            <div class="price">$300</div>
+            <button class="buy-btn" onclick="buyService('تطوير أدوات مخصصة', 300)">اشتري الآن</button>
+        </div>
+
+        <div class="service-card">
+            <i class="fas fa-robot fa-3x" style="color: #00ff88; margin-bottom: 1rem;"></i>
+            <h3>Deepfakes</h3>
+            <p>إنشاء فيديوهات مزيفة بتقنية الذكاء الاصطناعي</p>
+            <div class="price">$300</div>
+            <button class="buy-btn" onclick="buyService('Deepfakes', 300)">اشتري الآن</button>
+        </div>
+    </div>
+
+    <div class="features">
+        <h2 style="color: #00ff88; margin-bottom: 2rem; font-size: 2.5rem;">⚡ مميزات المنصة</h2>
+        <div class="features-grid">
+            <div class="feature">
+                <i class="fas fa-bolt fa-2x" style="color: #00ff88;"></i>
+                <h3>سرعة فائقة</h3>
+                <p>أداء سريع واستجابة فورية</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-user-secret fa-2x" style="color: #00ff88;"></i>
+                <h3>خصوصية تامة</h3>
+                <p>ضمان عدم الكشف عن هويتك</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-sync fa-2x" style="color: #00ff88;"></i>
+                <h3>تحديثات مستمرة</h3>
+                <p>تحديثات دورية لأحدث التقنيات</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-headset fa-2x" style="color: #00ff88;"></i>
+                <h3>دعم فني 24/7</h3>
+                <p>فريق دعم متاح على مدار الساعة</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="testimonials">
+        <h2 style="color: #00ff88; margin-bottom: 2rem; font-size: 2.5rem;">💬 آراء عملائنا</h2>
+        <div class="testimonial">
+            <div style="color: gold; font-size: 1.2rem; margin-bottom: 1rem;">⭐⭐⭐⭐⭐</div>
+            <p>"أفضل منصة قرصنة! الخدمات سريعة والنتائج مذهلة"</p>
+            <strong>- الهاكر المظلم</strong>
         </div>
     </div>
 
     <script>
-        function buyService(service, price) {
-            const phone = "1234567890";
-            const message = `أريد شراء ${service} بسعر $${price}`;
+        // كل الـ JavaScript هنا
+        function buyService(serviceName, price) {
+            const phone = "+201234567890";
+            const message = `أريد شراء ${serviceName} بسعر $${price} من ShadowHack PRO`;
             const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
             window.open(url, '_blank');
+            
+            // تأثير على الزر
+            const button = event.target;
+            button.innerHTML = 'جاري التوجيه... 🚀';
+            setTimeout(() => {
+                button.innerHTML = 'اشتري الآن';
+            }, 2000);
         }
+
+        // تأثير المصفوفة
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        document.body.appendChild(canvas);
+        canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;opacity:0.1;';
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const chars = '01010101شظثصضذطكمنتالبيس';
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+
+        for (let i = 0; i < columns; i++) {
+            drops[i] = Math.random() * canvas.height;
+        }
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#00ff88';
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars[Math.floor(Math.random() * chars.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+
+        setInterval(drawMatrix, 35);
     </script>
 </body>
 </html>
