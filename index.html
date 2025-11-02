@@ -4,99 +4,82 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ShadowHack PRO v5.0 - منصة القرصنة الذكية</title>
-    
-    <link rel="stylesheet" href="style.css">
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* الأساسيات */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: #000; 
+            color: #00ff88; 
+            font-family: Arial; 
+            text-align: center;
+        }
+        
+        /* الهيدر */
+        .header {
+            background: #111;
+            padding: 2rem;
+            border-bottom: 3px solid #00ff88;
+        }
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #00ff88;
+        }
+        
+        /* الخدمات */
+        .services {
+            padding: 3rem 1rem;
+        }
+        .service-card {
+            background: #1a1a1a;
+            border: 2px solid #00ff88;
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 1rem;
+            display: inline-block;
+            width: 300px;
+        }
+        .buy-btn {
+            background: #00ff88;
+            color: #000;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 1rem;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-    <div class="bg-effects">
-        <div class="matrix-bg"></div>
-        <div class="floating-shapes">
-            <div class="shape" style="width: 100px; height: 100px; top: 10%; left: 20%;"></div>
-            <div class="shape" style="width: 150px; height: 150px; top: 60%; left: 70%;"></div>
-            <div class="shape" style="width: 80px; height: 80px; top: 30%; left: 80%;"></div>
-            <div class="shape" style="width: 120px; height: 120px; top: 70%; left: 10%;"></div>
+    <div class="header">
+        <h1>🌑 ShadowHack PRO v5.0 🌑</h1>
+        <p>منصة القرصنة الذكية - اختراق بذكاء، تحكم باحترافية</p>
+    </div>
+
+    <div class="services">
+        <div class="service-card">
+            <h3>اختراق الحسابات</h3>
+            <p>اختراق فيسبوك، واتساب، إيميلات</p>
+            <div style="color: #ff0088; font-size: 1.5rem; margin: 1rem 0;">$150</div>
+            <button class="buy-btn" onclick="buyService('اختراق الحسابات', 150)">اشتري الآن</button>
+        </div>
+
+        <div class="service-card">
+            <h3>اختراق الكاميرات</h3>
+            <p>وصول مباشر لكاميرات المراقبة</p>
+            <div style="color: #ff0088; font-size: 1.5rem; margin: 1rem 0;">$200</div>
+            <button class="buy-btn" onclick="buyService('اختراق الكاميرات', 200)">اشتري الآن</button>
         </div>
     </div>
 
-    <nav class="navbar">
-        <div class="nav-content">
-            <div class="logo">ShadowHack PRO</div>
-            <ul class="nav-links">
-                <li><a href="#home">الرئيسية</a></li>
-                <li><a href="#services">الخدمات</a></li>
-                <li><a href="#features">المميزات</a></li>
-                <li><a href="#contact">اتصل بنا</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <section class="hero" id="home">
-        <div class="hero-content">
-            <h1>ShadowHack PRO v5.0</h1>
-            <p>منصة القرصنة الذكية - اختراق بذكاء، تحكم باحترافية</p>
-            <a href="#services" class="cta-button">اكتشف الخدمات</a>
-        </div>
-    </section>
-
-    <section class="services" id="services">
-        <h2 class="section-title">خدماتنا المتقدمة</h2>
-        <div class="services-grid">
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-lock"></i>
-                </div>
-                <h3>اختراق الحسابات</h3>
-                <p>اختراق حسابات التواصل الاجتماعي والبريد الإلكتروني بأساليب متطورة.</p>
-            </div>
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-shield-alt"></i>
-                </div>
-                <h3>حماية متقدمة</h3>
-                <p>أنظمة حماية متطورة لتأمين بياناتك وحمايتها من الاختراق.</p>
-            </div>
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-code"></i>
-                </div>
-                <h3>تطوير أدوات مخصصة</h3>
-                <p>تصميم وتطوير أدوات قرصنة مخصصة تلبي احتياجاتك الخاصة.</p>
-            </div>
-        </div>
-    </section>
-
-    <section class="features" id="features">
-        <h2 class="section-title">مميزات المنصة</h2>
-        <div class="features-grid">
-            <div class="feature">
-                <i class="fas fa-bolt"></i>
-                <h3>سرعة فائقة</h3>
-                <p>أداء سريع واستجابة فورية لأوامر الاختراق.</p>
-            </div>
-            <div class="feature">
-                <i class="fas fa-user-secret"></i>
-                <h3>خصوصية تامة</h3>
-                <p>ضمان الخصوصية وعدم الكشف عن هويتك.</p>
-            </div>
-            <div class="feature">
-                <i class="fas fa-sync"></i>
-                <h3>تحديثات مستمرة</h3>
-                <p>تحديثات دورية لمواكبة أحدث تقنيات الأمن.</p>
-            </div>
-            <div class="feature">
-                <i class="fas fa-headset"></i>
-                <h3>دعم فني 24/7</h3>
-                <p>فريق دعم فني متاح على مدار الساعة.</p>
-            </div>
-        </div>
-    </section>
-
-    <footer class="footer">
-        <p>&copy; 2024 ShadowHack PRO. جميع الحقوق محفوظة.</p>
-    </footer>
-
-    <script src="script.js"></script>
+    <script>
+        function buyService(service, price) {
+            const phone = "1234567890";
+            const message = `أريد شراء ${service} بسعر $${price}`;
+            const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
+        }
+    </script>
 </body>
 </html>
