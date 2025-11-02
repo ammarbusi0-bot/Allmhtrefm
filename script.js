@@ -172,6 +172,9 @@ document.addEventListener('DOMContentLoaded', () => {
             ayahSearchInput.style.display = 'block';
             ayahSearchInput.value = '';
         }
+        
+        // 👈 التعديل هنا: مسح محتوى quranDisplayDiv بالكامل
+        quranDisplayDiv.innerHTML = ''; 
 
         renderSurahContent(surah.verses || surah.array || []);
 
