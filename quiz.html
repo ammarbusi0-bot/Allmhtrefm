@@ -22,32 +22,32 @@
     </nav>
 
     <main>
-        <section id="quiz-game" class="card">
-            <h2>🏆 اختبار المعلومات الدينية (جولة رقم <span id="round-number">1</span>)</h2>
+        
+        <section id="quiz-game" class="card" style="grid-column: 1 / 3;">
+            <h2>🏆 اختبار المعلومات الدينية (الجولة رقم <span id="round-number">1</span>)</h2>
             
             <div class="quiz-status" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px dashed var(--accent-color); padding-bottom: 10px;">
-                <span id="score-display" style="font-weight: bold; color: var(--accent-color-light);">النقاط: 0</span>
-                <span id="timer-display" style="font-weight: bold; color: #dc3545;">الوقت: 20 ثانية</span>
+                <span id="score-display" style="font-weight: bold; color: var(--accent-color-light); font-size: 1.2rem;">النقاط: 0</span>
+                <span id="timer-display" style="font-weight: bold; color: #dc3545; font-size: 1.2rem;">الوقت: 20 ثانية</span>
                 <button id="fifty-fifty-btn" class="main-action-btn" style="padding: 8px 15px; font-size: 0.9rem;">50/50 (مرة واحدة)</button>
             </div>
 
             <div id="quiz-container">
-                <p style="text-align: center; color: var(--accent-color);">سيتم قريباً إضافة منطق جلب أسئلة الاختبارات الدينية هنا.</p>
-                <p style="text-align: center; margin-top: 15px;">**تلميح:** زر تبديل المظهر (`theme-toggle`) يعمل الآن في هذه الصفحة أيضاً.</p>
-            </div>
+                <p style="text-align: center; color: var(--accent-color);">جاري بدء جولة الاختبار الأولى...</p>
+                </div>
         </section>
         
-        <section id="search-history" class="card">
+        <section id="search-history" class="card" style="grid-column: 1 / 3;">
             <h2>📜 سجل البحث الأخير (في المصحف)</h2>
             <div id="history-list">
-                <p style="color: var(--text-color);">يتم عرض آخر 5 عمليات بحث أجريتها في المصحف هنا.</p>
-            </div>
+                <p style="color: var(--text-color);">يتم عرض آخر 5 عمليات بحث قمت بها في المصحف.</p>
+                </div>
         </section>
         
     </main>
 
     <footer>
-        <p>جميع الحقوق محفوظة لمنصة إشراق النور &copy; 2025</p>
+        <p>&copy; 2025 منصة إشراق النور. كل الحقوق محفوظة.</p>
     </footer>
 
     <script src="script.js"></script>
