@@ -3,42 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>موقع النور الفخم - اختبارات دينية</title>
-    
-    <link rel="stylesheet" href="style.css"> 
+    <title>🏆 موقع النور الفخم - الألعاب الدينية</title>
+
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body class="light-mode">
     <header>
-        <h1>📖 موقع النور الفخم</h1>
+        <h1>🏆 اختبار المعلومات الدينية</h1>
         <button id="theme-toggle">🌙 الوضع الليلي</button>
     </header>
-    
-    <nav> 
-        <a href="index.html">القرآن الكريم (المصحف)</a>
-        <a href="hadith.html">الأحاديث النبوية</a>
-        <a href="quiz.html">الأسئلة الدينية</a> 
+
+    <nav>
+        <a href="index.html">🏠 الرئيسية</a>
+        <a href="quran.html">📜 المصحف</a>
+        <a href="hadith.html">💡 الأحاديث</a>
+        <a href="quiz.html" class="active">🧠 الألعاب</a>
     </nav>
 
     <main>
-        <section id="quiz-game" class="card">
-            <h2>🧠 اختبار المعلومات الدينية (جولة رقم <span id="round-number">1</span>)</h2>
-            
+        <section class="card fade-in" id="quiz-section">
+            <h2>🧩 تحدى نفسك</h2>
+            <p id="round-number">الجولة رقم: <span>1</span></p>
+
             <div class="quiz-status">
                 <span id="score-display">النقاط: 0</span>
                 <span id="timer-display">الوقت: 20 ثانية</span>
-                <button id="fifty-fifty-btn" class="help-btn">50/50 (مرة واحدة)</button>
+                <button id="fifty-fifty-btn" class="help-btn">🧮 50/50</button>
             </div>
 
             <div id="quiz-container">
-                <p style="text-align: center;">جاري تجهيز الاختبار...</p>
+                <p>جاري تحميل السؤال...</p>
             </div>
+
+            <div class="quiz-controls">
+                <button id="next-question-btn" class="main-action-btn">➡️ السؤال التالي</button>
+            </div>
+        </section>
+
+        <section class="card fade-in" id="quiz-info">
+            <h2>🎯 التعليمات</h2>
+            <ul>
+                <li>لك 20 ثانية للإجابة على كل سؤال.</li>
+                <li>زر <strong>50/50</strong> يحذف إجابتين خاطئتين.</li>
+                <li>كل إجابة صحيحة تمنحك 10 نقاط.</li>
+                <li>احصل على أعلى نتيجة وسجّلها في ذاكرتك المحلية!</li>
+            </ul>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2025 موقع النور</p>
+        <p>&copy; 2025 موقع النور الفخم | ألعاب تعليمية ممتعة 🎉</p>
     </footer>
 
-    <script src="script.js"></script> 
-    </body>
+    <script src="quiz.js"></script>
+</body>
 </html>
