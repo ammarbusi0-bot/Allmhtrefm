@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔥 DARK MATRIX QUANTUM - Ultimate Hacking Platform 🔥</title>
+    <style>
+        :root {
+            --hacker-green: #00ff41;
+            --matrix-red: #ff003c;
+            --quantum-blue: #00eeff;
+            --dark-bg: #0a0a0a;
+            --neon-glow: 0 0 10px, 0 0 20px, 0 0 30px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Consolas', 'Courier New', monospace;
+        }
+        
+        body {
+            background: var(--dark-bg);
+            color: var(--hacker-green);
+            overflow-x: hidden;
+            cursor: none;
+        }
+        
+        .custom-cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--hacker-green);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+        }
+        
+        .cursor-trail {
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            background: var(--quantum-blue);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            opacity: 0.7;
+        }
+        
+        /* Quantum Matrix Background */
+        .quantum-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            opacity: 0.4;
+        }
+        
+        .particles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        /* Main Container with Advanced Glass Morphism */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+        }
+        
+        /* Quantum Header with Multiple Animations */
+        .quantum-header {
+            background: linear-gradient(135deg, 
+                rgba(0, 255, 65, 0.1) 0%, 
+                rgba(0, 238, 255, 0.1) 50%, 
+                rgba(255, 0, 60, 0.1) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--hacker-green);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                0 0 30px rgba(0, 255, 65, 0.3),
+                inset 0 0 30px rgba(0, 255, 65, 0.1);
+        }
+        
+        .quantum-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(
+                from 0deg,
+                transparent,
+                var(--hacker-green),
+                transparent,
+                var(--quantum-blue),
+                transparent,
+                var(--matrix-red),
+                transparent
+            );
+            animation: rotate 10s linear infinite;
+            z-index: -1;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .site-title {
+            text-align: center;
+            font-size: 3.5em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        
+        .title-glitch {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .title-glitch::before,
+        .title-glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .title-glitch::before {
+            animation: glitch-1 0.5s infinite linear alternate-reverse;
+            color: var(--matrix-red);
+            z-index: -1;
+        }
+        
+        .title-glitch::after {
+            animation: glitch-2 0.5s infinite linear alternate-reverse;
+            color: var(--quantum-blue);
+            z-index: -2;
+        }
+        
+        @keyframes glitch-1 {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+        
+        @keyframes glitch-2 {
+            0% { transform: translate(0); }
+            20% { transform: translate(2px, 2px); }
+            40% { transform: translate(2px, -2px); }
+            60% { transform: translate(-2px, 2px); }
+            80% { transform: translate(-2px, -2px); }
+            100% { transform: translate(0); }
+        }
+        
+        /* Quantum Navigation */
+        .quantum-nav {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 40px 0;
+        }
+        
+        .nav-portal {
+            background: rgba(0, 30, 0, 0.3);
+            border: 1px solid var(--hacker-green);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--hacker-green);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-portal::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.4), transparent);
+            transition: left 0.5s;
+        }
+        
+        .nav-portal:hover::before {
+            left: 100%;
+        }
+        
+        .nav-portal:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 
+                0 10px 25px rgba(0, 255, 65, 0.5),
+                inset 0 0 15px rgba(0, 255, 65, 0.2);
+            border-color: var(--quantum-blue);
+        }
+        
+        /* Quantum Terminal */
+        .quantum-terminal {
+            background: rgba(0, 10, 0, 0.9);
+            border: 2px solid var(--hacker-green);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            position: relative;
+            box-shadow: 
+                0 0 30px rgba(0, 255, 65, 0.2),
+                inset 0 0 30px rgba(0, 255, 65, 0.1);
+        }
+        
+        .terminal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--hacker-green);
+        }
+        
+        .terminal-output {
+            height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            line-height: 1.4;
+            margin-bottom: 15px;
+        }
+        
+        .terminal-line {
+            margin-bottom: 5px;
+            animation: typewriter 0.1s ease-in;
+        }
+        
+        @keyframes typewriter {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .terminal-input {
+            display: flex;
+            align-items: center;
+            background: rgba(0, 20, 0, 0.8);
+            border: 1px solid var(--hacker-green);
+            border-radius: 5px;
+            padding: 10px;
+        }
+        
+        .prompt {
+            color: var(--quantum-blue);
+            margin-right: 10px;
+        }
+        
+        .terminal-input input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--hacker-green);
+            font-family: 'Courier New', monospace;
+            font-size: 1em;
+            outline: none;
+        }
+        
+        /* Quantum User Grid */
+        .quantum-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+        
+        .user-hologram {
+            background: linear-gradient(135deg, 
+                rgba(0, 255, 65, 0.1) 0%, 
+                rgba(0, 20, 0, 0.8) 50%);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--hacker-green);
+            border-radius: 15px;
+            padding: 25px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+        
+        .user-hologram::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, 
+                var(--hacker-green), 
+                var(--quantum-blue), 
+                var(--matrix-red), 
+                var(--hacker-green));
+            z-index: -1;
+            border-radius: 16px;
+            animation: border-glow 3s linear infinite;
+            background-size: 400%;
+        }
+        
+        @keyframes border-glow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .user-hologram:hover {
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 
+                0 20px 40px rgba(0, 255, 65, 0.3),
+                0 0 80px rgba(0, 238, 255, 0.2);
+        }
+        
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 2px solid var(--hacker-green);
+            margin-bottom: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .avatar-glow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: conic-gradient(
+                from 0deg,
+                var(--hacker-green),
+                var(--quantum-blue),
+                var(--matrix-red),
+                var(--hacker-green)
+            );
+            animation: rotate 3s linear infinite;
+            border-radius: 50%;
+        }
+        
+        /* Quantum Stats */
+        .quantum-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .stat-card {
+            background: rgba(0, 30, 0, 0.6);
+            border: 1px solid var(--hacker-green);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: var(--quantum-blue);
+            margin-bottom: 10px;
+        }
+        
+        /* Quantum Footer */
+        .quantum-footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 30px;
+            border-top: 1px solid var(--hacker-green);
+            position: relative;
+        }
+        
+        .security-alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 0, 60, 0.9);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            animation: alert-pulse 2s infinite;
+            display: none;
+            z-index: 1000;
+        }
+        
+        @keyframes alert-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .site-title {
+                font-size: 2em;
+            }
+            
+            .quantum-nav {
+                grid-template-columns: 1fr;
+            }
+            
+            .quantum-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Cursor System -->
+    <div class="custom-cursor" id="cursor"></div>
+    
+    <!-- Quantum Background -->
+    <canvas class="quantum-bg" id="quantumCanvas"></canvas>
+    <div class="particles-container" id="particles"></div>
+    
+    <!-- Security Alert -->
+    <div class="security-alert" id="securityAlert">
+        ⚠️ INTRUSION DETECTED! QUANTUM SHIELD ACTIVATED
+    </div>
+    
+    <div class="container">
+        <!-- Quantum Header -->
+        <header class="quantum-header">
+            <h1 class="site-title">
+                <span class="title-glitch" data-text="🔥 DARK MATRIX QUANTUM 🔥">
+                    🔥 DARK MATRIX QUANTUM 🔥
+                </span>
+            </h1>
+            <p class="tagline" style="text-align: center; color: var(--quantum-blue); font-size: 1.2em;">
+                🚀 QUANTUM COMPUTING HACKING PLATFORM - ACCESS LEVEL: OMEGA 🚀
+            </p>
+        </header>
+        
+        <!-- Quantum Navigation -->
+        <nav class="quantum-nav">
+            <a href="#" class="nav-portal">🌌 QUANTUM DASHBOARD</a>
+            <a href="#" class="nav-portal">⚡ LIVE ATTACK MAP</a>
+            <a href="#" class="nav-portal">🔮 AI PREDICTION ENGINE</a>
+            <a href="#" class="nav-portal">💀 DARK WEB ACCESS</a>
+            <a href="#" class="nav-portal">🔐 QUANTUM ENCRYPTION</a>
+            <a href="#" class="nav-portal">🌐 GLOBAL NETWORK SCAN</a>
+        </nav>
+        
+        <!-- Quantum Terminal -->
+        <section class="quantum-terminal">
+            <div class="terminal-header">
+                <div class="terminal-title" style="color: var(--quantum-blue);">
+                    🖥️ QUANTUM TERMINAL - ROOT ACCESS
+                </div>
+                <div class="terminal-status" style="color: var(--matrix-red);">
+                    STATUS: <span id="statusText">ACTIVE</span>
+                </div>
+            </div>
+            <div class="terminal-output" id="terminalOutput">
+                <div class="terminal-line">[QUANTUM] Initializing Dark Matrix Protocol...</div>
+                <div class="terminal-line">[SYSTEM] Quantum Encryption: AES-512 Activated</div>
+                <div class="terminal-line">[NETWORK] Establishing Tor Connection...</div>
+                <div class="terminal-line">[AI] Neural Network Training Complete</div>
+                <div class="terminal-line">[SECURITY] Quantum Firewall: ONLINE</div>
+            </div>
+            <div class="terminal-input">
+                <span class="prompt">root@darkmatrix:~#</span>
+                <input type="text" id="terminalInput" placeholder="enter quantum command...">
+            </div>
+        </section>
+        
+        <!-- Quantum User Grid -->
+        <section class="quantum-grid" id="userGrid">
+            <!-- Users will be dynamically generated -->
+        </section>
+        
+        <!-- Quantum Stats -->
+        <section class="quantum-stats">
+            <div class="stat-card">
+                <div class="stat-number" id="statHacks">0</div>
+                <div class="stat-label">QUANTUM HACKS</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="statTargets">0</div>
+                <div class="stat-label">ACTIVE TARGETS</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="statSuccess">0%</div>
+                <div class="stat-label">SUCCESS RATE</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="statStealth">100%</div>
+                <div class="stat-label">STEALTH LEVEL</div>
+            </div>
+        </section>
+        
+        <!-- Quantum Footer -->
+        <footer class="quantum-footer">
+            <p style="margin-bottom: 15px; color: var(--quantum-blue);">
+                ⚠️ WARNING: QUANTUM ENTANGLEMENT DETECTION ACTIVE - ALL ACTIVITIES LOGGED
+            </p>
+            <p style="color: var(--hacker-green);">
+                © 2025 DARK MATRIX QUANTUM - THE ULTIMATE HACKING PLATFORM
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Quantum Matrix Background
+        class QuantumMatrix {
+            constructor(canvas) {
+                this.canvas = canvas;
+                this.ctx = canvas.getContext('2d');
+                this.particles = [];
+                this.init();
+            }
+            
+            init() {
+                this.resize();
+                this.createParticles();
+                this.animate();
+                
+                window.addEventListener('resize', () => this.resize());
+            }
+            
+            resize() {
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+            }
+            
+            createParticles() {
+                const particleCount = 150;
+                for (let i = 0; i < particleCount; i++) {
+                    this.particles.push({
+                        x: Math.random() * this.canvas.width,
+                        y: Math.random() * this.canvas.height,
+                        size: Math.random() * 3 + 1,
+                        speedX: (Math.random() - 0.5) * 2,
+                        speedY: (Math.random() - 0.5) * 2,
+                        color: Math.random() > 0.5 ? '#00ff41' : '#00eeff'
+                    });
+                }
+            }
+            
+            animate() {
+                this.ctx.fillStyle = 'rgba(10, 10, 10, 0.05)';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                this.particles.forEach(particle => {
+                    particle.x += particle.speedX;
+                    particle.y += particle.speedY;
+                    
+                    if (particle.x < 0 || particle.x > this.canvas.width) particle.speedX *= -1;
+                    if (particle.y < 0 || particle.y > this.canvas.height) particle.speedY *= -1;
+                    
+                    this.ctx.beginPath();
+                    this.ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                    this.ctx.fillStyle = particle.color;
+                    this.ctx.fill();
+                    
+                    // Draw connections
+                    this.particles.forEach(otherParticle => {
+                        const dx = particle.x - otherParticle.x;
+                        const dy = particle.y - otherParticle.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        
+                        if (distance < 100) {
+                            this.ctx.beginPath();
+                            this.ctx.strokeStyle = `rgba(0, 255, 65, ${0.2 * (1 - distance/100)})`;
+                            this.ctx.lineWidth = 0.5;
+                            this.ctx.moveTo(particle.x, particle.y);
+                            this.ctx.lineTo(otherParticle.x, otherParticle.y);
+                            this.ctx.stroke();
+                        }
+                    });
+                });
+                
+                requestAnimationFrame(() => this.animate());
+            }
+        }
+
+        // Custom Cursor System
+        class QuantumCursor {
+            constructor() {
+                this.cursor = document.getElementById('cursor');
+                this.trails = [];
+                this.init();
+            }
+            
+            init() {
+                document.addEventListener('mousemove', (e) => {
+                    this.cursor.style.left = e.clientX + 'px';
+                    this.cursor.style.top = e.clientY + 'px';
+                    
+                    // Create trail
+                    const trail = document.createElement('div');
+                    trail.className = 'cursor-trail';
+                    trail.style.left = e.clientX + 'px';
+                    trail.style.top = e.clientY + 'px';
+                    document.body.appendChild(trail);
+                    
+                    this.trails.push(trail);
+                    
+                    // Remove old trails
+                    if (this.trails.length > 10) {
+                        const oldTrail = this.trails.shift();
+                        if (oldTrail && oldTrail.parentNode) {
+                            oldTrail.parentNode.removeChild(oldTrail);
+                        }
+                    }
+                    
+                    // Remove trails after animation
+                    setTimeout(() => {
+                        if (trail.parentNode) {
+                            trail.parentNode.removeChild(trail);
+                        }
+                    }, 1000);
+                });
+            }
+        }
+
+        // Terminal System
+        class QuantumTerminal {
+            constructor() {
+                this.output = document.getElementById('terminalOutput');
+                this.input = document.getElementById('terminalInput');
+                this.commands = {
+                    'help': this.showHelp.bind(this),
+                    'scan': this.scanNetwork.bind(this),
+                    'hack': this.startHack.bind(this),
+                    'clear': this.clearTerminal.bind(this),
+                    'status': this.showStatus.bind(this)
+                };
+                this.init();
+            }
+            
+            init() {
+                this.input.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        this.processCommand(this.input.value);
+                        this.input.value = '';
+                    }
+                });
+                
+                // Auto-type welcome message
+                setTimeout(() => {
+                    this.addLine('[QUANTUM] Welcome to Dark Matrix Quantum Terminal');
+                    this.addLine('[SYSTEM] Type "help" for available commands');
+                }, 1000);
+            }
+            
+            addLine(text) {
+                const line = document.createElement('div');
+                line.className = 'terminal-line';
+                line.textContent = text;
+                this.output.appendChild(line);
+                this.output.scrollTop = this.output.scrollHeight;
+            }
+            
+            processCommand(cmd) {
+                this.addLine(`root@darkmatrix:~# ${cmd}`);
+                
+                const command = cmd.toLowerCase().split(' ')[0];
+                if (this.commands[command]) {
+                    this.commands[command](cmd);
+                } else {
+                    this.addLine(`[ERROR] Unknown command: ${cmd}`);
+                }
+            }
+            
+            showHelp() {
+                this.addLine('[HELP] Available Commands:');
+                this.addLine('  help    - Show this help message');
+                this.addLine('  scan    - Start quantum network scan');
+                this.addLine('  hack    - Initiate quantum hacking sequence');
+                this.addLine('  clear   - Clear terminal screen');
+                this.addLine('  status  - Show system status');
+            }
+            
+            scanNetwork() {
+                this.addLine('[SCAN] Starting quantum network scan...');
+                setTimeout(() => {
+                    this.addLine('[SCAN] Found 247 vulnerable targets');
+                    this.addLine('[SCAN] Quantum analysis complete');
+                }, 1500);
+            }
+            
+            startHack() {
+                this.addLine('[HACK] Initializing quantum breach protocol...');
+                setTimeout(() => {
+                    this.addLine('[HACK] Bypassing firewall... SUCCESS');
+                    this.addLine('[HACK] Accessing mainframe... SUCCESS');
+                    this.addLine('[HACK] Quantum hack complete!');
+                }, 2000);
+            }
+            
+            clearTerminal() {
+                this.output.innerHTML = '';
+            }
+            
+            showStatus() {
+                this.addLine('[STATUS] Quantum System: ONLINE');
+                this.addLine('[STATUS] Encryption: AES-512 ACTIVE');
+                this.addLine('[STATUS] Stealth Mode: ENABLED');
+                this.addLine('[STATUS] Threat Level: OMEGA');
+            }
+        }
+
+        // User Management System
+        class QuantumUsers {
+            constructor() {
+                this.users = [
+                    { name: 'QUANTUM_SHADOW', rank: 'QUANTUM HACKER', hacks: 1847, success: 98, status: 'Breaching GOV Server', online: true },
+                    { name: 'DARK_PHOENIX', rank: 'AI SPECIALIST', hacks: 2315, success: 96, status: 'Training Neural Network', online: true },
+                    { name: 'CYBER_GHOST', rank: 'NETWORK OPERATOR', hacks: 1562, success: 94, status: 'Mapping Dark Web', online: true },
+                    { name: 'ZERO_COOL', rank: 'QUANTUM ANALYST', hacks: 2893, success: 99, status: 'Decrypting Quantum Data', online: true },
+                    { name: 'BINARY_BEAST', rank: 'EXPLOIT DEVELOPER', hacks: 1724, success: 95, status: 'Writing Zero-Day', online: true },
+                    { name: 'NEURAL_NINJA', rank: 'SOCIAL ENGINEER', hacks: 1987, success: 97, status: 'Social Engineering Op', online: true }
+                ];
+                this.init();
+            }
+            
+            init() {
+                this.renderUsers();
+                this.startLiveUpdates();
+            }
+            
+            renderUsers() {
+                const grid = document.getElementById('userGrid');
+                grid.innerHTML = '';
+                
+                this.users.forEach(user => {
+                    const userCard = document.createElement('div');
+                    userCard.className = 'user-hologram';
+                    userCard.innerHTML = `
+                        <div class="user-avatar">
+                            <div class="avatar-glow"></div>
+                        </div>
+                        <div class="user-name" style="color: var(--quantum-blue); font-size: 1.3em; margin-bottom: 10px;">
+                            ${user.name}
+                        </div>
+                        <div class="user-rank" style="color: var(--hacker-green); margin-bottom: 15px;">
+                            ${user.rank}
+                        </div>
+                        <div class="user-stats" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                            <span>Hacks: ${user.hacks}</span>
+                            <span>Success: ${user.success}%</span>
+                        </div>
+                        <div class="user-status" style="color: var(--matrix-red);">
+                            ${user.online ? '🟢 ONLINE: ' : '🔴 OFFLINE: '}${user.status}
+                        </div>
+                    `;
+                    grid.appendChild(userCard);
+                });
+            }
+            
+            startLiveUpdates() {
+                setInterval(() => {
+                    // Randomly update user statuses
+                    this.users.forEach(user => {
+                        if (Math.random() > 0.7) {
+                            user.status = this.getRandomStatus();
+                            user.hacks += Math.floor(Math.random() * 10);
+                        }
+                    });
+                    this.renderUsers();
+                }, 5000);
+            }
+            
+            getRandomStatus() {
+                const statuses = [
+                    'Quantum Encryption Break',
+                    'Firewall Penetration',
+                    'Data Exfiltration',
+                    'Zero-Day Exploitation',
+                    'AI Model Training',
+                    'Network Reconnaissance',
+                    'Social Engineering',
+                    'Dark Web Operations'
+                ];
+                return statuses[Math.floor(Math.random() * statuses.length)];
+            }
+        }
+
+        // Statistics Counter
+        class QuantumStats {
+            constructor() {
+                this.stats = {
+                    hacks: 12478,
+                    targets: 347,
+                    success: 96,
+                    stealth: 100
+                };
+                this.init();
+            }
+            
+            init() {
+                this.animateCounters();
+                setInterval(() => this.updateStats(), 3000);
+            }
+            
+            animateCounters() {
+                Object.keys(this.stats).forEach(stat => {
+                    this.animateValue(stat, 0, this.stats[stat], 2000);
+                });
+            }
+            
+            animateValue(stat, start, end, duration) {
+                const element = document.getElementById(`stat${stat.charAt(0).toUpperCase() + stat.slice(1)}`);
+                const range = end - start;
+                let current = start;
+                const increment = end > start ? 1 : -1;
+                const stepTime = Math.abs(Math.floor(duration / range));
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    element.textContent = stat === 'success' || stat === 'stealth' ? 
+                        `${current}%` : current.toLocaleString();
+                    
+                    if (current === end) {
+                        clearInterval(timer);
+                    }
+                }, stepTime);
+            }
+            
+            updateStats() {
+                // Simulate real-time stat updates
+                this.stats.hacks += Math.floor(Math.random() * 5);
+                this.stats.targets = 300 + Math.floor(Math.random() * 100);
+                this.stats.stealth = 95 + Math.floor(Math.random() * 5);
+                
+                Object.keys(this.stats).forEach(stat => {
+                    const element = document.getElementById(`stat${stat.charAt(0).toUpperCase() + stat.slice(1)}`);
+                    element.textContent = stat === 'success' || stat === 'stealth' ? 
+                        `${this.stats[stat]}%` : this.stats[stat].toLocaleString();
+                });
+            }
+        }
+
+        // Security Alert System
+        class SecuritySystem {
+            constructor() {
+                this.alert = document.getElementById('securityAlert');
+                this.init();
+            }
+            
+            init() {
+                setInterval(() => {
+                    if (Math.random() > 0.8) {
+                        this.showAlert();
+                    }
+                }, 10000);
+            }
+            
+            showAlert() {
+                this.alert.style.display = 'block';
+                setTimeout(() => {
+                    this.alert.style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        // Initialize All Systems
+        document.addEventListener('DOMContentLoaded', () => {
+            new QuantumMatrix(document.getElementById('quantumCanvas'));
+            new QuantumCursor();
+            new QuantumTerminal();
+            new QuantumUsers();
+            new QuantumStats();
+            new SecuritySystem();
+        });
+
+        // Add some interactive effects
+        document.addEventListener('click', (e) => {
+            // Create click effect
+            const ripple = document.createElement('div');
+            ripple.style.position = 'fixed';
+            ripple.style.borderRadius = '50%';
+            ripple.style.background = 'radial-gradient(circle, rgba(0,255,65,0.3) 0%, transparent 70%)';
+            ripple.style.pointerEvents = 'none';
+            ripple.style.left = e.clientX + 'px';
+            ripple.style.top = e.clientY + 'px';
+            ripple.style.width = '0px';
+            ripple.style.height = '0px';
+            document.body.appendChild(ripple);
+            
+            // Animate ripple
+            setTimeout(() => {
+                ripple.style.transition = 'all 0.5s ease-out';
+                ripple.style.width = '100px';
+                ripple.style.height = '100px';
+                ripple.style.opacity = '0';
+                ripple.style.marginLeft = '-50px';
+                ripple.style.marginTop = '-50px';
+            }, 10);
+            
+            // Remove ripple
+            setTimeout(() => {
+                if (ripple.parentNode) {
+                    ripple.parentNode.removeChild(ripple);
+                }
+            }, 600);
+        });
+    </script>
+</body>
+</html>
