@@ -46,8 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const year = today.getFullYear();
         const month = today.getMonth() + 1;
         const method = 2; 
-        
-        // ... (كود جلب المواقيت كما هو) ...
+
         try {
             const response = await fetch(`${PRAYER_API_URL}/${today.getDate()}-${month}-${year}?latitude=${latitude}&longitude=${longitude}&method=${method}`);
             const data = await response.json();
@@ -105,7 +104,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const loadQuranData = async () => {
         if (!quranDisplayDiv) return; 
         
-        // ... (كود جلب القرآن كما هو) ...
         try {
             loadingStatusElement.textContent = '⚠️ جاري تحميل المصحف الشريف من الإنترنت...';
             const response = await fetch(QURAN_API_URL);
