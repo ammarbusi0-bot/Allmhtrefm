@@ -1,58 +1,4 @@
-// script.js - الكود الرئيسي الموحد لجميع الصفحات
-
-// مصفوفة الأسئلة الدينية (تم دمجها هنا لعدم الحاجة لملف questions.js)
-const ALL_QUIZ_QUESTIONS = [
-    {
-        question: "ما هي أول سورة نزلت كاملة في القرآن الكريم؟",
-        options: ["سورة الفاتحة", "سورة المدثر", "سورة العلق", "سورة النصر"],
-        correctIndex: 1 // سورة المدثر
-    },
-    {
-        question: "كم عدد أركان الإسلام؟",
-        options: ["ثلاثة", "أربعة", "خمسة", "ستة"],
-        correctIndex: 2 // خمسة
-    },
-    {
-        question: "من هو أول الخلفاء الراشدين؟",
-        options: ["علي بن أبي طالب", "عمر بن الخطاب", "أبو بكر الصديق", "عثمان بن عفان"],
-        correctIndex: 2 // أبو بكر الصديق
-    },
-    {
-        question: "ما هو الشهر الذي يصومه المسلمون كل عام؟",
-        options: ["شوال", "شعبان", "رمضان", "محرم"],
-        correctIndex: 2 // رمضان
-    },
-    {
-        question: "ما هو اسم النبي الذي ألقاه قومه في النار؟",
-        options: ["يونس", "موسى", "إبراهيم", "عيسى"],
-        correctIndex: 2 // إبراهيم
-    },
-    {
-        question: "في أي ركن من أركان الإسلام يتم الوقوف بعرفة؟",
-        options: ["الصلاة", "الزكاة", "الحج", "الصوم"],
-        correctIndex: 2 // الحج
-    },
-    {
-        question: "من هو صاحب لقب 'فاروق الأمة'؟",
-        options: ["أبو بكر الصديق", "عمر بن الخطاب", "عثمان بن عفان", "علي بن أبي طالب"],
-        correctIndex: 1 // عمر بن الخطاب
-    },
-    {
-        question: "ما هي السورة التي بدأت بالتسبيح وختمت به؟",
-        options: ["الحديد", "الواقعة", "الرحمن", "الإخلاص"],
-        correctIndex: 0 // الحديد
-    },
-    {
-        question: "ما هي قبلة المسلمين الأولى؟",
-        options: ["الكعبة المشرفة", "المسجد الأقصى", "المسجد النبوي", "مسجد قباء"],
-        correctIndex: 1 // المسجد الأقصى
-    },
-    {
-        question: "كم سنة استغرقت الدعوة السرية للإسلام؟",
-        options: ["سنتان", "ثلاث سنوات", "أربع سنوات", "خمس سنوات"],
-        correctIndex: 1 // ثلاث سنوات
-    }
-];
+// script.js - الملف الموحد القديم
 
 document.addEventListener('DOMContentLoaded', () => {
     // --------------------------------------
@@ -62,40 +8,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const body = document.body;
     const THEME_KEY = 'appTheme';
     
-    // عناصر صفحة المصحف (index.html)
+    // عناصر المصحف والمواقيت
     const quranDisplayDiv = document.getElementById('quran-display');
     const loadingStatusElement = document.getElementById('loading-status');
     const ayahSearchInput = document.getElementById('ayah-search');
     const prayerDisplay = document.getElementById('prayer-display');
+    
+    // (افتراض أن هذه هي الروابط التي كنت تستخدمها في البداية)
     const QURAN_API_URL = 'https://cdn.jsdelivr.net/npm/quran-json@3.1.2/dist/quran.json'; 
     const PRAYER_API_URL = 'https://api.aladhan.com/v1/timings';
+    
     let QURAN_FULL_TEXT = null; 
     let CURRENT_SURAH = null;
-
-    // عناصر صفحة الأحاديث (hadith.html)
-    const hadithListDiv = document.getElementById('hadith-list');
-    const hadithSearchInput = document.getElementById('hadith-search');
-    // 👈 API جديد لجلب الأحاديث
-    const HADITH_API_URL = 'https://api.hadith.gading.dev/books/bukhari'; 
-    const HADITH_RANGE = '1-50'; // نجلب أول 50 حديثاً
-    window.FULL_HADITH_DATA = null; // لتخزين الأحاديث بعد جلبها
-
-    // عناصر صفحة الاختبار (quiz.html)
-    const quizContainer = document.getElementById('quiz-container');
-    const scoreDisplay = document.getElementById('score-display');
-    const roundNumberDisplay = document.getElementById('round-number');
-    const timerDisplay = document.getElementById('timer-display');
-    const fiftyFiftyBtn = document.getElementById('fifty-fifty-btn'); 
-
-    // متغيرات حالة الاختبار
-    const QUESTION_TIME = 20; 
-    let countdown;
-    let helpUsedInRound = false; 
-    let questionsPool = []; 
-    let questionsForRound = []; 
-    let currentQuestionIndex = 0;
-    let score = 0;
-    let roundNumber = 1;
 
     // --------------------------------------
     // 2. ميزة: تبديل الوضع الليلي 🌙
@@ -131,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
 
             if (data.code !== 200 || !data.data || !data.data.timings) {
-                prayerDisplay.innerHTML = `<p style="color: red;">عفواً، فشل جلب المواقيت. رمز الخطأ: ${data.code}</p>`;
+                prayerDisplay.innerHTML = `<p style="color: red;">عفواً، فشل جلب المواقيت.</p>`;
                 return;
             }
 
@@ -169,8 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     fetchPrayerTimes(position.coords.latitude, position.coords.longitude);
                 },
                 (error) => {
-                    prayerDisplay.innerHTML = `<p style="color: #dc3545;">❌ تعذر تحديد موقعك. يرجى تفعيل إذن الموقع.</p>`;
-                    console.error("Geolocation Error:", error);
+                    prayerDisplay.innerHTML = `<p style="color: #dc3545;">❌ تعذر تحديد موقعك.</p>`;
                 }
             );
         } else {
@@ -197,7 +120,6 @@ document.addEventListener('DOMContentLoaded', () => {
                  throw new Error('هيكل البيانات المستلمة غير صحيح.');
             }
         } catch (error) {
-            console.error('خطأ في تحميل بيانات القرآن:', error);
             quranDisplayDiv.innerHTML = `<p style="color: red;">عفواً، فشل تحميل بيانات القرآن.</p>`;
             loadingStatusElement.textContent = '❌ فشل التحميل. يرجى التأكد من اتصالك بالإنترنت.';
         }
@@ -220,7 +142,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // 👈 تم تعديل هذه الدالة لحل مشكلة اختفاء الفهرس
     const displaySurah = (surah) => {
         CURRENT_SURAH = surah;
         const surahName = surah.name_ar || surah.name || 'سورة غير معروفة';
@@ -231,7 +152,6 @@ document.addEventListener('DOMContentLoaded', () => {
             ayahSearchInput.value = '';
         }
         
-        // **التعديل الهام**: مسح محتوى quranDisplayDiv بالكامل
         quranDisplayDiv.innerHTML = ''; 
 
         renderSurahContent(surah.verses || surah.array || []);
@@ -284,271 +204,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --------------------------------------
-    // 5. ميزة: عرض الأحاديث والبحث فيها 📚
-    // --------------------------------------
-    
-    // 👈 دالة جديدة لجلب الأحاديث من الإنترنت
-    const loadHadithData = async () => {
-        if (!hadithListDiv) return; 
-
-        hadithListDiv.innerHTML = '<p style="text-align: center;">جاري تحميل الأحاديث من الإنترنت...</p>';
-
-        try {
-            const response = await fetch(`${HADITH_API_URL}?range=${HADITH_RANGE}`);
-            const data = await response.json();
-
-            if (data.code !== 200 || !data.data || !data.data.hadiths) {
-                throw new Error('فشل في جلب بيانات الأحاديث.');
-            }
-
-            window.FULL_HADITH_DATA = data.data.hadiths;
-            displayHadiths(); // عرض الأحاديث بعد التحميل
-        } catch (error) {
-            console.error('خطأ في تحميل بيانات الأحاديث:', error);
-            hadithListDiv.innerHTML = `<p style="color: red; text-align: center;">❌ فشل تحميل الأحاديث. يرجى التأكد من الاتصال.</p>`;
-        }
-    };
-    
-
-    const displayHadiths = (filterTerm = '') => {
-        // نستخدم FULL_HADITH_DATA المتغير الذي تم جلبه
-        if (!hadithListDiv || !window.FULL_HADITH_DATA) {
-            hadithListDiv.innerHTML = `<p style="text-align: center;">يرجى الانتظار حتى يتم تحميل الأحاديث...</p>`;
-            return;
-        }
-
-        hadithListDiv.innerHTML = ''; 
-        const lowerCaseFilter = filterTerm.toLowerCase();
-
-        const filteredHadiths = window.FULL_HADITH_DATA.filter(hadith => 
-            hadith.arab.toLowerCase().includes(lowerCaseFilter)
-        );
-
-        if (filteredHadiths.length === 0) {
-            hadithListDiv.innerHTML = `<p style="color: red; text-align: center;">لا توجد أحاديث مطابقة لـ: ${filterTerm}</p>`;
-            return;
-        }
-
-        filteredHadiths.forEach(hadith => {
-            const htmlContent = `
-                <div class="hadith-container">
-                    <p class="hadith-text">${hadith.arab}</p>
-                    <span class="hadith-source">صحيح البخاري - رقم: ${hadith.number}</span>
-                </div>
-            `;
-            hadithListDiv.insertAdjacentHTML('beforeend', htmlContent);
-        });
-    };
-    
-    if (hadithSearchInput) {
-        hadithSearchInput.addEventListener('input', (e) => {
-            displayHadiths(e.target.value);
-        });
-    }
-
-
-    // --------------------------------------
-    // 6. ميزة: منطق لعبة الأسئلة الدينية 🧠
-    // --------------------------------------
-
-    const shuffleArray = (array) => {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-    };
-
-    if (quizContainer) {
-        // 👈 تم تبسيط هذا الجزء بعد دمج مصفوفة الأسئلة
-        if (ALL_QUIZ_QUESTIONS.length === 0) {
-             quizContainer.innerHTML = '<p style="color: red; text-align: center;">خطأ: مصفوفة الأسئلة فارغة.</p>';
-        } else {
-            questionsPool = [...ALL_QUIZ_QUESTIONS]; 
-            shuffleArray(questionsPool);
-            startQuiz();
-        }
-    }
-
-    const startQuiz = () => {
-        // إذا نقصت الأسئلة المتاحة، نعيد تعبئتها
-        if (questionsPool.length < 10) {
-            questionsPool = [...ALL_QUIZ_QUESTIONS]; 
-            shuffleArray(questionsPool);
-        }
-        
-        questionsForRound = questionsPool.splice(0, 10); 
-        currentQuestionIndex = 0;
-        score = 0;
-        
-        helpUsedInRound = false; 
-        if (fiftyFiftyBtn) {
-            fiftyFiftyBtn.disabled = false;
-            fiftyFiftyBtn.style.opacity = '1';
-        }
-        
-        roundNumberDisplay.textContent = roundNumber;
-        scoreDisplay.textContent = score;
-        displayQuestion();
-    };
-
-    const startTimer = () => {
-        let timeLeft = QUESTION_TIME;
-        if (timerDisplay) timerDisplay.textContent = timeLeft;
-
-        countdown = setInterval(() => {
-            timeLeft--;
-            if (timerDisplay) timerDisplay.textContent = timeLeft;
-
-            if (timeLeft <= 0) {
-                clearInterval(countdown);
-                handleTimeout();
-            }
-        }, 1000);
-    };
-    
-    const handleTimeout = () => {
-        clearInterval(countdown);
-        
-        document.querySelectorAll('.answer-btn').forEach(btn => {
-            btn.disabled = true;
-            const qData = questionsForRound[currentQuestionIndex];
-            if (parseInt(btn.getAttribute('data-original-index')) === qData.correctIndex) {
-                btn.style.backgroundColor = '#28a745'; 
-                btn.style.color = 'white';
-            }
-        });
-
-        quizContainer.insertAdjacentHTML('beforeend', '<p style="color: red; text-align: center; margin-top: 15px;">انتهى الوقت! السؤال لم يحتسب.</p>');
-
-        setTimeout(() => {
-            currentQuestionIndex++;
-            displayQuestion();
-        }, 1500);
-    };
-
-    const displayQuestion = () => {
-        if (currentQuestionIndex >= questionsForRound.length) {
-            endRound();
-            return;
-        }
-        
-        clearInterval(countdown);
-        startTimer();
-
-        const qData = questionsForRound[currentQuestionIndex];
-        
-        const optionsWithIndices = qData.options.map((text, index) => ({ text, index }));
-        shuffleArray(optionsWithIndices);
-
-        let optionsHTML = '';
-        optionsWithIndices.forEach(opt => {
-            optionsHTML += `<button class="answer-btn" data-original-index="${opt.index}">${opt.text}</button>`;
-        });
-
-        quizContainer.innerHTML = `
-            <div class="question-box" id="current-question-box">
-                <p>${(currentQuestionIndex + 1)}. ${qData.question}</p>
-                ${optionsHTML}
-            </div>
-        `;
-
-        document.querySelectorAll('.answer-btn').forEach(button => {
-            button.addEventListener('click', handleAnswer);
-        });
-
-        if (fiftyFiftyBtn && !helpUsedInRound) {
-            fiftyFiftyBtn.onclick = useFiftyFifty;
-        }
-    };
-
-    const useFiftyFifty = () => {
-        if (helpUsedInRound) return;
-
-        const qData = questionsForRound[currentQuestionIndex];
-        const correctIndex = qData.correctIndex;
-        let incorrectButtons = [];
-
-        document.querySelectorAll('.answer-btn').forEach(button => {
-            if (parseInt(button.getAttribute('data-original-index')) !== correctIndex) {
-                incorrectButtons.push(button);
-            }
-        });
-
-        shuffleArray(incorrectButtons);
-        
-        for (let i = 0; i < 2 && i < incorrectButtons.length; i++) {
-            incorrectButtons[i].disabled = true;
-            incorrectButtons[i].style.opacity = '0.3'; 
-            incorrectButtons[i].style.textDecoration = 'line-through';
-        }
-
-        helpUsedInRound = true;
-        if (fiftyFiftyBtn) {
-            fiftyFiftyBtn.disabled = true;
-            fiftyFiftyBtn.style.opacity = '0.5';
-        }
-    };
-
-    const handleAnswer = (event) => {
-        clearInterval(countdown); 
-        
-        const selectedButton = event.target;
-        const originalIndex = parseInt(selectedButton.getAttribute('data-original-index'));
-        const qData = questionsForRound[currentQuestionIndex];
-        
-        document.querySelectorAll('.answer-btn').forEach(btn => btn.disabled = true);
-        
-        document.querySelectorAll('.answer-btn').forEach(btn => {
-            if (parseInt(btn.getAttribute('data-original-index')) === qData.correctIndex) {
-                btn.style.backgroundColor = '#28a745'; 
-                btn.style.color = 'white';
-            }
-        });
-
-        if (originalIndex === qData.correctIndex) {
-            score++;
-        } else {
-            selectedButton.style.backgroundColor = '#dc3545'; 
-            selectedButton.style.color = 'white';
-        }
-        
-        scoreDisplay.textContent = score;
-
-        setTimeout(() => {
-            currentQuestionIndex++;
-            displayQuestion();
-        }, 1500);
-    };
-
-    const endRound = () => {
-        roundNumber++;
-        clearInterval(countdown); 
-        if (timerDisplay) timerDisplay.textContent = QUESTION_TIME; 
-
-        quizContainer.innerHTML = `
-            <div style="text-align: center;">
-                <h2>🎉 انتهت الجولة ${roundNumber - 1}</h2>
-                <p>لقد أحرزت **${score}** من **10** نقاط.</p>
-                <p style="font-weight: bold; color: var(--accent-color);">${score >= 7 ? 'نتائج ممتازة! استمر.' : 'يمكنك تحقيق نتيجة أفضل في الجولة القادمة.'}</p>
-                <button id="next-round-btn" style="
-                    background-color: var(--accent-color); color: white; border: none; 
-                    padding: 10px 20px; border-radius: 25px; cursor: pointer; margin-top: 15px; font-weight: bold;
-                ">ابدأ الجولة التالية (${roundNumber})</button>
-            </div>
-        `;
-        document.getElementById('next-round-btn').addEventListener('click', startQuiz);
-    };
-
-
-    // --------------------------------------
-    // 7. بدء تشغيل الموقع
+    // 5. بدء تشغيل الموقع
     // --------------------------------------
     loadTheme();
     if (quranDisplayDiv) { 
         loadQuranData();
         getLocationAndPrayers();
-    }
-    if (hadithListDiv) {
-        loadHadithData(); // 👈 جلب الأحاديث من الإنترنت
     }
 });
