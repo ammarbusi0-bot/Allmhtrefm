@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>موقع النور الفخم - المصحف ومواقيت الصلاة</title>
+    <title>موقع النور الفخم - القرآن الكريم ومواقيت الصلاة</title>
     
     <link rel="stylesheet" href="style.css"> 
 </head>
@@ -17,25 +17,24 @@
         <a href="index.html">القرآن الكريم (المصحف)</a>
         <a href="hadith.html">الأحاديث النبوية</a>
         <a href="quiz.html">الأسئلة الدينية</a> 
-    </nav>
+        <a href="support.html">الدعم والتواصل</a> </nav>
 
     <main>
         <section id="prayer-times" class="card">
-            <h2>⏱️ مواقيت الصلاة اليوم</h2>
+            <h2>🕌 مواقيت الصلاة</h2>
             <div id="prayer-display">
-                <p>يرجى السماح بالوصول إلى موقعك لجلب مواقيت الصلاة...</p>
+                <p>جاري تحديد موقعك وجلب المواقيت...</p>
             </div>
         </section>
 
-        <section id="quran-viewer" class="card">
-            <h2>🕋 المصحف الشريف</h2>
+        <section id="quran-reader" class="card">
+            <h2>🕋 المصحف الشريف (قراءة)</h2>
             
-            <input type="text" id="ayah-search" class="search-bar" placeholder="ابحث عن آية أو كلمة داخل السورة...">
+            <input type="text" id="ayah-search" class="search-bar" placeholder="ابحث عن آية في السورة المفتوحة..." style="display: none;">
 
-            <div id="quran-content-container">
-                <p id="loading-status">⚠️ جاري تحميل المصحف الشريف...</p>
-                <div id="quran-display"></div>
-            </div>
+            <div id="loading-status"></div>
+            <div id="quran-display">
+                </div>
         </section>
     </main>
 
@@ -43,7 +42,6 @@
         <p>&copy; 2025 موقع النور</p>
     </footer>
 
-    <script src="questions.js"></script> 
-    <script src="script.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>
