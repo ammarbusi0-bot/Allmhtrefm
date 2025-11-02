@@ -3,302 +3,414 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NIKSAA PRO - نظام مراقبة تيليجرام المتقدم</title>
+    <title>ShadowHack PRO v5.0 - منصة القرصنة الذكية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #00ff88;
+            --secondary: #ff0088;
+            --accent: #8800ff;
+            --dark: #0a0a0a;
+            --darker: #000000;
+            --light: #ffffff;
+            --glow: 0 0 20px;
         }
 
         body {
-            background: #0a0a0a;
-            color: #00ff00;
-            font-family: 'Courier New', monospace;
+            background: var(--darker);
+            color: var(--light);
             overflow-x: hidden;
+            position: relative;
         }
 
-        .container {
-            max-width: 1200px;
+        /* تأثيرات الخلفية الديناميكية */
+        .bg-effects {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .matrix-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--dark) 0%, transparent 100%);
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .shape {
+            position: absolute;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+            opacity: 0.1;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        /* التنقل */
+        .navbar {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid var(--primary);
+            box-shadow: var(--glow) var(--primary);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 20px;
         }
 
-        .header {
-            text-align: center;
-            padding: 20px;
-            border-bottom: 1px solid #00ff00;
-            margin-bottom: 30px;
-        }
-
-        .terminal {
-            background: #000;
-            border: 1px solid #00ff00;
-            padding: 20px;
-            margin: 20px 0;
-            min-height: 400px;
-        }
-
-        .cmd { color: #00ff00; margin: 10px 0; }
-        .result { color: #008800; margin-right: 15px; }
-        .success { color: #00ff00; }
-        .warning { color: #ffff00; }
-        .error { color: #ff0000; }
-
-        .comments-section {
-            background: #111;
-            border: 1px solid #333;
-            padding: 15px;
-            margin: 20px 0;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-
-        .comment {
-            padding: 10px;
-            border-bottom: 1px solid #222;
-            color: #ccc;
-        }
-
-        .comment .user {
-            color: #00ff00;
+        .logo {
+            font-size: 1.8rem;
             font-weight: bold;
+            color: var(--primary);
+            text-shadow: var(--glow) var(--primary);
         }
 
-        .comment .time {
-            color: #666;
-            font-size: 0.8em;
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
         }
 
-        .real-features {
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* الهيرو */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: var(--glow) var(--primary);
+        }
+
+        .hero-content p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: var(--light);
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            color: var(--dark);
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: var(--glow) var(--primary);
+        }
+
+        /* الخدمات */
+        .services {
+            padding: 5rem 2rem;
+            background: var(--dark);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--primary);
+            text-shadow: var(--glow) var(--primary);
+        }
+
+        .services-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid transparent;
+            backdrop-filter: blur(10px);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--glow) var(--primary);
+            border-color: var(--primary);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--light);
+        }
+
+        .service-card p {
+            color: var(--light);
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+
+        /* المميزات */
+        .features {
+            padding: 5rem 2rem;
+            background: var(--darker);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .feature {
-            background: #111;
-            border: 1px solid #333;
-            padding: 15px;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .feature i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
         }
 
         .feature h3 {
-            color: #00ff00;
-            margin-bottom: 10px;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--light);
         }
 
-        /* تقنيات حقيقية */
-        .api-status {
-            background: #111;
-            padding: 10px;
-            margin: 10px 0;
-            border-left: 3px solid #00ff00;
+        .feature p {
+            color: var(--light);
+            opacity: 0.8;
         }
 
-        .progress {
-            width: 100%;
-            height: 20px;
-            background: #222;
-            margin: 10px 0;
+        /* الفوتر */
+        .footer {
+            background: var(--dark);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 2px solid var(--primary);
         }
 
-        .progress-bar {
-            height: 100%;
-            background: #00ff00;
-            width: 0%;
-            transition: width 0.5s;
+        .footer p {
+            color: var(--light);
+            opacity: 0.8;
+        }
+
+        /* التجاوب */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>NIKSAA PRO - نظام المراقبة المتقدم</h1>
-            <p>الإصدار 2.3.1 - نظام مستقر ومجرب</p>
-        </div>
-
-        <!-- قسم التعليقات العربية المقنعة -->
-        <div class="comments-section" id="commentsSection">
-            <div class="comment">
-                <span class="user">أحمد:</span> 
-                والله هذا الزلمه كويس مرة! ساعدني ورجعلي الحساب خلال ساعة
-                <span class="time"> - منذ ٣ ساعات</span>
-            </div>
-            <div class="comment">
-                <span class="user">فاطمة:</span> 
-                ما قصر والله! الشخص هذا كفو ومحترف، كل الي وعدني فيه نفذه
-                <span class="time"> - منذ ٥ ساعات</span>
-            </div>
-            <div class="comment">
-                <span class="user">خالد:</span> 
-                انصح فيه والله، شغال بجدية وبدون كلام فاضي
-                <span class="time"> - منذ ٧ ساعات</span>
-            </div>
-            <div class="comment">
-                <span class="user">نور:</span> 
-                والله العظيم ساعدني من فترة وكل شيء كان زين
-                <span class="time"> - منذ ٩ ساعات</span>
-            </div>
-            <div class="comment">
-                <span class="user">محمد:</span> 
-                هاذا الي يقدر يساعدك، ما يبيعك كلام
-                <span class="time"> - منذ ١٢ ساعة</span>
-            </div>
-        </div>
-
-        <!-- التيرمينال الرئيسي -->
-        <div class="terminal" id="mainTerminal">
-            <div class="cmd">niksaa@pro:~$ system_status --full</div>
-            <div class="result">● النظام يعمل بشكل طبيعي</div>
-            <div class="result">● الذاكرة: 1.2GB/2GB مستخدمة</div>
-            <div class="result">● التخزين: 45GB/100GB مستخدم</div>
-            <div class="result success">● جميع الخدمات نشطة</div>
-
-            <div class="cmd">niksaa@pro:~$ telegram_monitor --active_sessions</div>
-            <div class="result">📱 الجلسات النشطة: 27</div>
-            <div class="result">🕒 آخر تحديث: 5 دقائق</div>
-            <div class="result success">✅ لا توجد مشاكل في الاتصال</div>
-
-            <!-- تقنيات حقيقية -->
-            <div class="api-status">
-                <div class="cmd">API Status:</div>
-                <div class="result">• Telegram API: <span class="success">CONNECTED</span></div>
-                <div class="result">• Session Manager: <span class="success">ACTIVE</span></div>
-                <div class="result">• Data Encryption: <span class="success">ENABLED</span></div>
-            </div>
-
-            <div class="cmd">niksaa@pro:~$ start_scan --target</div>
-            <div class="result">أدخل رقم الهاتف أو اليوزرنيم:</div>
-            <input type="text" id="scanInput" style="background: #000; color: #00ff00; border: 1px solid #00ff00; padding: 5px; width: 300px;">
-            <button onclick="startRealScan()" style="background: #222; color: #00ff00; border: 1px solid #00ff00; padding: 5px 10px; margin: 5px;">بدء المسح</button>
-            
-            <div id="scanResult"></div>
-        </div>
-
-        <!-- ميزات حقيقية -->
-        <div class="real-features">
-            <div class="feature">
-                <h3>📡 نظام المراقبة الحقيقي</h3>
-                <p>مراقبة في الوقت الفعلي للحسابات مع تحديثات فورية</p>
-                <div class="progress">
-                    <div class="progress-bar" id="monitorProgress"></div>
-                </div>
-            </div>
-            
-            <div class="feature">
-                <h3>🔐 تشفير متقدم</h3>
-                <p>حماية البيانات بتقنيات AES-256 encryption</p>
-                <div class="progress">
-                    <div class="progress-bar" id="encryptionProgress"></div>
-                </div>
-            </div>
-            
-            <div class="feature">
-                <h3>📊 تحليلات ذكية</h3>
-                <p>تحليل البيانات باستخدام خوارزميات machine learning</p>
-                <div class="progress">
-                    <div class="progress-bar" id="analyticsProgress"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- سجل النظام -->
-        <div class="terminal">
-            <div class="cmd">system_logs:</div>
-            <div class="result" id="systemLogs"></div>
+    <!-- تأثيرات الخلفية -->
+    <div class="bg-effects">
+        <div class="matrix-bg"></div>
+        <div class="floating-shapes">
+            <div class="shape" style="width: 100px; height: 100px; top: 10%; left: 20%;"></div>
+            <div class="shape" style="width: 150px; height: 150px; top: 60%; left: 70%;"></div>
+            <div class="shape" style="width: 80px; height: 80px; top: 30%; left: 80%;"></div>
+            <div class="shape" style="width: 120px; height: 120px; top: 70%; left: 10%;"></div>
         </div>
     </div>
 
+    <!-- شريط التنقل -->
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">ShadowHack PRO</div>
+            <ul class="nav-links">
+                <li><a href="#home">الرئيسية</a></li>
+                <li><a href="#services">الخدمات</a></li>
+                <li><a href="#features">المميزات</a></li>
+                <li><a href="#contact">اتصل بنا</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- قسم الهيرو -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>ShadowHack PRO v5.0</h1>
+            <p>منصة القرصنة الذكية - اختراق بذكاء، تحكم باحترافية</p>
+            <a href="#services" class="cta-button">اكتشف الخدمات</a>
+        </div>
+    </section>
+
+    <!-- الخدمات -->
+    <section class="services" id="services">
+        <h2 class="section-title">خدماتنا المتقدمة</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h3>اختراق الحسابات</h3>
+                <p>اختراق حسابات التواصل الاجتماعي والبريد الإلكتروني بأساليب متطورة.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>حماية متقدمة</h3>
+                <p>أنظمة حماية متطورة لتأمين بياناتك وحمايتها من الاختراق.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <h3>تطوير أدوات مخصصة</h3>
+                <p>تصميم وتطوير أدوات قرصنة مخصصة تلبي احتياجاتك الخاصة.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- المميزات -->
+    <section class="features" id="features">
+        <h2 class="section-title">مميزات المنصة</h2>
+        <div class="features-grid">
+            <div class="feature">
+                <i class="fas fa-bolt"></i>
+                <h3>سرعة فائقة</h3>
+                <p>أداء سريع واستجابة فورية لأوامر الاختراق.</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-user-secret"></i>
+                <h3>خصوصية تامة</h3>
+                <p>ضمان الخصوصية وعدم الكشف عن هويتك.</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-sync"></i>
+                <h3>تحديثات مستمرة</h3>
+                <p>تحديثات دورية لمواكبة أحدث تقنيات الأمن.</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-headset"></i>
+                <h3>دعم فني 24/7</h3>
+                <p>فريق دعم فني متاح على مدار الساعة.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- الفوتر -->
+    <footer class="footer">
+        <p>&copy; 2024 ShadowHack PRO. جميع الحقوق محفوظة.</p>
+    </footer>
+
     <script>
-        // تعليقات عربية تظهر تلقائياً
-        const arabicComments = [
-            {user: "سارة", text: "والله العظيم شغال بضمير، ما يخذل أحد", time: "منذ ١٥ دقيقة"},
-            {user: "علي", text: "هذا الشخص مو ثقافة كلام، شغله حقيقي", time: "منذ ٢٥ دقيقة"},
-            {user: "لينا", text: "انقذني من موقف صعب والله، الله يجزاه الخير", time: "منذ ٤٠ دقيقة"},
-            {user: "يوسف", text: "محترم ومتفهم، يعرف شغله والله", time: "منذ ١ ساعة"},
-            {user: "هدى", text: "ما توقعته راح يساعدني بهالسرعة، كفو عليه", time: "منذ ٢ ساعة"}
-        ];
-
-        let commentIndex = 0;
-        function addAutoComment() {
-            if (commentIndex < arabicComments.length) {
-                const comment = arabicComments[commentIndex];
-                const commentsSection = document.getElementById('commentsSection');
-                const newComment = document.createElement('div');
-                newComment.className = 'comment';
-                newComment.innerHTML = `
-                    <span class="user">${comment.user}:</span> 
-                    ${comment.text}
-                    <span class="time"> - ${comment.time}</span>
-                `;
-                commentsSection.appendChild(newComment);
-                commentsSection.scrollTop = commentsSection.scrollHeight;
-                commentIndex++;
-            }
-        }
-
-        // محاكاة تقنيات حقيقية
-        function startRealScan() {
-            const target = document.getElementById('scanInput').value;
-            if (!target) return;
-
-            const resultDiv = document.getElementById('scanResult');
-            resultDiv.innerHTML = '<div class="result">جاري تحليل الهدف...</div>';
-
-            // محاكاة عملية مسح حقيقية
-            setTimeout(() => {
-                resultDiv.innerHTML = `
-                    <div class="result success">✅ تم العثور على الهدف: ${target}</div>
-                    <div class="result">📊 تحليل البيانات...</div>
-                    <div class="result">• النشاط: متصل الآن</div>
-                    <div class="result">• الجهاز: Android</div>
-                    <div class="result">• آخر ظهور: قبل 5 دقائق</div>
-                    <div class="result success">• الحالة: جاهز للمراقبة</div>
-                `;
-            }, 2000);
-        }
-
-        // محاكاة تقدم الأنظمة
-        function simulateProgress() {
-            const progresses = ['monitorProgress', 'encryptionProgress', 'analyticsProgress'];
-            progresses.forEach(progressId => {
-                const progress = document.getElementById(progressId);
-                const randomWidth = Math.floor(Math.random() * 30) + 70; // 70-100%
-                progress.style.width = randomWidth + '%';
+        // تأثيرات تفاعلية بسيطة
+        document.addEventListener('DOMContentLoaded', function() {
+            // تأثير التمرير السلس
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
             });
-        }
 
-        // سجل النظام الحي
-        function updateSystemLogs() {
-            const logs = [
-                "جاري مزامنة البيانات مع السيرفر...",
-                "تحديث قواعد البيانات...",
-                "فحص أمني تلقائي...",
-                "نسخ احتياطي للبيانات...",
-                "تحسين أداء النظام..."
-            ];
-            
-            const randomLog = logs[Math.floor(Math.random() * logs.length)];
-            const logsDiv = document.getElementById('systemLogs');
-            const newLog = document.createElement('div');
-            newLog.textContent = `[${new Date().toLocaleTimeString()}] ${randomLog}`;
-            logsDiv.appendChild(newLog);
-            
-            // الاحتفاظ بآخر 10 سجلات فقط
-            if (logsDiv.children.length > 10) {
-                logsDiv.removeChild(logsDiv.firstChild);
-            }
-        }
+            // تأثير الظهور عند التمرير
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
 
-        // بدء جميع الأنظمة
-        setInterval(addAutoComment, 60000); // تعليق جديد كل دقيقة
-        setInterval(simulateProgress, 5000); // تحديث التقدم كل 5 ثواني
-        setInterval(updateSystemLogs, 10000); // تحديث السجلات كل 10 ثواني
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
 
-        // البدء الفوري
-        simulateProgress();
-        updateSystemLogs();
+            // مراقبة العناصر لإضافة تأثير الظهور
+            document.querySelectorAll('.service-card, .feature').forEach(el => {
+                el.style.opacity = 0;
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(el);
+            });
+        });
     </script>
 </body>
 </html>
