@@ -3,146 +3,95 @@ document.addEventListener('DOMContentLoaded', () => {
     // العناصر الأساسية
     const audio = document.getElementById('background-audio');
     const ctaButton = document.getElementById('ctaButton'); 
+    const chatButton = document.getElementById('chatRoomButton'); 
     
     // الأقسام المخفية بناءً على CSS
-    // لاحظ أننا أضفنا قسم about-us-summary الذي يحل محل features القديم
-    const hiddenSections = document.querySelectorAll('.services, .features-section, .comments-section, .faq-section, .footer, .about-us-summary');
+    const hiddenSections = document.querySelectorAll('.services, .features-section, .comments-section, .faq-section, .footer, .disclaimer-section');
     
-    // عناصر نافذة الكود السري
-    const modal = document.getElementById('securityModal');
-    const closeButton = modal ? modal.querySelector('.close-button') : null;
-    const verifyButton = document.getElementById('verifyCodeButton');
-    let currentSecretCode = ''; // لتخزين الكود الصحيح
-
     // ----------------------------------------------------
-    // 1. منطق تشغيل الموسيقى عند أي تفاعل
+    // 1. منطق تشغيل الموسيقى عند أي تفاعل (نقرة أو ضغطة مفتاح)
     // ----------------------------------------------------
     const playAudioOnFirstInteraction = () => {
         // نستخدم audio.play() لضمان تشغيلها عند النقرة
         audio.play().catch(error => {
             console.log("Audio play failed initially, error:", error);
         });
-        audio.muted = false; // تشغيل الصوت
 
-        // إزالة المستمع بعد التشغيل
+        // إزالة المستمع بعد التشغيل لتجنب تكرار محاولة التشغيل
         document.removeEventListener('click', playAudioOnFirstInteraction);
         document.removeEventListener('keydown', playAudioOnFirstInteraction);
+        console.log("Audio started playing after first user interaction.");
     };
 
-    if (audio) {
-        document.addEventListener('click', playAudioOnFirstInteraction);
-        document.addEventListener('keydown', playAudioOnFirstInteraction);
-    }
-    
+    // ربط وظيفة تشغيل الموسيقى بأول نقرة أو ضغطة مفتاح في أي مكان في المستند
+    document.addEventListener('click', playAudioOnFirstInteraction);
+    document.addEventListener('keydown', playAudioOnFirstInteraction);
+
     // ----------------------------------------------------
     // 2. منطق إظهار المحتوى عند النقر على زر CTA
     // ----------------------------------------------------
     if (ctaButton) {
         ctaButton.addEventListener('click', function (e) {
+            // نمنع التنقل السلس الافتراضي أولاً لتنفيذ الإظهار
             e.preventDefault(); 
             
+            // إظهار الأقسام المخفية
             hiddenSections.forEach(section => {
                 section.style.opacity = '1';
-                section.style.pointerEvents = 'auto';
+                section.style.pointerEvents = 'auto'; // السماح بالتفاعل
             });
+            console.log("All hidden sections revealed.");
 
+            // تنفيذ التنقل السلس إلى قسم الخدمات (بما أن التنقل الافتراضي تم منعه)
             const target = document.querySelector(this.getAttribute('href'));
             if (target) {
                 target.scrollIntoView({ behavior: 'smooth' });
             }
 
-            ctaButton.removeEventListener('click', arguments.callee);
+            // إزالة المستمع من زر CTA بعد النقر عليه لضمان التنفيذ مرة واحدة (اختياري)
+            // ctaButton.removeEventListener('click', arguments.callee);
         });
     }
 
     // ----------------------------------------------------
-    // 3. منطق نافذة الكود السري الجديدة
+    // 3. منطق زر غرفة الدردشة وتحذير الدخول
     // ----------------------------------------------------
-    
-    // وظيفة الشراء - تفتح النافذة
-    function buyService(event) {
-        const serviceCard = event.target.closest('.service-card');
-        const serviceName = serviceCard.getAttribute('data-name');
-        const price = serviceCard.getAttribute('data-price');
-        
-        if (!modal) return;
-        
-        // توليد كود سري جديد
-        currentSecretCode = Math.floor(1000 + Math.random() * 9000).toString();
-        document.getElementById('secretCodeDisplay').textContent = currentSecretCode;
-        
-        // عرض اسم الخدمة
-        modal.querySelector('.service-name-placeholder').textContent = `الخدمة المطلوبة: ${serviceName} ($${price})`;
-        document.getElementById('userInputCode').value = '';
-        document.getElementById('verificationMessage').textContent = '';
-        
-        modal.style.display = 'block';
-    }
+    const chatWarningModal = document.getElementById('chatWarningModal');
+    const chatAcceptBtn = document.getElementById('chatAcceptBtn');
 
-    // وظيفة التحقق من الكود
-    function verifyCode() {
-        const userInput = document.getElementById('userInputCode').value.trim();
-        const messageDisplay = document.getElementById('verificationMessage');
-        const button = document.getElementById('verifyCodeButton');
-        
-        if (userInput === currentSecretCode) {
-            messageDisplay.textContent = '✅ تم التحقق بنجاح! جاري التوجيه للدردشة...';
-            messageDisplay.style.color = 'var(--primary)';
-            button.disabled = true;
-
-            // التوجيه إلى صفحة الدردشة الداخلية بعد 3 ثوانٍ
-            setTimeout(() => {
-                window.location.href = 'chat.html';
-            }, 3000);
-
-        } else {
-            messageDisplay.textContent = '❌ الكود غير صحيح. حاول مرة أخرى.';
-            messageDisplay.style.color = 'var(--secondary)';
-            button.disabled = false;
-        }
-    }
-
-    // ربط وظيفة الشراء بجميع أزرار الشراء
-    document.querySelectorAll('.buy-btn').forEach(button => {
-        button.addEventListener('click', buyService);
-    });
-
-    // إغلاق النافذة عند النقر على زر الإغلاق
-    if (closeButton) {
-        closeButton.addEventListener('click', () => {
-            modal.style.display = 'none';
+    if (chatButton) {
+        chatButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            chatWarningModal.style.display = 'block'; // إظهار تحذير الدردشة
         });
     }
 
-    // إغلاق النافذة عند النقر خارجها
-    window.addEventListener('click', (event) => {
-        if (event.target === modal) {
-            modal.style.display = 'none';
-        }
-    });
-
-    // ربط وظيفة التحقق بزر التحقق
-    if (verifyButton) {
-        verifyButton.addEventListener('click', verifyCode);
-    }
-    
-    // ربط وظيفة التحقق بضغطة Enter داخل حقل الإدخال
-    const userInputCode = document.getElementById('userInputCode');
-    if (userInputCode) {
-        userInputCode.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault(); 
-                verifyCode();
-            }
+    if (chatAcceptBtn) {
+        chatAcceptBtn.addEventListener('click', function() {
+            chatWarningModal.style.display = 'none'; // إخفاء التحذير
+            window.location.href = 'chat.html'; // توجيه لصفحة الدردشة
         });
     }
 
     // ----------------------------------------------------
-    // 4. تهيئة الأقسام الأخرى
+    // 4. تهيئة الأقسام الأخرى عند تحميل الصفحة
     // ----------------------------------------------------
     displayRandomComments();
     createFAQ();
+    updatePubgStock(); // تحديث مخزون ببجي
+    updateServiceDates(); // تحديث التواريخ
+
+    // تحديث التعليقات كل 30 دقيقة
     setInterval(displayRandomComments, 30 * 60 * 1000); 
+    // تحديث التواريخ كل ساعة
+    setInterval(updateServiceDates, 60 * 60 * 1000); 
+    // تحديث مخزون ببجي كل 5 دقائق
+    setInterval(updatePubgStock, 5 * 60 * 1000); 
+
+    // ربط وظيفة الشراء بجميع أزرار الشراء (تم تغييرها لفتح المودال)
+    document.querySelectorAll('.buy-btn').forEach(button => {
+        button.addEventListener('click', initializeCaptcha);
+    });
 
     // إعادة حجم الكانفاس عند تغيير حجم النافذة
     window.addEventListener('resize', function() {
@@ -161,6 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
 const canvas = document.getElementById('matrixCanvas');
 const ctx = canvas ? canvas.getContext('2d') : null;
 
+// التحقق من وجود الكانفاس قبل الرسم
 if (canvas && ctx) {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -200,7 +150,7 @@ if (canvas && ctx) {
 
 
 // ----------------------------------------------------
-// 💬 قاعدة بيانات التعليقات والأسئلة الشائعة (كما هي)
+// 💬 قاعدة بيانات التعليقات والأسئلة الشائعة 
 // ----------------------------------------------------
 const generateRandomTime = () => {
     const hours = Math.floor(Math.random() * 24) + 1; // 1 to 24 hours
@@ -305,14 +255,14 @@ function displayRandomComments() {
 const faqData = [
     {q: "ما هو ShadowHack PRO؟", a: "منصة متقدمة ومتخصصة في تقديم خدمات القرصنة والاختراق بأدوات متطورة وغير قابلة للكشف."},
     {q: "هل أدواتكم آمنة للاستخدام؟", a: "نعم، أدواتنا آمنة تماماً ومصممة بتقنيات متقدمة تضمن التخفي وعدم الكشف."},
-    {q: "كيف أشتري الخدمات؟", a: "اضغط على زر الخدمة، أدخل الكود السري للتحقق، وسيتم توجيهك مباشرة لغرفة الدردشة مع فريق الدعم لبدء التنفيذ."},
+    {q: "كيف أشتري الخدمات؟", a: "اضغط على أي زر شراء وسيتم توجيهك أولاً للتحقق الأمني، ثم إلى تليجرام للتواصل مع فريق المبيعات."},
     {q: "ما مدة التفعيل؟", a: "يتم تفعيل معظم الخدمات خلال دقائق بعد تأكيد الدفع."},
     {q: "هل يوجد ضمان؟", a: "نعم، نقدم ضمان استبدال أو استرجاع في حال عدم عمل الخدمة."},
     {q: "ما هي طريقة الدفع المتاحة؟", a: "نقبل العملات المشفرة (Bitcoin, USDT) لضمان خصوصيتك التامة."},
-    {q: "هل يمكنني طلب خدمة اختراق غير مذكورة؟", a: "تواصل معنا عبر نظام الدردشة المباشر لطلب خدمات مخصصة، وسنناقش إمكانية تنفيذها."},
+    {q: "هل يمكنني طلب خدمة اختراق غير مذكورة؟", a: "تواصل معنا على تليجرام لطلب خدمات مخصصة، وسنناقش إمكانية تنفيذها."},
 ];
 
-// إنشاء الأسئلة الشائعة (والتي تكون مخفية افتراضياً)
+// إنشاء الأسئلة الشائعة
 function createFAQ() {
     const container = document.getElementById('faqContainer');
     if (!container) return; 
@@ -334,6 +284,114 @@ function createFAQ() {
 
         container.appendChild(faqItem);
     });
+}
+
+// ----------------------------------------------------
+// 📅 منطق تحديث التواريخ العشوائية (كل ساعة)
+// ----------------------------------------------------
+function generateRandomDate() {
+    const day = Math.floor(Math.random() * 28) + 1;
+    const month = Math.floor(Math.random() * 12) + 1;
+    const year = new Date().getFullYear();
+    const hour = Math.floor(Math.random() * 24);
+    const minute = Math.floor(Math.random() * 60);
+
+    return `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year} - ${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+}
+
+function updateServiceDates() {
+    const dateSpans = document.querySelectorAll('.update-date');
+    dateSpans.forEach(span => {
+        span.textContent = generateRandomDate();
+    });
+}
+
+
+// ----------------------------------------------------
+// 📉 منطق تحديث مخزون ببجي (كل 5 دقائق)
+// ----------------------------------------------------
+function updatePubgStock() {
+    const stockElement = document.getElementById('pubg-stock');
+    if (stockElement) {
+        // يتم تحديثه عشوائياً بين 1 و 5 من أصل 20
+        const randomStock = Math.floor(Math.random() * 5) + 1; 
+        stockElement.textContent = randomStock;
+    }
+}
+
+
+// ----------------------------------------------------
+// 🤖 منطق التحقق من الروبوت (CAPTCHA)
+// ----------------------------------------------------
+let currentService = null;
+let currentPrice = null;
+let currentCaptcha = '';
+
+const captchaModal = document.getElementById('captchaModal');
+const captchaDisplay = document.getElementById('captchaDisplay');
+const captchaInput = document.getElementById('captchaInput');
+const captchaVerifyBtn = document.getElementById('captchaVerifyBtn');
+
+// وظيفة فتح المودال وتوليد الكابتشا
+function initializeCaptcha(event) {
+    const serviceCard = event.target.closest('.service-card');
+    currentService = serviceCard.getAttribute('data-name');
+    currentPrice = serviceCard.getAttribute('data-price');
+    
+    currentCaptcha = Math.floor(100000 + Math.random() * 900000).toString(); // رقم عشوائي من 6 خانات
+    
+    captchaDisplay.textContent = currentCaptcha;
+    captchaInput.value = ''; // مسح الإدخال القديم
+    captchaModal.style.display = 'block';
+    
+    // إزالة المستمع القديم وإضافة الجديد لضمان عدم تكرار التحقق
+    captchaVerifyBtn.removeEventListener('click', handleCaptchaVerification);
+    captchaVerifyBtn.addEventListener('click', handleCaptchaVerification);
+}
+
+// وظيفة التحقق من الكابتشا والتوجيه
+function handleCaptchaVerification() {
+    if (captchaInput.value === currentCaptcha) {
+        captchaModal.style.display = 'none';
+        // إذا كان التحقق ناجحاً، ننفذ عملية الشراء
+        buyServiceRedirect(currentService, currentPrice);
+    } else {
+        alert("فشل التحقق. الأرقام غير صحيحة. يرجى المحاولة مرة أخرى.");
+        // إعادة توليد الكابتشا إذا فشل التحقق
+        currentCaptcha = Math.floor(100000 + Math.random() * 900000).toString();
+        captchaDisplay.textContent = currentCaptcha;
+        captchaInput.value = '';
+    }
+}
+
+// وظيفة الشراء - توجيه لتليجرام بعد التحقق
+function buyServiceRedirect(serviceName, price) {
+    const telegramUsername = "Armanex";
+    const message = `أريد شراء ${serviceName} بسعر $${price} من ShadowHack PRO`;
+    const url = `https://t.me/${telegramUsername}?text=${encodeURIComponent(message)}`;
+    
+    window.open(url, '_blank');
+    
+    // تأثير مرئي على الزر الذي تم النقر عليه مؤخراً
+    const button = document.querySelector(`.service-card[data-name="${serviceName}"] .buy-btn`);
+    if (button) {
+        const originalText = button.innerHTML;
+        button.innerHTML = '✅ تم التحقق والتوجيه...';
+        button.style.background = 'linear-gradient(45deg, #00ff00, #00aa00)';
+        button.disabled = true;
+        
+        setTimeout(() => {
+            button.innerHTML = originalText;
+            button.style.background = 'linear-gradient(45deg, var(--accent), var(--secondary))';
+            button.disabled = false;
+        }, 3000);
+    }
+}
+
+
+// تفاصيل المميزات
+function showFeatureDetails(title, details) {
+    alert(`🛡️ ${title}\n\n${details}`);
 }
 
 // التنقل السلس (لروابط التنقل الأخرى غير CTA)
