@@ -3,97 +3,85 @@ document.addEventListener('DOMContentLoaded', () => {
     // العناصر الأساسية
     const audio = document.getElementById('background-audio');
     const ctaButton = document.getElementById('ctaButton'); 
-    const chatButton = document.getElementById('chatRoomButton'); 
     
-    // الأقسام المخفية بناءً على CSS
-    const hiddenSections = document.querySelectorAll('.services, .features-section, .comments-section, .faq-section, .footer, .disclaimer-section');
+    // عناصر التحكم في الموافقة
+    const disclaimerModal = document.getElementById('disclaimerModal');
+    const acceptDisclaimerBtn = document.getElementById('acceptDisclaimerBtn');
+    const mainContent = document.getElementById('mainContent');
+    
+    // الأقسام المخفية بناءً على CSS (هذه تستخدم لإظهارها بعد النقر على زر CTA)
+    // الآن، كامل المحتوى مخفي بواسطة 'mainContent' حتى تتم الموافقة أولاً.
+    const hiddenSections = document.querySelectorAll('.services, .features-section, .comments-section, .faq-section, .footer');
     
     // ----------------------------------------------------
-    // 1. منطق تشغيل الموسيقى عند أي تفاعل (نقرة أو ضغطة مفتاح)
+    // 1. منطق الموافقة على إخلاء المسؤولية (يتم تنفيذه عند تحميل الصفحة)
+    // ----------------------------------------------------
+    if (disclaimerModal && acceptDisclaimerBtn && mainContent) {
+        acceptDisclaimerBtn.addEventListener('click', () => {
+            disclaimerModal.style.display = 'none'; // إخفاء نافذة الموافقة
+            mainContent.style.display = 'block'; // إظهار المحتوى الرئيسي
+            
+            // تهيئة مستمعي تفاعل المستخدم لتشغيل الصوت
+            document.addEventListener('click', playAudioOnFirstInteraction);
+            document.addEventListener('keydown', playAudioOnFirstInteraction);
+            
+            // تهيئة باقي مكونات الصفحة بعد الموافقة
+            initializePageComponents();
+            
+            // تشغيل وظيفة CTA مباشرة إذا كان المستخدم يود تخطي الهيرو
+            const servicesSection = document.getElementById('services');
+            if (servicesSection) {
+                 servicesSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    }
+
+    // ----------------------------------------------------
+    // 2. منطق تشغيل الموسيقى عند أي تفاعل (نقرة أو ضغطة مفتاح)
     // ----------------------------------------------------
     const playAudioOnFirstInteraction = () => {
-        // نستخدم audio.play() لضمان تشغيلها عند النقرة
         audio.play().catch(error => {
             console.log("Audio play failed initially, error:", error);
         });
 
-        // إزالة المستمع بعد التشغيل لتجنب تكرار محاولة التشغيل
         document.removeEventListener('click', playAudioOnFirstInteraction);
         document.removeEventListener('keydown', playAudioOnFirstInteraction);
         console.log("Audio started playing after first user interaction.");
     };
 
-    // ربط وظيفة تشغيل الموسيقى بأول نقرة أو ضغطة مفتاح في أي مكان في المستند
-    document.addEventListener('click', playAudioOnFirstInteraction);
-    document.addEventListener('keydown', playAudioOnFirstInteraction);
+    // ----------------------------------------------------
+    // 3. وظيفة تهيئة مكونات الصفحة بعد الموافقة
+    // ----------------------------------------------------
+    function initializePageComponents() {
+        // منطق إظهار الأقسام المخفية عند النقر على زر CTA
+        if (ctaButton) {
+            ctaButton.addEventListener('click', function (e) {
+                e.preventDefault(); 
+                
+                hiddenSections.forEach(section => {
+                    section.style.opacity = '1';
+                    section.style.pointerEvents = 'auto';
+                });
+                console.log("All hidden sections revealed.");
 
-    // ----------------------------------------------------
-    // 2. منطق إظهار المحتوى عند النقر على زر CTA
-    // ----------------------------------------------------
-    if (ctaButton) {
-        ctaButton.addEventListener('click', function (e) {
-            // نمنع التنقل السلس الافتراضي أولاً لتنفيذ الإظهار
-            e.preventDefault(); 
-            
-            // إظهار الأقسام المخفية
-            hiddenSections.forEach(section => {
-                section.style.opacity = '1';
-                section.style.pointerEvents = 'auto'; // السماح بالتفاعل
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
             });
-            console.log("All hidden sections revealed.");
+        }
+        
+        displayRandomComments();
+        createFAQ();
+        
+        // تحديث التعليقات كل 30 دقيقة
+        setInterval(displayRandomComments, 30 * 60 * 1000); 
 
-            // تنفيذ التنقل السلس إلى قسم الخدمات (بما أن التنقل الافتراضي تم منعه)
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({ behavior: 'smooth' });
-            }
-
-            // إزالة المستمع من زر CTA بعد النقر عليه لضمان التنفيذ مرة واحدة (اختياري)
-            // ctaButton.removeEventListener('click', arguments.callee);
+        // ربط وظيفة الشراء بجميع أزرار الشراء لفتح الكابتشا (تم إضافتها سابقاً)
+        document.querySelectorAll('.buy-btn').forEach(button => {
+            button.addEventListener('click', initializeCaptcha);
         });
     }
-
-    // ----------------------------------------------------
-    // 3. منطق زر غرفة الدردشة وتحذير الدخول
-    // ----------------------------------------------------
-    const chatWarningModal = document.getElementById('chatWarningModal');
-    const chatAcceptBtn = document.getElementById('chatAcceptBtn');
-
-    if (chatButton) {
-        chatButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            chatWarningModal.style.display = 'block'; // إظهار تحذير الدردشة
-        });
-    }
-
-    if (chatAcceptBtn) {
-        chatAcceptBtn.addEventListener('click', function() {
-            chatWarningModal.style.display = 'none'; // إخفاء التحذير
-            window.location.href = 'chat.html'; // توجيه لصفحة الدردشة
-        });
-    }
-
-    // ----------------------------------------------------
-    // 4. تهيئة الأقسام الأخرى عند تحميل الصفحة
-    // ----------------------------------------------------
-    displayRandomComments();
-    createFAQ();
-    updatePubgStock(); // تحديث مخزون ببجي
-    updateRshqStock(); // تحديث مخزون الرشق (جديد)
-    updateServiceDates(); // تحديث التواريخ
-
-    // تحديث التعليقات كل 30 دقيقة
-    setInterval(displayRandomComments, 30 * 60 * 1000); 
-    // تحديث التواريخ كل ساعة
-    setInterval(updateServiceDates, 60 * 60 * 1000); 
-    // تحديث مخزون ببجي والرشق كل 5 دقائق
-    setInterval(updatePubgStock, 5 * 60 * 1000); 
-    setInterval(updateRshqStock, 5 * 60 * 1000); // تحديث مخزون الرشق
-
-    // 🔴 إصلاح: ربط وظيفة الشراء بجميع أزرار الشراء لفتح المودال مباشرة
-    document.querySelectorAll('.buy-btn').forEach(button => {
-        button.addEventListener('click', initializeCaptcha);
-    });
 
     // إعادة حجم الكانفاس عند تغيير حجم النافذة
     window.addEventListener('resize', function() {
@@ -103,6 +91,11 @@ document.addEventListener('DOMContentLoaded', () => {
             canvas.height = window.innerHeight;
         }
     });
+
+    // إذا كانت نافذة الموافقة موجودة، لا نقوم بتهيئة مكونات الصفحة الآن
+    if (!disclaimerModal) {
+        initializePageComponents();
+    }
 });
 
 
@@ -152,10 +145,10 @@ if (canvas && ctx) {
 
 
 // ----------------------------------------------------
-// 💬 قاعدة بيانات التعليقات والأسئلة الشائعة 
+// 💬 قاعدة بيانات التعليقات والأسئلة الشائعة (لم يتم تعديلها)
 // ----------------------------------------------------
 const generateRandomTime = () => {
-    const hours = Math.floor(Math.random() * 24) + 1; // 1 to 24 hours
+    const hours = Math.floor(Math.random() * 24) + 1;
     if (hours < 10) return `منذ ${hours} ساعات`;
     if (hours < 24) return `منذ ${hours} ساعة`;
     return "منذ 1 يوم";
@@ -226,16 +219,13 @@ for(let i = 0; i < 50; i++) {
 }
 
 
-// عرض التعليقات العشوائية
 function displayRandomComments() {
     const container = document.getElementById('commentsContainer');
-    if (!container) return; // تأكد من وجود العنصر
+    if (!container) return;
 
     container.innerHTML = '';
-    
-    // خلط التعليقات عشوائياً قبل العرض
     const shuffledComments = [...fakeComments].sort(() => 0.5 - Math.random());
-    const selected = shuffledComments.slice(0, 6); // عرض 6 تعليقات فقط
+    const selected = shuffledComments.slice(0, 6);
 
     selected.forEach(comment => {
         const commentDiv = document.createElement('div');
@@ -253,7 +243,6 @@ function displayRandomComments() {
     });
 }
 
-// الأسئلة الشائعة
 const faqData = [
     {q: "ما هو ShadowHack PRO؟", a: "منصة متقدمة ومتخصصة في تقديم خدمات القرصنة والاختراق بأدوات متطورة وغير قابلة للكشف."},
     {q: "هل أدواتكم آمنة للاستخدام؟", a: "نعم، أدواتنا آمنة تماماً ومصممة بتقنيات متقدمة تضمن التخفي وعدم الكشف."},
@@ -264,7 +253,6 @@ const faqData = [
     {q: "هل يمكنني طلب خدمة اختراق غير مذكورة؟", a: "تواصل معنا على تليجرام لطلب خدمات مخصصة، وسنناقش إمكانية تنفيذها."},
 ];
 
-// إنشاء الأسئلة الشائعة
 function createFAQ() {
     const container = document.getElementById('faqContainer');
     if (!container) return; 
@@ -279,7 +267,6 @@ function createFAQ() {
             </div>
             <div class="faq-answer">${item.a}</div>
         `;
-        // إضافة مستمع الحدث (event listener) للنقر لتبديل الحالة
         faqItem.querySelector('.faq-question').addEventListener('click', function() {
             faqItem.classList.toggle('active');
         });
@@ -287,50 +274,6 @@ function createFAQ() {
         container.appendChild(faqItem);
     });
 }
-
-// ----------------------------------------------------
-// 📅 منطق تحديث التواريخ العشوائية (كل ساعة)
-// ----------------------------------------------------
-function generateRandomDate() {
-    const day = Math.floor(Math.random() * 28) + 1;
-    const month = Math.floor(Math.random() * 12) + 1;
-    const year = new Date().getFullYear();
-    const hour = Math.floor(Math.random() * 24);
-    const minute = Math.floor(Math.random() * 60);
-
-    return `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year} - ${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
-}
-
-function updateServiceDates() {
-    const dateSpans = document.querySelectorAll('.update-date');
-    dateSpans.forEach(span => {
-        span.textContent = generateRandomDate();
-    });
-}
-
-
-// ----------------------------------------------------
-// 📉 منطق تحديث مخزون ببجي (كل 5 دقائق)
-// ----------------------------------------------------
-function updatePubgStock() {
-    const stockElement = document.getElementById('pubg-stock');
-    if (stockElement) {
-        // يتم تحديثه عشوائياً بين 1 و 5 من أصل 20
-        const randomStock = Math.floor(Math.random() * 5) + 1; 
-        stockElement.textContent = randomStock;
-    }
-}
-
-// 📉 منطق تحديث مخزون الرشق (جديد)
-function updateRshqStock() {
-    const stockElement = document.getElementById('rshq-stock');
-    if (stockElement) {
-        // يتم تحديثه عشوائياً بين 1 و 3 من أصل 10
-        const randomStock = Math.floor(Math.random() * 3) + 1; 
-        stockElement.textContent = randomStock;
-    }
-}
-
 
 // ----------------------------------------------------
 // 🤖 منطق التحقق من الروبوت (CAPTCHA)
@@ -354,7 +297,7 @@ function initializeCaptcha(event) {
     
     captchaDisplay.textContent = currentCaptcha;
     captchaInput.value = ''; // مسح الإدخال القديم
-    captchaModal.style.display = 'block';
+    captchaModal.style.display = 'flex'; // استخدام flex لإظهار المودال وتوسيعه
     
     // إزالة المستمع القديم وإضافة الجديد لضمان عدم تكرار التحقق
     captchaVerifyBtn.removeEventListener('click', handleCaptchaVerification);
@@ -394,13 +337,11 @@ function buyServiceRedirect(serviceName, price) {
         
         setTimeout(() => {
             button.innerHTML = originalText;
-            // يعيد الزر لونه الأصلي
             button.style.background = 'linear-gradient(45deg, var(--accent), var(--secondary))'; 
             button.disabled = false;
         }, 3000);
     }
 }
-
 
 // تفاصيل المميزات
 function showFeatureDetails(title, details) {
