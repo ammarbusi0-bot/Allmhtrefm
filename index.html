@@ -5,545 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ShadowHack PRO v1 - الإمبراطورية السوداء</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <audio id="background-audio" loop autoplay>
-        <source src="Sefo_Demet_Akaln_-_Yerinde_Dur_Official_Video.m4a" type="audio/mp4">
-        المتصفح لا يدعم العنصر الصوتي.
-    </audio>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const audio = document.getElementById('background-audio');
-            // محاولة تشغيل الصوت تلقائياً
-            audio.play().catch(error => {
-                console.log("Auto-play was prevented. The user may need to interact with the page.");
-            });
-        });
-    </script>
-    <style>
-        /* 🎨 تغيير الألوان إلى الثيم البنفسجي الفخم */
-        :root {
-            --primary: #9400D3; /* بنفسجي غامق ملكي */
-            --secondary: #FF00FF; /* ماجينتا/بنفسجي فاتح */
-            --accent: #FF00FF; /* لون التمييز */
-            --dark: #0a0a0a;
-            --darker: #000000;
-            --light: #ffffff;
-            --glow: 0 0 20px;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background: var(--darker);
-            color: var(--light);
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        /* تأثيرات الخلفية المتقدمة */
-        .matrix-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            opacity: 0.1;
-        }
-
-        /* التنقل المحسن */
-        .navbar {
-            background: rgba(10, 10, 10, 0.98);
-            backdrop-filter: blur(25px);
-            padding: 1.2rem 2rem;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 3px solid var(--primary);
-            box-shadow: var(--glow) var(--primary);
-        }
-
-        .nav-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .logo {
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--primary);
-            text-shadow: var(--glow) var(--primary);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2.5rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--light);
-            text-decoration: none;
-            transition: all 0.3s;
-            font-weight: 600;
-            padding: 0.5rem 1rem;
-            border-radius: 25px;
-        }
-
-        .nav-links a:hover {
-            color: var(--primary);
-            background: rgba(148, 0, 211, 0.1); 
-            transform: translateY(-2px);
-        }
-
-        /* الهيرو المتطور */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 2rem;
-            position: relative;
-            background: radial-gradient(circle at center, rgba(148, 0, 211, 0.1) 0%, transparent 70%);
-        }
-
-        .hero-content h1 {
-            font-size: 4.5rem;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(45deg, var(--primary), var(--accent), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: var(--glow) var(--primary);
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes glow {
-            from { text-shadow: 0 0 20px var(--primary); }
-            to { text-shadow: 0 0 30px var(--accent), 0 0 40px var(--secondary); }
-        }
-
-        .hero-content p {
-            font-size: 1.8rem;
-            margin-bottom: 3rem;
-            opacity: 0.9;
-            text-shadow: var(--glow) var(--primary);
-        }
-
-        .cta-button {
-            background: linear-gradient(45deg, var(--primary), var(--accent));
-            color: var(--dark);
-            padding: 1.2rem 3rem;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.3rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.4s ease;
-            text-decoration: none;
-            display: inline-block;
-            box-shadow: 0 0 25px var(--primary);
-        }
-
-        .cta-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 40px var(--accent);
-            background: linear-gradient(45deg, var(--accent), var(--primary));
-        }
-
-        /* الخدمات المحسنة */
-        .services {
-            padding: 6rem 2rem;
-            background: var(--dark);
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 3rem;
-            margin-bottom: 4rem;
-            color: var(--primary);
-            text-shadow: var(--glow) var(--primary);
-        }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2.5rem;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .service-card {
-            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-            border: 2px solid var(--primary);
-            border-radius: 20px;
-            padding: 2.5rem;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.4s ease;
-            box-shadow: 0 0 20px rgba(148, 0, 211, 0.2);
-        }
-
-        .service-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(148, 0, 211, 0.1), transparent);
-            transform: rotate(45deg);
-            transition: all 0.6s ease;
-        }
-
-        .service-card:hover {
-            transform: translateY(-15px) scale(1.02);
-            border-color: var(--accent);
-            box-shadow: 0 0 40px var(--primary);
-        }
-
-        @keyframes shine {
-            0% { transform: rotate(45deg) translateX(-100%); }
-            100% { transform: rotate(45deg) translateX(100%); }
-        }
-
-        .best-seller {
-            border-color: gold;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a00 100%);
-        }
-
-        .best-seller-badge {
-            background: linear-gradient(45deg, gold, #ffd700);
-            color: #000;
-            padding: 0.5rem 1.5rem;
-            border-radius: 25px;
-            font-weight: bold;
-            margin-bottom: 1rem;
-            display: inline-block;
-            box-shadow: 0 0 15px gold;
-        }
-
-        .service-icon {
-            font-size: 3.5rem;
-            color: var(--primary);
-            margin-bottom: 1.5rem;
-            text-shadow: var(--glow) var(--primary);
-        }
-
-        .service-card h3 {
-            font-size: 1.8rem;
-            margin-bottom: 1.2rem;
-            color: var(--light);
-        }
-
-        .service-card p {
-            color: var(--light);
-            opacity: 0.8;
-            line-height: 1.7;
-            margin-bottom: 2rem;
-        }
-
-        .price {
-            color: var(--accent);
-            font-size: 2.2rem;
-            font-weight: bold;
-            margin: 1.5rem 0;
-            text-shadow: var(--glow) var(--accent);
-        }
-
-        .buy-btn {
-            background: linear-gradient(45deg, var(--accent), var(--secondary));
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: bold;
-            width: 100%;
-            transition: all 0.4s ease;
-            font-size: 1.1rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .buy-btn:hover {
-            background: linear-gradient(45deg, var(--secondary), var(--accent));
-            box-shadow: 0 0 25px var(--accent);
-            transform: scale(1.05);
-        }
-
-        /* المميزات المتطورة */
-        .features-section {
-            padding: 6rem 2rem;
-            background: var(--darker);
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .feature-card {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 2.5rem;
-            border-radius: 15px;
-            border: 2px solid transparent;
-            transition: all 0.4s ease;
-            cursor: pointer;
-            text-align: center;
-            backdrop-filter: blur(10px);
-        }
-
-        .feature-card:hover {
-            border-color: var(--primary);
-            transform: translateY(-10px) scale(1.05);
-            box-shadow: 0 0 30px rgba(148, 0, 211, 0.3);
-        }
-
-        .feature-card i {
-            font-size: 3.5rem;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(45deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .feature-card h3 {
-            font-size: 1.6rem;
-            margin-bottom: 1rem;
-            color: var(--light);
-        }
-
-        .feature-card p {
-            color: #ccc;
-            line-height: 1.6;
-        }
-
-        /* قسم التعليقات المحسن */
-        .comments-section {
-            background: var(--dark);
-            padding: 6rem 2rem;
-            border-top: 3px solid var(--secondary);
-            border-bottom: 3px solid var(--secondary);
-        }
-
-        .comments-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-            max-width: 1300px;
-            margin: 3rem auto;
-        }
-
-        .comment {
-            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-            padding: 2rem;
-            border-radius: 15px;
-            border: 1px solid #333;
-            text-align: right;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .comment::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 5px;
-            height: 100%;
-            background: var(--primary);
-        }
-
-        .comment:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
-            box-shadow: 0 0 25px rgba(148, 0, 211, 0.2);
-        }
-
-        .comment-header {
-            display: flex;
-            justify-content: between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .comment-name {
-            color: var(--primary);
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-
-        .comment-badge {
-            background: linear-gradient(45deg, var(--secondary), var(--accent));
-            color: white;
-            padding: 0.3rem 0.8rem;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            margin-right: 1rem;
-        }
-
-        .comment-text {
-            margin-bottom: 1rem;
-            line-height: 1.6;
-            color: #ccc;
-        }
-
-        .comment-stars {
-            color: gold;
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .comment-time {
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        .comment-notice {
-            background: linear-gradient(135deg, #2a003a, #4a005a);
-            color: var(--primary);
-            padding: 1.5rem;
-            border-radius: 10px;
-            margin: 2rem auto;
-            border: 2px solid var(--primary);
-            font-size: 1.1rem;
-            max-width: 800px;
-            text-align: center;
-            box-shadow: 0 0 20px rgba(148, 0, 211, 0.3);
-        }
-
-        /* قسم الأسئلة الشائعة المتطور */
-        .faq-section {
-            padding: 6rem 2rem;
-            background: var(--darker);
-        }
-
-        .faq-container {
-            max-width: 1000px;
-            margin: 3rem auto;
-        }
-
-        .faq-item {
-            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-            border-radius: 15px;
-            margin-bottom: 1.5rem;
-            overflow: hidden;
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-        }
-
-        .faq-item:hover {
-            border-color: var(--primary);
-        }
-
-        .faq-question {
-            background: rgba(148, 0, 211, 0.1); 
-            color: var(--light);
-            padding: 1.5rem 2rem;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 1.2rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .faq-question:hover {
-            background: rgba(148, 0, 211, 0.2);
-        }
-
-        .faq-answer {
-            padding: 0 2rem;
-            color: #ccc;
-            line-height: 1.7;
-            background: rgba(255, 255, 255, 0.02);
-            border-top: 1px solid #333;
-            /* 🟢 الإجابات مخفية افتراضياً */
-            max-height: 0; 
-            overflow: hidden;
-            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
-        }
-
-        /* 🟢 الإجابة تظهر فقط عند الضغط */
-        .faq-item.active .faq-answer {
-            max-height: 500px; 
-            padding: 2rem;
-        }
-
-        .faq-toggle {
-            color: var(--primary);
-            transition: transform 0.3s ease;
-        }
-
-        .faq-item.active .faq-toggle {
-            transform: rotate(180deg);
-        }
-
-        /* الفوتر المحسن */
-        .footer {
-            background: var(--dark);
-            padding: 4rem 2rem;
-            text-align: center;
-            border-top: 3px solid var(--primary);
-        }
-
-        .footer p {
-            color: var(--light);
-            opacity: 0.8;
-            margin-bottom: 1rem;
-        }
-
-        .telegram-float {
-            position: fixed;
-            bottom: 2rem;
-            left: 2rem;
-            background: #0088cc;
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            box-shadow: 0 0 25px #0088cc;
-            z-index: 1000;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .telegram-float:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 35px #0088cc;
-        }
-
-        /* التجاوب للهواتف */
-        @media (max-width: 768px) {
-            .hero-content h1 { font-size: 2.8rem; }
-            .nav-links { display: none; }
-            .services-grid { grid-template-columns: 1fr; }
-            .features-grid { grid-template-columns: 1fr; }
-            .comments-container { grid-template-columns: 1fr; }
-            .telegram-float { bottom: 1rem; left: 1rem; padding: 0.8rem 1.2rem; }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <canvas class="matrix-bg" id="matrixCanvas"></canvas>
+
+    <audio id="background-audio" loop autoplay>
+        <source src="https://raw.githubusercontent.com/ammarbusi0-bot/Allmhtrefm/main/L2uYY2n7wfA.m4a" type="audio/mp4">
+        المتصفح لا يدعم العنصر الصوتي.
+    </audio>
 
     <a href="https://t.me/Armanex" class="telegram-float" target="_blank">
         <i class="fab fa-telegram"></i>
@@ -574,71 +44,72 @@
     <section class="services" id="services">
         <h2 class="section-title">🛠️ خدماتنا المتطورة</h2>
         <div class="services-grid">
-            <div class="service-card best-seller">
+            <div class="service-card best-seller" data-name="اختراق الهاتف الكامل" data-price="120">
                 <div class="best-seller-badge">🔥 الأكثر مبيعاً</div>
                 <i class="fas fa-mobile-alt service-icon"></i>
                 <h3>اختراق الهاتف الكامل</h3>
                 <p>سيطرة كاملة على أي هاتف - رسائل، مكالمات، موقع، كاميرا</p>
                 <div class="price">$120</div>
-                <button class="buy-btn" onclick="buyService('اختراق الهاتف الكامل', 120)">اشتري الآن</button>
+                <button class="buy-btn">اشتري الآن</button>
             </div>
 
-            <div class="service-card best-seller">
+            <div class="service-card best-seller" data-name="هاك ببجي موبايل" data-price="80">
                 <div class="best-seller-badge">🎮 الأكثر طلباً</div>
                 <i class="fas fa-gamepad service-icon"></i>
                 <h3>هاك ببجي موبايل</h3>
                 <p>Aimbot, Wallhack, Unlimited UC - غير قابل للكشف</p>
                 <div class="price">$80</div>
-                <button class="buy-btn" onclick="buyService('هاك ببجي موبايل', 80)">اشتري الآن</button>
+                <button class="buy-btn">اشتري الآن</button>
             </div>
-
-            <div class="service-card">
+            
+            <div class="service-card" data-name="هاك ببجي لايت" data-price="60">
                 <i class="fas fa-bolt service-icon"></i>
                 <h3>هاك ببجي لايت</h3>
                 <p>هاك خفيف وسريع للعبة ببجي لايت</p>
                 <div class="price">$60</div>
-                <button class="buy-btn" onclick="buyService('هاك ببجي لايت', 60)">اشتري الآن</button>
+                <button class="buy-btn">اشتري الآن</button>
             </div>
-
-            <div class="service-card">
+            
+            <div class="service-card" data-name="هاك فري فاير" data-price="70">
                 <i class="fas fa-fire service-icon"></i>
                 <h3>هاك فري فاير</h3>
                 <p>هاك كامل لعبة فري فاير - إمكانيات غير محدودة</p>
                 <div class="price">$70</div>
-                <button class="buy-btn" onclick="buyService('هاك فري فاير', 70)">اشتري الآن</button>
+                <button class="buy-btn">اشتري الآن</button>
             </div>
-
-            <div class="service-card">
+            
+            <div class="service-card" data-name="هاك فيفا موبايل" data-price="65">
                 <i class="fas fa-futbol service-icon"></i>
                 <h3>هاك فيفا موبايل</h3>
                 <p>هاك عملات ولاعبين لفيفا موبايل</p>
                 <div class="price">$65</div>
-                <button class="buy-btn" onclick="buyService('هاك فيفا موبايل', 65)">اشتري الآن</button>
+                <button class="buy-btn">اشتري الآن</button>
             </div>
-
-            <div class="service-card">
+            
+            <div class="service-card" data-name="اختراق فيسبوك" data-price="90">
                 <i class="fas fa-user-secret service-icon"></i>
                 <h3>اختراق فيسبوك</h3>
                 <p>اختراق حسابات فيسبوك بضمان 100%</p>
                 <div class="price">$90</div>
-                <button class="buy-btn" onclick="buyService('اختراق فيسبوك', 90)">اشتري الآن</button>
+                <button class="buy-btn">اشتري الآن</button>
             </div>
-
-            <div class="service-card">
+            
+            <div class="service-card" data-name="اختراق الكاميرات" data-price="110">
                 <i class="fas fa-camera service-icon"></i>
                 <h3>اختراق الكاميرات</h3>
                 <p>وصول مباشر لكاميرات المراقبة والهواتف</p>
                 <div class="price">$110</div>
-                <button class="buy-btn" onclick="buyService('اختراق الكاميرات', 110)">اشتري الآن</button>
+                <button class="buy-btn">اشتري الآن</button>
             </div>
-
-            <div class="service-card">
+            
+            <div class="service-card" data-name="اختراق البنوك" data-price="200">
                 <i class="fas fa-university service-icon"></i>
                 <h3>اختراق البنوك</h3>
                 <p>سرقة بيانات مصرفية آمنة</p>
                 <div class="price">$200</div>
-                <button class="buy-btn" onclick="buyService('اختراق البنوك', 200)">اشتري الآن</button>
+                <button class="buy-btn">اشتري الآن</button>
             </div>
+
         </div>
     </section>
 
@@ -669,7 +140,7 @@
         <h2 class="section-title">💬 آراء عملائنا المحترفين</h2>
         
         <div class="comment-notice">
-            ⭐ هذه التعليقات من عملاء حقيقيين قاموا بالشراء من منصتنا ✅
+            💬 التعليقات أدناه تتجدد بناءً على المشتريين الموثوقين. ✅
         </div>
         
         <div class="comments-container" id="commentsContainer">
@@ -686,168 +157,6 @@
         <p>ShadowHack PRO v1 - الإمبراطورية السوداء</p>
     </footer>
 
-    <script>
-        // تأثير المصفوفة المتقدم
-        const canvas = document.getElementById('matrixCanvas');
-        const ctx = canvas.getContext('2d');
-
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        const chars = '01010101شظثصضذطكمنتالبيسشظثصضذطكمنتالبيس';
-        const fontSize = 16;
-        const columns = canvas.width / fontSize;
-        const drops = [];
-
-        for (let i = 0; i < columns; i++) {
-            drops[i] = Math.random() * canvas.height;
-        }
-
-        function drawMatrix() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            ctx.fillStyle = '#9400D3';
-            ctx.font = `bold ${fontSize}px 'Courier New', monospace`;
-
-            for (let i = 0; i < drops.length; i++) {
-                const text = chars[Math.floor(Math.random() * chars.length)];
-                const x = i * fontSize;
-                const y = drops[i] * fontSize;
-                
-                ctx.fillText(text, x, y);
-                
-                if (y * fontSize > canvas.height && Math.random() > 0.975) {
-                    drops[i] = 0;
-                }
-                drops[i]++;
-            }
-        }
-
-        setInterval(drawMatrix, 50);
-
-        // قاعدة بيانات التعليقات - باللهجة الحلبية وترتيب عشوائي
-        const fakeComments = [
-            // 🟢 تم تغيير التواريخ لتكون متنوعة وغير مرتبة
-            { name: "أبو جود", text: "والله يا زلمي شغلكم نخب أول! الهاك تبع ببجي مو طبيعي أبداً. كنت عم عاني كتير من الحسابات اللي بتعمل ريبورت، بس بفضلكم عم ألعب بمزاج وما حدا بيقدر يعملي شي. يسلمو إيديكن على هالشغل النظيف، صارلي شي 5 ساعات بلعب ولسّا ما أكلت بان.", timeAgo: "منذ 5 ساعات" },
-            { name: "أمير الظلام", text: "يا عمي إذا بدك شغل مظبوط، ما في غير هالصفحة. طلبت اختراق تليفون رفيقي لعرف وين عم يروح، وظبطوها بلمحة البصر. حتى الدعم الفني، بيحكوا معك بكل احترام وبيجاوبوا على كل أسئلتك. لا تتعب حالك وتدوّر بمكان تاني.", timeAgo: "منذ 3 أيام" },
-            { name: "ريم الحلبية", text: "أنا كتير كنت خايفة من شغل الهاكات وهالقصص، بس هالشباب مطمئنين كتير. طلبت هاك فري فاير وضبطوه من أول مرة، والأمان تبعهم عالي. صراحةً، شغلتكم بيضا، وعقبال ما تصيروا أحسن ناس بالمنطقة.", timeAgo: "منذ 1 يوم" },
-            { name: "ملك السايبر", text: "شوف يا غالي، أنا من زمان عم دور على ناس بتفهم بهالمجال. جربت كتير مواقع، بس كلها كذب وتضييع وقت. جربت خدمات اختراق البنوك عندكم وهي اللي عملتلي نقلة نوعية. شغلكم ذهب صافي. ألف شكر من القلب.", timeAgo: "منذ 6 ساعات" },
-            { name: "سالم المافيا", text: "يا لطيف، شي بيجنن! كنت ضايع بين المواقع الكذابة بس هون الشغل حقيقي وما فيه لف ودوران. اختراق حساب فيسبوك تم بأقل من نص ساعة. برافو عليكم، عنجد أساطير.", timeAgo: "منذ 12 ساعة" },
-            { name: "فادي أبو عذاب", text: "كل التقدير والاحترام لفريقكم. جربت اختراق الهاتف وما توقعت هالسرعة والدقة! عم بيشتغل كأنه تليفوني أنا. يا جماعة، هالمنصة هي الأصل والباقي تقليد، لا حدا يضيع وقته.", timeAgo: "منذ 4 أيام" }
-        ];
-
-        // عرض التعليقات العشوائية
-        function displayRandomComments() {
-            const container = document.getElementById('commentsContainer');
-            container.innerHTML = '';
-            
-            // 🟢 تم حذف خاصية الفرز لعرض التواريخ بترتيب غير متسلسل
-            const selected = fakeComments.slice(0, 6);
-            
-            selected.forEach(comment => {
-                const commentDiv = document.createElement('div');
-                commentDiv.className = 'comment';
-                commentDiv.innerHTML = `
-                    <div class="comment-header">
-                        <div class="comment-badge">مشترٍ موثوق</div>
-                        <div class="comment-name">${comment.name}</div>
-                    </div>
-                    <div class="comment-text">"${comment.text}"</div>
-                    <div class="comment-stars">⭐⭐⭐⭐⭐</div>
-                    <div class="comment-time">${comment.timeAgo}</div>
-                `;
-                container.appendChild(commentDiv);
-            });
-        }
-
-        // الأسئلة الشائعة
-        const faqData = [
-            {q: "ما هو ShadowHack PRO؟", a: "منصة متقدمة ومتخصصة في تقديم خدمات القرصنة والاختراق بأدوات متطورة وغير قابلة للكشف."},
-            {q: "هل أدواتكم آمنة للاستخدام؟", a: "نعم، أدواتنا آمنة تماماً ومصممة بتقنيات متقدمة تضمن التخفي وعدم الكشف."},
-            {q: "كيف أشتري الخدمات؟", a: "اضغط على أي زر شراء وسيتم توجيهك مباشرة إلى تليجرام للتواصل مع فريق المبيعات."},
-            {q: "ما مدة التفعيل؟", a: "يتم تفعيل معظم الخدمات خلال دقائق بعد تأكيد الدفع."},
-            {q: "هل يوجد ضمان؟", a: "نعم، نقدم ضمان استبدال أو استرجاع في حال عدم عمل الخدمة."}
-        ];
-
-        // إنشاء الأسئلة الشائعة
-        function createFAQ() {
-            const container = document.getElementById('faqContainer');
-            container.innerHTML = '';
-            
-            faqData.forEach((item, index) => {
-                const faqItem = document.createElement('div');
-                faqItem.className = 'faq-item';
-                faqItem.innerHTML = `
-                    <div class="faq-question" onclick="toggleFAQ(this)">
-                        ${item.q}
-                        <i class="fas fa-chevron-down faq-toggle"></i>
-                    </div>
-                    <div class="faq-answer">${item.a}</div>
-                `;
-                container.appendChild(faqItem);
-            });
-            // 🟢 تم إزالة التفعيل التلقائي. الأسئلة ستكون مخفية افتراضياً.
-        }
-
-        // 🟢 تبديل حالة الأسئلة الشائعة عند النقر (لجعلها مخفية افتراضياً)
-        function toggleFAQ(element) {
-            const item = element.closest('.faq-item');
-            item.classList.toggle('active'); 
-        }
-
-        // وظيفة الشراء - توجيه لتليجرام
-        function buyService(serviceName, price) {
-            const telegramUsername = "Armanex";
-            const message = `أريد شراء ${serviceName} بسعر $${price} من ShadowHack PRO`;
-            const url = `https://t.me/${telegramUsername}?text=${encodeURIComponent(message)}`;
-            
-            window.open(url, '_blank');
-            
-            // تأثير على الزر
-            const button = event.target;
-            const originalText = button.innerHTML;
-            button.innerHTML = '🚀 جاري التوجيه إلى تليجرام...';
-            button.style.background = 'linear-gradient(45deg, #0088cc, #9400D3)';
-            button.disabled = true;
-            
-            setTimeout(() => {
-                button.innerHTML = originalText;
-                button.style.background = 'linear-gradient(45deg, var(--accent), var(--secondary))';
-                button.disabled = false;
-            }, 3000);
-        }
-
-        // تفاصيل المميزات
-        function showFeatureDetails(title, details) {
-            alert(`🛡️ ${title}\n\n${details}`);
-        }
-
-        // التهيئة
-        window.addEventListener('load', function() {
-            displayRandomComments();
-            createFAQ();
-            
-            // تحديث التعليقات كل 30 دقيقة
-            setInterval(displayRandomComments, 30 * 60 * 1000);
-            
-            // إعادة حجم الكانفاس
-            window.addEventListener('resize', function() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-            });
-        });
-
-        // التنقل السلس
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
-                }
-            });
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
