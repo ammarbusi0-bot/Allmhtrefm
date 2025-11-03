@@ -176,7 +176,7 @@ body {
 }
 
 /* 🟢🔐 التنسيق الأهم: إخفاء جميع الأقسام ما عدا الهيرو عند التحميل */
-.services, .features-section, .comments-section, .faq-section, .footer {
+.services, .features-section, .comments-section, .faq-section, .footer, .about-us-summary {
     opacity: 0;
     pointer-events: none; /* لمنع التفاعل حتى لو ظهرت */
     transition: opacity 1s ease-out;
@@ -300,42 +300,27 @@ body {
     color: var(--secondary);
 }
 
-/* قسم المميزات */
-.features-container {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 30px;
-}
-
-.feature-card {
+/* قسم "عن منصتنا" الجديد (يحل محل المميزات) */
+.about-us-summary {
+    max-width: 800px;
+    margin: 0 auto;
     background-color: var(--dark);
-    padding: 30px;
+    padding: 40px;
     border-radius: 10px;
-    border: 1px solid var(--accent);
-    box-shadow: var(--glow) rgba(0, 204, 255, 0.2);
-    width: 100%;
-    max-width: 350px;
-    transition: transform 0.3s ease;
-    cursor: pointer;
+    border: 2px solid var(--accent);
+    box-shadow: 0 0 20px var(--accent);
 }
 
-.feature-card:hover {
-    transform: translateY(-10px);
-    box-shadow: var(--glow) rgba(0, 204, 255, 0.4);
+.about-us-summary p {
+    font-size: 1.1rem;
+    color: var(--light);
+    margin-bottom: 1.5rem;
+    line-height: 1.8;
 }
 
-.feature-card i {
-    font-size: 3rem;
-    color: var(--accent);
-    margin-bottom: 1rem;
-    text-shadow: 0 0 10px var(--accent);
-}
-
-.feature-card h3 {
-    font-size: 1.5rem;
-    color: var(--primary);
-    margin-bottom: 0.5rem;
+.about-us-summary .cta-button {
+    font-size: 1rem;
+    padding: 10px 20px;
 }
 
 /* قسم التعليقات المحسن */
@@ -449,7 +434,7 @@ body {
 
 .faq-toggle {
     color: var(--primary);
-    transition: transform 0.3s ease;
+    transition: transform 0.3s;
 }
 
 .faq-item.active .faq-toggle {
@@ -482,28 +467,34 @@ body {
     margin-bottom: 1rem;
 }
 
-.telegram-float {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem; /* تم تغييرها لتكون في اليمين بما أن الواجهة RTL */
-    background: #0088cc;
-    color: white;
-    padding: 1rem 1.5rem;
-    border-radius: 50px;
-    text-decoration: none;
-    font-weight: bold;
-    box-shadow: 0 0 25px #0088cc;
-    z-index: 1000;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+.social-links {
+    margin-bottom: 1rem;
 }
 
-.telegram-float:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 35px #0088cc;
+.social-links a {
+    color: #0088cc;
+    font-size: 2rem;
+    margin: 0 10px;
+    transition: color 0.3s;
+    text-shadow: 0 0 10px #0088cc;
 }
+
+.social-links a:hover {
+    color: var(--secondary);
+    text-shadow: 0 0 15px var(--secondary);
+}
+
+.disclaimer a {
+    transition: color 0.3s, text-shadow 0.3s;
+}
+
+.disclaimer a:hover {
+    color: var(--primary) !important;
+    text-shadow: 0 0 8px var(--primary);
+}
+
+/* حذف تنسيق .telegram-float */
+
 
 /* تنسيقات نافذة الكود السري (Modal) */
 .modal {
@@ -615,6 +606,91 @@ body {
 }
 
 
+/* تنسيقات صفحة الدردشة (Chat) */
+.chat-container {
+    max-width: 800px;
+    margin: 80px auto 20px; 
+    background-color: var(--dark);
+    border: 3px solid var(--primary);
+    border-radius: 10px;
+    box-shadow: 0 0 30px var(--primary);
+    display: flex;
+    flex-direction: column;
+    height: 80vh; 
+}
+
+.chat-header {
+    background-color: var(--darker);
+    padding: 15px;
+    border-bottom: 2px solid var(--secondary);
+    text-align: center;
+    color: var(--primary);
+}
+
+.chat-messages {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.message {
+    max-width: 80%;
+    padding: 10px 15px;
+    border-radius: 15px;
+    line-height: 1.5;
+    word-wrap: break-word;
+}
+
+.user-message {
+    background-color: var(--primary);
+    color: var(--darker);
+    align-self: flex-start;
+    border-top-right-radius: 0;
+}
+
+.admin-message {
+    background-color: var(--secondary);
+    color: var(--light);
+    align-self: flex-end;
+    border-top-left-radius: 0;
+}
+
+.chat-input-area {
+    display: flex;
+    padding: 15px;
+    border-top: 2px solid var(--secondary);
+    background-color: var(--darker);
+}
+
+#chatInput {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid var(--primary);
+    border-radius: 5px;
+    background-color: var(--dark);
+    color: var(--light);
+    font-size: 1rem;
+}
+
+#chatSendButton {
+    padding: 10px 20px;
+    margin-right: 10px;
+    background-color: var(--primary);
+    color: var(--darker);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#chatSendButton:hover {
+    background-color: var(--secondary);
+    color: var(--light);
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .nav-content {
@@ -639,11 +715,9 @@ body {
         align-items: center;
     }
 
-    .telegram-float {
-        bottom: 1rem;
-        right: 1rem;
-        padding: 0.75rem 1rem;
-        font-size: 0.9rem;
+    .chat-container {
+        height: 90vh; 
+        margin: 60px 10px 10px;
     }
 }
 
