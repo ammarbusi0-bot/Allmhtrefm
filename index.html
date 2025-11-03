@@ -82,6 +82,7 @@
             padding: 2rem;
             background: #1a1a1a;
             border-radius: 10px;
+            border: 1px solid #00ff88;
         }
         
         .comment-form input, .comment-form textarea {
@@ -103,6 +104,15 @@
             font-weight: bold;
             margin-bottom: 10px;
             display: inline-block;
+        }
+
+        .comment-notice {
+            background: #004400;
+            color: #00ff88;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border: 1px solid #00ff88;
         }
     </style>
 </head>
@@ -132,6 +142,31 @@
             <button class="buy-btn" onclick="buyService('هاك ببجي موبايل')">اشتري الآن</button>
         </div>
 
+        <!-- ألعاب جديدة -->
+        <div class="service-card">
+            <i class="fas fa-bolt fa-2x" style="color: #00ff88; margin-bottom: 1rem;"></i>
+            <h3>هاك ببجي لايت</h3>
+            <p>هاك خفيف وسريع للعبة ببجي لايت</p>
+            <div class="price">$60</div>
+            <button class="buy-btn" onclick="buyService('هاك ببجي لايت')">اشتري الآن</button>
+        </div>
+
+        <div class="service-card">
+            <i class="fas fa-fire fa-2x" style="color: #00ff88; margin-bottom: 1rem;"></i>
+            <h3>هاك فري فاير</h3>
+            <p>هاك كامل لعبة فري فاير - إمكانيات غير محدودة</p>
+            <div class="price">$70</div>
+            <button class="buy-btn" onclick="buyService('هاك فري فاير')">اشتري الآن</button>
+        </div>
+
+        <div class="service-card">
+            <i class="fas fa-futbol fa-2x" style="color: #00ff88; margin-bottom: 1rem;"></i>
+            <h3>هاك فيفا موبايل</h3>
+            <p>هاك عملات ولاعبين لفيفا موبايل</p>
+            <div class="price">$65</div>
+            <button class="buy-btn" onclick="buyService('هاك فيفا موبايل')">اشتري الآن</button>
+        </div>
+
         <!-- باقي الكروت -->
         <div class="service-card">
             <i class="fas fa-user-secret fa-2x" style="color: #00ff88; margin-bottom: 1rem;"></i>
@@ -156,35 +191,15 @@
             <div class="price">$200</div>
             <button class="buy-btn" onclick="buyService('اختراق البنوك')">اشتري الآن</button>
         </div>
-
-        <div class="service-card">
-            <i class="fas fa-robot fa-2x" style="color: #00ff88; margin-bottom: 1rem;"></i>
-            <h3>Deepfakes</h3>
-            <p>إنشاء فيديوهات مزيفة بالذكاء الاصطناعي</p>
-            <div class="price">$150</div>
-            <button class="buy-btn" onclick="buyService('Deepfakes')">اشتري الآن</button>
-        </div>
-
-        <div class="service-card">
-            <i class="fas fa-shield-alt fa-2x" style="color: #00ff88; margin-bottom: 1rem;"></i>
-            <h3>حماية متقدمة</h3>
-            <p>حماية كاملة من الاختراق</p>
-            <div class="price">$70</div>
-            <button class="buy-btn" onclick="buyService('حماية متقدمة')">اشتري الآن</button>
-        </div>
-
-        <div class="service-card">
-            <i class="fas fa-wifi fa-2x" style="color: #00ff88; margin-bottom: 1rem;"></i>
-            <h3>اختراق الواي فاي</h3>
-            <p>اختراق شبكات الواي فاي المحمية</p>
-            <div class="price">$60</div>
-            <button class="buy-btn" onclick="buyService('اختراق الواي فاي')">اشتري الآن</button>
-        </div>
     </div>
 
     <!-- قسم التعليقات -->
     <div class="comments-section">
         <h2 style="color: #00ff88; margin-bottom: 2rem;">💬 آراء عملائنا المحترفين</h2>
+        
+        <div class="comment-notice">
+            ⚠️ يمكنك إضافة تعليق بعد إتمام عملية الشراء بنجاح
+        </div>
         
         <div class="comments-container" id="commentsContainer">
             <!-- التعليقات تظهر هنا تلقائياً -->
@@ -192,35 +207,36 @@
 
         <!-- نموذج إضافة تعليق -->
         <div class="comment-form">
-            <h3 style="color: #00ff88; margin-bottom: 1rem;">أضف تعليقك</h3>
+            <h3 style="color: #00ff88; margin-bottom: 1rem;">أضف تعليقك بعد الشراء</h3>
             <input type="text" id="userName" placeholder="اسمك" required>
-            <textarea id="commentText" placeholder="تعليقك..." rows="3" required></textarea>
+            <textarea id="commentText" placeholder="اكتب تجربتك مع الخدمة..." rows="3" required></textarea>
             <button class="buy-btn" onclick="addComment()" style="margin-top: 1rem;">إضافة التعليق</button>
         </div>
     </div>
 
     <script>
-        // قاعدة بيانات التعليقات الوهمية - 100 جملة
+        // قاعدة بيانات التعليقات الوهمية - محدثة
         const fakeComments = [
-            {name: "أحمد الشبح", text: "هذا الموقع غير أي موقع! اشتريت هاك ببجي وعم ألعب مثل المحترفين!", country: "🇸🇦"},
-            {name: "Dark Hacker", text: "Best hacking site ever! The phone hack worked perfectly", country: "🇺🇸"},
-            {name: "فاطمة الظل", text: "خدمة اختراق الفيسبوك سريعة ومضمونة. شكراً ShadowHack!", country: "🇪🇬"},
-            {name: "Cyber Wolf", text: "I bought the bank hack and it's amazing. 100% recommended", country: "🇬🇧"},
-            {name: "النسر العربي", text: "اختراق الهاتف الكامل غير حياتي. الآن أسيطر على كل شيء!", country: "🇸🇦"},
-            {name: "Shadow Killer", text: "The deepfake tool is incredible. Results are very realistic", country: "🇨🇦"},
-            {name: "ليلى المخترقة", text: "الحماية المتقدمة أنقذت بياناتي من الهاكرز. شكراً لكم!", country: "🇦🇪"},
-            {name: "Python Master", text: "Bought WiFi hack and it works like magic. Great service!", country: "🇩🇪"},
-            {name: "خالد السايبر", text: "هاك ببجي رهيب! ما حد يقدر يهزمني الآن 😎", country: "🇰🇼"},
-            {name: "Ghost Rider", text: "Camera hack is perfect. I can monitor everything now", country: "🇦🇺"},
-            {name: "سارة الهاكرة", text: "أفضل استثمار عملته. الموقع يستحق أكثر من 5 نجوم!", country: "🇶🇦"},
-            {name: "Black Mamba", text: "Fast delivery and excellent support. Will buy again!", country: "🇫🇷"},
-            {name: "الهاكر المصري", text: "الأسعار معقولة والجودة فائقة. أنصح الجميع!", country: "🇪🇬"},
-            {name: "Neo Matrix", text: "This site is the real deal. No scams, just results", country: "🇺🇸"},
-            {name: "خليفة الظلام", text: "اشتريت 3 خدمات وكلها تعمل بكفاءة. فريق محترف!", country: "🇴🇲"},
-            // 85 جملة إضافية بنفس النمط...
-            {name: "خالد الشمالي", text: "الموقع ما يخيب الظن. الدعم الفني سريع ومحترف", country: "🇸🇦"},
-            {name: "Sarah Tech", text: "Amazing services! The results exceeded my expectations", country: "🇬🇧"},
-            {name: خالد الظلام", text: "مافي أحسن من هالموقع. جربت وانت ما رح تندم", country: "🇸🇦"}
+            {name: "أحمد الشبح", text: "هاك ببجي لايت رهيب! من أفضل الهاكات اللي جربتها 🎮", country: "🇸🇦"},
+            {name: "Dark Player", text: "Free Fire hack works perfectly! Undetected and smooth", country: "🇺🇸"},
+            {name: "فاطمة الظل", text: "فيفا موبايل هاك غير اللعبة! الآن عندي كل اللاعبين ⚽", country: "🇪🇬"},
+            {name: "Gamer Pro", text: "PUBG Mobile hack is amazing! Dominating every match", country: "🇬🇧"},
+            {name: "خالد السايبر", text: "ببجي لايت هاك سريع وما يتكتشف. أنصح فيه 👍", country: "🇰🇼"},
+            {name: "Shadow Gamer", text: "FIFA Mobile coins hack is legit! Got all players I wanted", country: "🇨🇦"},
+            {name: "ليلى المخترقة", text: "هاك فري فاير شغال مثل السحر. فريق الدعم سريع 🚀", country: "🇦🇪"},
+            {name: "Game Master", text: "Best gaming hacks on this site! Fast and reliable", country: "🇩🇪"},
+            {name: "النسر العربي", text: "جربت هاك ببجي وفري فاير والنتيجة مذهلة! 🔥", country: "🇸🇦"},
+            {name: "Pro Hacker", text: "Phone hack + PUBG hack = Perfect combination! 💯", country: "🇺🇸"},
+            {name: "سارة الهاكرة", text: "الأسعار معقولة والجودة فائقة. ما رح تندم! 🌟", country: "🇶🇦"},
+            {name: "Elite Player", text: "FIFA hack delivered in 1 hour! Amazing service", country: "🇫🇷"},
+            {name: "الهاكر المصري", text: "ببجي لايت هاك خفيف وسريع. ما بيعطل اللعبة 🎯", country: "🇪🇬"},
+            {name: "Cyber Wolf", text: "Free Fire aimbot is incredible! Winning every game", country: "🇬🇧"},
+            {name: "محمد القناص", text: "هاك ببجي موبايل غير حياتي في اللعبة 😎", country: "🇸🇦"},
+            {name: "Ghost Rider", text: "Fast delivery and excellent support for FIFA hack", country: "🇦🇺"},
+            {name: "نور الحاسوب", text: "فري فاير هاك شغال بدون مشاكل. شكراً لكم! 💝", country: "🇪🇬"},
+            {name: "Matrix Gamer", text: "PUBG Lite hack is undetectable and smooth", country: "🇺🇸"},
+            {name: "ياسر الظلام", text: "جربت كل هاكات الألعاب وكلها تعمل بمستوى محترف 🏆", country: "🇸🇦"},
+            {name: "Tech Master", text: "Best gaming hacks I've ever bought! 5 stars ⭐⭐⭐⭐⭐", country: "🇬🇧"}
         ];
 
         // عرض 5 تعليقات عشوائية كل 30 دقيقة
@@ -287,8 +303,11 @@
         function buyService(serviceName) {
             const telegramUsername = "Talaa_almalika";
             const message = `أريد شراء ${serviceName} من ShadowHack PRO`;
-            const url = `https://t.me/${telegramUsername}?text=${encodeURIComponent(message)}`;
             
+            // رابط تليجرام مباشر
+            const url = `https://t.me/${telegramUsername}`;
+            
+            // فتح التليجرام في نافذة جديدة
             window.open(url, '_blank');
             
             // تأثير على الزر
@@ -296,16 +315,21 @@
             const originalText = button.innerHTML;
             button.innerHTML = 'جاري التوجيه... 🚀';
             button.style.background = '#ff0088';
+            button.disabled = true;
             
             setTimeout(() => {
                 button.innerHTML = originalText;
                 button.style.background = '#00ff88';
-            }, 2000);
+                button.disabled = false;
+                
+                // رسالة تأكيد
+                alert(`✅ تم توجيهك إلى تليجرام\n\nراسل @${telegramUsername} لشراء ${serviceName}`);
+            }, 1500);
         }
 
         // تبديل التعليقات كل 30 دقيقة + التحميل الأولي
         displayRandomComments();
-        setInterval(displayRandomComments, 30 * 60 * 1000); // كل 30 دقيقة
+        setInterval(displayRandomComments, 30 * 60 * 1000);
 
         // تحميل التعليقات المحفوظة
         function loadUserComments() {
