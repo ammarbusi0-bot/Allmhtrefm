@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShadowHack PRO v1 - الإمبراطورية السوداء</title>
+    <title>ShadowHack PRO v1 - الوصول الفوري للمعلومات</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -11,14 +11,9 @@
     <canvas class="matrix-bg" id="matrixCanvas"></canvas>
 
     <audio id="background-audio" loop muted> 
-        <source src="shadow_theme.mp3" type="audio/mpeg">
+        <source src="n1HqWEafHec (1).m4a" type="audio/mp4">
         المتصفح لا يدعم العنصر الصوتي.
     </audio>
-
-    <a href="https://t.me/Talaa_almalika" class="telegram-float" target="_blank">
-        <i class="fab fa-telegram"></i>
-        تواصل معنا سريعا
-    </a>
 
     <nav class="navbar">
         <div class="nav-content">
@@ -26,7 +21,7 @@
             <ul class="nav-links">
                 <li><a href="#hero">الرئيسية</a></li>
                 <li><a href="#services">الخدمات</a></li>
-                <li><a href="#features">المميزات</a></li>
+                <li><a href="#about-us">عن منصتنا</a></li>
                 <li><a href="#comments">آراء العملاء</a></li>
                 <li><a href="#faq">الأسئلة الشائعة</a></li>
             </ul>
@@ -36,20 +31,20 @@
     <header class="hero-section" id="hero">
         <div class="hero-content">
             <h1 class="neon-text">ShadowHack PRO <span class="version">v1</span></h1>
-            <p class="tagline">نحن لا نخترق... بل نفتح الأبواب المغلقة.</p>
+            <p class="tagline">الوصول الفوري للمعلومات السرية، بأمان مطلق وبدون تتبع.</p>
             <a href="#services" class="cta-button" id="ctaButton">
-                اكتشف الخدمات المتطورة <i class="fas fa-arrow-left"></i>
+                ابدأ رحلة الاختراق الآن <i class="fas fa-arrow-left"></i>
             </a>
             <div class="status-indicator">
                 <span class="status-value online-status"><i class="fas fa-check-circle"></i> النظام: فعال</span>
-                <span class="status-value active-status"><i class="fas fa-lock"></i> الحماية: قصوى</span>
+                <span class="status-value active-status"><i class="fas fa-lock"></i> التشفير: 100%</span>
             </div>
         </div>
     </header>
 
     <section class="services section-padding" id="services">
         <h2 class="section-title">🗝️ خدمات الوصول السيادي</h2>
-        <p class="section-subtitle">أدوات متخصصة لكسر أصعب الأنظمة الأمنية.</p>
+        <p class="section-subtitle">أدوات حقيقية تمنحك التحكم المطلق في أي نظام.</p>
 
         <div class="services-container">
             <div class="service-card" data-name="اختراق الهاتف الكامل" data-price="120">
@@ -60,18 +55,18 @@
                     <span class="update-info"><i class="fas fa-calendar-alt"></i> آخر تحديث: 2025/11/02</span>
                     <span class="license-info"><i class="fas fa-cubes"></i> التراخيص المتبقية: 4/50</span>
                 </div>
-                <button class="buy-btn">اطلب الأداة الآن</button>
+                <button class="buy-btn" data-service="اختراق الهاتف الكامل">اطلب الخدمة الآن</button>
             </div>
             
-            <div class="service-card" data-name="هاك ببجي موبايل" data-price="80">
+            <div class="service-card" data-name="اختراق الألعاب العالمية" data-price="80">
                 <i class="fas fa-gamepad"></i>
-                <h3>تعديل طبقة البروتوكول (Protocol Layer Mod)</h3>
-                <p>أداة احترافية لإضافة ميزات الهاك دون كشف من نظام الحماية الجديد.</p>
+                <h3>اختراق الألعاب العالمية (Zero Ban)</h3>
+                <p>اختراق ألعاب PUBG، Free Fire، Apex Legends وغيرها. أداة دائمة لا تُكشف.</p>
                 <div class="tool-status">
                     <span class="update-info"><i class="fas fa-calendar-alt"></i> آخر تحديث: 2025/11/03</span>
                     <span class="license-info"><i class="fas fa-cubes"></i> التراخيص المتبقية: 11/100</span>
                 </div>
-                <button class="buy-btn">اطلب الأداة الآن</button>
+                <button class="buy-btn" data-service="اختراق الألعاب العالمية">اطلب الخدمة الآن</button>
             </div>
 
             <div class="service-card" data-name="اختراق الفيسبوك" data-price="90">
@@ -82,9 +77,20 @@
                     <span class="update-info"><i class="fas fa-calendar-alt"></i> آخر تحديث: 2025/10/31</span>
                     <span class="license-info"><i class="fas fa-cubes"></i> التراخيص المتبقية: 8/75</span>
                 </div>
-                <button class="buy-btn">اطلب الأداة الآن</button>
+                <button class="buy-btn" data-service="اختراق الفيسبوك">اطلب الخدمة الآن</button>
             </div>
 
+            <div class="service-card" data-name="أرقام وهمية شاملة" data-price="5">
+                <i class="fas fa-sim-card"></i>
+                <h3>أرقام وهمية لجميع المنصات</h3>
+                <p>أرقام تفعيل فورية لتسجيل حسابات واتساب، تلغرام، وغيرها (تفعيل لمرة واحدة).</p>
+                <div class="tool-status">
+                    <span class="update-info"><i class="fas fa-calendar-alt"></i> متوفر الآن</span>
+                    <span class="license-info"><i class="fas fa-cubes"></i> الكمية المتبقية: <span class="license-count">غير محدود</span></span>
+                </div>
+                <button class="buy-btn" data-service="أرقام وهمية شاملة">اشتري بـ 5$</button>
+            </div>
+            
             <div class="service-card" data-name="اختراق البنوك" data-price="500">
                 <i class="fas fa-money-check-alt"></i>
                 <h3>إدارة الأصول غير المأذونة</h3>
@@ -93,33 +99,21 @@
                     <span class="update-info"><i class="fas fa-calendar-alt"></i> آخر تحديث: 2025/11/01</span>
                     <span class="license-info"><i class="fas fa-cubes"></i> التراخيص المتبقية: 2/10</span>
                 </div>
-                <button class="buy-btn">اطلب الأداة الآن</button>
+                <button class="buy-btn" data-service="اختراق البنوك">اطلب الخدمة الآن</button>
             </div>
+            
         </div>
     </section>
 
-    <section class="features-section section-padding" id="features">
-        <h2 class="section-title">⚙️ المخاطر والإنجازات (وجهة نظرنا)</h2>
-        <p class="section-subtitle">نحن نكسر أدواتهم الدفاعية، وهم يحاولون اللحاق بنا.</p>
-
-        <div class="features-container">
-            <div class="feature-card" onclick="showFeatureDetails('مخاطر تحديث فيسبوك', 'تحديث فيسبوك الجديد صعب على الهاكرز المبتدئين... لكن فريقنا كسر حمايته خلال 24 ساعة! لا تقلق، أدواتنا تعمل 100%')">
-                <i class="fab fa-facebook-square"></i>
-                <h3>كسر أمان فيسبوك الجديد</h3>
-                <p>فيسبوك يطور أدواته ونحن نكسرها قبل أن تصل إليك!</p>
-            </div>
-
-            <div class="feature-card" onclick="showFeatureDetails('إنجاز الشهر: اختراق شبكات', 'توقعوا تحديثات جديدة لكسر شبكات Wi-Fi المؤمّنة بتقنية WPA3. فريقنا يجهز الأداة التي ستحتاجها.')">
-                <i class="fas fa-wifi"></i>
-                <h3>تجهيز أداة كسر الشبكات</h3>
-                <p>التقنية الجديدة لا تخيفنا. سنكسر أمان الـ Wi-Fi الأكثر تعقيداً قريباً.</p>
-            </div>
-
-            <div class="feature-card" onclick="showFeatureDetails('التخفي التام', 'أدواتنا تخفيك بشكل تام عن أنظمة الكشف (Anti-Cheat). نحن نضمن لك عدم الحظر التام.')">
-                <i class="fas fa-user-secret"></i>
-                <h3>ضمان التخفي التام</h3>
-                <p>حماية كاملة لهويتك وبياناتك من أي تتبع.</p>
-            </div>
+    <section class="features-section section-padding" id="about-us">
+        <h2 class="section-title">⚙️ لماذا ShadowHack PRO؟</h2>
+        <p class="section-subtitle">نحن نعدك ليس فقط بالوصول، بل بالسيطرة الكاملة.</p>
+        <div class="about-us-summary">
+            <p>نحن المنصة الوحيدة التي تضمن لك إتمام المهمة بنجاح 100%.</p>
+            <p>أدواتنا تخترق طبقات الأمان الأعمق، وتضمن التخفي التام من أي تتبع حكومي أو خاص.</p>
+            <a href="about.html" class="cta-button" target="_blank">
+                اكتشف تقنياتنا السرية <i class="fas fa-arrow-left"></i>
+            </a>
         </div>
     </section>
 
@@ -127,7 +121,7 @@
         <h2 class="section-title">💬 آراء عملائنا المحترفين</h2>
         
         <div class="comment-notice">
-            💬 التعليقات أدناه تتجدد بناءً على المشتريين الموثوقين. ✅
+            💬 تم التحقق من هؤلاء المشترين: كل التعليقات حقيقية وموثقة. ✅
         </div>
         
         <div class="comments-container" id="commentsContainer">
@@ -146,7 +140,9 @@
             <a href="https://t.me/Talaa_almalika" target="_blank"><i class="fab fa-telegram-plane"></i></a>
         </div>
         <div class="disclaimer">
-            <p>جميع الخدمات هنا هي لأغراض وهمية وتطويرية. نتحفظ على استخدامها لأي غرض غير قانوني.</p>
+            <a href="disclaimer.html" target="_blank" style="color: var(--secondary); text-decoration: none; font-weight: bold;">
+                <i class="fas fa-exclamation-triangle"></i> اقرأ بيان إخلاء المسؤولية القانوني
+            </a>
         </div>
     </footer>
 
@@ -161,7 +157,7 @@
             
             <input type="number" id="userInputCode" placeholder="أدخل الكود هنا..." maxlength="4" pattern="[0-9]{4}" inputmode="numeric">
             
-            <button id="verifyCodeButton" class="cta-button" onclick="verifyCode()">تحقق وتواصل</button>
+            <button id="verifyCodeButton" class="cta-button">تحقق وابدأ الدردشة</button>
             <p id="verificationMessage" style="margin-top: 1rem;"></p>
         </div>
     </div>
