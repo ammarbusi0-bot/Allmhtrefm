@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShadowHack PRO v7.0 - الإمبراطورية السوداء</title>
+    <title>ShadowHack PRO v1 - الإمبراطورية السوداء</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -377,7 +377,7 @@
         }
 
         .comment-badge {
-            background: var(--accent);
+            background: linear-gradient(45deg, #ff0088, #8800ff);
             color: white;
             padding: 0.3rem 0.8rem;
             border-radius: 15px;
@@ -457,12 +457,19 @@
         }
 
         .faq-answer {
-            padding: 2rem;
+            padding: 0 2rem;
             color: #ccc;
             line-height: 1.7;
             background: rgba(255, 255, 255, 0.02);
             border-top: 1px solid #333;
-            display: block;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px; /* قيمة كافية لعرض المحتوى */
+            padding: 2rem; /* إعادة البادينج عند العرض */
         }
 
         .faq-toggle {
@@ -523,19 +530,16 @@
     </style>
 </head>
 <body>
-    <!-- تأثير المصفوفة -->
     <canvas class="matrix-bg" id="matrixCanvas"></canvas>
 
-    <!-- زر التليجرام العائم -->
     <a href="https://t.me/Armanex" class="telegram-float" target="_blank">
         <i class="fab fa-telegram"></i>
         تواصل معنا
     </a>
 
-    <!-- التنقل -->
     <nav class="navbar">
         <div class="nav-content">
-            <div class="logo">🌑 ShadowHack PRO v7.0</div>
+            <div class="logo">🌑 ShadowHack PRO v1</div>
             <ul class="nav-links">
                 <li><a href="#hero">الرئيسية</a></li>
                 <li><a href="#services">الخدمات</a></li>
@@ -546,20 +550,17 @@
         </div>
     </nav>
 
-    <!-- الهيرو -->
     <section class="hero" id="hero">
         <div class="hero-content">
-            <h1>ShadowHack PRO v7.0</h1>
+            <h1>ShadowHack PRO v1</h1>
             <p>الإمبراطورية السوداء - اختراق بلا حدود</p>
             <a href="#services" class="cta-button">اكتشف الخدمات المتطورة 🚀</a>
         </div>
     </section>
 
-    <!-- الخدمات -->
     <section class="services" id="services">
         <h2 class="section-title">🛠️ خدماتنا المتطورة</h2>
         <div class="services-grid">
-            <!-- الخدمات الأساسية -->
             <div class="service-card best-seller">
                 <div class="best-seller-badge">🔥 الأكثر مبيعاً</div>
                 <i class="fas fa-mobile-alt service-icon"></i>
@@ -578,7 +579,6 @@
                 <button class="buy-btn" onclick="buyService('هاك ببجي موبايل', 80)">اشتري الآن</button>
             </div>
 
-            <!-- باقي الخدمات -->
             <div class="service-card">
                 <i class="fas fa-bolt service-icon"></i>
                 <h3>هاك ببجي لايت</h3>
@@ -629,7 +629,6 @@
         </div>
     </section>
 
-    <!-- المميزات -->
     <section class="features-section" id="features">
         <h2 class="section-title">⚡ مميزات منصتنا</h2>
         <div class="features-grid">
@@ -653,7 +652,6 @@
         </div>
     </section>
 
-    <!-- التعليقات -->
     <section class="comments-section" id="comments">
         <h2 class="section-title">💬 آراء عملائنا المحترفين</h2>
         
@@ -662,21 +660,17 @@
         </div>
         
         <div class="comments-container" id="commentsContainer">
-            <!-- التعليقات تظهر هنا تلقائياً -->
-        </div>
+            </div>
     </section>
 
-    <!-- الأسئلة الشائعة -->
     <section class="faq-section" id="faq">
         <h2 class="section-title">❓ الأسئلة الشائعة</h2>
         <div class="faq-container" id="faqContainer">
-            <!-- الأسئلة تظهر هنا تلقائياً -->
-        </div>
+            </div>
     </section>
 
-    <!-- الفوتر -->
     <footer class="footer">
-        <p>ShadowHack PRO v7.0 &copy; 2024 - الإمبراطورية السوداء</p>
+        <p>ShadowHack PRO v1 &copy; 2024 - الإمبراطورية السوداء</p>
         <p>جميع الحقوق محفوظة لأقوى منصة اختراق في العالم العربي</p>
     </footer>
 
@@ -711,7 +705,7 @@
                 
                 ctx.fillText(text, x, y);
                 
-                if (y > canvas.height && Math.random() > 0.975) {
+                if (y * fontSize > canvas.height && Math.random() > 0.975) {
                     drops[i] = 0;
                 }
                 drops[i]++;
@@ -720,14 +714,15 @@
 
         setInterval(drawMatrix, 50);
 
-        // قاعدة بيانات التعليقات - 50 تعليق عربي
+        // قاعدة بيانات التعليقات - باللهجة الحلبية وترتيب زمني تصاعدي
         const fakeComments = [
-            {name: "أحمد الشبح", text: "هاك ببجي لايت رهيب! من أفضل الهاكات اللي جربتها 🎮", time: "منذ 7 ساعات"},
-            {name: "فاطمة الظل", text: "فيفا موبايل هاك غير اللعبة! الآن عندي كل اللاعبين ⚽", time: "منذ 12 ساعة"},
-            {name: "خالد السايبر", text: "ببجي لايت هاك سريع وما يتكتشف. أنصح فيه 👍", time: "منذ 3 ساعات"},
-            {name: "ليلى المخترقة", text: "هاك فري فاير شغال مثل السحر. فريق الدعم سريع 🚀", time: "منذ 8 ساعات"},
-            {name: "النسر العربي", text: "جربت هاك ببجي وفري فاير والنتيجة مذهلة! 🔥", time: "منذ 5 ساعات"},
-            // ... 45 تعليق إضافي بنفس النمط
+            // الترتيب: 5 ساعات، 6 ساعات، 7 ساعات... (تصاعدي)
+            { name: "أبو جود", text: "والله يا زلمي شغلكم نخب أول! الهاك تبع ببجي مو طبيعي أبداً. كنت عم عاني كتير من الحسابات اللي بتعمل ريبورت، بس بفضلكم عم ألعب بمزاج وما حدا بيقدر يعملي شي. يسلمو إيديكن على هالشغل النظيف، صارلي 5 ساعات بلعب ولسّا ما أكلت بان.", hoursAgo: 5 },
+            { name: "أمير الظلام", text: "يا عمي إذا بدك شغل مظبوط، ما في غير هالصفحة. طلبت اختراق تليفون رفيقي لعرف وين عم يروح، وظبطوها بلمحة البصر. حتى الدعم الفني، بيحكوا معك بكل احترام وبيجاوبوا على كل أسئلتك. لا تتعب حالك وتدوّر بمكان تاني.", hoursAgo: 6 },
+            { name: "ريم الحلبية", text: "أنا كتير كنت خايفة من شغل الهاكات وهالقصص، بس هالشباب مطمئنين كتير. طلبت هاك فري فاير وضبطوه من أول مرة، والأمان تبعهم عالي. صراحةً، شغلتكم بيضا، وعقبال ما تصيروا أحسن ناس بالمنطقة.", hoursAgo: 7 },
+            { name: "ملك السايبر", text: "شوف يا غالي، أنا من زمان عم دور على ناس بتفهم بهالمجال. جربت كتير مواقع، بس كلها كذب وتضييع وقت. جربت خدمات اختراق البنوك عندكم وهي اللي عملتلي نقلة نوعية. شغلكم ذهب صافي. ألف شكر من القلب.", hoursAgo: 8 },
+            { name: "سالم المافيا", text: "يا لطيف، شي بيجنن! كنت ضايع بين المواقع الكذابة بس هون الشغل حقيقي وما فيه لف ودوران. اختراق حساب فيسبوك تم بأقل من نص ساعة. برافو عليكم، عنجد أساطير.", hoursAgo: 9 },
+            { name: "فادي أبو عذاب", text: "كل التقدير والاحترام لفريقكم. جربت اختراق الهاتف وما توقعت هالسرعة والدقة! عم بيشتغل كأنه تليفوني أنا. يا جماعة، هالمنصة هي الأصل والباقي تقليد، لا حدا يضيع وقته.", hoursAgo: 10 }
         ];
 
         // عرض التعليقات العشوائية
@@ -735,8 +730,11 @@
             const container = document.getElementById('commentsContainer');
             container.innerHTML = '';
             
-            const shuffled = [...fakeComments].sort(() => 0.5 - Math.random());
-            const selected = shuffled.slice(0, 6);
+            // 1. فرز التعليقات ترتيباً تصاعدياً (5 ساعات، 6 ساعات، 7 ساعات...)
+            const sortedComments = [...fakeComments].sort((a, b) => a.hoursAgo - b.hoursAgo);
+            
+            // 2. اختيار 6 تعليقات (أول 6 بعد الفرز)
+            const selected = sortedComments.slice(0, 6);
             
             selected.forEach(comment => {
                 const commentDiv = document.createElement('div');
@@ -748,7 +746,7 @@
                     </div>
                     <div class="comment-text">"${comment.text}"</div>
                     <div class="comment-stars">⭐⭐⭐⭐⭐</div>
-                    <div class="comment-time">${comment.time}</div>
+                    <div class="comment-time">منذ ${comment.hoursAgo} ساعات</div>
                 `;
                 container.appendChild(commentDiv);
             });
@@ -780,13 +778,17 @@
                 `;
                 container.appendChild(faqItem);
             });
+            // التعديل: تفعيل جميع الأسئلة تلقائياً لتبقى مرئية دائماً
+            document.querySelectorAll('.faq-item').forEach(item => {
+                item.classList.add('active');
+            });
         }
 
-        // تبديل الأسئلة
+        // تبديل الأسئلة (يتم استدعاؤها بالنقر لكنها لا تغير الحالة بفعالية بوجود تفعيل دائم)
         function toggleFAQ(index) {
             const items = document.querySelectorAll('.faq-item');
             const item = items[index];
-            item.classList.toggle('active');
+            item.classList.toggle('active'); 
         }
 
         // وظيفة الشراء - توجيه لتليجرام
