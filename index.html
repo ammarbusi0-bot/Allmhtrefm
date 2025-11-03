@@ -5,11 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ShadowHack PRO v1 - الإمبراطورية السوداء</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <audio id="background-audio" loop autoplay>
+        <source src="Sefo_Demet_Akaln_-_Yerinde_Dur_Official_Video.m4a" type="audio/mp4">
+        المتصفح لا يدعم العنصر الصوتي.
+    </audio>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const audio = document.getElementById('background-audio');
+            // محاولة تشغيل الصوت تلقائياً
+            audio.play().catch(error => {
+                console.log("Auto-play was prevented. The user may need to interact with the page.");
+            });
+        });
+    </script>
     <style>
+        /* 🎨 تغيير الألوان إلى الثيم البنفسجي الفخم */
         :root {
-            --primary: #00ff88;
-            --secondary: #ff0088;
-            --accent: #8800ff;
+            --primary: #9400D3; /* بنفسجي غامق ملكي */
+            --secondary: #FF00FF; /* ماجينتا/بنفسجي فاتح */
+            --accent: #FF00FF; /* لون التمييز */
             --dark: #0a0a0a;
             --darker: #000000;
             --light: #ffffff;
@@ -86,7 +101,7 @@
 
         .nav-links a:hover {
             color: var(--primary);
-            background: rgba(0, 255, 136, 0.1);
+            background: rgba(148, 0, 211, 0.1); 
             transform: translateY(-2px);
         }
 
@@ -99,7 +114,7 @@
             text-align: center;
             padding: 2rem;
             position: relative;
-            background: radial-gradient(circle at center, rgba(0, 255, 136, 0.1) 0%, transparent 70%);
+            background: radial-gradient(circle at center, rgba(148, 0, 211, 0.1) 0%, transparent 70%);
         }
 
         .hero-content h1 {
@@ -175,7 +190,7 @@
             position: relative;
             overflow: hidden;
             transition: all 0.4s ease;
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+            box-shadow: 0 0 20px rgba(148, 0, 211, 0.2);
         }
 
         .service-card::before {
@@ -185,7 +200,7 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(0, 255, 136, 0.1), transparent);
+            background: linear-gradient(45deg, transparent, rgba(148, 0, 211, 0.1), transparent);
             transform: rotate(45deg);
             transition: all 0.6s ease;
         }
@@ -194,10 +209,6 @@
             transform: translateY(-15px) scale(1.02);
             border-color: var(--accent);
             box-shadow: 0 0 40px var(--primary);
-        }
-
-        .service-card:hover::before {
-            animation: shine 1.5s;
         }
 
         @keyframes shine {
@@ -298,7 +309,7 @@
         .feature-card:hover {
             border-color: var(--primary);
             transform: translateY(-10px) scale(1.05);
-            box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+            box-shadow: 0 0 30px rgba(148, 0, 211, 0.3);
         }
 
         .feature-card i {
@@ -360,7 +371,7 @@
         .comment:hover {
             transform: translateY(-5px);
             border-color: var(--primary);
-            box-shadow: 0 0 25px rgba(0, 255, 136, 0.2);
+            box-shadow: 0 0 25px rgba(148, 0, 211, 0.2);
         }
 
         .comment-header {
@@ -377,7 +388,7 @@
         }
 
         .comment-badge {
-            background: linear-gradient(45deg, #ff0088, #8800ff);
+            background: linear-gradient(45deg, var(--secondary), var(--accent));
             color: white;
             padding: 0.3rem 0.8rem;
             border-radius: 15px;
@@ -403,16 +414,16 @@
         }
 
         .comment-notice {
-            background: linear-gradient(135deg, #004400, #006600);
-            color: #00ff88;
+            background: linear-gradient(135deg, #2a003a, #4a005a);
+            color: var(--primary);
             padding: 1.5rem;
             border-radius: 10px;
             margin: 2rem auto;
-            border: 2px solid #00ff88;
+            border: 2px solid var(--primary);
             font-size: 1.1rem;
             max-width: 800px;
             text-align: center;
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+            box-shadow: 0 0 20px rgba(148, 0, 211, 0.3);
         }
 
         /* قسم الأسئلة الشائعة المتطور */
@@ -440,7 +451,7 @@
         }
 
         .faq-question {
-            background: rgba(0, 255, 136, 0.1);
+            background: rgba(148, 0, 211, 0.1); 
             color: var(--light);
             padding: 1.5rem 2rem;
             cursor: pointer;
@@ -453,7 +464,7 @@
         }
 
         .faq-question:hover {
-            background: rgba(0, 255, 136, 0.2);
+            background: rgba(148, 0, 211, 0.2);
         }
 
         .faq-answer {
@@ -462,14 +473,16 @@
             line-height: 1.7;
             background: rgba(255, 255, 255, 0.02);
             border-top: 1px solid #333;
-            max-height: 0;
+            /* 🟢 الإجابات مخفية افتراضياً */
+            max-height: 0; 
             overflow: hidden;
             transition: max-height 0.4s ease-out, padding 0.4s ease-out;
         }
 
+        /* 🟢 الإجابة تظهر فقط عند الضغط */
         .faq-item.active .faq-answer {
-            max-height: 500px; /* قيمة كافية لعرض المحتوى */
-            padding: 2rem; /* إعادة البادينج عند العرض */
+            max-height: 500px; 
+            padding: 2rem;
         }
 
         .faq-toggle {
@@ -670,8 +683,7 @@
     </section>
 
     <footer class="footer">
-        <p>ShadowHack PRO v1 &copy; 2024 - الإمبراطورية السوداء</p>
-        <p>جميع الحقوق محفوظة لأقوى منصة اختراق في العالم العربي</p>
+        <p>ShadowHack PRO v1 - الإمبراطورية السوداء</p>
     </footer>
 
     <script>
@@ -695,7 +707,7 @@
             ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
-            ctx.fillStyle = '#00ff88';
+            ctx.fillStyle = '#9400D3';
             ctx.font = `bold ${fontSize}px 'Courier New', monospace`;
 
             for (let i = 0; i < drops.length; i++) {
@@ -714,15 +726,15 @@
 
         setInterval(drawMatrix, 50);
 
-        // قاعدة بيانات التعليقات - باللهجة الحلبية وترتيب زمني تصاعدي
+        // قاعدة بيانات التعليقات - باللهجة الحلبية وترتيب عشوائي
         const fakeComments = [
-            // الترتيب: 5 ساعات، 6 ساعات، 7 ساعات... (تصاعدي)
-            { name: "أبو جود", text: "والله يا زلمي شغلكم نخب أول! الهاك تبع ببجي مو طبيعي أبداً. كنت عم عاني كتير من الحسابات اللي بتعمل ريبورت، بس بفضلكم عم ألعب بمزاج وما حدا بيقدر يعملي شي. يسلمو إيديكن على هالشغل النظيف، صارلي 5 ساعات بلعب ولسّا ما أكلت بان.", hoursAgo: 5 },
-            { name: "أمير الظلام", text: "يا عمي إذا بدك شغل مظبوط، ما في غير هالصفحة. طلبت اختراق تليفون رفيقي لعرف وين عم يروح، وظبطوها بلمحة البصر. حتى الدعم الفني، بيحكوا معك بكل احترام وبيجاوبوا على كل أسئلتك. لا تتعب حالك وتدوّر بمكان تاني.", hoursAgo: 6 },
-            { name: "ريم الحلبية", text: "أنا كتير كنت خايفة من شغل الهاكات وهالقصص، بس هالشباب مطمئنين كتير. طلبت هاك فري فاير وضبطوه من أول مرة، والأمان تبعهم عالي. صراحةً، شغلتكم بيضا، وعقبال ما تصيروا أحسن ناس بالمنطقة.", hoursAgo: 7 },
-            { name: "ملك السايبر", text: "شوف يا غالي، أنا من زمان عم دور على ناس بتفهم بهالمجال. جربت كتير مواقع، بس كلها كذب وتضييع وقت. جربت خدمات اختراق البنوك عندكم وهي اللي عملتلي نقلة نوعية. شغلكم ذهب صافي. ألف شكر من القلب.", hoursAgo: 8 },
-            { name: "سالم المافيا", text: "يا لطيف، شي بيجنن! كنت ضايع بين المواقع الكذابة بس هون الشغل حقيقي وما فيه لف ودوران. اختراق حساب فيسبوك تم بأقل من نص ساعة. برافو عليكم، عنجد أساطير.", hoursAgo: 9 },
-            { name: "فادي أبو عذاب", text: "كل التقدير والاحترام لفريقكم. جربت اختراق الهاتف وما توقعت هالسرعة والدقة! عم بيشتغل كأنه تليفوني أنا. يا جماعة، هالمنصة هي الأصل والباقي تقليد، لا حدا يضيع وقته.", hoursAgo: 10 }
+            // 🟢 تم تغيير التواريخ لتكون متنوعة وغير مرتبة
+            { name: "أبو جود", text: "والله يا زلمي شغلكم نخب أول! الهاك تبع ببجي مو طبيعي أبداً. كنت عم عاني كتير من الحسابات اللي بتعمل ريبورت، بس بفضلكم عم ألعب بمزاج وما حدا بيقدر يعملي شي. يسلمو إيديكن على هالشغل النظيف، صارلي شي 5 ساعات بلعب ولسّا ما أكلت بان.", timeAgo: "منذ 5 ساعات" },
+            { name: "أمير الظلام", text: "يا عمي إذا بدك شغل مظبوط، ما في غير هالصفحة. طلبت اختراق تليفون رفيقي لعرف وين عم يروح، وظبطوها بلمحة البصر. حتى الدعم الفني، بيحكوا معك بكل احترام وبيجاوبوا على كل أسئلتك. لا تتعب حالك وتدوّر بمكان تاني.", timeAgo: "منذ 3 أيام" },
+            { name: "ريم الحلبية", text: "أنا كتير كنت خايفة من شغل الهاكات وهالقصص، بس هالشباب مطمئنين كتير. طلبت هاك فري فاير وضبطوه من أول مرة، والأمان تبعهم عالي. صراحةً، شغلتكم بيضا، وعقبال ما تصيروا أحسن ناس بالمنطقة.", timeAgo: "منذ 1 يوم" },
+            { name: "ملك السايبر", text: "شوف يا غالي، أنا من زمان عم دور على ناس بتفهم بهالمجال. جربت كتير مواقع، بس كلها كذب وتضييع وقت. جربت خدمات اختراق البنوك عندكم وهي اللي عملتلي نقلة نوعية. شغلكم ذهب صافي. ألف شكر من القلب.", timeAgo: "منذ 6 ساعات" },
+            { name: "سالم المافيا", text: "يا لطيف، شي بيجنن! كنت ضايع بين المواقع الكذابة بس هون الشغل حقيقي وما فيه لف ودوران. اختراق حساب فيسبوك تم بأقل من نص ساعة. برافو عليكم، عنجد أساطير.", timeAgo: "منذ 12 ساعة" },
+            { name: "فادي أبو عذاب", text: "كل التقدير والاحترام لفريقكم. جربت اختراق الهاتف وما توقعت هالسرعة والدقة! عم بيشتغل كأنه تليفوني أنا. يا جماعة، هالمنصة هي الأصل والباقي تقليد، لا حدا يضيع وقته.", timeAgo: "منذ 4 أيام" }
         ];
 
         // عرض التعليقات العشوائية
@@ -730,11 +742,8 @@
             const container = document.getElementById('commentsContainer');
             container.innerHTML = '';
             
-            // 1. فرز التعليقات ترتيباً تصاعدياً (5 ساعات، 6 ساعات، 7 ساعات...)
-            const sortedComments = [...fakeComments].sort((a, b) => a.hoursAgo - b.hoursAgo);
-            
-            // 2. اختيار 6 تعليقات (أول 6 بعد الفرز)
-            const selected = sortedComments.slice(0, 6);
+            // 🟢 تم حذف خاصية الفرز لعرض التواريخ بترتيب غير متسلسل
+            const selected = fakeComments.slice(0, 6);
             
             selected.forEach(comment => {
                 const commentDiv = document.createElement('div');
@@ -746,7 +755,7 @@
                     </div>
                     <div class="comment-text">"${comment.text}"</div>
                     <div class="comment-stars">⭐⭐⭐⭐⭐</div>
-                    <div class="comment-time">منذ ${comment.hoursAgo} ساعات</div>
+                    <div class="comment-time">${comment.timeAgo}</div>
                 `;
                 container.appendChild(commentDiv);
             });
@@ -770,7 +779,7 @@
                 const faqItem = document.createElement('div');
                 faqItem.className = 'faq-item';
                 faqItem.innerHTML = `
-                    <div class="faq-question" onclick="toggleFAQ(${index})">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
                         ${item.q}
                         <i class="fas fa-chevron-down faq-toggle"></i>
                     </div>
@@ -778,16 +787,12 @@
                 `;
                 container.appendChild(faqItem);
             });
-            // التعديل: تفعيل جميع الأسئلة تلقائياً لتبقى مرئية دائماً
-            document.querySelectorAll('.faq-item').forEach(item => {
-                item.classList.add('active');
-            });
+            // 🟢 تم إزالة التفعيل التلقائي. الأسئلة ستكون مخفية افتراضياً.
         }
 
-        // تبديل الأسئلة (يتم استدعاؤها بالنقر لكنها لا تغير الحالة بفعالية بوجود تفعيل دائم)
-        function toggleFAQ(index) {
-            const items = document.querySelectorAll('.faq-item');
-            const item = items[index];
+        // 🟢 تبديل حالة الأسئلة الشائعة عند النقر (لجعلها مخفية افتراضياً)
+        function toggleFAQ(element) {
+            const item = element.closest('.faq-item');
             item.classList.toggle('active'); 
         }
 
@@ -803,7 +808,7 @@
             const button = event.target;
             const originalText = button.innerHTML;
             button.innerHTML = '🚀 جاري التوجيه إلى تليجرام...';
-            button.style.background = 'linear-gradient(45deg, #0088cc, #00ff88)';
+            button.style.background = 'linear-gradient(45deg, #0088cc, #9400D3)';
             button.disabled = true;
             
             setTimeout(() => {
