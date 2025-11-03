@@ -1,29 +1,26 @@
-// 🔑 التهيئة الرئيسية وتنفيذ منطق تشغيل الموسيقى وإظهار المحتوى
+// 🔑 التهيئة الرئيسية ومنطق تشغيل الموسيقى وإظهار المحتوى
 document.addEventListener('DOMContentLoaded', () => {
     // العناصر الأساسية
     const audio = document.getElementById('background-audio');
     const ctaButton = document.getElementById('ctaButton'); 
     
     // الأقسام المخفية بناءً على CSS
-    const hiddenSections = document.querySelectorAll('.services, .features-section, .comments-section, .faq-section, .footer');
+    const hiddenSections = document.querySelectorAll('.services, .features-section, .comments-section, .faq-section, .footer, .about-us-summary');
     
     // ----------------------------------------------------
-    // 1. منطق تشغيل الموسيقى بمجرد أي تفاعل (نقرة أو ضغطة مفتاح)
+    // 1. منطق تشغيل الموسيقى عند أي تفاعل
     // ----------------------------------------------------
     const playAudioOnFirstInteraction = () => {
-        // نضبط الخاصية muted على false ونحاول التشغيل
         audio.muted = false; 
         audio.play().catch(error => {
             console.warn("Audio play failed initially (likely due to browser policy), error:", error);
         });
 
-        // إزالة المستمع بعد التشغيل لضمان تفاعل واحد
         document.removeEventListener('click', playAudioOnFirstInteraction);
         document.removeEventListener('keydown', playAudioOnFirstInteraction);
         console.log("Audio started playing after first user interaction.");
     };
 
-    // ربط وظيفة تشغيل الموسيقى بأول نقرة أو ضغطة مفتاح في أي مكان في المستند
     document.addEventListener('click', playAudioOnFirstInteraction);
     document.addEventListener('keydown', playAudioOnFirstInteraction);
 
@@ -39,9 +36,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 section.style.opacity = '1';
                 section.style.pointerEvents = 'auto'; // السماح بالتفاعل
             });
-            console.log("All hidden sections revealed.");
 
-            // تنفيذ التنقل السلس إلى قسم الخدمات (بما أن التنقل الافتراضي تم منعه)
+            // تنفيذ التنقل السلس إلى قسم الخدمات
             const target = document.querySelector(this.getAttribute('href'));
             if (target) {
                 target.scrollIntoView({ behavior: 'smooth' });
@@ -52,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ----------------------------------------------------
-    // 3. تهيئة الأقسام الأخرى عند تحميل الصفحة
+    // 3. تهيئة الأقسام الأخرى
     // ----------------------------------------------------
     displayRandomComments();
     createFAQ();
@@ -62,9 +58,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ربط وظيفة الشراء بجميع أزرار الشراء
     document.querySelectorAll('.buy-btn').forEach(button => {
-        button.addEventListener('click', buyService);
+        button.addEventListener('click', handleBuyClick); 
     });
 
+    const verifyButton = document.getElementById('verifyCodeButton');
+    if (verifyButton) {
+        verifyButton.addEventListener('click', verifyCode);
+    }
+    
     // إعادة حجم الكانفاس عند تغيير حجم النافذة
     window.addEventListener('resize', function() {
         const canvas = document.getElementById('matrixCanvas');
@@ -82,7 +83,6 @@ document.addEventListener('DOMContentLoaded', () => {
 const canvas = document.getElementById('matrixCanvas');
 const ctx = canvas.getContext('2d');
 
-// التحقق من وجود الكانفاس قبل الرسم
 if (canvas) {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -122,10 +122,10 @@ if (canvas) {
 
 
 // ----------------------------------------------------
-// 💬 قاعدة بيانات التعليقات الجديدة (أسماء عربية + توثيق)
+// 💬 قاعدة بيانات التعليقات الجديدة 
 // ----------------------------------------------------
 const generateRandomTime = () => {
-    const hours = Math.floor(Math.random() * 24) + 1; // 1 to 24 hours
+    const hours = Math.floor(Math.random() * 24) + 1; 
     if (hours < 10) return `منذ ${hours} ساعات`;
     if (hours < 24) return `منذ ${hours} ساعة`;
     return "منذ 1 يوم";
@@ -137,19 +137,15 @@ const commentsTexts = [
     "شغلكم نخب أول! الهاك تبع ببجي مو طبيعي أبداً. ما في أي بان، وأفضل من كل المواقع اللي جربتها. يستاهلون الثقة.",
     "يا عمي إذا بدك شغل مظبوط، ما في غير هالمنصة. طلبت اختراق فيسبوك وضبطوها بأقل من ساعة. الدقة مو طبيعية.",
     "أفضل خدمة اختراق هواتف استخدمتها بحياتي. السرعة والدعم لا يعلى عليه. شكراً جزيلاً لفريق ShadowHack PRO.",
-    "كنت مترددة بالبداية، لكن خدمة فري فاير شغالة بشكل ممتاز ومستقر. جودة مقابل سعر. أنصح الكل.",
+    "خدمة الأرقام الوهمية شغالة فوراً وعلى مدار الساعة. أفضل من أي موقع آخر.",
     "جربت اختراق البنوك وكانت النتيجة مذهلة. شغل احترافي ومضمون. ما رح تندموا على التعامل معهم.",
     "شي بيجنن! اختراق الكاميرات تم بأقل من 30 دقيقة. يا بلاش! برافو عليكم، عنجد أساطير المجال.",
-    "والله يا شباب الهاك الآمن تبع ببجي موبايل تفوق على كل التحديثات الجديدة. ما حسيت بأي خطر للحظر.",
+    "والله يا شباب الهاك الآمن تبع Free Fire تفوق على كل التحديثات الجديدة. ما حسيت بأي خطر للحظر.",
     "خدمة العملاء ممتازة ومتجاوبة جداً. كانوا معي خطوة بخطوة حتى تم تفعيل الهاك بنجاح.",
     "استعادة حسابي المفقود تمت بنجاح وبسرعة قياسية. ناس محترفين وعند كلمتهم.",
     "ما في أي مقارنة مع باقي المواقع. هذا هو الأصل. تعامل سريع وموثوقية عالية جداً.",
     "دفعت واستلمت الخدمة خلال دقائق. السرعة لا تُصدق وهذا هو الأهم في عالم الهاكرز.",
     "أكثر من رائعين، خدمة VIP حقيقية. خمس نجوم قليلة بحقكم.",
-    "الهاك يعمل بسلاسة دون أي تعليق أو بطء. مستوى احترافي عالي في البرمجة.",
-    "ثقة تامة في التعامل. هذا هو موقعي المفضل للخدمات السرية.",
-    "تجربة فريدة ومختلفة عن أي موقع آخر. عمل جبار ومتقن.",
-    "تم اختراق الحساب المطلوب في وقت قياسي جداً. فعلاً إمبراطورية الاختراق السوداء.",
 ];
 
 const fakeComments = [];
@@ -165,13 +161,12 @@ for(let i = 0; i < 50; i++) {
 // عرض التعليقات العشوائية
 function displayRandomComments() {
     const container = document.getElementById('commentsContainer');
-    if (!container) return; // تأكد من وجود العنصر
+    if (!container) return; 
 
     container.innerHTML = '';
     
-    // خلط التعليقات عشوائياً قبل العرض
     const shuffledComments = [...fakeComments].sort(() => 0.5 - Math.random());
-    const selected = shuffledComments.slice(0, 6); // عرض 6 تعليقات فقط
+    const selected = shuffledComments.slice(0, 6); 
 
     selected.forEach(comment => {
         const commentDiv = document.createElement('div');
@@ -193,14 +188,14 @@ function displayRandomComments() {
 const faqData = [
     {q: "ما هو ShadowHack PRO؟", a: "منصة متقدمة ومتخصصة في تقديم خدمات القرصنة والاختراق بأدوات متطورة وغير قابلة للكشف."},
     {q: "هل أدواتكم آمنة للاستخدام؟", a: "نعم، أدواتنا آمنة تماماً ومصممة بتقنيات متقدمة تضمن التخفي وعدم الكشف."},
-    {q: "كيف أشتري الخدمات؟", a: "اضغط على أي زر شراء وسيتم توجيهك مباشرة إلى تليجرام للتواصل مع فريق المبيعات."},
-    {q: "ما مدة التفعيل؟", a: "يتم تفعيل معظم الخدمات خلال دقائق بعد تأكيد الدفع."},
+    {q: "كيف أشتري الخدمات؟", a: "اضغط على زر الشراء، وقم بالتحقق من الأمان، ثم ابدأ الدردشة الفورية مع المشرفين لتأكيد الدفع والتفعيل."},
+    {q: "ما مدة التفعيل؟", a: "يتم تفعيل معظم الخدمات خلال دقائق بعد تأكيد الدفع مع المشرف."},
     {q: "هل يوجد ضمان؟", a: "نعم، نقدم ضمان استبدال أو استرجاع في حال عدم عمل الخدمة."},
     {q: "ما هي طريقة الدفع المتاحة؟", a: "نقبل العملات المشفرة (Bitcoin, USDT) لضمان خصوصيتك التامة."},
-    {q: "هل يمكنني طلب خدمة اختراق غير مذكورة؟", a: "تواصل معنا على تليجرام لطلب خدمات مخصصة، وسنناقش إمكانية تنفيذها."},
+    {q: "هل يمكنني طلب خدمة اختراق غير مذكورة؟", a: "تواصل معنا في الدردشة الفورية لطلب خدمات مخصصة، وسنناقش إمكانية تنفيذها."},
 ];
 
-// إنشاء الأسئلة الشائعة (والتي تكون مخفية افتراضياً)
+// إنشاء الأسئلة الشائعة
 function createFAQ() {
     const container = document.getElementById('faqContainer');
     if (!container) return; 
@@ -215,7 +210,6 @@ function createFAQ() {
             </div>
             <div class="faq-answer">${item.a}</div>
         `;
-        // إضافة مستمع الحدث (event listener) للنقر لتبديل الحالة
         faqItem.querySelector('.faq-question').addEventListener('click', function() {
             faqItem.classList.toggle('active');
         });
@@ -224,49 +218,74 @@ function createFAQ() {
     });
 }
 
-// وظيفة الشراء المباشر - تحديث رابط التلغرام
-function buyService(event) {
+// ----------------------------------------------------
+// 🔑 منطق الكود السري والتوجيه لصفحة الدردشة (chat.html)
+// ----------------------------------------------------
+
+const securityModal = document.getElementById('securityModal');
+const closeButton = securityModal ? securityModal.querySelector('.close-button') : null;
+const secretCodeDisplay = document.getElementById('secretCodeDisplay');
+const userInputCode = document.getElementById('userInputCode');
+const verificationMessage = document.getElementById('verificationMessage');
+const serviceNamePlaceholder = securityModal ? securityModal.querySelector('.service-name-placeholder') : null;
+
+let currentSecretCode = '';
+let serviceToBuy = {};
+
+// دالة لإنشاء كود سري عشوائي (4 أرقام فقط)
+function generateNumericSecretCode() {
+    return Math.floor(1000 + Math.random() * 9000).toString(); 
+}
+
+// دالة تفتح النافذة المنبثقة
+function handleBuyClick(event) {
     const serviceCard = event.target.closest('.service-card');
-    const serviceName = serviceCard.getAttribute('data-name');
-    const price = serviceCard.getAttribute('data-price');
     
-    // 📢 تم تحديث اسم المستخدم للتلغرام
-    const telegramUsername = "Talaa_almalika"; 
-    const message = `أريد شراء ${serviceName} بسعر $${price} من ShadowHack PRO`;
-    const url = `https://t.me/${telegramUsername}?text=${encodeURIComponent(message)}`;
-    
-    window.open(url, '_blank');
-    
-    // تأثير على الزر
-    const button = event.target;
-    const originalText = button.innerHTML;
-    button.innerHTML = '🚀 جاري التوجيه...';
-    button.style.background = 'linear-gradient(45deg, #0088cc, #ff0088)';
-    button.disabled = true;
-    
-    setTimeout(() => {
-        button.innerHTML = originalText;
-        // استعادة التنسيق الأصلي للزر من CSS
-        button.style.background = '';
-        button.disabled = false;
-    }, 3000);
-}
+    serviceToBuy = {
+        name: serviceCard.getAttribute('data-name'),
+        price: serviceCard.getAttribute('data-price')
+    };
 
-// تفاصيل المميزات (إبقاءها كما هي)
-function showFeatureDetails(title, details) {
-    alert(`🛡️ ${title}\n\n${details}`);
-}
+    if (securityModal) {
+        currentSecretCode = generateNumericSecretCode();
+        secretCodeDisplay.innerHTML = currentSecretCode;
+        serviceNamePlaceholder.innerHTML = `الخدمة: ${serviceToBuy.name} ($${serviceToBuy.price})`;
+        userInputCode.value = '';
+        verificationMessage.innerHTML = '';
+        
+        securityModal.style.display = 'block';
 
-// التنقل السلس (لروابط التنقل الأخرى غير CTA)
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    // نتجنب زر CTA لأنه مرتبط بوظيفة الإظهار والتشغيل
-    if (anchor.id !== 'ctaButton') {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({ behavior: 'smooth' });
+        if (closeButton) {
+            closeButton.onclick = () => {
+                securityModal.style.display = 'none';
+            };
+        }
+        window.onclick = (event) => {
+            if (event.target === securityModal) {
+                securityModal.style.display = 'none';
             }
-        });
+        };
     }
-});
+}
+
+// دالة تتحقق من الكود وتوجه لصفحة الدردشة (chat.html)
+function verifyCode() {
+    const enteredCode = userInputCode.value.trim();
+    
+    if (enteredCode === currentSecretCode) {
+        // التوجيه لصفحة الدردشة
+        const queryParams = new URLSearchParams({
+            service: serviceToBuy.name,
+            price: serviceToBuy.price,
+            code: currentSecretCode 
+        }).toString();
+        
+        window.location.href = `chat.html?${queryParams}`;
+        
+    } else {
+        // إذا كان الكود خاطئاً
+        verificationMessage.innerHTML = '⚠️ رمز سري خاطئ. حاول مجدداً.';
+        verificationMessage.style.color = 'var(--secondary)';
+        userInputCode.value = '';
+    }
+}
