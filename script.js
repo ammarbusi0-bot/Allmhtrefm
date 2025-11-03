@@ -1,13 +1,27 @@
-// 🎧 وظيفة تشغيل الموسيقى التلقائي
+// 🎧 منطق تشغيل الموسيقى التلقائي بـ "خدعة أول تفاعل" (مثل تيك توك)
 document.addEventListener('DOMContentLoaded', () => {
     const audio = document.getElementById('background-audio');
-    // محاولة تشغيل الصوت تلقائياً
-    audio.play().catch(error => {
-        console.log("Auto-play was prevented. User interaction is required.");
-    });
+    
+    // 1. محاولة التشغيل التلقائي الصامت (يعمل غالباً بسبب وجود muted في HTML)
+    audio.play().catch(e => console.log('Silent auto-play attempted.'));
+
+    // 2. إزالة الصمت (Unmute) عند أول تفاعل للمستخدم مع أي مكان في الصفحة
+    const unmuteOnFirstInteraction = () => {
+        if (audio && audio.muted) {
+            audio.muted = false; // هنا يتم تشغيل الصوت
+            console.log("Audio unmuted successfully upon user interaction.");
+        }
+        // إزالة مستمع الحدث بعد أول مرة حتى لا يتكرر
+        document.removeEventListener('click', unmuteOnFirstInteraction);
+        document.removeEventListener('keydown', unmuteOnFirstInteraction);
+    };
+
+    // إضافة مستمعات تتحسس أول نقرة أو ضغطة مفتاح
+    document.addEventListener('click', unmuteOnFirstInteraction);
+    document.addEventListener('keydown', unmuteOnFirstInteraction);
 });
 
-// 🟢 تأثير المصفوفة المتحرك (الخلفية الملونة المتحركة)
+// 🟢 تأثير المصفوفة المتحرك (الخلفية الملونة المتحركة) - كود المصفوفة لم يتغير
 const canvas = document.getElementById('matrixCanvas');
 const ctx = canvas.getContext('2d');
 
@@ -47,7 +61,7 @@ function drawMatrix() {
 
 setInterval(drawMatrix, 50);
 
-// 🟢 قاعدة بيانات التعليقات بأسماء وأوقات عشوائية (بين ساعة و يوم)
+// 🟢 قاعدة بيانات التعليقات بأسماء وأوقات عشوائية (بين ساعة و يوم) - لم تتغير
 const fakeComments = [
     { name: "أبو جود", text: "والله يا زلمي شغلكم نخب أول! الهاك تبع ببجي مو طبيعي أبداً. يسلمو إيديكن على هالشغل النظيف، صارلي شي 5 ساعات بلعب.", timeAgo: "منذ 6 ساعات" },
     { name: "أمير الظلام", text: "يا عمي إذا بدك شغل مظبوط، ما في غير هالصفحة. طلبت اختراق تليفون رفيقي وظبطوها بلمحة البصر.", timeAgo: "منذ 1 يوم" },
@@ -57,7 +71,7 @@ const fakeComments = [
     { name: "فادي أبو عذاب", text: "كل التقدير والاحترام لفريقكم. جربت اختراق الهاتف وما توقعت هالسرعة والدقة! عم بيشتغل كأنه تليفوني أنا.", timeAgo: "منذ 3 ساعات" }
 ];
 
-// عرض التعليقات العشوائية
+// عرض التعليقات العشوائية - لم يتغير
 function displayRandomComments() {
     const container = document.getElementById('commentsContainer');
     container.innerHTML = '';
@@ -82,7 +96,7 @@ function displayRandomComments() {
     });
 }
 
-// الأسئلة الشائعة
+// الأسئلة الشائعة - لم تتغير
 const faqData = [
     {q: "ما هو ShadowHack PRO؟", a: "منصة متقدمة ومتخصصة في تقديم خدمات القرصنة والاختراق بأدوات متطورة وغير قابلة للكشف."},
     {q: "هل أدواتكم آمنة للاستخدام؟", a: "نعم، أدواتنا آمنة تماماً ومصممة بتقنيات متقدمة تضمن التخفي وعدم الكشف."},
@@ -91,7 +105,7 @@ const faqData = [
     {q: "هل يوجد ضمان؟", a: "نعم، نقدم ضمان استبدال أو استرجاع في حال عدم عمل الخدمة."}
 ];
 
-// إنشاء الأسئلة الشائعة (والتي تكون مخفية افتراضياً)
+// إنشاء الأسئلة الشائعة (والتي تكون مخفية افتراضياً) - لم يتغير
 function createFAQ() {
     const container = document.getElementById('faqContainer');
     container.innerHTML = '';
@@ -115,7 +129,7 @@ function createFAQ() {
     });
 }
 
-// وظيفة الشراء - توجيه لتليجرام
+// وظيفة الشراء - توجيه لتليجرام - لم تتغير
 function buyService(event) {
     const serviceCard = event.target.closest('.service-card');
     const serviceName = serviceCard.getAttribute('data-name');
@@ -141,12 +155,12 @@ function buyService(event) {
     }, 3000);
 }
 
-// تفاصيل المميزات
+// تفاصيل المميزات - لم تتغير
 function showFeatureDetails(title, details) {
     alert(`🛡️ ${title}\n\n${details}`);
 }
 
-// 🟢 التهيئة الشاملة
+// 🟢 التهيئة الشاملة - تم التأكد من عدم وجود أي منطق قديم لزر الصوت هنا
 window.addEventListener('load', function() {
     displayRandomComments();
     createFAQ();
@@ -164,9 +178,12 @@ window.addEventListener('load', function() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
     });
+    
+    // جعل الدوال متاحة عالمياً لـ onclick في HTML
+    window.showFeatureDetails = showFeatureDetails;
 });
 
-// التنقل السلس
+// التنقل السلس - لم يتغير
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
