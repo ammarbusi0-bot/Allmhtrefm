@@ -1,27 +1,44 @@
-// 🎧 منطق تشغيل الموسيقى التلقائي بـ "خدعة أول تفاعل" (مثل تيك توك)
+// 🎧 منطق تشغيل الموسيقى: تشغيل عند النقر على زر "اكتشف الخدمات"
 document.addEventListener('DOMContentLoaded', () => {
     const audio = document.getElementById('background-audio');
-    
-    // 1. محاولة التشغيل التلقائي الصامت (يعمل غالباً بسبب وجود muted في HTML)
-    audio.play().catch(e => console.log('Silent auto-play attempted.'));
+    const ctaButton = document.getElementById('ctaButton'); // الزر الجديد
 
-    // 2. إزالة الصمت (Unmute) عند أول تفاعل للمستخدم مع أي مكان في الصفحة
-    const unmuteOnFirstInteraction = () => {
-        if (audio && audio.muted) {
-            audio.muted = false; // هنا يتم تشغيل الصوت
-            console.log("Audio unmuted successfully upon user interaction.");
-        }
-        // إزالة مستمع الحدث بعد أول مرة حتى لا يتكرر
-        document.removeEventListener('click', unmuteOnFirstInteraction);
-        document.removeEventListener('keydown', unmuteOnFirstInteraction);
+    // وظيفة تشغيل الموسيقى
+    const playAudio = () => {
+        // نستخدم audio.play() لضمان تشغيلها عند النقر
+        audio.play().catch(error => {
+            console.log("Audio play failed, error:", error);
+        });
+        
+        // إزالة المستمع بعد التشغيل لتجنب تكرار محاولة التشغيل
+        ctaButton.removeEventListener('click', handleCtaClick);
     };
 
-    // إضافة مستمعات تتحسس أول نقرة أو ضغطة مفتاح
-    document.addEventListener('click', unmuteOnFirstInteraction);
-    document.addEventListener('keydown', unmuteOnFirstInteraction);
+    // وظيفة النقر على زر CTA
+    const handleCtaClick = (e) => {
+        // تنفيذ عملية تشغيل الموسيقى
+        playAudio();
+
+        // السماح للنقر بالانتقال إلى قسم الخدمات بشكل طبيعي (سلس)
+        const target = document.querySelector(e.currentTarget.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // منع السلوك الافتراضي مرتين للتأكد من سلاسة الانتقال
+        e.preventDefault(); 
+    };
+
+    // ربط وظيفة التشغيل بزر CTA
+    if (ctaButton) {
+        ctaButton.addEventListener('click', handleCtaClick);
+    }
+    
+    // ملاحظة: الأكواد القديمة المتعلقة بـ unmute تم حذفها بالكامل من هنا.
+
 });
 
-// 🟢 تأثير المصفوفة المتحرك (الخلفية الملونة المتحركة) - كود المصفوفة لم يتغير
+// 🟢 تأثير المصفوفة المتحرك (الخلفية الملونة المتحركة) - لم يتغير
 const canvas = document.getElementById('matrixCanvas');
 const ctx = canvas.getContext('2d');
 
@@ -160,7 +177,7 @@ function showFeatureDetails(title, details) {
     alert(`🛡️ ${title}\n\n${details}`);
 }
 
-// 🟢 التهيئة الشاملة - تم التأكد من عدم وجود أي منطق قديم لزر الصوت هنا
+// 🟢 التهيئة الشاملة - لم تتغير
 window.addEventListener('load', function() {
     displayRandomComments();
     createFAQ();
@@ -183,13 +200,16 @@ window.addEventListener('load', function() {
     window.showFeatureDetails = showFeatureDetails;
 });
 
-// التنقل السلس - لم يتغير
+// التنقل السلس - تم حذف منطق زر CTA منه لأنه أصبح مربوطاً بتشغيل الصوت
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({ behavior: 'smooth' });
-        }
-    });
+    // نتجنب زر CTA لأنه مرتبط بوظيفة تشغيل الصوت
+    if (anchor.id !== 'ctaButton') {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    }
 });
