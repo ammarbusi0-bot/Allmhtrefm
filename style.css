@@ -471,18 +471,36 @@ body {
     margin-bottom: 1rem;
 }
 
-.social-links a {
-    color: #0088cc;
-    font-size: 2rem;
-    margin: 0 10px;
-    transition: color 0.3s;
-    text-shadow: 0 0 10px #0088cc;
+/* تنسيق زر غرفة الدعم الجديد في الفوتر */
+.footer-chat-button {
+    background: linear-gradient(45deg, var(--accent), var(--secondary));
+    border: none;
+    color: var(--darker);
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-weight: bold;
+    box-shadow: 0 0 15px var(--accent);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
 }
 
-.social-links a:hover {
-    color: var(--secondary);
-    text-shadow: 0 0 15px var(--secondary);
+.footer-chat-button:hover {
+    box-shadow: 0 0 25px var(--secondary), 0 0 40px var(--accent);
+    transform: translateY(-3px);
 }
+
+.footer-chat-button i {
+    font-size: 1.2rem;
+    color: var(--darker); /* لون الأيقونة داخل الزر */
+    text-shadow: none;
+}
+
 
 .disclaimer a {
     transition: color 0.3s, text-shadow 0.3s;
@@ -690,6 +708,39 @@ body {
     background-color: var(--secondary);
     color: var(--light);
 }
+
+/* تنسيقات صفحة غرفة الدعم الجديدة (support-room.html) */
+.support-room-content {
+    max-width: 800px;
+    margin: 150px auto 50px;
+    padding: 30px;
+    background-color: var(--dark);
+    border: 2px solid var(--accent);
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 0 30px var(--accent);
+}
+
+.support-room-content h1 {
+    color: var(--accent);
+    text-shadow: 0 0 10px var(--accent);
+    margin-bottom: 20px;
+}
+
+.support-room-content p {
+    color: var(--light);
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    text-align: right;
+}
+
+.support-room-content .cta-button {
+    margin-top: 30px;
+    font-size: 1.1rem;
+    padding: 12px 25px;
+}
+
 
 /* Responsive Design */
 @media (max-width: 768px) {
