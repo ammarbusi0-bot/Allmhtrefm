@@ -35,6 +35,85 @@ body {
     opacity: 0.1;
 }
 
+/* 🟢 تنسيقات شاشة الموافقة وإخفاء المحتوى */
+
+/* إخفاء محتوى الصفحة الرئيسي بشكل افتراضي (حتى تتم الموافقة) */
+.hidden-content {
+    display: none; 
+}
+
+/* تنسيق النافذة المنبثقة العامة (للكابتشا والموافقة) */
+.modal {
+    position: fixed;
+    z-index: 2000; /* أعلى من كل شيء */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.95);
+    display: none; /* يتم التحكم بها بواسطة الجافاسكريبت */
+    backdrop-filter: blur(10px);
+    justify-content: center;
+    align-items: center;
+}
+
+/* لإظهار النافذة مباشرة عند التحميل (لإخلاء المسؤولية) */
+.modal.show-modal {
+    display: flex;
+}
+
+.modal-content {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+    padding: 40px;
+    border: 3px solid var(--primary);
+    border-radius: 20px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 0 50px rgba(0, 255, 136, 0.5);
+    text-align: center;
+    animation: fadeIn 0.5s;
+}
+
+.disclaimer-content h2 {
+    color: var(--secondary);
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    text-shadow: var(--glow) var(--secondary);
+}
+
+.disclaimer-content p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 3rem;
+    text-align: justify;
+    padding: 0 10px;
+    color: #ccc;
+}
+
+.captcha-display {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--primary);
+    margin: 1.5rem 0;
+    letter-spacing: 10px;
+    text-shadow: var(--glow) var(--primary);
+}
+
+#captchaInput {
+    padding: 1rem;
+    margin-bottom: 2rem;
+    width: 80%;
+    border-radius: 10px;
+    border: 2px solid var(--accent);
+    background-color: var(--dark);
+    color: var(--light);
+    text-align: center;
+    font-size: 1.2rem;
+}
+/* نهاية تنسيقات النافذة المنبثقة */
+
+
 /* شريط التنقل */
 .navbar {
     background: rgba(10, 10, 10, 0.95);
@@ -110,13 +189,6 @@ body {
     to { text-shadow: 0 0 30px var(--accent), 0 0 40px var(--secondary); }
 }
 
-.hero-content p {
-    font-size: 1.8rem;
-    margin-bottom: 3rem;
-    opacity: 0.9;
-    text-shadow: var(--glow) var(--primary);
-}
-
 .cta-button {
     background: linear-gradient(45deg, var(--primary), var(--accent));
     color: var(--dark);
@@ -169,8 +241,6 @@ body {
     overflow: hidden;
     transition: all 0.4s ease;
     box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
-    display: flex; /* لترتيب المحتوى داخلياً */
-    flex-direction: column;
 }
 
 .service-card:hover {
@@ -212,28 +282,7 @@ body {
     color: var(--light);
     opacity: 0.8;
     line-height: 1.7;
-    margin-bottom: 1rem; /* تقليل المسافة لإضافة التحديث */
-    flex-grow: 1; /* لتمدد النص */
-}
-
-/* تحديثات الخدمة الجديدة */
-.service-update {
-    font-size: 0.9rem;
-    color: var(--secondary);
-    margin-bottom: 1rem;
-    font-weight: 500;
-}
-
-/* مؤشر المخزون الجديد */
-.hack-stock {
-    background: rgba(255, 0, 136, 0.1);
-    color: var(--secondary);
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
-    font-weight: bold;
-    margin-bottom: 1rem;
-    text-align: center;
-    border: 1px solid var(--secondary);
+    margin-bottom: 2rem;
 }
 
 .price {
@@ -257,7 +306,6 @@ body {
     font-size: 1.1rem;
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin-top: auto; /* لضمان أن يكون الزر في الأسفل دائماً */
 }
 
 .buy-btn:hover {
@@ -477,40 +525,6 @@ body {
     transform: rotate(180deg);
 }
 
-/* قسم إخلاء المسؤولية */
-.disclaimer-section {
-    background: #000000;
-    padding: 5rem 2rem;
-    border-top: 3px solid #ff4500; /* لون تحذيري */
-    text-align: center;
-}
-
-.disclaimer-title {
-    color: #ff4500;
-    text-shadow: 0 0 15px #ff4500;
-    margin-bottom: 2rem;
-}
-
-.disclaimer-content {
-    max-width: 900px;
-    margin: 0 auto;
-    background: rgba(255, 69, 0, 0.05);
-    padding: 2rem;
-    border-radius: 10px;
-    border: 1px solid #ff4500;
-    text-align: justify;
-    line-height: 1.8;
-}
-
-.disclaimer-content p {
-    color: #ccc;
-    font-size: 1rem;
-}
-
-.disclaimer-content strong {
-    color: #ff4500;
-}
-
 /* الفوتر المحسن */
 .footer {
     background: var(--dark);
@@ -525,17 +539,18 @@ body {
     margin-bottom: 1rem;
 }
 
+/* 🔴 تعديل تنسيق زر الدردشة العائم (كان تيليجرام وأصبح دردشة داخلية) */
 .telegram-float {
     position: fixed;
     bottom: 2rem;
     left: 2rem;
-    background: #0088cc;
+    background: var(--accent); /* تغيير اللون الأساسي ليتناسب مع الدردشة */
     color: white;
     padding: 1rem 1.5rem;
     border-radius: 50px;
     text-decoration: none;
     font-weight: bold;
-    box-shadow: 0 0 25px #0088cc;
+    box-shadow: 0 0 25px var(--accent);
     z-index: 1000;
     transition: all 0.3s ease;
     display: flex;
@@ -545,109 +560,8 @@ body {
 
 .telegram-float:hover {
     transform: scale(1.1);
-    box-shadow: 0 0 35px #0088cc;
+    box-shadow: 0 0 35px var(--accent);
 }
-
-/* 🟢🔐 التنسيق الأهم: إخفاء جميع الأقسام ما عدا الهيرو عند التحميل */
-.services, .features-section, .comments-section, .faq-section, .footer, .disclaimer-section {
-    opacity: 0; /* اخفاء المحتوى */
-    transition: opacity 1s ease-out; /* إضافة سلاسة للظهور */
-    pointer-events: none; /* منع أي تفاعل بالماوس قبل الظهور */
-}
-
-/* تنسيقات المودال (النافذة المنبثقة للتحقق الأمني والدردشة) */
-.modal {
-    display: none; /* مخفي افتراضياً */
-    position: fixed;
-    z-index: 2000; /* أعلى من كل شيء */
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(5px);
-    padding-top: 60px;
-}
-
-.modal-content {
-    background-color: #1a1a1a;
-    margin: 10% auto;
-    padding: 30px;
-    border: 3px solid var(--primary);
-    width: 80%;
-    max-width: 500px;
-    border-radius: 15px;
-    text-align: center;
-    box-shadow: 0 0 40px rgba(0, 255, 136, 0.5);
-    animation: fadeIn 0.5s;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-50px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.modal-content h2 {
-    color: var(--primary);
-    margin-bottom: 1.5rem;
-    text-shadow: var(--glow) var(--primary);
-}
-
-.modal-content p {
-    color: #ccc;
-    margin-bottom: 1.5rem;
-    line-height: 1.6;
-}
-
-.captcha-display {
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: var(--secondary);
-    letter-spacing: 15px;
-    margin-bottom: 1.5rem;
-    background: #000;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px dashed var(--secondary);
-    display: inline-block;
-    user-select: none;
-}
-
-#captchaInput {
-    width: 100%;
-    padding: 1rem;
-    margin-bottom: 1.5rem;
-    border-radius: 8px;
-    border: 2px solid #333;
-    background: #000;
-    color: var(--light);
-    font-size: 1.2rem;
-    text-align: center;
-}
-
-#captchaVerifyBtn, #chatAcceptBtn {
-    background: linear-gradient(45deg, var(--primary), var(--secondary));
-    color: var(--darker);
-    padding: 0.8rem 2rem;
-    border: none;
-    border-radius: 25px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-#captchaVerifyBtn:hover, #chatAcceptBtn:hover {
-    opacity: 0.9;
-    transform: scale(1.05);
-}
-
-.warning-text {
-    color: #ff4500;
-    font-weight: bold;
-}
-
 
 /* التجاوب للهواتف */
 @media (max-width: 768px) {
@@ -659,88 +573,3 @@ body {
     .telegram-float { bottom: 1rem; left: 1rem; padding: 0.8rem 1.2rem; }
 }
 
-/* تنسيقات صفحة الدردشة (chat.html) */
-.chat-page {
-    background: #000;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.chat-box {
-    width: 95%;
-    max-width: 700px;
-    height: 80vh;
-    background: #1a1a1a;
-    border: 2px solid var(--primary);
-    border-radius: 10px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-}
-
-.chat-header {
-    background: var(--dark);
-    color: var(--primary);
-    padding: 1rem;
-    font-size: 1.5rem;
-    font-weight: bold;
-    text-align: center;
-    border-bottom: 2px solid var(--primary);
-}
-
-.chat-messages {
-    flex-grow: 1;
-    padding: 15px;
-    overflow-y: scroll;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.message {
-    max-width: 70%;
-    padding: 10px;
-    border-radius: 15px;
-    font-size: 1rem;
-}
-
-.support-message {
-    background: var(--primary);
-    color: #000;
-    align-self: flex-start;
-}
-
-.user-message {
-    background: var(--accent);
-    color: white;
-    align-self: flex-end;
-}
-
-.chat-input-area {
-    display: flex;
-    padding: 15px;
-    border-top: 1px solid #333;
-}
-
-.chat-input-area input {
-    flex-grow: 1;
-    padding: 1rem;
-    border-radius: 25px;
-    border: 1px solid #444;
-    background: #000;
-    color: white;
-    margin-left: 10px;
-}
-
-.chat-input-area button {
-    background: var(--secondary);
-    color: white;
-    border: none;
-    padding: 0.8rem 1.5rem;
-    border-radius: 25px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background 0.3s;
-}
