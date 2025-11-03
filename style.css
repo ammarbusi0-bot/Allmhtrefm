@@ -375,7 +375,6 @@ body {
 }
 
 .comment-notice {
-    /* 🟢 تم تعديل لون الخلفية ليتناسب مع الثيم الجديد */
     background: linear-gradient(135deg, #102a10, #301030);
     color: var(--primary);
     padding: 1.5rem;
@@ -413,7 +412,6 @@ body {
 }
 
 .faq-question {
-    /* 🟢 الإجابة تكون مخفية افتراضياً */
     background: rgba(0, 255, 136, 0.1); 
     color: var(--light);
     padding: 1.5rem 2rem;
@@ -490,6 +488,13 @@ body {
 .telegram-float:hover {
     transform: scale(1.1);
     box-shadow: 0 0 35px #0088cc;
+}
+
+/* 🟢🔐 التنسيق الأهم: إخفاء جميع الأقسام ما عدا الهيرو عند التحميل */
+.services, .features-section, .comments-section, .faq-section, .footer {
+    opacity: 0; /* اخفاء المحتوى */
+    transition: opacity 1s ease-out; /* إضافة سلاسة للظهور */
+    pointer-events: none; /* منع أي تفاعل بالماوس قبل الظهور */
 }
 
 /* التجاوب للهواتف */
