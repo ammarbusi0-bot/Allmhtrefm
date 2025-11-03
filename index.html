@@ -65,47 +65,47 @@
             display: inline-block;
         }
 
-        /* قسم الإحصائيات */
-        .stats-bar { 
-            background: #111; 
-            padding: 3rem 2rem; 
-            border-top: 1px solid var(--primary); 
-            border-bottom: 1px solid var(--primary); 
-            margin: 2rem 0;
-        }
-
-        /* قسم المميزات */
+        /* قسم المميزات (تصميم الأيقونات الصغيرة) */
         .features-section {
             padding: 4rem 2rem;
             background: #0a0a0a;
+            border-top: 1px solid #111;
         }
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            max-width: 1400px;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* تصغير حجم البطاقة */
+            gap: 1.5rem;
+            max-width: 1200px;
             margin: 0 auto;
             text-align: center;
         }
         .feature-card {
             background: #1a1a1a;
-            padding: 1.5rem;
+            padding: 1.2rem;
             border-radius: 10px;
             border: 1px solid #333;
             transition: all 0.3s;
+            min-height: 180px; /* لتوحيد الارتفاع */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
+            transform: translateY(-3px);
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
         }
+        .feature-card i { margin-bottom: 0.5rem; font-size: 2rem; }
+        .feature-card h3 { font-size: 1rem; }
+        .feature-card p { font-size: 0.85rem; }
 
-        /* قسم التعليقات المخفي */
+
+        /* قسم التعليقات (المُعاد تفعيله) */
         .comments-section { 
-            background: #0a0a0a; 
+            background: #111; 
             padding: 3rem 2rem; 
             margin: 2rem 0; 
-            border-top: 2px solid #00ff88;
-            border-bottom: 2px solid #00ff88;
+            border-top: 2px solid var(--secondary);
+            border-bottom: 2px solid var(--secondary);
         }
     </style>
 </head>
@@ -184,87 +184,64 @@
         </div>
     </div>
 
-    <div class="stats-bar">
-        <div class="stats-grid" style="
-            display: flex; 
-            justify-content: space-around; 
-            max-width: 1200px; 
-            margin: 0 auto;
-            flex-wrap: wrap;
-        ">
-            <div class="stat-item" style="padding: 1rem; min-width: 200px;">
-                <h2 style="color: #ff0088; font-size: 3rem;">500+</h2>
-                <p style="color: #ccc;">عملية اختراق ناجحة</p>
-            </div>
-            <div class="stat-item" style="padding: 1rem; min-width: 200px;">
-                <h2 style="color: #00ff88; font-size: 3rem;">1200+</h2>
-                <p style="color: #ccc;">عميل راضٍ ومحترف</p>
-            </div>
-            <div class="stat-item" style="padding: 1rem; min-width: 200px;">
-                <h2 style="color: #8800ff; font-size: 3rem;">99%</h2>
-                <p style="color: #ccc;">معدل نجاح الأداة</p>
-            </div>
-        </div>
-    </div>
-
     <div class="features-section">
         <h2 style="color: #00ff88; margin-bottom: 3rem; font-size: 2.5rem;">⚡ مميزات المنصة ⚡</h2>
 
         <div class="features-grid">
 
             <div class="feature-card" style="border-color: var(--primary);">
-                <i class="fas fa-user-secret fa-3x" style="color: var(--primary);"></i>
+                <i class="fas fa-user-secret" style="color: var(--primary);"></i>
                 <h3 style="color: #fff; margin-bottom: 0.5rem;">خصوصية تامة</h3>
                 <p style="color: #ccc;">ضمان الخصوصية وعدم الكشف عن هويتك.</p>
             </div>
 
             <div class="feature-card" style="border-color: var(--secondary);">
-                <i class="fas fa-sync-alt fa-3x" style="color: var(--secondary);"></i>
+                <i class="fas fa-sync-alt" style="color: var(--secondary);"></i>
                 <h3 style="color: #fff; margin-bottom: 0.5rem;">تحديثات مستمرة</h3>
-                <p style="color: #ccc;">تحديثات دورية لمواكبة أحدث تقنيات الأمن.</p>
+                <p style="color: #ccc;">لمواكبة أحدث تقنيات الأمن.</p>
             </div>
 
             <div class="feature-card" style="border-color: var(--accent);">
-                <i class="fas fa-headset fa-3x" style="color: var(--accent);"></i>
+                <i class="fas fa-headset" style="color: var(--accent);"></i>
                 <h3 style="color: #fff; margin-bottom: 0.5rem;">دعم فني 24/7</h3>
-                <p style="color: #ccc;">فريق دعم متاح لمساعدتك على مدار الساعة.</p>
+                <p style="color: #ccc;">فريق متاح للمساعدة.</p>
             </div>
             
             <div class="feature-card" style="border-color: gold;">
-                <i class="fas fa-code fa-3x" style="color: gold;"></i>
+                <i class="fas fa-code" style="color: gold;"></i>
                 <h3 style="color: #fff; margin-bottom: 0.5rem;">تطوير أدوات مخصصة</h3>
-                <p style="color: #ccc;">تصميم وتطوير أدوات تلبي احتياجاتك الخاصة.</p>
+                <p style="color: #ccc;">تلبية احتياجاتك الخاصة.</p>
             </div>
             
             <div class="feature-card" style="border-color: var(--primary);">
-                <i class="fas fa-bolt fa-3x" style="color: var(--primary);"></i>
+                <i class="fas fa-bolt" style="color: var(--primary);"></i>
                 <h3 style="color: #fff; margin-bottom: 0.5rem;">سرعة فائقة</h3>
                 <p style="color: #ccc;">سرعة في التنفيذ والخدمة.</p>
             </div>
             
             <div class="feature-card" style="border-color: gold;">
-                <i class="fas fa-scroll fa-3x" style="color: gold;"></i>
+                <i class="fas fa-scroll" style="color: gold;"></i>
                 <h3 style="color: #fff; margin-bottom: 0.5rem;">تقارير عمليات ناجحة</h3>
-                <p style="color: #ccc;">سجل عمليات مثبت يضمن فاعلية أدواتنا.</p>
+                <p style="color: #ccc;">سجل عمليات مثبت.</p>
             </div>
 
             <div class="feature-card" style="border-color: var(--secondary);">
-                <i class="fas fa-shield-alt fa-3x" style="color: var(--secondary);"></i>
+                <i class="fas fa-shield-alt" style="color: var(--secondary);"></i>
                 <h3 style="color: #fff; margin-bottom: 0.5rem;">ضمان عدم الكشف</h3>
-                <p style="color: #ccc;">تعويض كامل في حال حظر حسابك عند استخدام أدواتنا.</p>
+                <p style="color: #ccc;">تعويض كامل في حال الحظر.</p>
             </div>
 
             <div class="feature-card" style="border-color: var(--primary);">
-                <i class="fas fa-tools fa-3x" style="color: var(--primary);"></i>
-                <h3 style="color: #fff; margin-bottom: 0.5rem;">أداة فحص IP مجانية</h3>
-                <p style="color: #ccc; margin-bottom: 1rem;">اختبر قوة نظامنا - افحص موقع أي IP.</p>
+                <i class="fas fa-tools" style="color: var(--primary);"></i>
+                <h3 style="color: #fff; margin-bottom: 0.5rem;">أداة فحص IP للمحترفين</h3>
+                <p style="color: #ff0088; margin-bottom: 1rem; font-weight: bold;">⚠️ هذه الخدمة مدفوعة الآن للمحترفين فقط.</p>
                 
-                <input type="text" id="ip-input" placeholder="أدخل عنوان IP للفحص (مثل 8.8.8.8)" 
-                   style="background: #000; color: #fff; border: 1px solid var(--primary); padding: 8px; border-radius: 5px; width: 90%; margin-bottom: 10px; text-align: center;">
+                <input type="text" id="ip-input" placeholder="أدخل عنوان IP (مثال: 8.8.8.8)" 
+                   style="background: #000; color: #fff; border: 1px solid var(--primary); padding: 5px; border-radius: 5px; width: 90%; margin-bottom: 10px; text-align: center; font-size: 0.8rem;">
 
-                <button class="buy-btn" onclick="lookupIP()" style="background: var(--primary); width: 80%; color: #000; font-weight: bold;">افحص الآن</button>
+                <button class="buy-btn" onclick="lookupIP()" style="background: var(--primary); width: 80%; color: #000; font-weight: bold; padding: 5px 10px;">افحص الآن</button>
                 
-                <div id="ip-result" style="color: gold; margin-top: 10px; font-weight: bold; font-size: 0.9rem; min-height: 20px;"></div>
+                <div id="ip-result" style="color: gold; margin-top: 5px; font-weight: bold; font-size: 0.8rem; min-height: 20px;"></div>
             </div>
 
         </div>
@@ -292,33 +269,17 @@
                     نقبل الدفع عبر العملات الرقمية (Bitcoin, USDT) لضمان أقصى درجات الخصوصية. بعد الضغط على "اشتر الآن"، سيتم توجيهك مباشرة لخدمة الدعم لإتمام عملية الدفع والتسليم الفوري.
                 </p>
             </div>
-            
-            <div class="faq-item" style="background: #1a1a1a; border-left: 5px solid #8800ff; padding: 20px; margin-bottom: 15px; border-radius: 5px;">
-                <h3 style="color: #fff; margin-bottom: 10px; cursor: pointer;" onclick="toggleAnswer(this)">
-                    كم يستغرق تنفيذ الهاك أو عملية الاختراق؟ <i class="fas fa-chevron-down" style="float: left; color: #8800ff;"></i>
-                </h3>
-                <p class="answer" style="color: #ccc; line-height: 1.6; display: none; margin-top: 10px; border-top: 1px dashed #333; padding-top: 10px;">
-                    معظم خدماتنا يتم تسليمها بشكل فوري أو في غضون 5 إلى 30 دقيقة كحد أقصى، اعتمادًا على نوع الخدمة. فريقنا يعمل بسرعة فائقة لضمان حصولك على الخدمة في أسرع وقت.
-                </p>
-            </div>
         </div>
     </div>
     
     <div class="comments-section">
         <h2 style="color: #00ff88; margin-bottom: 2rem;">💬 آراء عملائنا المحترفين</h2>
         
-        <div style="
-            background: #2a0000; 
-            color: #ff5555; 
-            padding: 30px; 
-            border-radius: 10px; 
-            max-width: 800px; 
-            margin: 2rem auto; 
-            border: 2px solid #ff5555;
-            font-size: 1.2rem;
-            font-weight: bold;
-        ">
-            🔒 هذه الميزة متاحة فقط للذين يشترون خدماتنا.
+        <div id="commentsContainer" style="max-width: 800px; margin: 0 auto; text-align: right; padding: 1rem;">
+            </div>
+        
+        <div style="color: #666; margin-top: 2rem; font-size: 0.9rem;">
+            * ملاحظة: يتم تحديث التعليقات تلقائياً كل 15 دقيقة لضمان حداثتها.
         </div>
     </div>
 
@@ -326,7 +287,6 @@
         // وظيفة الشراء - توجيه لتليجرام
         function buyService(serviceName, price) {
             const telegramUsername = "Talaa_almalika";
-            const message = `أريد شراء ${serviceName} بسعر $${price} من الظل المحترف v1.0`;
             
             const url = `https://t.me/${telegramUsername}`;
             
@@ -340,21 +300,25 @@
             
             setTimeout(() => {
                 button.innerHTML = originalText;
-                button.style.background = 'linear-gradient(45deg, var(--primary), var(--secondary))';
+                // إعادة تعيين الخلفية إلى التدرج الأصلي
+                button.style.background = 'linear-gradient(45deg, #00ff88, #ff0088)';
                 button.disabled = false;
                 
                 alert(`✅ تم توجيهك إلى تليجرام\n\nراسل @${telegramUsername} لشراء ${serviceName}`);
             }, 1500);
         }
 
-        // دالة محاكاة فحص الـ IP (المحاكاة الذكية)
+        // دالة محاكاة فحص الـ IP (المحاكاة الذكية والمصححة)
         function lookupIP() {
             const ipInput = document.getElementById('ip-input');
             const resultDiv = document.getElementById('ip-result');
             const ipAddress = ipInput.value.trim();
+            
+            // تحقق من تنسيق IP أساسي
+            const ipRegex = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
 
-            if (!ipAddress) {
-                resultDiv.innerHTML = '<span style="color: #ff5555;">🚫 الرجاء إدخال عنوان IP للفحص.</span>';
+            if (!ipAddress || !ipRegex.test(ipAddress)) {
+                resultDiv.innerHTML = '<span style="color: #ff5555;">🚫 الرجاء إدخال عنوان IP صحيح (مثل 8.8.8.8).</span>';
                 return;
             }
 
@@ -384,6 +348,53 @@
                 icon.classList.add('fa-chevron-up');
             }
         }
+        
+        // قائمة التعليقات الوهمية الجاهزة
+        const fakeComments = [
+            { name: "خالد المحترف", text: "خدمة اختراق الهاتف هي الأفضل بلا منازع! سرعة وثقة، أنصح به بشدة." },
+            { name: "أحمد العتيبي", text: "الهاك يعمل بكفاءة عالية، لم يتم حظري لليوم العاشر على التوالي! شكراً للفريق." },
+            { name: "سارة المالكي", text: "تم اختراق الحساب المطلوب في دقائق، فريق دعم سريع وممتاز." },
+            { name: "فيصل الهاشمي", text: "بفضل أداة اختراق البنوك، أدركت قيمة الخدمة الاحترافية. ثقة وسرية مطلقة." },
+            { name: "نواف السلمي", text: "أفضل موقع عربي للهاكات غير القابلة للكشف، شكرًا لكم." },
+            { name: "علي الزهراني", text: "موقع ممتاز، اشتريت هاك فري فاير وكان التسليم فوري." },
+            { name: "ليلى محمد", text: "الدعم الفني متواجد 24 ساعة، حلوا مشكلتي في ثوانٍ." },
+            { name: "عمران الشمري", text: "منتجات احترافية تستحق كل دولار، لن تجد مثلها في أي مكان آخر." },
+            { name: "جاسم الكعبي", text: "أدواتهم قوية جداً، أنصح أي شخص جاد في الاختراق بالاشتراك." },
+            { name: "مها التميمي", text: "اشتريت هاك ببجي وحصلت على تحديث مجاني للأداة لاحقًا!" }
+        ];
+
+        // دالة عرض التعليقات العشوائية
+        function displayRandomComments() {
+            const container = document.getElementById('commentsContainer');
+            container.innerHTML = ''; // إفراغ التعليقات الحالية
+            
+            // اختيار عدد عشوائي من التعليقات (بين 5 و 7)
+            const numComments = Math.floor(Math.random() * (7 - 5 + 1)) + 5; 
+            const shuffled = fakeComments.sort(() => 0.5 - Math.random());
+            const selectedComments = shuffled.slice(0, numComments);
+
+            selectedComments.forEach(comment => {
+                const commentDiv = document.createElement('div');
+                commentDiv.className = 'comment';
+                commentDiv.style.cssText = 'background: #1a1a1a; padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 3px solid #00ff88; text-align: right;';
+                
+                commentDiv.innerHTML = `
+                    <div style="color: #00ff88; font-weight: bold; margin-bottom: 0.5rem;">
+                        ${comment.name} <span style="float: left; color: #999; font-size: 0.8rem;">[مشترٍ موثوق]</span>
+                    </div>
+                    <div style="margin-bottom: 0.5rem; line-height: 1.5;">"${comment.text}"</div>
+                    <div style="color: gold;">⭐⭐⭐⭐⭐</div>
+                `;
+                container.appendChild(commentDiv);
+            });
+        }
+
+        // بدء التشغيل والتحديث الدوري كل 15 دقيقة
+        window.addEventListener('load', function() {
+            displayRandomComments();
+            // 15 دقيقة = 900000 مللي ثانية
+            setInterval(displayRandomComments, 15 * 60 * 1000); 
+        });
     </script>
 </body>
 </html>
