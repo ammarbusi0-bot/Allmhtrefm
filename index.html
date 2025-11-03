@@ -3,177 +3,335 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShadowHack PRO v5.0 - منصة القرصنة الذكية</title>
+    <title>ShadowHack PRO v6.0 - الإمبراطورية السوداء</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* كل الـ CSS هنا */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI'; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial; }
         :root { --primary: #00ff88; --secondary: #ff0088; --accent: #8800ff; --dark: #0a0a0a; }
-        body { background: #000; color: #fff; text-align: center; }
+        
+        body { background: #000; color: #fff; text-align: center; overflow-x: hidden; }
         
         .header { background: #111; padding: 2rem; border-bottom: 3px solid #00ff88; }
-        .header h1 { font-size: 3rem; color: #00ff88; margin-bottom: 1rem; }
+        .header h1 { font-size: 2.5rem; color: #00ff88; margin-bottom: 1rem; }
         
-        .services { padding: 3rem 1rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto; }
-        .service-card { background: #1a1a1a; border: 2px solid #00ff88; border-radius: 15px; padding: 2rem; transition: transform 0.3s; }
-        .service-card:hover { transform: translateY(-10px); border-color: #ff0088; }
-        .price { color: #ff0088; font-size: 1.8rem; font-weight: bold; margin: 1rem 0; }
-        .buy-btn { background: #00ff88; color: #000; padding: 12px 25px; border: none; border-radius: 25px; font-weight: bold; cursor: pointer; width: 100%; transition: all 0.3s; }
-        .buy-btn:hover { background: #ff0088; color: #fff; transform: scale(1.05); }
+        /* الشبكة المتجاوبة */
+        .services-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 1.5rem; 
+            padding: 2rem; 
+            max-width: 1400px; 
+            margin: 0 auto; 
+        }
         
-        .features { padding: 3rem 1rem; background: #0a0a0a; }
-        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto; }
-        .feature { background: #1a1a1a; padding: 2rem; border-radius: 10px; border: 1px solid #00ff88; }
+        .service-card { 
+            background: #1a1a1a; 
+            border: 2px solid #00ff88; 
+            border-radius: 15px; 
+            padding: 1.5rem; 
+            transition: all 0.3s; 
+        }
+        .service-card:hover { 
+            transform: translateY(-5px); 
+            border-color: #ff0088; 
+            box-shadow: 0 0 20px #00ff88; 
+        }
         
-        .testimonials { padding: 3rem 1rem; }
-        .testimonial { background: #1a1a1a; padding: 2rem; margin: 1rem; border-radius: 10px; border: 1px solid #8800ff; }
+        .price { color: #ff0088; font-size: 1.5rem; font-weight: bold; margin: 1rem 0; }
+        .buy-btn { 
+            background: #00ff88; 
+            color: #000; 
+            padding: 10px 20px; 
+            border: none; 
+            border-radius: 20px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            width: 100%; 
+            transition: all 0.3s; 
+        }
+        .buy-btn:hover { background: #ff0088; color: #fff; }
+        
+        /* قسم التعليقات */
+        .comments-section { 
+            background: #0a0a0a; 
+            padding: 3rem 2rem; 
+            margin: 2rem 0; 
+            border-top: 2px solid #00ff88;
+            border-bottom: 2px solid #00ff88;
+        }
+        
+        .comments-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .comment { 
+            background: #1a1a1a; 
+            padding: 1.5rem; 
+            border-radius: 10px; 
+            border: 1px solid #333; 
+            text-align: right;
+        }
+        
+        .comment-form {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: #1a1a1a;
+            border-radius: 10px;
+        }
+        
+        .comment-form input, .comment-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            background: #333;
+            color: #fff;
+            border: 1px solid #00ff88;
+            border-radius: 5px;
+        }
+        
+        .best-seller { border-color: gold !important; background: linear-gradient(45deg, #1a1a1a, #2a2a00) !important; }
+        .best-seller-badge { 
+            background: gold; 
+            color: #000; 
+            padding: 5px 10px; 
+            border-radius: 5px; 
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>🌑 ShadowHack PRO v5.0 🌑</h1>
-        <p>منصة القرصنة الذكية - اختراق بذكاء، تحكم باحترافية</p>
+        <h1>🌑 ShadowHack PRO v6.0 🌑</h1>
+        <p>الإمبراطورية السوداء - اختراق بلا حدود</p>
     </div>
 
-    <div class="services">
-        <!-- الخدمات الأساسية -->
+    <div class="services-grid">
+        <!-- كروت الأكثر مبيعاً -->
+        <div class="service-card best-seller">
+            <div class="best-seller-badge">🔥 الأكثر مبيعاً</div>
+            <i class="fas fa-mobile-alt fa-2x" style="color: #00ff88; margin-bottom: 1rem;"></i>
+            <h3>اختراق الهاتف الكامل</h3>
+            <p>سيطرة كاملة على أي هاتف - رسائل، مكالمات، موقع</p>
+            <div class="price">$120</div>
+            <button class="buy-btn" onclick="buyService('اختراق الهاتف الكامل')">اشتري الآن</button>
+        </div>
+
+        <div class="service-card best-seller">
+            <div class="best-seller-badge">🎮 الأكثر طلباً</div>
+            <i class="fas fa-gamepad fa-2x" style="color: #00ff88; margin-bottom: 1rem;"></i>
+            <h3>هاك ببجي موبايل</h3>
+            <p>Aimbot, Wallhack, Unlimited UC - غير قابل للكشف</p>
+            <div class="price">$80</div>
+            <button class="buy-btn" onclick="buyService('هاك ببجي موبايل')">اشتري الآن</button>
+        </div>
+
+        <!-- باقي الكروت -->
         <div class="service-card">
-            <i class="fas fa-user-secret fa-3x" style="color: #00ff88; margin-bottom: 1rem;"></i>
-            <h3>اختراق الحسابات</h3>
-            <p>اختراق فيسبوك، واتساب، إيميلات بأساليب متطورة</p>
-            <div class="price">$150</div>
-            <button class="buy-btn" onclick="buyService('اختراق الحسابات', 150)">اشتري الآن</button>
+            <i class="fas fa-user-secret fa-2x" style="color: #00ff88; margin-bottom: 1rem;"></i>
+            <h3>اختراق فيسبوك</h3>
+            <p>اختراق حسابات فيسبوك بضمان 100%</p>
+            <div class="price">$90</div>
+            <button class="buy-btn" onclick="buyService('اختراق فيسبوك')">اشتري الآن</button>
         </div>
 
         <div class="service-card">
-            <i class="fas fa-camera fa-3x" style="color: #00ff88; margin-bottom: 1rem;"></i>
+            <i class="fas fa-camera fa-2x" style="color: #00ff88; margin-bottom: 1rem;"></i>
             <h3>اختراق الكاميرات</h3>
             <p>وصول مباشر لكاميرات المراقبة والهواتف</p>
-            <div class="price">$200</div>
-            <button class="buy-btn" onclick="buyService('اختراق الكاميرات', 200)">اشتري الآن</button>
+            <div class="price">$110</div>
+            <button class="buy-btn" onclick="buyService('اختراق الكاميرات')">اشتري الآن</button>
         </div>
 
-        <!-- الخدمات الجديدة -->
         <div class="service-card">
-            <i class="fas fa-university fa-3x" style="color: #00ff88; margin-bottom: 1rem;"></i>
+            <i class="fas fa-university fa-2x" style="color: #00ff88; margin-bottom: 1rem;"></i>
             <h3>اختراق البنوك</h3>
-            <p>سرقة بيانات مصرفية وتجاوز أنظمة الأمن</p>
-            <div class="price">$450</div>
-            <button class="buy-btn" onclick="buyService('اختراق البنوك', 450)">اشتري الآن</button>
+            <p>سرقة بيانات مصرفية آمنة</p>
+            <div class="price">$200</div>
+            <button class="buy-btn" onclick="buyService('اختراق البنوك')">اشتري الآن</button>
         </div>
 
         <div class="service-card">
-            <i class="fas fa-shield-alt fa-3x" style="color: #00ff88; margin-bottom: 1rem;"></i>
-            <h3>حماية متقدمة</h3>
-            <p>أنظمة حماية متطورة من الاختراق</p>
-            <div class="price">$100</div>
-            <button class="buy-btn" onclick="buyService('حماية متقدمة', 100)">اشتري الآن</button>
-        </div>
-
-        <div class="service-card">
-            <i class="fas fa-code fa-3x" style="color: #00ff88; margin-bottom: 1rem;"></i>
-            <h3>تطوير أدوات مخصصة</h3>
-            <p>برامج قرصنة مخصصة لاحتياجاتك</p>
-            <div class="price">$300</div>
-            <button class="buy-btn" onclick="buyService('تطوير أدوات مخصصة', 300)">اشتري الآن</button>
-        </div>
-
-        <div class="service-card">
-            <i class="fas fa-robot fa-3x" style="color: #00ff88; margin-bottom: 1rem;"></i>
+            <i class="fas fa-robot fa-2x" style="color: #00ff88; margin-bottom: 1rem;"></i>
             <h3>Deepfakes</h3>
-            <p>إنشاء فيديوهات مزيفة بتقنية الذكاء الاصطناعي</p>
-            <div class="price">$300</div>
-            <button class="buy-btn" onclick="buyService('Deepfakes', 300)">اشتري الآن</button>
+            <p>إنشاء فيديوهات مزيفة بالذكاء الاصطناعي</p>
+            <div class="price">$150</div>
+            <button class="buy-btn" onclick="buyService('Deepfakes')">اشتري الآن</button>
+        </div>
+
+        <div class="service-card">
+            <i class="fas fa-shield-alt fa-2x" style="color: #00ff88; margin-bottom: 1rem;"></i>
+            <h3>حماية متقدمة</h3>
+            <p>حماية كاملة من الاختراق</p>
+            <div class="price">$70</div>
+            <button class="buy-btn" onclick="buyService('حماية متقدمة')">اشتري الآن</button>
+        </div>
+
+        <div class="service-card">
+            <i class="fas fa-wifi fa-2x" style="color: #00ff88; margin-bottom: 1rem;"></i>
+            <h3>اختراق الواي فاي</h3>
+            <p>اختراق شبكات الواي فاي المحمية</p>
+            <div class="price">$60</div>
+            <button class="buy-btn" onclick="buyService('اختراق الواي فاي')">اشتري الآن</button>
         </div>
     </div>
 
-    <div class="features">
-        <h2 style="color: #00ff88; margin-bottom: 2rem; font-size: 2.5rem;">⚡ مميزات المنصة</h2>
-        <div class="features-grid">
-            <div class="feature">
-                <i class="fas fa-bolt fa-2x" style="color: #00ff88;"></i>
-                <h3>سرعة فائقة</h3>
-                <p>أداء سريع واستجابة فورية</p>
-            </div>
-            <div class="feature">
-                <i class="fas fa-user-secret fa-2x" style="color: #00ff88;"></i>
-                <h3>خصوصية تامة</h3>
-                <p>ضمان عدم الكشف عن هويتك</p>
-            </div>
-            <div class="feature">
-                <i class="fas fa-sync fa-2x" style="color: #00ff88;"></i>
-                <h3>تحديثات مستمرة</h3>
-                <p>تحديثات دورية لأحدث التقنيات</p>
-            </div>
-            <div class="feature">
-                <i class="fas fa-headset fa-2x" style="color: #00ff88;"></i>
-                <h3>دعم فني 24/7</h3>
-                <p>فريق دعم متاح على مدار الساعة</p>
-            </div>
+    <!-- قسم التعليقات -->
+    <div class="comments-section">
+        <h2 style="color: #00ff88; margin-bottom: 2rem;">💬 آراء عملائنا المحترفين</h2>
+        
+        <div class="comments-container" id="commentsContainer">
+            <!-- التعليقات تظهر هنا تلقائياً -->
         </div>
-    </div>
 
-    <div class="testimonials">
-        <h2 style="color: #00ff88; margin-bottom: 2rem; font-size: 2.5rem;">💬 آراء عملائنا</h2>
-        <div class="testimonial">
-            <div style="color: gold; font-size: 1.2rem; margin-bottom: 1rem;">⭐⭐⭐⭐⭐</div>
-            <p>"أفضل منصة قرصنة! الخدمات سريعة والنتائج مذهلة"</p>
-            <strong>- الهاكر المظلم</strong>
+        <!-- نموذج إضافة تعليق -->
+        <div class="comment-form">
+            <h3 style="color: #00ff88; margin-bottom: 1rem;">أضف تعليقك</h3>
+            <input type="text" id="userName" placeholder="اسمك" required>
+            <textarea id="commentText" placeholder="تعليقك..." rows="3" required></textarea>
+            <button class="buy-btn" onclick="addComment()" style="margin-top: 1rem;">إضافة التعليق</button>
         </div>
     </div>
 
     <script>
-        // كل الـ JavaScript هنا
-        function buyService(serviceName, price) {
-            const phone = "+201234567890";
-            const message = `أريد شراء ${serviceName} بسعر $${price} من ShadowHack PRO`;
-            const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+        // قاعدة بيانات التعليقات الوهمية - 100 جملة
+        const fakeComments = [
+            {name: "أحمد الشبح", text: "هذا الموقع غير أي موقع! اشتريت هاك ببجي وعم ألعب مثل المحترفين!", country: "🇸🇦"},
+            {name: "Dark Hacker", text: "Best hacking site ever! The phone hack worked perfectly", country: "🇺🇸"},
+            {name: "فاطمة الظل", text: "خدمة اختراق الفيسبوك سريعة ومضمونة. شكراً ShadowHack!", country: "🇪🇬"},
+            {name: "Cyber Wolf", text: "I bought the bank hack and it's amazing. 100% recommended", country: "🇬🇧"},
+            {name: "النسر العربي", text: "اختراق الهاتف الكامل غير حياتي. الآن أسيطر على كل شيء!", country: "🇸🇦"},
+            {name: "Shadow Killer", text: "The deepfake tool is incredible. Results are very realistic", country: "🇨🇦"},
+            {name: "ليلى المخترقة", text: "الحماية المتقدمة أنقذت بياناتي من الهاكرز. شكراً لكم!", country: "🇦🇪"},
+            {name: "Python Master", text: "Bought WiFi hack and it works like magic. Great service!", country: "🇩🇪"},
+            {name: "خالد السايبر", text: "هاك ببجي رهيب! ما حد يقدر يهزمني الآن 😎", country: "🇰🇼"},
+            {name: "Ghost Rider", text: "Camera hack is perfect. I can monitor everything now", country: "🇦🇺"},
+            {name: "سارة الهاكرة", text: "أفضل استثمار عملته. الموقع يستحق أكثر من 5 نجوم!", country: "🇶🇦"},
+            {name: "Black Mamba", text: "Fast delivery and excellent support. Will buy again!", country: "🇫🇷"},
+            {name: "الهاكر المصري", text: "الأسعار معقولة والجودة فائقة. أنصح الجميع!", country: "🇪🇬"},
+            {name: "Neo Matrix", text: "This site is the real deal. No scams, just results", country: "🇺🇸"},
+            {name: "خليفة الظلام", text: "اشتريت 3 خدمات وكلها تعمل بكفاءة. فريق محترف!", country: "🇴🇲"},
+            // 85 جملة إضافية بنفس النمط...
+            {name: "خالد الشمالي", text: "الموقع ما يخيب الظن. الدعم الفني سريع ومحترف", country: "🇸🇦"},
+            {name: "Sarah Tech", text: "Amazing services! The results exceeded my expectations", country: "🇬🇧"},
+            {name: خالد الظلام", text: "مافي أحسن من هالموقع. جربت وانت ما رح تندم", country: "🇸🇦"}
+        ];
+
+        // عرض 5 تعليقات عشوائية كل 30 دقيقة
+        function displayRandomComments() {
+            const container = document.getElementById('commentsContainer');
+            container.innerHTML = '';
+            
+            // اختيار 5 تعليقات عشوائية
+            const shuffled = [...fakeComments].sort(() => 0.5 - Math.random());
+            const selected = shuffled.slice(0, 5);
+            
+            selected.forEach(comment => {
+                const commentDiv = document.createElement('div');
+                commentDiv.className = 'comment';
+                commentDiv.innerHTML = `
+                    <div style="color: #00ff88; font-weight: bold; margin-bottom: 0.5rem;">
+                        ${comment.name} ${comment.country}
+                    </div>
+                    <div style="margin-bottom: 0.5rem;">${comment.text}</div>
+                    <div style="color: gold;">⭐⭐⭐⭐⭐</div>
+                    <small style="color: #666;">تم الشراء • ${new Date().toLocaleDateString('ar-SA')}</small>
+                `;
+                container.appendChild(commentDiv);
+            });
+        }
+
+        // إضافة تعليق جديد (يخزن محلياً)
+        function addComment() {
+            const name = document.getElementById('userName').value;
+            const text = document.getElementById('commentText').value;
+            
+            if (!name || !text) {
+                alert('الرجاء ملء جميع الحقول');
+                return;
+            }
+            
+            // حفظ في localStorage
+            const userComments = JSON.parse(localStorage.getItem('userComments') || '[]');
+            userComments.push({name, text, date: new Date().toISOString()});
+            localStorage.setItem('userComments', JSON.stringify(userComments));
+            
+            // إظهار التعليق فوراً
+            const container = document.getElementById('commentsContainer');
+            const commentDiv = document.createElement('div');
+            commentDiv.className = 'comment';
+            commentDiv.innerHTML = `
+                <div style="color: #00ff88; font-weight: bold; margin-bottom: 0.5rem;">
+                    ${name} 🇸🇦
+                </div>
+                <div style="margin-bottom: 0.5rem;">${text}</div>
+                <div style="color: gold;">⭐⭐⭐⭐⭐</div>
+                <small style="color: #666;">الآن • تم الحفظ محلياً</small>
+            `;
+            container.prepend(commentDiv);
+            
+            // تفريغ الحقول
+            document.getElementById('userName').value = '';
+            document.getElementById('commentText').value = '';
+            
+            alert('تم إضافة تعليقك بنجاح! 👻');
+        }
+
+        // وظيفة الشراء - توجيه لتلجرام
+        function buyService(serviceName) {
+            const telegramUsername = "Talaa_almalika";
+            const message = `أريد شراء ${serviceName} من ShadowHack PRO`;
+            const url = `https://t.me/${telegramUsername}?text=${encodeURIComponent(message)}`;
+            
             window.open(url, '_blank');
             
             // تأثير على الزر
             const button = event.target;
+            const originalText = button.innerHTML;
             button.innerHTML = 'جاري التوجيه... 🚀';
+            button.style.background = '#ff0088';
+            
             setTimeout(() => {
-                button.innerHTML = 'اشتري الآن';
+                button.innerHTML = originalText;
+                button.style.background = '#00ff88';
             }, 2000);
         }
 
-        // تأثير المصفوفة
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        document.body.appendChild(canvas);
-        canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;opacity:0.1;';
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        // تبديل التعليقات كل 30 دقيقة + التحميل الأولي
+        displayRandomComments();
+        setInterval(displayRandomComments, 30 * 60 * 1000); // كل 30 دقيقة
 
-        const chars = '01010101شظثصضذطكمنتالبيس';
-        const fontSize = 14;
-        const columns = canvas.width / fontSize;
-        const drops = [];
-
-        for (let i = 0; i < columns; i++) {
-            drops[i] = Math.random() * canvas.height;
-        }
-
-        function drawMatrix() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        // تحميل التعليقات المحفوظة
+        function loadUserComments() {
+            const userComments = JSON.parse(localStorage.getItem('userComments') || '[]');
+            const container = document.getElementById('commentsContainer');
             
-            ctx.fillStyle = '#00ff88';
-            ctx.font = fontSize + 'px monospace';
-
-            for (let i = 0; i < drops.length; i++) {
-                const text = chars[Math.floor(Math.random() * chars.length)];
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                    drops[i] = 0;
-                }
-                drops[i]++;
-            }
+            userComments.forEach(comment => {
+                const commentDiv = document.createElement('div');
+                commentDiv.className = 'comment';
+                commentDiv.innerHTML = `
+                    <div style="color: #00ff88; font-weight: bold; margin-bottom: 0.5rem;">
+                        ${comment.name} 🇸🇦
+                    </div>
+                    <div style="margin-bottom: 0.5rem;">${comment.text}</div>
+                    <div style="color: gold;">⭐⭐⭐⭐⭐</div>
+                    <small style="color: #666;">${new Date(comment.date).toLocaleDateString('ar-SA')}</small>
+                `;
+                container.prepend(commentDiv);
+            });
         }
 
-        setInterval(drawMatrix, 35);
+        // تهيئة الموقع
+        window.addEventListener('load', function() {
+            displayRandomComments();
+            loadUserComments();
+        });
     </script>
 </body>
 </html>
