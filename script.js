@@ -79,16 +79,18 @@ document.addEventListener('DOMContentLoaded', () => {
     displayRandomComments();
     createFAQ();
     updatePubgStock(); // تحديث مخزون ببجي
+    updateRshqStock(); // تحديث مخزون الرشق (جديد)
     updateServiceDates(); // تحديث التواريخ
 
     // تحديث التعليقات كل 30 دقيقة
     setInterval(displayRandomComments, 30 * 60 * 1000); 
     // تحديث التواريخ كل ساعة
     setInterval(updateServiceDates, 60 * 60 * 1000); 
-    // تحديث مخزون ببجي كل 5 دقائق
+    // تحديث مخزون ببجي والرشق كل 5 دقائق
     setInterval(updatePubgStock, 5 * 60 * 1000); 
+    setInterval(updateRshqStock, 5 * 60 * 1000); // تحديث مخزون الرشق
 
-    // ربط وظيفة الشراء بجميع أزرار الشراء (تم تغييرها لفتح المودال)
+    // 🔴 إصلاح: ربط وظيفة الشراء بجميع أزرار الشراء لفتح المودال مباشرة
     document.querySelectorAll('.buy-btn').forEach(button => {
         button.addEventListener('click', initializeCaptcha);
     });
@@ -319,6 +321,16 @@ function updatePubgStock() {
     }
 }
 
+// 📉 منطق تحديث مخزون الرشق (جديد)
+function updateRshqStock() {
+    const stockElement = document.getElementById('rshq-stock');
+    if (stockElement) {
+        // يتم تحديثه عشوائياً بين 1 و 3 من أصل 10
+        const randomStock = Math.floor(Math.random() * 3) + 1; 
+        stockElement.textContent = randomStock;
+    }
+}
+
 
 // ----------------------------------------------------
 // 🤖 منطق التحقق من الروبوت (CAPTCHA)
@@ -382,7 +394,8 @@ function buyServiceRedirect(serviceName, price) {
         
         setTimeout(() => {
             button.innerHTML = originalText;
-            button.style.background = 'linear-gradient(45deg, var(--accent), var(--secondary))';
+            // يعيد الزر لونه الأصلي
+            button.style.background = 'linear-gradient(45deg, var(--accent), var(--secondary))'; 
             button.disabled = false;
         }, 3000);
     }
