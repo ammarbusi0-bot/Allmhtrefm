@@ -79,40 +79,30 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // وظيفة الشراء المحسنة
-    function initBuyButtons() {
-        window.buyService = function(serviceName, price) {
-            // تأثير صوتي لو كان متاح
-            if (typeof Audio !== 'undefined') {
-                const clickSound = new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA==');
-                clickSound.volume = 0.1;
-                clickSound.play().catch(() => {});
-            }
+    // وظيفة الشراء (تم تحديثها لتستخدم تليجرام كما في آخر طلب)
+    window.buyService = function(serviceName, price) {
+        const telegramUsername = "Talaa_almalika";
+        
+        // رابط تليجرام مباشر
+        const url = `https://t.me/${telegramUsername}`;
 
-            // تأثير بصري على الزر
-            const button = event.target;
-            const originalText = button.textContent;
-            button.textContent = 'جاري التوجيه... 🚀';
-            button.style.background = 'linear-gradient(45deg, #ffff00, #ff0000)';
+        // تأثير بصري على الزر (يجب أن يكون 'event' معرفاً)
+        const button = event.target;
+        const originalText = button.textContent;
+        button.textContent = 'جاري التوجيه... 🚀';
+        button.style.background = 'linear-gradient(45deg, #ff0088, #8800ff)';
+        
+        // فتح التليجرام في نافذة جديدة
+        window.open(url, '_blank');
+        
+        setTimeout(() => {
+            button.textContent = originalText;
+            button.style.background = 'linear-gradient(45deg, var(--accent), var(--secondary))';
             
-            // رقم واتساب افتراضي
-            const phone = "+201234567890";
-            const message = `أريد شراء ${serviceName} بسعر $${price} من ShadowHack PRO`;
-            const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-            
-            setTimeout(() => {
-                window.open(url, '_blank');
-                
-                // إعادة الزر لحالته الأصلية بعد ثانية
-                setTimeout(() => {
-                    button.textContent = originalText;
-                    button.style.background = 'linear-gradient(45deg, var(--accent), var(--secondary))';
-                }, 1000);
-                
-            }, 500);
-        }
+            alert(`✅ تم توجيهك إلى تليجرام\n\nراسل @${telegramUsername} لشراء ${serviceName}`);
+        }, 1500);
     }
-
+    
     // إعادة حجم العناصر عند تغيير حجم النافذة
     function handleResize() {
         const canvas = document.querySelector('.bg-effects');
@@ -127,53 +117,12 @@ document.addEventListener('DOMContentLoaded', function() {
         createMatrixEffect();
         initSmoothScroll();
         initScrollAnimations();
-        initBuyButtons();
         
         window.addEventListener('resize', handleResize);
         
-        // إضافة رسالة ترحيب في الكونسول (للمطورين)
         console.log('🌑 ShadowHack PRO v5.0 - تم التحميل بنجاح!');
-        console.log('🚀 الموقع جاهز للعمل');
     }
 
     // بدء التشغيل
     initAll();
 });
-
-// وظائف إضافية للتحكم بالموقع
-const ShadowHack = {
-    // تغيير السمة (Theme)
-    toggleTheme: function() {
-        document.body.classList.toggle('light-mode');
-    },
-    
-    // إظهار/إخفاء القائمة
-    toggleMenu: function() {
-        const nav = document.querySelector('.nav-links');
-        if (nav) {
-            nav.classList.toggle('active');
-        }
-    },
-    
-    // إرسال إشعار
-    showNotification: function(message, type = 'info') {
-        const notification = document.createElement('div');
-        notification.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: ${type === 'error' ? '#ff0000' : '#00ff88'};
-            color: #000;
-            padding: 1rem 2rem;
-            border-radius: 5px;
-            z-index: 10000;
-            font-weight: bold;
-        `;
-        notification.textContent = message;
-        document.body.appendChild(notification);
-        
-        setTimeout(() => {
-            notification.remove();
-        }, 3000);
-    }
-};
