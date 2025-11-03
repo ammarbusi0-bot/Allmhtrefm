@@ -3,18 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الظل المحترف v6.0 - منصة الاختراق العربية</title>
+    <title>الظل المحترف v1.0 - منصة الاختراق العربية</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* التنسيقات العامة */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial; }
         :root { --primary: #00ff88; --secondary: #ff0088; --accent: #8800ff; --dark: #0a0a0a; }
         
         body { background: #000; color: #fff; text-align: center; overflow-x: hidden; }
         
+        /* الرأس */
         .header { background: #111; padding: 2rem; border-bottom: 3px solid #00ff88; }
         .header h1 { font-size: 2.5rem; color: #00ff88; margin-bottom: 1rem; }
         
-        /* الشبكة المتجاوبة */
+        /* شبكة الخدمات */
         .services-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
@@ -39,7 +41,7 @@
         
         .price { color: #ff0088; font-size: 1.5rem; font-weight: bold; margin: 1rem 0; }
         .buy-btn { 
-            background: #00ff88; 
+            background: linear-gradient(45deg, var(--primary), var(--secondary)); 
             color: #000; 
             padding: 10px 20px; 
             border: none; 
@@ -49,52 +51,9 @@
             width: 100%; 
             transition: all 0.3s; 
         }
-        .buy-btn:hover { background: #ff0088; color: #fff; }
+        .buy-btn:hover { background: linear-gradient(45deg, var(--secondary), var(--primary)); color: #fff; }
         
-        /* قسم التعليقات */
-        .comments-section { 
-            background: #0a0a0a; 
-            padding: 3rem 2rem; 
-            margin: 2rem 0; 
-            border-top: 2px solid #00ff88;
-            border-bottom: 2px solid #00ff88;
-        }
-        
-        .comments-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .comment { 
-            background: #1a1a1a; 
-            padding: 1.5rem; 
-            border-radius: 10px; 
-            border: 1px solid #333; 
-            text-align: right;
-        }
-        
-        .comment-form {
-            max-width: 600px;
-            margin: 2rem auto;
-            padding: 2rem;
-            background: #1a1a1a;
-            border-radius: 10px;
-            border: 1px solid #00ff88;
-        }
-        
-        .comment-form input, .comment-form textarea {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            background: #333;
-            color: #fff;
-            border: 1px solid #00ff88;
-            border-radius: 5px;
-        }
-        
+        /* الأوسمة */
         .best-seller { border-color: gold !important; background: linear-gradient(45deg, #1a1a1a, #2a2a00) !important; }
         .best-seller-badge { 
             background: gold; 
@@ -106,42 +65,65 @@
             display: inline-block;
         }
 
-        .comment-notice {
-            background: #004400;
-            color: #00ff88;
-            padding: 10px;
-            border-radius: 5px;
-            margin: 10px 0;
-            border: 1px solid #00ff88;
-            font-size: 0.9rem;
+        /* قسم الإحصائيات */
+        .stats-bar { 
+            background: #111; 
+            padding: 3rem 2rem; 
+            border-top: 1px solid var(--primary); 
+            border-bottom: 1px solid var(--primary); 
+            margin: 2rem 0;
         }
 
-        .comment-disabled {
-            background: #330000;
-            color: #ff4444;
-            padding: 10px;
-            border-radius: 5px;
-            margin: 10px 0;
-            border: 1px solid #ff4444;
-            font-size: 0.9rem;
+        /* قسم المميزات */
+        .features-section {
+            padding: 4rem 2rem;
+            background: #0a0a0a;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .feature-card {
+            background: #1a1a1a;
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 1px solid #333;
+            transition: all 0.3s;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
+        }
+
+        /* قسم التعليقات المخفي */
+        .comments-section { 
+            background: #0a0a0a; 
+            padding: 3rem 2rem; 
+            margin: 2rem 0; 
+            border-top: 2px solid #00ff88;
+            border-bottom: 2px solid #00ff88;
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>🌑 الظل المحترف v6.0 🌑</h1>
+        <h1>🌑 الظل المحترف v1.0 🌑</h1>
         <p>منصة الاختراق العربية - اختراق بلا حدود</p>
     </div>
 
-    <div class="services-grid">
-        <!-- كروت الأكثر مبيعاً -->
+    <div class="services-grid" id="services-grid">
+        
         <div class="service-card best-seller">
             <div class="best-seller-badge">🔥 الأكثر مبيعاً</div>
             <i class="fas fa-mobile-alt fa-2x" style="color: #00ff88; margin-bottom: 1rem;"></i>
             <h3>اختراق الهاتف الكامل</h3>
             <p>سيطرة كاملة على أي هاتف - رسائل، مكالمات، موقع</p>
             <div class="price">$120</div>
-            <button class="buy-btn" onclick="buyService('اختراق الهاتف الكامل')">اشتري الآن</button>
+            <button class="buy-btn" onclick="buyService('اختراق الهاتف الكامل', 120)">اشتري الآن</button>
         </div>
 
         <div class="service-card best-seller">
@@ -150,16 +132,15 @@
             <h3>هاك ببجي موبايل</h3>
             <p>Aimbot, Wallhack, Unlimited UC - غير قابل للكشف</p>
             <div class="price">$80</div>
-            <button class="buy-btn" onclick="buyService('هاك ببجي موبايل')">اشتري الآن</button>
+            <button class="buy-btn" onclick="buyService('هاك ببجي موبايل', 80)">اشتري الآن</button>
         </div>
 
-        <!-- ألعاب جديدة -->
         <div class="service-card">
             <i class="fas fa-bolt fa-2x" style="color: #00ff88; margin-bottom: 1rem;"></i>
             <h3>هاك ببجي لايت</h3>
             <p>هاك خفيف وسريع للعبة ببجي لايت</p>
             <div class="price">$60</div>
-            <button class="buy-btn" onclick="buyService('هاك ببجي لايت')">اشتري الآن</button>
+            <button class="buy-btn" onclick="buyService('هاك ببجي لايت', 60)">اشتري الآن</button>
         </div>
 
         <div class="service-card">
@@ -167,7 +148,7 @@
             <h3>هاك فري فاير</h3>
             <p>هاك كامل لعبة فري فاير - إمكانيات غير محدودة</p>
             <div class="price">$70</div>
-            <button class="buy-btn" onclick="buyService('هاك فري فاير')">اشتري الآن</button>
+            <button class="buy-btn" onclick="buyService('هاك فري فاير', 70)">اشتري الآن</button>
         </div>
 
         <div class="service-card">
@@ -175,16 +156,15 @@
             <h3>هاك فيفا موبايل</h3>
             <p>هاك عملات ولاعبين لفيفا موبايل</p>
             <div class="price">$65</div>
-            <button class="buy-btn" onclick="buyService('هاك فيفا موبايل')">اشتري الآن</button>
+            <button class="buy-btn" onclick="buyService('هاك فيفا موبايل', 65)">اشتري الآن</button>
         </div>
 
-        <!-- باقي الكروت -->
         <div class="service-card">
             <i class="fas fa-user-secret fa-2x" style="color: #00ff88; margin-bottom: 1rem;"></i>
             <h3>اختراق فيسبوك</h3>
             <p>اختراق حسابات فيسبوك بضمان 100%</p>
             <div class="price">$90</div>
-            <button class="buy-btn" onclick="buyService('اختراق فيسبوك')">اشتري الآن</button>
+            <button class="buy-btn" onclick="buyService('اختراق فيسبوك', 90)">اشتري الآن</button>
         </div>
 
         <div class="service-card">
@@ -192,7 +172,7 @@
             <h3>اختراق الكاميرات</h3>
             <p>وصول مباشر لكاميرات المراقبة والهواتف</p>
             <div class="price">$110</div>
-            <button class="buy-btn" onclick="buyService('اختراق الكاميرات')">اشتري الآن</button>
+            <button class="buy-btn" onclick="buyService('اختراق الكاميرات', 110)">اشتري الآن</button>
         </div>
 
         <div class="service-card">
@@ -200,161 +180,158 @@
             <h3>اختراق البنوك</h3>
             <p>سرقة بيانات مصرفية آمنة</p>
             <div class="price">$200</div>
-            <button class="buy-btn" onclick="buyService('اختراق البنوك')">اشتري الآن</button>
+            <button class="buy-btn" onclick="buyService('اختراق البنوك', 200)">اشتري الآن</button>
         </div>
     </div>
 
-    <!-- قسم التعليقات -->
+    <div class="stats-bar">
+        <div class="stats-grid" style="
+            display: flex; 
+            justify-content: space-around; 
+            max-width: 1200px; 
+            margin: 0 auto;
+            flex-wrap: wrap;
+        ">
+            <div class="stat-item" style="padding: 1rem; min-width: 200px;">
+                <h2 style="color: #ff0088; font-size: 3rem;">500+</h2>
+                <p style="color: #ccc;">عملية اختراق ناجحة</p>
+            </div>
+            <div class="stat-item" style="padding: 1rem; min-width: 200px;">
+                <h2 style="color: #00ff88; font-size: 3rem;">1200+</h2>
+                <p style="color: #ccc;">عميل راضٍ ومحترف</p>
+            </div>
+            <div class="stat-item" style="padding: 1rem; min-width: 200px;">
+                <h2 style="color: #8800ff; font-size: 3rem;">99%</h2>
+                <p style="color: #ccc;">معدل نجاح الأداة</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="features-section">
+        <h2 style="color: #00ff88; margin-bottom: 3rem; font-size: 2.5rem;">⚡ مميزات المنصة ⚡</h2>
+
+        <div class="features-grid">
+
+            <div class="feature-card" style="border-color: var(--primary);">
+                <i class="fas fa-user-secret fa-3x" style="color: var(--primary);"></i>
+                <h3 style="color: #fff; margin-bottom: 0.5rem;">خصوصية تامة</h3>
+                <p style="color: #ccc;">ضمان الخصوصية وعدم الكشف عن هويتك.</p>
+            </div>
+
+            <div class="feature-card" style="border-color: var(--secondary);">
+                <i class="fas fa-sync-alt fa-3x" style="color: var(--secondary);"></i>
+                <h3 style="color: #fff; margin-bottom: 0.5rem;">تحديثات مستمرة</h3>
+                <p style="color: #ccc;">تحديثات دورية لمواكبة أحدث تقنيات الأمن.</p>
+            </div>
+
+            <div class="feature-card" style="border-color: var(--accent);">
+                <i class="fas fa-headset fa-3x" style="color: var(--accent);"></i>
+                <h3 style="color: #fff; margin-bottom: 0.5rem;">دعم فني 24/7</h3>
+                <p style="color: #ccc;">فريق دعم متاح لمساعدتك على مدار الساعة.</p>
+            </div>
+            
+            <div class="feature-card" style="border-color: gold;">
+                <i class="fas fa-code fa-3x" style="color: gold;"></i>
+                <h3 style="color: #fff; margin-bottom: 0.5rem;">تطوير أدوات مخصصة</h3>
+                <p style="color: #ccc;">تصميم وتطوير أدوات تلبي احتياجاتك الخاصة.</p>
+            </div>
+            
+            <div class="feature-card" style="border-color: var(--primary);">
+                <i class="fas fa-bolt fa-3x" style="color: var(--primary);"></i>
+                <h3 style="color: #fff; margin-bottom: 0.5rem;">سرعة فائقة</h3>
+                <p style="color: #ccc;">سرعة في التنفيذ والخدمة.</p>
+            </div>
+            
+            <div class="feature-card" style="border-color: gold;">
+                <i class="fas fa-scroll fa-3x" style="color: gold;"></i>
+                <h3 style="color: #fff; margin-bottom: 0.5rem;">تقارير عمليات ناجحة</h3>
+                <p style="color: #ccc;">سجل عمليات مثبت يضمن فاعلية أدواتنا.</p>
+            </div>
+
+            <div class="feature-card" style="border-color: var(--secondary);">
+                <i class="fas fa-shield-alt fa-3x" style="color: var(--secondary);"></i>
+                <h3 style="color: #fff; margin-bottom: 0.5rem;">ضمان عدم الكشف</h3>
+                <p style="color: #ccc;">تعويض كامل في حال حظر حسابك عند استخدام أدواتنا.</p>
+            </div>
+
+            <div class="feature-card" style="border-color: var(--primary);">
+                <i class="fas fa-tools fa-3x" style="color: var(--primary);"></i>
+                <h3 style="color: #fff; margin-bottom: 0.5rem;">أداة فحص IP مجانية</h3>
+                <p style="color: #ccc; margin-bottom: 1rem;">اختبر قوة نظامنا - افحص موقع أي IP.</p>
+                
+                <input type="text" id="ip-input" placeholder="أدخل عنوان IP للفحص (مثل 8.8.8.8)" 
+                   style="background: #000; color: #fff; border: 1px solid var(--primary); padding: 8px; border-radius: 5px; width: 90%; margin-bottom: 10px; text-align: center;">
+
+                <button class="buy-btn" onclick="lookupIP()" style="background: var(--primary); width: 80%; color: #000; font-weight: bold;">افحص الآن</button>
+                
+                <div id="ip-result" style="color: gold; margin-top: 10px; font-weight: bold; font-size: 0.9rem; min-height: 20px;"></div>
+            </div>
+
+        </div>
+    </div>
+    
+    <div class="faq-section" style="padding: 4rem 2rem; background: #000;">
+        <h2 style="color: #00ff88; margin-bottom: 3rem; font-size: 2.5rem;">❓ أسئلة شائعة (FAQ)</h2>
+        
+        <div class="faq-container" style="max-width: 900px; margin: 0 auto; text-align: right;">
+
+            <div class="faq-item" style="background: #1a1a1a; border-left: 5px solid #ff0088; padding: 20px; margin-bottom: 15px; border-radius: 5px;">
+                <h3 style="color: #fff; margin-bottom: 10px; cursor: pointer;" onclick="toggleAnswer(this)">
+                    هل أدواتكم آمنة وغير قابلة للكشف؟ <i class="fas fa-chevron-down" style="float: left; color: #ff0088;"></i>
+                </h3>
+                <p class="answer" style="color: #ccc; line-height: 1.6; display: none; margin-top: 10px; border-top: 1px dashed #333; padding-top: 10px;">
+                    نعم، نضمن خصوصيتك التامة. يتم تحديث جميع أدواتنا باستمرار لمواكبة أحدث تقنيات الأمن، مما يجعلها غير قابلة للكشف تماماً. نضمن لك الأمان بنسبة 100%.
+                </p>
+            </div>
+            
+            <div class="faq-item" style="background: #1a1a1a; border-left: 5px solid #00ff88; padding: 20px; margin-bottom: 15px; border-radius: 5px;">
+                <h3 style="color: #fff; margin-bottom: 10px; cursor: pointer;" onclick="toggleAnswer(this)">
+                    ما هي طرق الدفع المتاحة وكيف تتم عملية الشراء؟ <i class="fas fa-chevron-down" style="float: left; color: #00ff88;"></i>
+                </h3>
+                <p class="answer" style="color: #ccc; line-height: 1.6; display: none; margin-top: 10px; border-top: 1px dashed #333; padding-top: 10px;">
+                    نقبل الدفع عبر العملات الرقمية (Bitcoin, USDT) لضمان أقصى درجات الخصوصية. بعد الضغط على "اشتر الآن"، سيتم توجيهك مباشرة لخدمة الدعم لإتمام عملية الدفع والتسليم الفوري.
+                </p>
+            </div>
+            
+            <div class="faq-item" style="background: #1a1a1a; border-left: 5px solid #8800ff; padding: 20px; margin-bottom: 15px; border-radius: 5px;">
+                <h3 style="color: #fff; margin-bottom: 10px; cursor: pointer;" onclick="toggleAnswer(this)">
+                    كم يستغرق تنفيذ الهاك أو عملية الاختراق؟ <i class="fas fa-chevron-down" style="float: left; color: #8800ff;"></i>
+                </h3>
+                <p class="answer" style="color: #ccc; line-height: 1.6; display: none; margin-top: 10px; border-top: 1px dashed #333; padding-top: 10px;">
+                    معظم خدماتنا يتم تسليمها بشكل فوري أو في غضون 5 إلى 30 دقيقة كحد أقصى، اعتمادًا على نوع الخدمة. فريقنا يعمل بسرعة فائقة لضمان حصولك على الخدمة في أسرع وقت.
+                </p>
+            </div>
+        </div>
+    </div>
+    
     <div class="comments-section">
         <h2 style="color: #00ff88; margin-bottom: 2rem;">💬 آراء عملائنا المحترفين</h2>
         
-        <div class="comment-disabled">
-            ⚠️ التعليقات مغلقة - فقط العملاء الذين قاموا بالشراء يمكنهم التعليق
-        </div>
-        
-        <div class="comments-container" id="commentsContainer">
-            <!-- التعليقات تظهر هنا تلقائياً -->
-        </div>
-
-        <!-- نموذج إضافة تعليق -->
-        <div class="comment-form">
-            <h3 style="color: #00ff88; margin-bottom: 1rem;">إضافة تعليق (للعملاء فقط)</h3>
-            <div class="comment-notice">
-                🔒 هذه الخدمة متاحة فقط للعملاء الذين قاموا بالشراء
-            </div>
-            <input type="text" id="userName" placeholder="اسمك" required>
-            <textarea id="commentText" placeholder="اكتب تجربتك مع الخدمة..." rows="3" required></textarea>
-            <button class="buy-btn" onclick="addComment()" style="margin-top: 1rem;">إضافة التعليق</button>
+        <div style="
+            background: #2a0000; 
+            color: #ff5555; 
+            padding: 30px; 
+            border-radius: 10px; 
+            max-width: 800px; 
+            margin: 2rem auto; 
+            border: 2px solid #ff5555;
+            font-size: 1.2rem;
+            font-weight: bold;
+        ">
+            🔒 هذه الميزة متاحة فقط للذين يشترون خدماتنا.
         </div>
     </div>
 
     <script>
-        // قاعدة بيانات التعليقات الوهمية - 50 تعليق عربي
-        const fakeComments = [
-            {name: "أحمد الشبح", text: "هاك ببجي لايت رهيب! من أفضل الهاكات اللي جربتها 🎮", time: "منذ 7 ساعات"},
-            {name: "فاطمة الظل", text: "فيفا موبايل هاك غير اللعبة! الآن عندي كل اللاعبين ⚽", time: "منذ 12 ساعة"},
-            {name: "خالد السايبر", text: "ببجي لايت هاك سريع وما يتكتشف. أنصح فيه 👍", time: "منذ 3 ساعات"},
-            {name: "ليلى المخترقة", text: "هاك فري فاير شغال مثل السحر. فريق الدعم سريع 🚀", time: "منذ 8 ساعات"},
-            {name: "النسر العربي", text: "جربت هاك ببجي وفري فاير والنتيجة مذهلة! 🔥", time: "منذ 5 ساعات"},
-            {name: "سارة الهاكرة", text: "الأسعار معقولة والجودة فائقة. ما رح تندم! 🌟", time: "منذ 10 ساعات"},
-            {name: "الهاكر المصري", text: "ببجي لايت هاك خفيف وسريع. ما بيعطل اللعبة 🎯", time: "منذ 4 ساعات"},
-            {name: "محمد القناص", text: "هاك ببجي موبايل غير حياتي في اللعبة 😎", time: "منذ 6 ساعات"},
-            {name: "نور الحاسوب", text: "فري فاير هاك شغال بدون مشاكل. شكراً لكم! 💝", time: "منذ 9 ساعات"},
-            {name: "ياسر الظلام", text: "جربت كل هاكات الألعاب وكلها تعمل بمستوى محترف 🏆", time: "منذ 2 ساعة"},
-            {name: "علي المخترق", text: "اختراق الهاتف الكامل سهل الاستخدام وفعال 📱", time: "منذ 11 ساعة"},
-            {name: "ريم السوداء", text: "خدمة العملاء ممتازة والرد سريع على الاستفسارات 💬", time: "منذ 7 ساعات"},
-            {name: "مازن التقني", text: "هاك ببجي موبايل يعمل بشكل مثالي بدون أي مشاكل 🎯", time: "منذ 4 ساعات"},
-            {name: "هدى الظلام", text: "جربت اختراق الفيسبوك وكانت النتائج فورية ⚡", time: "منذ 8 ساعات"},
-            {name: "باسل الحاسوب", text: "فيفا موبايل هاك حقيقي ومجرب. أنصح به ⚽", time: "منذ 6 ساعات"},
-            {name: "سلمى الهاكرة", text: "الموقع موثوق والخدمات أصلية 100% ✅", time: "منذ 12 ساعة"},
-            {name: "وليد السريع", text: "هاك فري فاير سهل التثبيت وشغال بمستوى عالي 🔥", time: "منذ 3 ساعات"},
-            {name: "لينا المخترقة", text: "اختراق الكاميرات دقيق ويوفر رؤية واضحة 👁️", time: "منذ 5 ساعات"},
-            {name: "رامي التقني", text: "ببجي لايت هاك مثالي للأجهزة الضعيفة 📱", time: "منذ 9 ساعات"},
-            {name: "ديمة الظل", text: "جربت عدة خدمات وكلها على أعلى مستوى 🌟", time: "منذ 7 ساعات"},
-            {name: "خليل الحاسوب", text: "هاك ببجي موبايل يعطي نتائج فورية في اللعبة 🎮", time: "منذ 4 ساعات"},
-            {name: "آية المخترقة", text: "الدعم الفني متاح 24 ساعة ويحل أي مشكلة 🛠️", time: "منذ 10 ساعات"},
-            {name: "نادر السايبر", text: "اختراق الهاتف يعمل على جميع الأنظمة 📲", time: "منذ 2 ساعة"},
-            {name: "ميار الظلام", text: "فري فاير هاك سهل الاستخدام للمبتدئين 🎯", time: "منذ 8 ساعات"},
-            {name: "وسام التقني", text: "هاك فيفا موبايل غير مفهوم اللعبة بالكامل ⚽", time: "منذ 6 ساعات"},
-            {name: "جنى الهاكرة", text: "الأسعار مناسبة للجودة المقدمة 💰", time: "منذ 11 ساعة"},
-            {name: "زياد المخترق", text: "ببجي لايت هاك لا يؤثر على أداء الجهاز 📱", time: "منذ 3 ساعات"},
-            {name: "ريما السوداء", text: "خدمة اختراق الفيسبوك سريعة ومضمونة 🔒", time: "منذ 7 ساعات"},
-            {name: "طارق الحاسوب", text: "هاك ببجي موبايل يعمل على جميع الإصدارات 🎮", time: "منذ 5 ساعات"},
-            {name: "يارا المخترقة", text: "جودة الخدمات تستحق كل قرش دفعته 💯", time: "منذ 9 ساعات"},
-            {name: "ماهر الظل", text: "فيفا موبايل هاك حقيقي وليس نصب ⚽", time: "منذ 4 ساعات"},
-            {name: "نورين الهاكرة", text: "الدعم الفني محترف ويقدم حلول سريعة 🛠️", time: "منذ 12 ساعة"},
-            {name: "قصي المخترق", text: "هاك فري فاير يعطي ميزات غير عادية 🔥", time: "منذ 6 ساعات"},
-            {name: "لمى الظلام", text: "اختراق الكاميرات دقيق جدا وواضح 👁️", time: "منذ 8 ساعات"},
-            {name: "حسام التقني", text: "ببجي لايت هاك مثالي للعب التنافسي 🎯", time: "منذ 3 ساعات"},
-            {name: "سهاد المخترقة", text: "جربت 5 خدمات وكلها ممتازة 🌟", time: "منذ 7 ساعات"},
-            {name: "أنس السايبر", text: "هاك ببجي موبايل غير طريقة لعبي كلياً 🎮", time: "منذ 5 ساعات"},
-            {name: "ربى الهاكرة", text: "الموقع جدير بالثقة والخدمات أصلية ✅", time: "منذ 10 ساعات"},
-            {name: "فادي المخترق", text: "فري فاير هاك سهل التثبيت والاستخدام 🔥", time: "منذ 4 ساعات"},
-            {name: "ميساء الظل", text: "اختراق الهاتف يعمل بكفاءة عالية 📱", time: "منذ 8 ساعات"},
-            {name: "عماد الحاسوب", text: "هاك فيفا موبايل حقيقي وليس احتيال ⚽", time: "منذ 6 ساعات"},
-            {name: "هناء المخترقة", text: "جودة الخدمات تفوق التوقعات 🌈", time: "منذ 11 ساعة"},
-            {name: "صبري السايبر", text: "ببجي لايت هاك لا يسبب حظر للحساب 🎯", time: "منذ 3 ساعات"},
-            {name: "أمل الظلام", text: "خدمة العملاء سريعة الاستجابة 💬", time: "منذ 7 ساعات"},
-            {name: "سمير التقني", text: "هاك ببجي موبايل يعمل على جميع الخوادم 🎮", time: "منذ 5 ساعات"},
-            {name: "غادة المخترقة", text: "اختراق الفيسبوك سريع وفعال 🔒", time: "منذ 9 ساعات"},
-            {name: "نبيل السايبر", text: "فري فاير هاك يعطي نتائج فورية 🔥", time: "منذ 4 ساعات"},
-            {name: "منى الهاكرة", text: "الموقع موثوق والدفع آمن 💳", time: "منذ 12 ساعة"},
-            {name: "رأفت المخترق", text: "ببجي لايت هاك مثالي للمحترفين 🎯", time: "منذ 6 ساعات"},
-            {name: "إيناس الظل", text: "جربت الخدمة وكانت أفضل من المتوقع 🌟", time: "منذ 8 ساعات"}
-        ];
-
-        // عرض 5 تعليقات عشوائية كل 30 دقيقة
-        function displayRandomComments() {
-            const container = document.getElementById('commentsContainer');
-            container.innerHTML = '';
-            
-            // اختيار 5 تعليقات عشوائية
-            const shuffled = [...fakeComments].sort(() => 0.5 - Math.random());
-            const selected = shuffled.slice(0, 5);
-            
-            selected.forEach(comment => {
-                const commentDiv = document.createElement('div');
-                commentDiv.className = 'comment';
-                commentDiv.innerHTML = `
-                    <div style="color: #00ff88; font-weight: bold; margin-bottom: 0.5rem;">
-                        ${comment.name}
-                    </div>
-                    <div style="margin-bottom: 0.5rem;">${comment.text}</div>
-                    <div style="color: gold;">⭐⭐⭐⭐⭐</div>
-                    <small style="color: #666;">${comment.time}</small>
-                `;
-                container.appendChild(commentDiv);
-            });
-        }
-
-        // إضافة تعليق جديد (يخزن محلياً)
-        function addComment() {
-            const name = document.getElementById('userName').value;
-            const text = document.getElementById('commentText').value;
-            
-            if (!name || !text) {
-                alert('الرجاء ملء جميع الحقول');
-                return;
-            }
-            
-            // حفظ في localStorage
-            const userComments = JSON.parse(localStorage.getItem('userComments') || '[]');
-            userComments.push({name, text, date: new Date().toISOString()});
-            localStorage.setItem('userComments', JSON.stringify(userComments));
-            
-            // إظهار التعليق فوراً
-            const container = document.getElementById('commentsContainer');
-            const commentDiv = document.createElement('div');
-            commentDiv.className = 'comment';
-            commentDiv.innerHTML = `
-                <div style="color: #00ff88; font-weight: bold; margin-bottom: 0.5rem;">
-                    ${name}
-                </div>
-                <div style="margin-bottom: 0.5rem;">${text}</div>
-                <div style="color: gold;">⭐⭐⭐⭐⭐</div>
-                <small style="color: #666;">الآن</small>
-            `;
-            container.prepend(commentDiv);
-            
-            // تفريغ الحقول
-            document.getElementById('userName').value = '';
-            document.getElementById('commentText').value = '';
-            
-            alert('تم إضافة تعليقك بنجاح! 👻');
-        }
-
-        // وظيفة الشراء - توجيه لتلجرام
-        function buyService(serviceName) {
+        // وظيفة الشراء - توجيه لتليجرام
+        function buyService(serviceName, price) {
             const telegramUsername = "Talaa_almalika";
-            const message = `أريد شراء ${serviceName} من الظل المحترف`;
+            const message = `أريد شراء ${serviceName} بسعر $${price} من الظل المحترف v1.0`;
             
-            // رابط تليجرام مباشر
             const url = `https://t.me/${telegramUsername}`;
             
-            // فتح التليجرام في نافذة جديدة
             window.open(url, '_blank');
             
-            // تأثير على الزر
             const button = event.target;
             const originalText = button.innerHTML;
             button.innerHTML = 'جاري التوجيه... 🚀';
@@ -363,43 +340,50 @@
             
             setTimeout(() => {
                 button.innerHTML = originalText;
-                button.style.background = '#00ff88';
+                button.style.background = 'linear-gradient(45deg, var(--primary), var(--secondary))';
                 button.disabled = false;
                 
-                // رسالة تأكيد
                 alert(`✅ تم توجيهك إلى تليجرام\n\nراسل @${telegramUsername} لشراء ${serviceName}`);
             }, 1500);
         }
 
-        // تبديل التعليقات كل 30 دقيقة + التحميل الأولي
-        displayRandomComments();
-        setInterval(displayRandomComments, 30 * 60 * 1000);
+        // دالة محاكاة فحص الـ IP (المحاكاة الذكية)
+        function lookupIP() {
+            const ipInput = document.getElementById('ip-input');
+            const resultDiv = document.getElementById('ip-result');
+            const ipAddress = ipInput.value.trim();
 
-        // تحميل التعليقات المحفوظة
-        function loadUserComments() {
-            const userComments = JSON.parse(localStorage.getItem('userComments') || '[]');
-            const container = document.getElementById('commentsContainer');
-            
-            userComments.forEach(comment => {
-                const commentDiv = document.createElement('div');
-                commentDiv.className = 'comment';
-                commentDiv.innerHTML = `
-                    <div style="color: #00ff88; font-weight: bold; margin-bottom: 0.5rem;">
-                        ${comment.name}
-                    </div>
-                    <div style="margin-bottom: 0.5rem;">${comment.text}</div>
-                    <div style="color: gold;">⭐⭐⭐⭐⭐</div>
-                    <small style="color: #666;">${new Date(comment.date).toLocaleDateString('ar-SA')}</small>
+            if (!ipAddress) {
+                resultDiv.innerHTML = '<span style="color: #ff5555;">🚫 الرجاء إدخال عنوان IP للفحص.</span>';
+                return;
+            }
+
+            resultDiv.innerHTML = 'جاري الفحص... 📡';
+
+            setTimeout(() => {
+                // رسالة ذكية توجه للشراء
+                resultDiv.innerHTML = `
+                    <span style="color: #ff0088;">⚠️ انتهى الفحص!</span><br>
+                    <span style="color: #ccc;">للحصول على الموقع الدقيق وبيانات الجهاز، يرجى شراء خدمة <a href="#services-grid" style="color: gold; text-decoration: none;">اختراق الهاتف الكامل</a>.</span>
                 `;
-                container.prepend(commentDiv);
-            });
+            }, 2000); 
         }
-
-        // تهيئة الموقع
-        window.addEventListener('load', function() {
-            displayRandomComments();
-            loadUserComments();
-        });
+        
+        // دالة عرض/إخفاء إجابات الـ FAQ
+        function toggleAnswer(element) {
+            const answer = element.nextElementSibling;
+            const icon = element.querySelector('i');
+            
+            if (answer.style.display === "block") {
+                answer.style.display = "none";
+                icon.classList.remove('fa-chevron-up');
+                icon.classList.add('fa-chevron-down');
+            } else {
+                answer.style.display = "block";
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+            }
+        }
     </script>
 </body>
 </html>
