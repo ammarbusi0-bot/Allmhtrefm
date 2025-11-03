@@ -178,7 +178,7 @@ body {
 /* 🟢🔐 التنسيق الأهم: إخفاء جميع الأقسام ما عدا الهيرو عند التحميل */
 .services, .features-section, .comments-section, .faq-section, .footer, .about-us-summary {
     opacity: 0;
-    pointer-events: none; /* لمنع التفاعل حتى لو ظهرت */
+    pointer-events: none; 
     transition: opacity 1s ease-out;
 }
 
@@ -511,9 +511,6 @@ body {
     text-shadow: 0 0 8px var(--primary);
 }
 
-/* حذف تنسيق .telegram-float */
-
-
 /* تنسيقات نافذة الكود السري (Modal) */
 .modal {
     display: none; 
@@ -590,7 +587,6 @@ body {
     text-align: center;
     border-radius: 5px;
     transition: border-color 0.3s, box-shadow 0.3s;
-    /* تحسين سرعة الإدخال */
     -webkit-appearance: none;
     appearance: none;
 }
@@ -691,23 +687,24 @@ body {
     background-color: var(--dark);
     color: var(--light);
     font-size: 1rem;
+    margin-left: 10px;
 }
 
 #chatSendButton {
     padding: 10px 20px;
-    margin-right: 10px;
     background-color: var(--primary);
     color: var(--darker);
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: all 0.3s;
 }
 
 #chatSendButton:hover {
     background-color: var(--secondary);
     color: var(--light);
 }
+
 
 /* تنسيقات صفحة غرفة الدعم الجديدة (support-room.html) */
 .support-room-content {
@@ -740,7 +737,6 @@ body {
     font-size: 1.1rem;
     padding: 12px 25px;
 }
-
 
 /* Responsive Design */
 @media (max-width: 768px) {
