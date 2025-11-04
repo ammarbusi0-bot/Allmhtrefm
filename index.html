@@ -1,182 +1,0 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShadowHack PRO v2 - الإمبراطورية السوداء</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <!-- نافذة إخلاء المسؤولية -->
-    <div id="disclaimerModal" class="modal">
-        <div class="modal-content">
-            <h3>⚠️ بيان إخلاء المسؤولية</h3>
-            <div class="disclaimer-text">
-                <p><strong>إشعار هام:</strong> هذا موقع تجريبي لعرض تصميم وهمي.</p>
-                <p>جميع المحتويات والمحادثات والمستخدمين عبارة عن محاكاة وهمية.</p>
-            </div>
-            <button onclick="closeDisclaimer()">أوافق على الشروط</button>
-        </div>
-    </div>
-
-    <!-- نافذة الدردشة الجماعية -->
-    <div id="groupChatModal" class="modal" style="display: none;">
-        <div class="modal-content" style="max-width: 500px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                <h3>💬 دردشة المجتمع (24/7)</h3>
-                <button onclick="closeGroupChat()" style="background: var(--secondary); padding: 0.5rem; border-radius: 50%; width: 40px; height: 40px;">✕</button>
-            </div>
-            
-            <div id="groupChatMessages" style="height: 300px; overflow-y: auto; border: 1px solid var(--primary); border-radius: 10px; padding: 1rem; margin-bottom: 1rem; background: rgba(0,0,0,0.3);">
-                <!-- المحادثات الوهمية تظهر هنا -->
-            </div>
-            
-            <div class="guest-message" style="background: rgba(255,0,136,0.2); padding: 1rem; border-radius: 10px; text-align: center; margin-bottom: 1rem;">
-                <strong>⚠️ للاعضاء فقط</strong><br>
-                <small>يجب عليك شراء إحدى الخدمات للمشاركة في الدردشة</small>
-            </div>
-        </div>
-    </div>
-
-    <canvas class="matrix-bg" id="matrixCanvas"></canvas>
-
-    <audio id="background-audio" loop>
-        <source src="n1HqWEafHec (1).m4a" type="audio/mp4">
-        المتصفح لا يدعم العنصر الصوتي.
-    </audio>
-
-    <!-- أزرار التنقل -->
-    <a href="#" onclick="openGroupChat()" class="telegram-float">
-        <i class="fas fa-comments"></i>
-        دردشة المجتمع
-    </a>
-
-    <nav class="navbar">
-        <div class="nav-content">
-            <div class="logo">🌑 ShadowHack PRO v2</div>
-            <ul class="nav-links">
-                <li><a href="#hero">الرئيسية</a></li>
-                <li><a href="#services">الخدمات</a></li>
-                <li><a href="#features">المميزات</a></li>
-                <li><a href="#comments">آراء العملاء</a></li>
-                <li><a href="#community">المجتمع</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <section class="hero" id="hero">
-        <div class="hero-content">
-            <h1>ShadowHack PRO v2</h1>
-            <p>الإمبراطورية السوداء - اختراق بلا حدود</p>
-            <a href="#services" class="cta-button" id="ctaButton">اكتشف الخدمات المتطورة 🚀</a>
-        </div>
-    </section>
-
-    <section class="services" id="services">
-        <h2 class="section-title">🛠️ خدماتنا المتطورة</h2>
-        
-        <!-- قسم كوبونات الخصم -->
-        <div class="discount-section" style="background: linear-gradient(135deg, #102a10, #301030); padding: 1.5rem; border-radius: 15px; margin-bottom: 2rem; text-align: center; border: 2px solid var(--primary);">
-            <h3 style="color: var(--primary); margin-bottom: 1rem;">🎁 عروض خصم حصرية</h3>
-            <div class="discount-codes">
-                <span class="discount-code" onclick="applyDiscount('HALAB20')">HALAB20 - خصم 20%</span>
-                <span class="discount-code" onclick="applyDiscount('SHAM10')">SHAM10 - خصم 10%</span>
-                <span class="discount-code" onclick="applyDiscount('PRO25')">PRO25 - خصم 25%</span>
-            </div>
-        </div>
-        
-        <div class="services-grid">
-            <!-- بطاقات الخدمات هنا (نفس المحتوى السابق) -->
-            <div class="service-card best-seller" data-name="اختراق الهاتف الكامل" data-price="120">
-                <div class="best-seller-badge">🔥 الأكثر مبيعاً</div>
-                <i class="fas fa-mobile-alt service-icon"></i>
-                <h3>اختراق الهاتف الكامل</h3>
-                <p>سيطرة كاملة على أي هاتف - رسائل، مكالمات، موقع، كاميرا</p>
-                <div class="price">$120</div>
-                <button class="buy-btn">اشتري الآن</button>
-            </div>
-
-            <div class="service-card best-seller" data-name="هاك ببجي موبايل" data-price="80">
-                <div class="best-seller-badge">🎮 الأكثر طلباً</div>
-                <i class="fas fa-gamepad service-icon"></i>
-                <h3>هاك ببجي موبايل</h3>
-                <p>Aimbot, Wallhack, Unlimited UC - غير قابل للكشف</p>
-                <div class="price">$80</div>
-                <button class="buy-btn">اشتري الآن</button>
-            </div>
-            
-            <!-- باقي الخدمات -->
-        </div>
-    </section>
-
-    <section class="features-section" id="features">
-        <h2 class="section-title">⚡ مميزات منصتنا</h2>
-        <div class="features-grid">
-            <div class="feature-card" onclick="showFeatureDetails('خصوصية تامة', 'نحن نضمن خصوصية عملائنا بشكل مطلق')">
-                <i class="fas fa-user-secret"></i>
-                <h3>خصوصية تامة</h3>
-                <p>حماية كاملة لهويتك وبياناتك</p>
-            </div>
-
-            <div class="feature-card" onclick="showFeatureDetails('تحديثات مستمرة', 'يتم تحديث جميع أدواتنا بشكل دوري')">
-                <i class="fas fa-sync-alt"></i>
-                <h3>تحديثات مستمرة</h3>
-                <p>تحديثات دورية لأدوات الاختراق</p>
-            </div>
-
-            <div class="feature-card" onclick="showFeatureDetails('دعم فني 24/7', 'فريقنا متاح على مدار الساعة')">
-                <i class="fas fa-headset"></i>
-                <h3>دعم فني 24/7</h3>
-                <p>دعم فني متاح طوال الوقت</p>
-            </div>
-        </div>
-    </section>
-
-    <section class="comments-section" id="comments">
-        <h2 class="section-title">💬 آراء عملائنا المحترفين</h2>
-        
-        <div class="comment-notice">
-            💬 التعليقات أدناه تتجدد تلقائياً كل يوم بناءً على المشتريين الموثوقين. ✅
-        </div>
-        
-        <div class="comments-container" id="commentsContainer">
-            <!-- التعليقات الوهمية تظهر هنا -->
-        </div>
-    </section>
-
-    <section class="community-section" id="community">
-        <h2 class="section-title">👥 مجتمع ShadowHack</h2>
-        
-        <div class="community-stats" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
-            <div class="stat-card" style="background: rgba(0,255,136,0.1); padding: 1rem; border-radius: 10px; text-align: center;">
-                <h3 style="color: var(--primary);">1,247+</h3>
-                <p>عضو نشط</p>
-            </div>
-            <div class="stat-card" style="background: rgba(136,0,255,0.1); padding: 1rem; border-radius: 10px; text-align: center;">
-                <h3 style="color: var(--accent);">5,892+</h3>
-                <p>خدمة مباعة</p>
-            </div>
-            <div class="stat-card" style="background: rgba(255,0,136,0.1); padding: 1rem; border-radius: 10px; text-align: center;">
-                <h3 style="color: var(--secondary);">24/7</h3>
-                <p>دردشة نشطة</p>
-            </div>
-        </div>
-
-        <div class="community-preview">
-            <h3 style="text-align: center; margin-bottom: 1rem; color: var(--primary);">🔥 النقاشات الحالية في المجتمع</h3>
-            <div id="communityPreview">
-                <!-- معاينة النقاشات تظهر هنا -->
-            </div>
-        </div>
-    </section>
-
-    <footer class="footer">
-        <p>ShadowHack PRO v2 - الإمبراطورية السوداء</p>
-        <p style="font-size: 0.8rem; opacity: 0.6;">هذا موقع تجريبي - جميع المحتويات وهمية</p>
-    </footer>
-
-    <script src="fake-data.js"></script>
-    <script src="script.js"></script>
-</body>
-</html>
