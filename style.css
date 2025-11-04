@@ -555,7 +555,7 @@ body {
     font-size: 0.9rem;
 }
 
-/* زر الدعم الفني المعدل */
+/* زر الدردشة المحدث */
 .telegram-float {
     position: fixed;
     bottom: 1rem;
@@ -585,6 +585,101 @@ body {
     opacity: 0;
     transition: opacity 1s ease-out;
     pointer-events: none;
+}
+
+/* تنسيقات نظام الدردشة الجديد */
+.message {
+    margin-bottom: 1rem;
+    padding: 0.8rem;
+    border-radius: 15px;
+    line-height: 1.4;
+    animation: fadeIn 0.3s ease;
+}
+
+.user-message {
+    background: linear-gradient(45deg, var(--primary), var(--accent));
+    color: black;
+    text-align: left;
+    margin-left: 2rem;
+    border-bottom-right-radius: 5px;
+}
+
+.admin-message {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    text-align: right;
+    margin-right: 2rem;
+    border-bottom-left-radius: 5px;
+    border: 1px solid var(--primary);
+}
+
+.system-message {
+    background: rgba(255, 255, 0, 0.1);
+    color: yellow;
+    text-align: center;
+    font-size: 0.8rem;
+    border: 1px solid yellow;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+#chatMessages::-webkit-scrollbar {
+    width: 6px;
+}
+
+#chatMessages::-webkit-scrollbar-track {
+    background: rgba(0, 255, 136, 0.1);
+    border-radius: 10px;
+}
+
+#chatMessages::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 10px;
+}
+
+#chatInput:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 10px var(--accent);
+}
+
+/* تحسينات إضافية للرسوم المتحركة */
+.service-card, .feature-card, .comment {
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* تأثيرات التركيز للوصول */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* تحسينات إضافية للشاشات الكبيرة */
+@media (min-width: 1200px) {
+    .hero-content h1 {
+        font-size: 3.5rem;
+    }
+    
+    .services-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* تأثيرات النقر */
+button:active, .buy-btn:active, .cta-button:active {
+    transform: scale(0.95) !important;
+}
+
+/* تحسينات أداء */
+.service-card, .feature-card {
+    will-change: transform;
+    backface-visibility: hidden;
 }
 
 /* التجاوب للهواتف */
@@ -623,39 +718,4 @@ body {
     .feature-card {
         padding: 1.5rem;
     }
-}
-/* تحسينات إضافية للرسوم المتحركة */
-.service-card, .feature-card, .comment {
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-/* تأثيرات التركيز للوصول */
-@media (prefers-reduced-motion: reduce) {
-    * {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-    }
-}
-
-/* تحسينات إضافية للشاشات الكبيرة */
-@media (min-width: 1200px) {
-    .hero-content h1 {
-        font-size: 3.5rem;
-    }
-    
-    .services-grid {
-        grid-template-columns: repeat(4, 1fr);
-    }
-}
-
-/* تأثيرات النقر */
-button:active, .buy-btn:active, .cta-button:active {
-    transform: scale(0.95) !important;
-}
-
-/* تحسينات أداء */
-.service-card, .feature-card {
-    will-change: transform;
-    backface-visibility: hidden;
 }
