@@ -24,6 +24,174 @@ body {
     position: relative;
 }
 
+/* 🔒 تنسيقات إخلاء المسؤولية */
+.disclaimer-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(10px);
+}
+
+.disclaimer-content {
+    background: #1a1a1a;
+    border: 3px solid var(--primary);
+    border-radius: 15px;
+    padding: 3rem;
+    max-width: 700px;
+    text-align: right;
+    box-shadow: 0 0 50px rgba(0, 255, 136, 0.5);
+    animation: fadeIn 0.5s ease-out;
+}
+
+.disclaimer-content h2 {
+    color: var(--secondary);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.disclaimer-content p {
+    margin-bottom: 1.5rem;
+    line-height: 1.8;
+    color: #ccc;
+    font-size: 1.1rem;
+}
+
+.disclaimer-content strong {
+    color: var(--primary);
+}
+
+.disclaimer-actions {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 2.5rem;
+}
+
+.disclaimer-actions button {
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+#agreeDisclaimer {
+    background: linear-gradient(45deg, var(--primary), #00cc55);
+    color: var(--darker);
+    box-shadow: 0 0 20px var(--primary);
+}
+
+#rejectDisclaimer {
+    background: linear-gradient(45deg, #cc0055, var(--secondary));
+    color: var(--light);
+    box-shadow: 0 0 20px var(--secondary);
+}
+
+#agreeDisclaimer:hover, #rejectDisclaimer:hover {
+    transform: scale(1.05);
+}
+
+/* إخفاء المحتوى عند التحميل إن لم يوافق المستخدم */
+body.disclaimer-hidden > *:not(.disclaimer-overlay) {
+    display: none;
+}
+body.disclaimer-hidden {
+    overflow: hidden;
+}
+
+/* 🔐 تنسيقات نافذة التحقق (Captcha) */
+.captcha-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 2000;
+    display: none; /* مخفي افتراضياً */
+    justify-content: center;
+    align-items: center;
+}
+
+.captcha-content {
+    background: #1a1a1a;
+    border: 3px solid var(--accent);
+    border-radius: 10px;
+    padding: 30px;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 0 30px rgba(136, 0, 255, 0.5);
+}
+
+.captcha-content h3 {
+    color: var(--accent);
+    margin-bottom: 15px;
+}
+
+.captcha-content p {
+    margin-bottom: 20px;
+    color: #ccc;
+}
+
+.captcha-code {
+    font-size: 2.5rem;
+    font-weight: bold;
+    letter-spacing: 10px;
+    margin: 20px 0;
+    background: linear-gradient(45deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 15px var(--primary);
+    padding: 10px;
+    border: 1px dashed var(--primary);
+    border-radius: 5px;
+    user-select: none; /* منع تحديد النص */
+}
+
+#captchaInput {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid var(--primary);
+    border-radius: 5px;
+    background: #000;
+    color: var(--primary);
+    font-size: 1.5rem;
+    text-align: center;
+    outline: none;
+}
+
+#verifyCaptcha {
+    background: linear-gradient(45deg, var(--accent), var(--secondary));
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+    transition: all 0.3s;
+}
+
+#verifyCaptcha:hover {
+    box-shadow: 0 0 20px var(--accent);
+    transform: scale(1.02);
+}
+
+#captchaMessage {
+    margin-top: 15px;
+    font-weight: bold;
+    min-height: 20px;
+}
+
 /* تأثيرات الخلفية المتحركة */
 .matrix-bg {
     position: fixed;
@@ -34,64 +202,6 @@ body {
     z-index: -1;
     opacity: 0.1;
 }
-
-/* 🟢 تنسيقات شاشة الموافقة وإخفاء المحتوى */
-
-/* إخفاء محتوى الصفحة الرئيسي بشكل افتراضي (حتى تتم الموافقة) */
-.hidden-content {
-    display: none; 
-}
-
-/* تنسيق النافذة المنبثقة العامة (للموافقة) */
-.modal {
-    position: fixed;
-    z-index: 2000; /* أعلى من كل شيء */
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.98);
-    display: none; /* يتم التحكم بها بواسطة الجافاسكريبت */
-    backdrop-filter: blur(10px);
-    justify-content: center;
-    align-items: center;
-}
-
-/* لإظهار النافذة مباشرة عند التحميل (لإخلاء المسؤولية) */
-.modal.show-modal {
-    display: flex;
-}
-
-.modal-content {
-    background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-    padding: 40px;
-    border: 3px solid var(--primary);
-    border-radius: 20px;
-    width: 90%;
-    max-width: 600px;
-    box-shadow: 0 0 50px rgba(0, 255, 136, 0.5);
-    text-align: center;
-    animation: fadeIn 0.5s;
-}
-
-.disclaimer-content h2 {
-    color: var(--secondary);
-    font-size: 2rem;
-    margin-bottom: 2rem;
-    text-shadow: var(--glow) var(--secondary);
-}
-
-.disclaimer-content p {
-    font-size: 1.1rem;
-    line-height: 1.8;
-    margin-bottom: 3rem;
-    text-align: justify;
-    padding: 0 10px;
-    color: #ccc;
-}
-/* نهاية تنسيقات النافذة المنبثقة */
-
 
 /* شريط التنقل */
 .navbar {
@@ -205,10 +315,20 @@ body {
 .section-title {
     text-align: center;
     font-size: 3rem;
-    margin-bottom: 4rem;
+    margin-bottom: 1.5rem; /* تم تقليل المسافة */
     color: var(--primary);
     text-shadow: var(--glow) var(--primary);
 }
+
+/* تنسيق تاريخ آخر تحديث */
+.last-update {
+    text-align: center;
+    color: #666;
+    font-size: 1rem;
+    margin-bottom: 4rem;
+    font-style: italic;
+}
+
 
 .services-grid {
     display: grid;
@@ -525,18 +645,36 @@ body {
     margin-bottom: 1rem;
 }
 
-/* 🔴 تعديل: زر الدردشة العائم يوجه إلى صفحة الدردشة الداخلية */
+/* تنسيق روابط الفوتر */
+.footer-links {
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.footer-links a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.footer-links a:hover {
+    color: var(--accent);
+}
+
 .telegram-float {
     position: fixed;
     bottom: 2rem;
     left: 2rem;
-    background: var(--accent); /* تغيير اللون الأساسي ليتناسب مع الدردشة */
+    background: #0088cc;
     color: white;
     padding: 1rem 1.5rem;
     border-radius: 50px;
     text-decoration: none;
     font-weight: bold;
-    box-shadow: 0 0 25px var(--accent);
+    box-shadow: 0 0 25px #0088cc;
     z-index: 1000;
     transition: all 0.3s ease;
     display: flex;
@@ -546,10 +684,11 @@ body {
 
 .telegram-float:hover {
     transform: scale(1.1);
-    box-shadow: 0 0 35px var(--accent);
+    box-shadow: 0 0 35px #0088cc;
 }
 
-/* 🟢🔐 التنسيق الأهم: إخفاء جميع الأقسام ما عدا الهيرو عند التحميل (يتم إخفاؤها الآن بواسطة #mainContent) */
+/* 🟢🔐 التنسيق الأهم: إخفاء جميع الأقسام ما عدا الهيرو عند التحميل */
+/* تم تعديله ليظهر فقط بعد الموافقة على إخلاء المسؤولية */
 .services, .features-section, .comments-section, .faq-section, .footer {
     opacity: 0; /* اخفاء المحتوى */
     transition: opacity 1s ease-out; /* إضافة سلاسة للظهور */
@@ -564,4 +703,5 @@ body {
     .features-grid { grid-template-columns: 1fr; }
     .comments-container { grid-template-columns: 1fr; }
     .telegram-float { bottom: 1rem; left: 1rem; padding: 0.8rem 1.2rem; }
+    .disclaimer-content { padding: 2rem 1.5rem; }
 }
