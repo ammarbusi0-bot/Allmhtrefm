@@ -31,6 +31,31 @@
         </div>
     </div>
 
+    <!-- نافذة الدردشة الجديدة -->
+    <div id="chatModal" class="modal" style="display: none;">
+        <div class="modal-content" style="max-width: 400px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h3>💬 الدردشة الحية</h3>
+                <button onclick="closeChat()" style="background: var(--secondary); padding: 0.5rem; border-radius: 50%; width: 40px; height: 40px;">✕</button>
+            </div>
+            
+            <div id="chatMessages" style="height: 300px; overflow-y: auto; border: 1px solid var(--primary); border-radius: 10px; padding: 1rem; margin-bottom: 1rem; background: rgba(0,0,0,0.3);">
+                <div class="message admin-message">
+                    <strong>👑 المشرف:</strong> مرحباً بك في الدردشة! كيف يمكنني مساعدتك؟
+                </div>
+            </div>
+            
+            <div style="display: flex; gap: 0.5rem;">
+                <input type="text" id="chatInput" placeholder="اكتب رسالتك هنا..." style="flex: 1; padding: 0.8rem; border-radius: 25px; border: 1px solid var(--primary); background: rgba(0,0,0,0.5); color: white;">
+                <button onclick="sendMessage()" style="background: var(--primary); color: black; border: none; border-radius: 25px; padding: 0.8rem 1.5rem; font-weight: bold;">إرسال</button>
+            </div>
+            
+            <div style="margin-top: 1rem; text-align: center; font-size: 0.8rem; color: #ccc;">
+                💡 سيتم الرد عليك خلال دقائق
+            </div>
+        </div>
+    </div>
+
     <canvas class="matrix-bg" id="matrixCanvas"></canvas>
 
     <audio id="background-audio" loop>
@@ -38,10 +63,10 @@
         المتصفح لا يدعم العنصر الصوتي.
     </audio>
 
-    <!-- زر التواصل المعدل -->
-    <a href="#" onclick="openSupport()" class="telegram-float">
-        <i class="fas fa-headset"></i>
-        الدعم الفني
+    <!-- زر الدردشة المحدث -->
+    <a href="#" onclick="openChat()" class="telegram-float">
+        <i class="fas fa-comments"></i>
+        الدردشة المباشرة
     </a>
 
     <nav class="navbar">
@@ -133,7 +158,6 @@
                 <div class="price">$200</div>
                 <button class="buy-btn">اشتري الآن</button>
             </div>
-
         </div>
     </section>
 
