@@ -624,3 +624,38 @@ body {
         padding: 1.5rem;
     }
 }
+/* تحسينات إضافية للرسوم المتحركة */
+.service-card, .feature-card, .comment {
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* تأثيرات التركيز للوصول */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* تحسينات إضافية للشاشات الكبيرة */
+@media (min-width: 1200px) {
+    .hero-content h1 {
+        font-size: 3.5rem;
+    }
+    
+    .services-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* تأثيرات النقر */
+button:active, .buy-btn:active, .cta-button:active {
+    transform: scale(0.95) !important;
+}
+
+/* تحسينات أداء */
+.service-card, .feature-card {
+    will-change: transform;
+    backface-visibility: hidden;
+}
