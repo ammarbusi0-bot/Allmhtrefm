@@ -1,11 +1,11 @@
 // 🔑 التهيئة الرئيسية المحسنة
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 ShadowHack PRO v2 - Initializing...');
+    console.log('🚀 ShadowHack PRO v2 - Initializing Fake System...');
     
     // العناصر الأساسية
     const audio = document.getElementById('background-audio');
     const ctaButton = document.getElementById('ctaButton');
-    const hiddenSections = document.querySelectorAll('.services, .features-section, .comments-section, .faq-section, .footer');
+    const hiddenSections = document.querySelectorAll('.services, .features-section, .comments-section, .community-section, .footer');
     
     // 🔧 إصلاح تشغيل الصوت
     function initializeAudio() {
@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const playAudio = function() {
             audio.play().then(() => {
                 console.log('🎵 Background audio started');
+                fakeDataGenerator.playSoundEffect('background');
             }).catch(error => {
                 console.log('🔇 Audio play prevented by browser:', error);
             });
@@ -41,6 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         ctaButton.addEventListener('click', function(e) {
             e.preventDefault();
+            fakeDataGenerator.playSoundEffect('click');
             
             console.log('🎪 Revealing hidden sections...');
             
@@ -71,261 +73,229 @@ document.addEventListener('DOMContentLoaded', function() {
         initializeAudio();
         initializeCTA();
         initializeMatrix();
-        displayRandomComments();
-        createFAQ();
+        initializeFakeSystems();
         initializeBuyButtons();
-        initializeChat();
         
-        console.log('✅ All systems initialized successfully');
+        console.log('✅ All fake systems initialized successfully');
     }
 
-    // 🔄 تحديث التعليقات تلقائياً
-    setInterval(displayRandomComments, 30 * 60 * 1000);
-    
     // بدء التهيئة
     initializeAll();
 });
 
 // ====================================================
-// 💬 نظام الدردشة الداخلية - بدلاً من Termux
+// 🎭 الأنظمة الوهمية
 // ====================================================
 
-let chatMessages = [];
-let isAdminOnline = true;
+function initializeFakeSystems() {
+    // عرض التعليقات الوهمية
+    displayFakeComments();
+    
+    // عرض محادثات المجتمع
+    displayCommunityPreview();
+    
+    // بدء محاكاة الدردشة الحية
+    startChatSimulation();
+    
+    // تحديث تلقائي للبيانات
+    setInterval(updateFakeData, 30000); // كل 30 ثانية
+}
 
-// تهيئة الدردشة
-function initializeChat() {
-    const chatInput = document.getElementById('chatInput');
-    if (chatInput) {
-        chatInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
-        });
+// عرض التعليقات الوهمية
+function displayFakeComments() {
+    const container = document.getElementById('commentsContainer');
+    if (!container) return;
+
+    container.innerHTML = '';
+    
+    // عرض 6 تعليقات عشوائية
+    for (let i = 0; i < 6; i++) {
+        const comment = fakeDataGenerator.generateRandomComment();
+        const commentDiv = document.createElement('div');
+        commentDiv.className = 'comment';
+        commentDiv.innerHTML = `
+            <div class="comment-header">
+                <div class="comment-badge">مشترٍ موثوق</div>
+                <div class="comment-name">${comment.name}</div>
+            </div>
+            <div class="comment-text">"${comment.text}"</div>
+            <div class="comment-stars">${'⭐'.repeat(comment.rating)}</div>
+            <div class="comment-time">${comment.time}</div>
+        `;
+        container.appendChild(commentDiv);
     }
-    loadChatHistory();
 }
 
-// فتح نافذة الدردشة
-function openChat() {
-    document.getElementById('chatModal').style.display = 'flex';
-    document.getElementById('chatInput').focus();
-    loadChatHistory();
+// عرض معاينة المجتمع
+function displayCommunityPreview() {
+    const container = document.getElementById('communityPreview');
+    if (!container) return;
+
+    container.innerHTML = '';
+    
+    // عرض 3 مناقشات عشوائية
+    for (let i = 0; i < 3; i++) {
+        const post = fakeForumPosts[Math.floor(Math.random() * fakeForumPosts.length)];
+        const postDiv = document.createElement('div');
+        postDiv.className = 'forum-preview';
+        postDiv.style.cssText = 'background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 10px; margin-bottom: 1rem; border: 1px solid #333;';
+        postDiv.innerHTML = `
+            <h4 style="color: var(--primary); margin-bottom: 0.5rem;">${post.title}</h4>
+            <p style="color: #ccc; margin-bottom: 0.5rem; font-size: 0.9rem;">${post.content}</p>
+            <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: #888;">
+                <span>👤 ${post.user}</span>
+                <span>💬 ${post.comments} رد</span>
+            </div>
+        `;
+        container.appendChild(postDiv);
+    }
 }
 
-// إغلاق نافذة الدردشة
-function closeChat() {
-    document.getElementById('chatModal').style.display = 'none';
-}
+// محاكاة الدردشة الحية
+function startChatSimulation() {
+    const chatContainer = document.getElementById('groupChatMessages');
+    if (!chatContainer) return;
 
-// إرسال رسالة
-function sendMessage() {
-    const input = document.getElementById('chatInput');
-    const message = input.value.trim();
-    
-    if (!message) return;
-    
-    // إضافة رسالة المستخدم
-    addMessageToChat('user', message);
-    input.value = '';
-    
-    // محاكاة رد المشرف (بعد 1-3 ثواني)
-    setTimeout(() => {
-        const adminResponse = generateAdminResponse(message);
-        addMessageToChat('admin', adminResponse);
-    }, 1000 + Math.random() * 2000);
+    // عرض الرسائل الأولية
+    fakeChatMessages.forEach(msg => {
+        addChatMessage(msg.user, msg.message, msg.time);
+    });
+
+    // إضافة رسائل جديدة بشكل عشوائي
+    setInterval(() => {
+        if (Math.random() > 0.7) { // 30% فرصة لإضافة رسالة جديدة
+            const newMessage = fakeDataGenerator.generateRandomChatMessage();
+            addChatMessage(newMessage.user, newMessage.message, newMessage.time);
+        }
+    }, 10000); // كل 10 ثواني
 }
 
 // إضافة رسالة للدردشة
-function addMessageToChat(sender, text) {
-    const chatContainer = document.getElementById('chatMessages');
+function addChatMessage(user, message, time) {
+    const chatContainer = document.getElementById('groupChatMessages');
+    if (!chatContainer) return;
+
     const messageDiv = document.createElement('div');
-    
-    messageDiv.className = `message ${sender}-message`;
-    messageDiv.innerHTML = `<strong>${sender === 'user' ? '👤 أنت' : '👑 المشرف'}:</strong> ${text}`;
+    messageDiv.className = 'chat-message';
+    messageDiv.style.cssText = 'margin-bottom: 1rem; padding: 0.8rem; background: rgba(0,255,136,0.1); border-radius: 10px; border-right: 3px solid var(--primary);';
+    messageDiv.innerHTML = `
+        <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 0.5rem;">
+            <strong style="color: var(--primary);">${user}</strong>
+            <small style="color: #888; margin-right: auto; margin-left: 1rem;">${time}</small>
+        </div>
+        <div style="color: #ccc;">${message}</div>
+    `;
     
     chatContainer.appendChild(messageDiv);
     chatContainer.scrollTop = chatContainer.scrollHeight;
-    
-    // حفظ في السجل
-    chatMessages.push({ sender, text, time: new Date().toLocaleTimeString() });
-    saveChatHistory();
 }
 
-// توليد ردود المشرف الذكية
-function generateAdminResponse(userMessage) {
-    const responses = {
-        greeting: [
-            "أهلاً وسهلاً بك! 😊 كيف يمكنني مساعدتك اليوم؟",
-            "مرحباً بك في ShadowHack PRO! كيف أساعدك؟",
-            "أهلاً بك! أنا هنا لمساعدتك في أي استفسار"
-        ],
-        price: [
-            "الأسعار مذكورة في صفحة الخدمات. هل تريد خدمة محددة؟",
-            "يمكنك رؤية جميع الأسعار في قسم الخدمات. أي خدمة تهتم بها؟",
-            "أسعارنا تنافسية وجودتنا مضمونة. أي خدمة تريد معرفة سعرها؟"
-        ],
-        service: [
-            "جميع خدماتنا مذكورة مع تفاصيل كاملة. أي خدمة تريد الاستفسار عنها؟",
-            "يمكنني شرح أي خدمة تريدها بالتفصيل. ما هي الخدمة التي تهمك؟",
-            "لدينا خدمات متعددة تناسب احتياجاتك. أخبرني بما تبحث عنه"
-        ],
-        payment: [
-            "نقبل البيتكوين والUSDT لضمان خصوصيتك. هل تحتاج مساعدة في الدفع؟",
-            "الدفع يكون بالعملات المشفرة فقط لحماية هويتك. تحتاج مساعدة؟",
-            "نعمل بالعملات الرقمية لأمانك. يمكنني مساعدتك في عملية الدفع"
-        ],
-        technical: [
-            "فريقنا الفني متاح 24/7 لحل أي مشكلة تواجهك",
-            "يمكننا مساعدتك في أي مشكلة تقنية. صف لي المشكلة بالتفصيل",
-            "لدينا دعم فني متكامل. ما هي المشكلة التي تواجهك؟"
-        ],
-        default: [
-            "شكراً على رسالتك! سيتم الرد عليك قريباً بتفاصيل أكثر",
-            "فهمت استفسارك. دعني أتأكد وأعود إليك بالمعلومات الدقيقة",
-            "سأحول سؤالك للفريق المختص وسنعود إليك بالرد قريباً"
-        ]
-    };
-
-    const message = userMessage.toLowerCase();
-    
-    if (message.includes('مرحبا') || message.includes('اهلا') || message.includes('السلام')) {
-        return getRandomResponse(responses.greeting);
-    } else if (message.includes('سعر') || message.includes('كم') || message.includes('ثمن')) {
-        return getRandomResponse(responses.price);
-    } else if (message.includes('خدمة') || message.includes('هاك') || message.includes('اختراق')) {
-        return getRandomResponse(responses.service);
-    } else if (message.includes('دفع') || message.includes('بيتكوين') || message.includes('usdt')) {
-        return getRandomResponse(responses.payment);
-    } else if (message.includes('مشكلة') || message.includes('خطأ') || message.includes('لا يعمل')) {
-        return getRandomResponse(responses.technical);
-    } else {
-        return getRandomResponse(responses.default);
+// تحديث البيانات الوهمية
+function updateFakeData() {
+    // تحديث التعليقات بشكل عشوائي
+    if (Math.random() > 0.8) {
+        displayFakeComments();
     }
-}
-
-// اختيار رد عشوائي
-function getRandomResponse(responsesArray) {
-    return responsesArray[Math.floor(Math.random() * responsesArray.length)];
-}
-
-// حفظ سجل الدردشة
-function saveChatHistory() {
-    if (chatMessages.length > 50) {
-        chatMessages = chatMessages.slice(-50);
-    }
-    localStorage.setItem('shadowhack_chat', JSON.stringify(chatMessages));
-}
-
-// تحميل سجل الدردشة
-function loadChatHistory() {
-    const saved = localStorage.getItem('shadowhack_chat');
-    if (saved) {
-        chatMessages = JSON.parse(saved);
-        const chatContainer = document.getElementById('chatMessages');
-        chatContainer.innerHTML = '';
-        
-        chatMessages.forEach(msg => {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${msg.sender}-message`;
-            messageDiv.innerHTML = `<strong>${msg.sender === 'user' ? '👤 أنت' : '👑 المشرف'}:</strong> ${msg.text}`;
-            chatContainer.appendChild(messageDiv);
-        });
-        
-        chatContainer.scrollTop = chatContainer.scrollHeight;
+    
+    // تحديث معاينة المجتمع بشكل عشوائي
+    if (Math.random() > 0.8) {
+        displayCommunityPreview();
     }
 }
 
 // ====================================================
-// 🔐 نظام التحقق الأمني
+// 💰 نظام الخصم الوهمي
 // ====================================================
 
-// التحقق من أن المستخدم إنسان عند الشراء
-function verifyHumanOnPurchase() {
-    const today = new Date().toDateString();
-    const lastVerification = localStorage.getItem('lastVerificationDate');
+function applyDiscount(code) {
+    fakeDataGenerator.playSoundEffect('click');
     
-    if (lastVerification === today) {
-        return true;
-    }
+    const result = fakeDataGenerator.validateDiscountCode(code);
     
-    const code = Math.floor(10000 + Math.random() * 90000);
-    const userCode = prompt(`🔐 تحقق أمني مطلوب\n\nلضمان أمان عملية الشراء، الرجاء إدخال الرمز التالي:\n\n📱 ${code}\n\nهذا التحقق مطلوب مرة واحدة يومياً للحماية`);
-    
-    if (parseInt(userCode) === code) {
-        localStorage.setItem('lastVerificationDate', today);
-        localStorage.setItem('userVerified', 'true');
-        return true;
+    if (result.valid) {
+        // تأثير بصري للخصم
+        showDiscountEffect(result.discount);
+        alert(`🎉 تم تطبيق خصم ${result.discount}% بنجاح!`);
     } else {
-        alert('❌ رمز التحقق غير صحيح! يُرجى المحاولة مرة أخرى.');
-        return false;
+        alert('❌ كود الخصم غير صالح أو منتهي الصلاحية');
     }
 }
 
-// 🛒 نظام الشراء المحسن
-function initializeBuyButtons() {
-    document.querySelectorAll('.buy-btn').forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            buyService(e);
-        });
-    });
-}
-
-// وظيفة الشراء - توجيه لتليجرام مع التحقق
-function buyService(event) {
-    // التحقق من أن المستخدم إنسان
-    if (!verifyHumanOnPurchase()) {
-        return;
-    }
+function showDiscountEffect(discount) {
+    const effect = document.createElement('div');
+    effect.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 3rem;
+        color: var(--primary);
+        z-index: 10000;
+        animation: discountPop 1s ease-out;
+    `;
+    effect.innerHTML = `🎁 ${discount}% خصم`;
     
-    const serviceCard = event.target.closest('.service-card');
-    const serviceName = serviceCard.getAttribute('data-name');
-    const price = serviceCard.getAttribute('data-price');
+    document.body.appendChild(effect);
     
-    const telegramUsername = "Armanex";
-    const message = `🛒 طلب خدمة جديدة\n\nالخدمة: ${serviceName}\nالسعر: $${price}\nالعميل: من موقع ShadowHack PRO v2\n\nأرغب في شراء هذه الخدمة`;
-    const url = `https://t.me/${telegramUsername}?text=${encodeURIComponent(message)}`;
-    
-    // تأثير على الزر
-    const button = event.target;
-    const originalText = button.innerHTML;
-    const originalBg = button.style.background;
-    
-    button.innerHTML = '🚀 جاري التوجيه...';
-    button.style.background = 'linear-gradient(45deg, #0088cc, #00ff88)';
-    button.disabled = true;
-    
-    // فتح التليجرام بعد تأثير مرئي
     setTimeout(() => {
-        window.open(url, '_blank');
-        
-        // إعادة الزر إلى وضعه الطبيعي
-        setTimeout(() => {
-            button.innerHTML = originalText;
-            button.style.background = originalBg;
-            button.disabled = false;
-        }, 2000);
+        effect.remove();
     }, 1000);
 }
 
 // ====================================================
-// ⚠️ نظام إخلاء المسؤولية
+// 🎪 إدارة النوافذ
 // ====================================================
 
-// إظهار/إخفاء نافذة إخلاء المسؤولية
-function showDisclaimer() {
-    document.getElementById('disclaimerModal').style.display = 'flex';
+function openGroupChat() {
+    fakeDataGenerator.playSoundEffect('notification');
+    document.getElementById('groupChatModal').style.display = 'flex';
 }
 
-function closeDisclaimer() {
-    document.getElementById('disclaimerModal').style.display = 'none';
-    // بدء تشغيل الموسيقى بعد الموافقة
-    document.getElementById('background-audio').play().catch(console.error);
+function closeGroupChat() {
+    document.getElementById('groupChatModal').style.display = 'none';
 }
 
 // ====================================================
-// 🟢 تأثير المصفوفة المتحرك المحسن
+// 🛒 نظام الشراء
+// ====================================================
+
+function initializeBuyButtons() {
+    document.querySelectorAll('.buy-btn').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            fakeDataGenerator.playSoundEffect('purchase');
+            simulatePurchase(e);
+        });
+    });
+}
+
+function simulatePurchase(event) {
+    const serviceCard = event.target.closest('.service-card');
+    const serviceName = serviceCard.getAttribute('data-name');
+    const price = serviceCard.getAttribute('data-price');
+    
+    // تأثير الشراء
+    const button = event.target;
+    const originalText = button.innerHTML;
+    
+    button.innerHTML = '🚀 جاري المعالجة...';
+    button.disabled = true;
+    
+    setTimeout(() => {
+        alert(`🎊 تم شراء ${serviceName} بنجاح!\nسيتم التواصل معك على التليجرام قريباً.`);
+        button.innerHTML = originalText;
+        button.disabled = false;
+        
+        // إضافة تعليق وهمي جديد
+        setTimeout(() => {
+            displayFakeComments();
+        }, 2000);
+        
+    }, 2000);
+}
+
+// ====================================================
+// 🟢 تأثير المصفوفة
 // ====================================================
 
 function initializeMatrix() {
@@ -342,26 +312,22 @@ function initializeMatrix() {
     const drops = Array(columns).fill(1);
 
     function draw() {
-        // خلفية شبه شفافة للتأثير المتدرج
         ctx.fillStyle = 'rgba(10, 10, 10, 0.05)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         
-        // إعداد النص
         ctx.fillStyle = '#00ff88';
-        ctx.font = `bold ${fontSize}px 'Courier New', monospace, 'Segoe UI'`;
+        ctx.font = `bold ${fontSize}px 'Courier New', monospace`;
 
         for (let i = 0; i < drops.length; i++) {
             const char = chars[Math.floor(Math.random() * chars.length)];
             const x = i * fontSize;
             const y = drops[i] * fontSize;
             
-            // تأثير تدرج اللون
             const opacity = Math.random() * 0.5 + 0.5;
             ctx.fillStyle = `rgba(0, 255, 136, ${opacity})`;
             
             ctx.fillText(char, x, y);
             
-            // إعادة التعليقات إلى الأعلى بشكل عشوائي
             if (y > canvas.height && Math.random() > 0.975) {
                 drops[i] = 0;
             }
@@ -369,7 +335,6 @@ function initializeMatrix() {
         }
     }
 
-    // تحسين الأداء باستخدام requestAnimationFrame
     let animationId;
     function animate() {
         draw();
@@ -378,7 +343,6 @@ function initializeMatrix() {
     
     animate();
     
-    // إعادة الحجم عند تغيير حجم النافذة
     window.addEventListener('resize', function() {
         cancelAnimationFrame(animationId);
         canvas.width = window.innerWidth;
@@ -388,98 +352,33 @@ function initializeMatrix() {
 }
 
 // ====================================================
-// 💬 نظام التعليقات
+// ⚠️ نظام إخلاء المسؤولية
 // ====================================================
 
-const commentsData = [
-    {name: "سارة", text: "أسعار معقولة وجودة ممتازة 👍", time: "منذ يوم", verified: true},
-    {name: "أحمد", text: "الخدمة سريعة والنتائج مذهلة! شكراً لفريق الدعم 🚀", time: "منذ ساعتين", verified: true},
-    {name: "محمد", text: "لقد استخدمت العديد من المواقع ولكن هذا الموقع يتميز بالجودة العالية والأسعار المنافسة.", time: "منذ 5 ساعات", verified: true},
-    {name: "فاطمة", text: "تجربة رائعة! الخدمة تعمل بشكل ممتاز دون أي مشاكل.", time: "منذ يوم", verified: false},
-    {name: "خالد", text: "أنصح الجميع بهذه الخدمات، احترافية وسريعة!", time: "منذ 3 أيام", verified: true},
-    {name: "علي", text: "الهاك يعمل بسلاسة تامة، لم أواجه أي حظر في اللعبة.", time: "منذ أسبوع", verified: true}
-];
-
-// عرض التعليقات العشوائية
-function displayRandomComments() {
-    const container = document.getElementById('commentsContainer');
-    if (!container) return;
-
-    container.innerHTML = '';
-    
-    // ترتيب التعليقات حسب الوقت (الأحدث أولاً)
-    const sortedComments = [...commentsData].sort((a, b) => {
-        const timeOrder = {"منذ ساعتين": 1, "منذ 5 ساعات": 2, "منذ يوم": 3, "منذ 3 أيام": 4, "منذ أسبوع": 5};
-        return timeOrder[a.time] - timeOrder[b.time];
-    });
-
-    sortedComments.forEach(comment => {
-        const commentDiv = document.createElement('div');
-        commentDiv.className = 'comment';
-        commentDiv.innerHTML = `
-            <div class="comment-header">
-                ${comment.verified ? '<div class="comment-badge">مشترٍ موثوق</div>' : ''}
-                <div class="comment-name">${comment.name}</div>
-            </div>
-            <div class="comment-text">"${comment.text}"</div>
-            <div class="comment-stars">⭐⭐⭐⭐⭐</div>
-            <div class="comment-time">${comment.time}</div>
-        `;
-        container.appendChild(commentDiv);
-    });
+function showDisclaimer() {
+    document.getElementById('disclaimerModal').style.display = 'flex';
 }
 
-// ====================================================
-// ❓ نظام الأسئلة الشائعة
-// ====================================================
-
-const faqData = [
-    {q: "ما هو ShadowHack PRO؟", a: "منصة متقدمة ومتخصصة في تقديم خدمات القرصنة والاختراق بأدوات متطورة وغير قابلة للكشف."},
-    {q: "هل أدواتكم آمنة للاستخدام؟", a: "نعم، أدواتنا آمنة تماماً ومصممة بتقنيات متقدمة تضمن التخفي وعدم الكشف."},
-    {q: "كيف أشتري الخدمات؟", a: "اضغط على أي زر شراء وسيتم توجيهك مباشرة إلى تليجرام للتواصل مع فريق المبيعات."},
-    {q: "ما مدة التفعيل؟", a: "يتم تفعيل معظم الخدمات خلال دقائق بعد تأكيد الدفع."},
-    {q: "هل يوجد ضمان؟", a: "نعم، نقدم ضمان استبدال أو استرجاع في حال عدم عمل الخدمة."},
-    {q: "ما هي طريقة الدفع المتاحة؟", a: "نقبل العملات المشفرة (Bitcoin, USDT) لضمان خصوصيتك التامة."},
-    {q: "هل يمكنني طلب خدمة اختراق غير مذكورة؟", a: "تواصل معنا على تليجرام لطلب خدمات مخصصة، وسنناقش إمكانية تنفيذها."},
-];
-
-// إنشاء الأسئلة الشائعة
-function createFAQ() {
-    const container = document.getElementById('faqContainer');
-    if (!container) return; 
-
-    faqData.forEach((item) => {
-        const faqItem = document.createElement('div');
-        faqItem.className = 'faq-item';
-        faqItem.innerHTML = `
-            <div class="faq-question">
-                ${item.q}
-                <i class="fas fa-chevron-down faq-toggle"></i>
-            </div>
-            <div class="faq-answer">${item.a}</div>
-        `;
-        faqItem.querySelector('.faq-question').addEventListener('click', function() {
-            faqItem.classList.toggle('active');
-        });
-
-        container.appendChild(faqItem);
-    });
+function closeDisclaimer() {
+    document.getElementById('disclaimerModal').style.display = 'none';
+    document.getElementById('background-audio').play().catch(console.error);
 }
 
 // ====================================================
 // 🎯 وظائف مساعدة
 // ====================================================
 
-// تفاصيل المميزات
 function showFeatureDetails(title, details) {
+    fakeDataGenerator.playSoundEffect('click');
     alert(`🛡️ ${title}\n\n${details}`);
 }
 
-// التنقل السلس (لروابط التنقل الأخرى غير CTA)
+// التنقل السلس
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     if (anchor.id !== 'ctaButton') {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
+            fakeDataGenerator.playSoundEffect('click');
             const target = document.querySelector(this.getAttribute('href'));
             if (target) {
                 target.scrollIntoView({ behavior: 'smooth' });
@@ -493,34 +392,30 @@ window.onload = function() {
     showDisclaimer();
 };
 
-// ====================================================
-// 📊 نظام الإحصائيات
-// ====================================================
-
-let pageStats = {
-    visits: 0,
-    buttonClicks: 0,
-    servicesViewed: 0
-};
-
-// تحميل الإحصائيات من localStorage
-if (localStorage.getItem('pageStats')) {
-    pageStats = JSON.parse(localStorage.getItem('pageStats'));
-}
-
-pageStats.visits++;
-localStorage.setItem('pageStats', JSON.stringify(pageStats));
-
-// تتبع نقرات الأزرار
-document.addEventListener('click', function(e) {
-    if (e.target.classList.contains('buy-btn') || e.target.classList.contains('cta-button')) {
-        pageStats.buttonClicks++;
-        localStorage.setItem('pageStats', JSON.stringify(pageStats));
+// إضافة أنيميشن الخصم
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes discountPop {
+        0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+        50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+        100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
     }
-});
-
-console.log('📊 Page Statistics:', pageStats);
-
-// ====================================================
-// 🚀 نهاية الملف - نظام كامل ومتكامل
-// ====================================================
+    
+    .discount-code {
+        display: inline-block;
+        background: linear-gradient(45deg, var(--primary), var(--accent));
+        color: black;
+        padding: 0.5rem 1rem;
+        margin: 0.5rem;
+        border-radius: 20px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .discount-code:hover {
+        transform: scale(1.1);
+        box-shadow: 0 0 15px var(--primary);
+    }
+`;
+document.head.appendChild(style);
