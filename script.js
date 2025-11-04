@@ -55,10 +55,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // ❌❌❌ تم التعديل هنا: منع الإغلاق القسري الذي يسبب المشاكل ❌❌❌
     rejectDisclaimerButton.addEventListener('click', () => {
-        alert("يجب الموافقة على الشروط لاستخدام الموقع. سيتم إغلاق الصفحة.");
-        window.close(); // إغلاق النافذة
-        window.location.href = "about:blank"; // حل بديل للإغلاق في بعض المتصفحات
+        alert("يجب الموافقة على الشروط لاستخدام الموقع. ستبقى هذه النافذة ظاهرة.");
+        // لا يوجد كود إغلاق أو توجيه، سيبقى الموقع في وضع الإخفاء
     });
     
     // ----------------------------------------------------
@@ -142,50 +142,50 @@ document.addEventListener('DOMContentLoaded', () => {
             canvas.height = window.innerHeight;
         }
     });
-});
 
 
 // ----------------------------------------------------
 // 🟢 تأثير المصفوفة المتحرك (الخلفية الملونة المتحركة)
 // ----------------------------------------------------
-const canvas = document.getElementById('matrixCanvas');
-if (canvas) { // التأكد من وجود الكانفاس
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    const canvas = document.getElementById('matrixCanvas');
+    if (canvas) { // التأكد من وجود الكانفاس
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-    const chars = '01010101شظثصضذطكمنتالبيسشظثصضذطكمنتالبيس';
-    const fontSize = 16;
-    const columns = canvas.width / fontSize;
-    const drops = [];
+        const chars = '01010101شظثصضذطكمنتالبيسشظثصضذطكمنتالبيس';
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = [];
 
-    for (let i = 0; i < columns; i++) {
-        drops[i] = Math.random() * canvas.height;
-    }
-
-    function drawMatrix() {
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        
-        ctx.fillStyle = '#00ff88'; 
-        ctx.font = `bold ${fontSize}px 'Courier New', monospace`;
-
-        for (let i = 0; i < drops.length; i++) {
-            const text = chars[Math.floor(Math.random() * chars.length)];
-            const x = i * fontSize;
-            const y = drops[i] * fontSize;
-            
-            ctx.fillText(text, x, y);
-            
-            if (y * fontSize > canvas.height && Math.random() > 0.975) {
-                drops[i] = 0;
-            }
-            drops[i]++;
+        for (let i = 0; i < columns; i++) {
+            drops[i] = Math.random() * canvas.height;
         }
-    }
 
-    setInterval(drawMatrix, 50);
-}
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#00ff88'; 
+            ctx.font = `bold ${fontSize}px 'Courier New', monospace`;
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars[Math.floor(Math.random() * chars.length)];
+                const x = i * fontSize;
+                const y = drops[i] * fontSize;
+                
+                ctx.fillText(text, x, y);
+                
+                if (y * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+
+        setInterval(drawMatrix, 50);
+    }
+});
 
 
 // ----------------------------------------------------
