@@ -9,30 +9,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const acceptDisclaimerBtn = document.getElementById('acceptDisclaimerBtn');
     const mainContent = document.getElementById('mainContent');
     
-    // الأقسام المخفية بناءً على CSS (هذه تستخدم لإظهارها بعد النقر على زر CTA)
-    // الآن، كامل المحتوى مخفي بواسطة 'mainContent' حتى تتم الموافقة أولاً.
+    // الأقسام المخفية (التي تظهر بعد الضغط على زر CTA)
     const hiddenSections = document.querySelectorAll('.services, .features-section, .comments-section, .faq-section, .footer');
     
     // ----------------------------------------------------
     // 1. منطق الموافقة على إخلاء المسؤولية (يتم تنفيذه عند تحميل الصفحة)
     // ----------------------------------------------------
     if (disclaimerModal && acceptDisclaimerBtn && mainContent) {
+        // تأكد من أن شاشة الموافقة مرئية عند التحميل
+        disclaimerModal.style.display = 'flex'; 
+
         acceptDisclaimerBtn.addEventListener('click', () => {
             disclaimerModal.style.display = 'none'; // إخفاء نافذة الموافقة
-            mainContent.style.display = 'block'; // إظهار المحتوى الرئيسي
+            mainContent.style.display = 'block'; // إظهار المحتوى الرئيسي (الهيرو)
             
-            // تهيئة مستمعي تفاعل المستخدم لتشغيل الصوت
+            // تهيئة مستمعي تفاعل المستخدم لتشغيل الصوت (بعد الموافقة)
             document.addEventListener('click', playAudioOnFirstInteraction);
             document.addEventListener('keydown', playAudioOnFirstInteraction);
             
-            // تهيئة باقي مكونات الصفحة بعد الموافقة
-            initializePageComponents();
+            // تهيئة مكونات الصفحة التي لا تعتمد على الإظهار (التعليقات والأسئلة الشائعة)
+            displayRandomComments();
+            createFAQ();
             
-            // تشغيل وظيفة CTA مباشرة إذا كان المستخدم يود تخطي الهيرو
-            const servicesSection = document.getElementById('services');
-            if (servicesSection) {
-                 servicesSection.scrollIntoView({ behavior: 'smooth' });
-            }
+            // ربط زر الشراء بوظيفة الكابتشا
+            document.querySelectorAll('.buy-btn').forEach(button => {
+                button.addEventListener('click', initializeCaptcha);
+            });
+            
+            // تفعيل منطق زر "كشف الخدمات" بعد الموافقة
+            setupCtaButtonLogic();
         });
     }
 
@@ -50,39 +55,35 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // ----------------------------------------------------
-    // 3. وظيفة تهيئة مكونات الصفحة بعد الموافقة
+    // 3. منطق زر "كشف الخدمات" (CTA Button)
     // ----------------------------------------------------
-    function initializePageComponents() {
-        // منطق إظهار الأقسام المخفية عند النقر على زر CTA
+    function setupCtaButtonLogic() {
         if (ctaButton) {
+            // نمنع التنقل السلس الافتراضي أولاً لتنفيذ الإظهار
             ctaButton.addEventListener('click', function (e) {
                 e.preventDefault(); 
                 
+                // إظهار الأقسام المخفية (الخدمات وما بعدها)
                 hiddenSections.forEach(section => {
                     section.style.opacity = '1';
-                    section.style.pointerEvents = 'auto';
+                    section.style.pointerEvents = 'auto'; // السماح بالتفاعل
                 });
                 console.log("All hidden sections revealed.");
 
+                // تغيير نص الزر بعد النقر
+                ctaButton.innerHTML = 'تم الكشف عن جميع الخدمات ✅';
+                ctaButton.style.pointerEvents = 'none'; // منع النقر مرة أخرى
+                ctaButton.style.background = 'linear-gradient(45deg, #00aa00, #00ff88)';
+
+                // تنفيذ التنقل السلس إلى قسم الخدمات
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
                     target.scrollIntoView({ behavior: 'smooth' });
                 }
-            });
+            }, { once: true }); // نستخدم { once: true } لتنفيذ الكود مرة واحدة
         }
-        
-        displayRandomComments();
-        createFAQ();
-        
-        // تحديث التعليقات كل 30 دقيقة
-        setInterval(displayRandomComments, 30 * 60 * 1000); 
-
-        // ربط وظيفة الشراء بجميع أزرار الشراء لفتح الكابتشا (تم إضافتها سابقاً)
-        document.querySelectorAll('.buy-btn').forEach(button => {
-            button.addEventListener('click', initializeCaptcha);
-        });
     }
-
+    
     // إعادة حجم الكانفاس عند تغيير حجم النافذة
     window.addEventListener('resize', function() {
         const canvas = document.getElementById('matrixCanvas');
@@ -92,10 +93,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // إذا كانت نافذة الموافقة موجودة، لا نقوم بتهيئة مكونات الصفحة الآن
-    if (!disclaimerModal) {
-        initializePageComponents();
-    }
+    // تحديث التعليقات كل 30 دقيقة
+    setInterval(displayRandomComments, 30 * 60 * 1000); 
 });
 
 
@@ -148,7 +147,7 @@ if (canvas && ctx) {
 // 💬 قاعدة بيانات التعليقات والأسئلة الشائعة (لم يتم تعديلها)
 // ----------------------------------------------------
 const generateRandomTime = () => {
-    const hours = Math.floor(Math.random() * 24) + 1;
+    const hours = Math.floor(Math.random() * 24) + 1; 
     if (hours < 10) return `منذ ${hours} ساعات`;
     if (hours < 24) return `منذ ${hours} ساعة`;
     return "منذ 1 يوم";
@@ -282,6 +281,12 @@ let currentService = null;
 let currentPrice = null;
 let currentCaptcha = '';
 
+// يجب أن تكون هذه العناصر موجودة في index.html، لكن للحفاظ على الكود نظيفاً سأفترض أنها موجودة
+// في حال لم تكن موجودة، يجب إضافتها:
+// <div id="captchaModal" class="modal">
+// ...
+// </div>
+
 const captchaModal = document.getElementById('captchaModal');
 const captchaDisplay = document.getElementById('captchaDisplay');
 const captchaInput = document.getElementById('captchaInput');
@@ -295,13 +300,21 @@ function initializeCaptcha(event) {
     
     currentCaptcha = Math.floor(100000 + Math.random() * 900000).toString(); // رقم عشوائي من 6 خانات
     
-    captchaDisplay.textContent = currentCaptcha;
-    captchaInput.value = ''; // مسح الإدخال القديم
-    captchaModal.style.display = 'flex'; // استخدام flex لإظهار المودال وتوسيعه
-    
-    // إزالة المستمع القديم وإضافة الجديد لضمان عدم تكرار التحقق
-    captchaVerifyBtn.removeEventListener('click', handleCaptchaVerification);
-    captchaVerifyBtn.addEventListener('click', handleCaptchaVerification);
+    // تأكد من وجود المودال وعناصرها
+    if (captchaModal && captchaDisplay && captchaInput) {
+        captchaDisplay.textContent = currentCaptcha;
+        captchaInput.value = ''; // مسح الإدخال القديم
+        captchaModal.style.display = 'flex'; 
+        
+        // إزالة المستمع القديم وإضافة الجديد لضمان عدم تكرار التحقق
+        if (captchaVerifyBtn) {
+            captchaVerifyBtn.removeEventListener('click', handleCaptchaVerification);
+            captchaVerifyBtn.addEventListener('click', handleCaptchaVerification);
+        }
+    } else {
+        // إذا لم يكن مودال الكابتشا موجوداً، يتم التوجيه مباشرة (كخطة احتياطية)
+        buyServiceRedirect(currentService, currentPrice);
+    }
 }
 
 // وظيفة التحقق من الكابتشا والتوجيه
@@ -350,7 +363,7 @@ function showFeatureDetails(title, details) {
 
 // التنقل السلس (لروابط التنقل الأخرى غير CTA)
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    // نتجنب زر CTA لأنه مرتبط بوظيفة الإظهار والتشغيل
+    // نتجنب زر CTA لأنه مرتبط بوظيفة الإظهار والكشف
     if (anchor.id !== 'ctaButton') {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
