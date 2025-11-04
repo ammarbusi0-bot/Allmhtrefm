@@ -130,128 +130,32 @@ function buyService(event) {
 
 // فتح نافذة الدعم الفني
 function openSupport() {
-    const supportWindow = window.open('', '_blank', 'width=400,height=500,scrollbars=yes');
-    supportWindow.document.write(`
-        <!DOCTYPE html>
-        <html lang="ar" dir="rtl">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>الدعم الفني - ShadowHack PRO v2</title>
-            <style>
-                body {
-                    background: #0a0a0a;
-                    color: white;
-                    font-family: Arial, sans-serif;
-                    margin: 0;
-                    padding: 20px;
-                }
-                .chat-container {
-                    max-width: 100%;
-                    margin: 0 auto;
-                    background: #1a1a1a;
-                    border-radius: 10px;
-                    padding: 15px;
-                }
-                .messages {
-                    height: 300px;
-                    overflow-y: auto;
-                    border: 1px solid #333;
-                    padding: 10px;
-                    margin-bottom: 15px;
-                    background: #0f0f0f;
-                }
-                .message {
-                    margin: 8px 0;
-                    padding: 8px;
-                    border-radius: 5px;
-                }
-                .user-message {
-                    background: #0088ff;
-                    text-align: left;
-                }
-                .admin-message {
-                    background: #00aa44;
-                    text-align: right;
-                }
-                .input-area {
-                    display: flex;
-                    gap: 8px;
-                }
-                input, textarea, button {
-                    padding: 8px;
-                    border: none;
-                    border-radius: 5px;
-                }
-                input, textarea {
-                    flex: 1;
-                    background: #2a2a2a;
-                    color: white;
-                }
-                button {
-                    background: #00ff88;
-                    color: black;
-                    cursor: pointer;
-                }
-            </style>
-        </head>
-        <body>
-            <div class="chat-container">
-                <h2>💬 الدعم الفني</h2>
-                <p>مرحباً! اكتب استفسارك وسنرد عليك قريباً.</p>
-                
-                <div class="messages" id="messages">
-                    <div class="message admin-message">
-                        <strong>المشرف:</strong> مرحباً! كيف يمكنني مساعدتك؟
-                    </div>
-                </div>
-                
-                <div class="input-area">
-                    <textarea id="messageInput" placeholder="اكتب رسالتك هنا..." rows="2"></textarea>
-                    <button onclick="sendMessage()">إرسال</button>
-                </div>
-                
-                <button onclick="window.close()" style="margin-top: 15px; background: #ff4444;">إغلاق</button>
-            </div>
-
-            <script>
-                function sendMessage() {
-                    const input = document.getElementById('messageInput');
-                    const messages = document.getElementById('messages');
-                    
-                    if (input.value.trim()) {
-                        // رسالة المستخدم
-                        const userMsg = document.createElement('div');
-                        userMsg.className = 'message user-message';
-                        userMsg.innerHTML = '<strong>أنت:</strong> ' + input.value;
-                        messages.appendChild(userMsg);
-                        
-                        // رد المشرف (محاكاة)
-                        setTimeout(() => {
-                            const adminMsg = document.createElement('div');
-                            adminMsg.className = 'message admin-message';
-                            adminMsg.innerHTML = '<strong>المشرف:</strong> شكراً على رسالتك. سنرد عليك خلال دقائق.';
-                            messages.appendChild(adminMsg);
-                            messages.scrollTop = messages.scrollHeight;
-                        }, 2000);
-                        
-                        input.value = '';
-                        messages.scrollTop = messages.scrollHeight;
-                    }
-                }
-                
-                // إرسال بالزر Enter
-                document.getElementById('messageInput').addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                        e.preventDefault();
-                        sendMessage();
-                    }
-                });
-            </script>
-        </body>
-        </html>
-    `);
-    supportWindow.document.close();
+    const name = prompt("👤 ما هو اسمك؟") || "مجهول";
+    const message = prompt("💬 اكتب رسالتك:") || "لا توجد رسالة";
+    
+    if (name && message !== "لا توجد رسالة") {
+        // استخدام ملف PHP كوسيط
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('message', message);
+        
+        fetch('support-bridge.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "success") {
+                alert("✅ تم إرسال رسالتك بنجاح! سنتواصل معك قريباً.");
+            } else {
+                alert("❌ حدث خطأ في الإرسال. يرجى المحاولة مرة أخرى.");
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert("❌ حدث خطأ في الإرسال. يرجى المحاولة مرة أخرى.");
+        });
+    }
 }
 
 // إظهار/إخفاء نافذة إخلاء المسؤولية
