@@ -515,7 +515,7 @@ body.disclaimer-hidden {
 
 .comment-header {
     display: flex;
-    justify-content: between;
+    justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
 }
@@ -645,48 +645,6 @@ body.disclaimer-hidden {
     margin-bottom: 1rem;
 }
 
-/* تنسيق روابط الفوتر */
-.footer-links {
-    margin-bottom: 1.5rem;
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-}
-
-.footer-links a {
-    color: var(--primary);
-    text-decoration: none;
-    font-weight: bold;
-    transition: color 0.3s;
-}
-
-.footer-links a:hover {
-    color: var(--accent);
-}
-
-.telegram-float {
-    position: fixed;
-    bottom: 2rem;
-    left: 2rem;
-    background: #0088cc;
-    color: white;
-    padding: 1rem 1.5rem;
-    border-radius: 50px;
-    text-decoration: none;
-    font-weight: bold;
-    box-shadow: 0 0 25px #0088cc;
-    z-index: 1000;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.telegram-float:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 35px #0088cc;
-}
-
 /* 🟢🔐 التنسيق الأهم: إخفاء جميع الأقسام ما عدا الهيرو عند التحميل */
 /* تم تعديله ليظهر فقط بعد الموافقة على إخلاء المسؤولية */
 .services, .features-section, .comments-section, .faq-section, .footer {
@@ -702,6 +660,4 @@ body.disclaimer-hidden {
     .services-grid { grid-template-columns: 1fr; }
     .features-grid { grid-template-columns: 1fr; }
     .comments-container { grid-template-columns: 1fr; }
-    .telegram-float { bottom: 1rem; left: 1rem; padding: 0.8rem 1.2rem; }
-    .disclaimer-content { padding: 2rem 1.5rem; }
 }
