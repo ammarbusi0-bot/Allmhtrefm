@@ -1,503 +1,588 @@
-// 🔑 التهيئة الرئيسية وتنفيذ منطق تشغيل الموسيقى وإظهار المحتوى
-document.addEventListener('DOMContentLoaded', () => {
-    // التحقق من أن المستخدم إنسان
-    verifyHuman();
-    
-    // العناصر الأساسية
-    const audio = document.getElementById('background-audio');
-    const ctaButton = document.getElementById('ctaButton'); 
-    
-    // الأقسام المخفية بناءً على CSS
-    const hiddenSections = document.querySelectorAll('.services, .features-section, .comments-section, .faq-section, .footer');
-    
-    // ----------------------------------------------------
-    // 1. منطق تشغيل الموسيقى عند أي تفاعل (نقرة أو ضغطة مفتاح)
-    // ----------------------------------------------------
-    const playAudioOnFirstInteraction = () => {
-        // نستخدم audio.play() لضمان تشغيلها عند النقرة
-        audio.play().catch(error => {
-            console.log("Audio play failed initially, error:", error);
-        });
-
-        // إزالة المستمع بعد التشغيل لتجنب تكرار محاولة التشغيل
-        document.removeEventListener('click', playAudioOnFirstInteraction);
-        document.removeEventListener('keydown', playAudioOnFirstInteraction);
-        console.log("Audio started playing after first user interaction.");
-    };
-
-    // ربط وظيفة تشغيل الموسيقى بأول نقرة أو ضغطة مفتاح في أي مكان في المستند
-    document.addEventListener('click', playAudioOnFirstInteraction);
-    document.addEventListener('keydown', playAudioOnFirstInteraction);
-
-    // ----------------------------------------------------
-    // 2. منطق إظهار المحتوى عند النقر على زر CTA
-    // ----------------------------------------------------
-    if (ctaButton) {
-        ctaButton.addEventListener('click', function (e) {
-            // نمنع التنقل السلس الافتراضي أولاً لتنفيذ الإظهار
-            e.preventDefault(); 
-            
-            // إظهار الأقسام المخفية
-            hiddenSections.forEach(section => {
-                section.style.opacity = '1';
-                section.style.pointerEvents = 'auto'; // السماح بالتفاعل
-            });
-            console.log("All hidden sections revealed.");
-
-            // تنفيذ التنقل السلس إلى قسم الخدمات (بما أن التنقل الافتراضي تم منعه)
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({ behavior: 'smooth' });
-            }
-
-            // إزالة المستمع من زر CTA بعد النقر عليه لضمان التنفيذ مرة واحدة
-            ctaButton.removeEventListener('click', arguments.callee);
-        });
-    }
-
-    // ----------------------------------------------------
-    // 3. تهيئة الأقسام الأخرى عند تحميل الصفحة
-    // ----------------------------------------------------
-    displayRandomComments();
-    createFAQ();
-    updatePricesAndDates(); // تحديث الأسعار والتواريخ
-    
-    // تحديث التعليقات كل 30 دقيقة (30 * 60 * 1000 ميلي ثانية)
-    setInterval(displayRandomComments, 30 * 60 * 1000); 
-    
-    // تحديث الأسعار كل 5 دقائق
-    setInterval(updatePricesAndDates, 5 * 60 * 1000);
-
-    // ربط وظيفة الشراء بجميع أزرار الشراء
-    document.querySelectorAll('.buy-btn').forEach(button => {
-        button.addEventListener('click', buyService);
-    });
-
-    // إعادة حجم الكانفاس عند تغيير حجم النافذة
-    window.addEventListener('resize', function() {
-        const canvas = document.getElementById('matrixCanvas');
-        if (canvas) {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-    });
-});
-
-// التحقق من أن المستخدم إنسان
-function verifyHuman() {
-    const code = Math.floor(100000 + Math.random() * 900000);
-    sessionStorage.setItem('verificationCode', code);
-    
-    const userCode = prompt(`🔐 الرجاء إدخال رمز التحقق: ${code}\nهذا التأكيد يضمن أنك لست روبوت:`);
-    
-    if (userCode != code) {
-        alert('❌ رمز التحقق غير صحيح! سيتم إغلاق الصفحة.');
-        window.location.href = 'about:blank';
-        return false;
-    }
-    return true;
+/* تنسيقات متقدمة للتصميم */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-// إظهار/إخفاء نافذة إخلاء المسؤولية
-function showDisclaimer() {
-    document.getElementById('disclaimerModal').style.display = 'flex';
+/* 🟢 ألوان الثيم الحيوي (الأخضر النيون والماجينتا) */
+:root {
+    --primary: #00ff88; /* أخضر نيون */
+    --secondary: #ff0088; /* ماجينتا نيون */
+    --accent: #8800ff; /* بنفسجي كهربائي */
+    --dark: #0a0a0a;
+    --darker: #000000;
+    --light: #ffffff;
+    --glow: 0 0 20px;
 }
 
-function closeDisclaimer() {
-    document.getElementById('disclaimerModal').style.display = 'none';
-    // بدء تشغيل الموسيقى بعد الموافقة
-    document.getElementById('background-audio').play().catch(console.error);
+body {
+    background: var(--darker);
+    color: var(--light);
+    overflow-x: hidden;
+    position: relative;
 }
 
-// فتح نافذة الدعم
-function openSupport() {
-    const supportWindow = window.open('', '_blank', 'width=600,height=700,scrollbars=yes');
-    supportWindow.document.write(`
-        <!DOCTYPE html>
-        <html lang="ar" dir="rtl">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>الدعم الفني - ShadowHack PRO v2</title>
-            <style>
-                body {
-                    background: #0a0a0a;
-                    color: white;
-                    font-family: Arial, sans-serif;
-                    margin: 0;
-                    padding: 20px;
-                }
-                .chat-container {
-                    max-width: 800px;
-                    margin: 0 auto;
-                    background: #1a1a1a;
-                    border-radius: 10px;
-                    padding: 20px;
-                }
-                .messages {
-                    height: 400px;
-                    overflow-y: auto;
-                    border: 1px solid #333;
-                    padding: 15px;
-                    margin-bottom: 20px;
-                    background: #0f0f0f;
-                }
-                .message {
-                    margin: 10px 0;
-                    padding: 10px;
-                    border-radius: 5px;
-                }
-                .user-message {
-                    background: #0088ff;
-                    text-align: left;
-                }
-                .admin-message {
-                    background: #00aa44;
-                    text-align: right;
-                }
-                .input-area {
-                    display: flex;
-                    gap: 10px;
-                }
-                input, textarea, button {
-                    padding: 10px;
-                    border: none;
-                    border-radius: 5px;
-                }
-                input, textarea {
-                    flex: 1;
-                    background: #2a2a2a;
-                    color: white;
-                }
-                button {
-                    background: #00ff88;
-                    color: black;
-                    cursor: pointer;
-                }
-            </style>
-        </head>
-        <body>
-            <div class="chat-container">
-                <h1>💬 الدعم الفني المباشر</h1>
-                <p>مرحباً! فريق الدعم جاهز لمساعدتك. اكتب رسالتك وسنرد عليك قريباً.</p>
-                
-                <div class="messages" id="messages">
-                    <div class="message admin-message">
-                        <strong>المشرف:</strong> مرحباً! كيف يمكنني مساعدتك؟
-                    </div>
-                </div>
-                
-                <div class="input-area">
-                    <textarea id="messageInput" placeholder="اكتب رسالتك هنا..." rows="3"></textarea>
-                    <button onclick="sendMessage()">إرسال</button>
-                </div>
-                
-                <button onclick="window.close()" style="margin-top: 20px; background: #ff4444;">← إغلاق</button>
-            </div>
-
-            <script>
-                function sendMessage() {
-                    const input = document.getElementById('messageInput');
-                    const messages = document.getElementById('messages');
-                    
-                    if (input.value.trim()) {
-                        // رسالة المستخدم
-                        const userMsg = document.createElement('div');
-                        userMsg.className = 'message user-message';
-                        userMsg.innerHTML = '<strong>أنت:</strong> ' + input.value;
-                        messages.appendChild(userMsg);
-                        
-                        // رد المشرف (محاكاة)
-                        setTimeout(() => {
-                            const adminMsg = document.createElement('div');
-                            adminMsg.className = 'message admin-message';
-                            adminMsg.innerHTML = '<strong>المشرف:</strong> شكراً على رسالتك. سنرد عليك خلال دقائق.';
-                            messages.appendChild(adminMsg);
-                            messages.scrollTop = messages.scrollHeight;
-                        }, 2000);
-                        
-                        input.value = '';
-                        messages.scrollTop = messages.scrollHeight;
-                    }
-                }
-                
-                // إرسال بالزر Enter
-                document.getElementById('messageInput').addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                        e.preventDefault();
-                        sendMessage();
-                    }
-                });
-            </script>
-        </body>
-        </html>
-    `);
-    supportWindow.document.close();
+/* نافذة إخلاء المسؤولية المحدثة */
+.modal {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.95);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
 }
 
-// تحديث الأسعار والتواريخ تلقائياً
-function updatePricesAndDates() {
-    const now = new Date();
-    const options = { 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-    };
-    
-    const formattedDate = now.toLocaleDateString('ar-AR', options);
-    
-    // تحديث تواريخ الكروت
-    document.querySelectorAll('.update-date').forEach(element => {
-        element.textContent = formattedDate;
-    });
-    
-    // تحديث الأكثر مبيعاً عشوائياً
-    const bestSellerBadges = document.querySelectorAll('.best-seller-badge');
-    bestSellerBadges.forEach(badge => {
-        if (Math.random() > 0.7) { // 30% فرصة للتغيير
-            badge.textContent = Math.random() > 0.5 ? "🔥 الأكثر مبيعاً" : "🎮 الأكثر طلباً";
-        }
-    });
+.modal-content {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+    padding: 2.5rem;
+    border-radius: 15px;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+    text-align: right;
+    border: 2px solid var(--primary);
+    box-shadow: 0 0 40px var(--primary);
 }
 
-// ----------------------------------------------------
-// 🟢 تأثير المصفوفة المتحرك (الخلفية الملونة المتحركة)
-// ----------------------------------------------------
-const canvas = document.getElementById('matrixCanvas');
-const ctx = canvas.getContext('2d');
-
-// التحقق من وجود الكانفاس قبل الرسم
-if (canvas) {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const chars = '01010101شظثصضذطكمنتالبيسشظثصضذطكمنتالبيس';
-    const fontSize = 16;
-    const columns = canvas.width / fontSize;
-    const drops = [];
-
-    for (let i = 0; i < columns; i++) {
-        drops[i] = Math.random() * canvas.height;
-    }
-
-    function drawMatrix() {
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        
-        ctx.fillStyle = '#00ff88'; 
-        ctx.font = `bold ${fontSize}px 'Courier New', monospace`;
-
-        for (let i = 0; i < drops.length; i++) {
-            const text = chars[Math.floor(Math.random() * chars.length)];
-            const x = i * fontSize;
-            const y = drops[i] * fontSize;
-            
-            ctx.fillText(text, x, y);
-            
-            if (y * fontSize > canvas.height && Math.random() > 0.975) {
-                drops[i] = 0;
-            }
-            drops[i]++;
-        }
-    }
-
-    setInterval(drawMatrix, 50);
+.modal-content h3 {
+    color: var(--primary);
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    text-align: center;
 }
 
-// ----------------------------------------------------
-// 💬 قاعدة بيانات التعليقات (50 تعليق)
-// ----------------------------------------------------
-const generateRandomTime = () => {
-    const hours = Math.floor(Math.random() * 24) + 1; // 1 to 24 hours
-    if (hours < 10) return `منذ ${hours} ساعات`;
-    if (hours < 24) return `منذ ${hours} ساعة`;
-    return "منذ 1 يوم";
-};
-
-const names = ["أبو جود", "أمير الظلام", "ريم الحلبية", "ملك السايبر", "سالم المافيا", "فادي أبو عذاب", "ليث الهاكر", "نجمة السوشيال", "عزوز الرقمي", "سيد الاختراق", "خالد الكاشف", "نور الويب"];
-
-const commentsTexts = [
-    "والله يا زلمي شغلكم نخب أول! الهاك تبع ببجي مو طبيعي أبداً. يسلمو إيديكن على هالشغل النظيف.",
-    "يا عمي إذا بدك شغل مظبوط، ما في غير هالصفحة. طلبت اختراق تليفوني وضبطوها بلمحة البصر.",
-    "أنا كتير كنت خايفة من شغل الهاكات، بس هالشباب مطمئنين كتير. طلبت هاك فري فاير وضبطوه من أول مرة.",
-    "جربت كتير مواقع، بس كلها كذب. جربت خدمات اختراق البنوك عندكم وهي اللي عملتلي نقلة نوعية. شغلكم ذهب صافي.",
-    "يا لطيف، شي بيجنن! اختراق حساب فيسبوك تم بأقل من نص ساعة. برافو عليكم، عنجد أساطير.",
-    "كل التقدير والاحترام لفريقكم. جربت اختراق الهاتف وما توقعت هالسرعة والدقة! عم بيشتغل كأنه تليفوني أنا.",
-    "أفضل خدمة اختراق كاميرات استخدمتها على الإطلاق. موثوقية عالية جداً.",
-    "استعادة حسابي المفقود تمت بنجاح وبسرعة قياسية. شكراً ShadowHack PRO.",
-    "موقع احترافي وفريق عمل متجاوب، خدمة الـ Aimbot في ببجي خرافي.",
-    "تحديثاتهم المستمرة تخليهم دايمًا متفوقين. أنصح بالتعامل معهم.",
-    "السعر معقول جداً مقارنة بالجودة والضمان اللي يقدموه.",
-    "الحمد لله لقيت الموقع الصح. شغل مرتب ومضمون 100%.",
-    "اشتريت هاك فيفا موبايل وجبت كل اللعيبة اللي بدي ياهم بدون مشاكل.",
-    "خدمة اختراق انستغرام نجحت تماماً كما وُعِدْت.",
-    "رهيبين! الفريق متعاون ويشرح كل شي بالتفصيل. برافو.",
-    "بصراحة، كنت متردد، لكن التجربة كانت فوق التوقعات.",
-    "ما في أي بان (حظر) من اللعبة بفضل تقنية الهاك الآمنة.",
-    "دفعت واستلمت الخدمة خلال دقائق. السرعة لا تُصدق.",
-    "أكثر من رائعين، خدمة VIP حقيقية.",
-    "خمس نجوم قليلة بحقكم. مستوى احترافي عالي.",
-    "الهاك يعمل بسلاسة دون أي تعليق أو بطء.",
-    "فريق دعم فني ممتاز، ردوا على جميع استفساراتي بسرعة.",
-    "ثقة تامة في التعامل. هذا هو موقعي المفضل للخدمات الرقمية.",
-    "شغل متقن، والأهم هو الضمان اللي يقدموه.",
-    "يا جماعة، لا تضيعوا وقتكم مع غيرهم. هذول هم الأصل.",
-    "تجربة فريدة ومختلفة عن أي موقع آخر.",
-    "كل التوفيق للفريق، خدماتهم ساعدتني كثيراً.",
-    "تم اختراق الحساب المطلوب في وقت قياسي جداً.",
-    "فعلاً إمبراطورية الاختراق السوداء. عمل جبار.",
-    "التحكم بالهاتف الكامل صار أسهل مما تخيلت.",
-    "خدمة ممتازة وسعر مناسب، شكرًا لكم.",
-    "ما توقعت أبدًا هالسرعة في إنجاز المهمة.",
-    "أفضل استثمار قمت به مؤخراً. خدمات قيمة.",
-    "من الآن فصاعداً، لن أتعامل إلا مع هذا الموقع.",
-    "الخدمة شغالة بكفاءة عالية جداً.",
-    "تفوقوا على كل المواقع اللي جربتها قبلهم.",
-    "الموقع آمن وموثوق، والنتائج مذهلة.",
-    "محتوى غير قابل للكشف، هذا هو الأهم بالنسبة لي.",
-    "الخدمات متطورة وتستحق كل دولار.",
-    "ببساطة: الأفضل في المجال، لا جدال.",
-    "تجربة خمس نجوم بكل المقاييس.",
-    "أعادوا لي الثقة في الخدمات المدفوعة.",
-    "سرعة، دقة، احترافية. هذا ما يميزهم.",
-    "طلبي كان صعباً جداً، لكنهم أنجزوه بسهولة.",
-    "شغل نظيف ونتائج مضمونة.",
-    "أنصح بشدة بخدمة اختراق الحسابات الشخصية.",
-    "فخور بالتعامل مع فريق بهذه الجودة.",
-    "الهاك يعمل بشكل مستقر ولم أتلق أي حظر.",
-    "كانوا عند حسن الظن وأكثر.",
-    "منصة لا تُقارن، خدماتها فريدة.",
-    // تعليقات جديدة قصيرة
-    "ممتاز! ⭐⭐⭐⭐⭐",
-    "شكراً للدعم السريع",
-    "أسعار مناسبة جداً",
-    "جودة عالية",
-    "أنصح الجميع",
-    // تعليقات جديدة طويلة
-    "لقد قمت بشراء خدمة اختراق الهاتف وكانت النتيجة مذهلة. الفريق محترف جداً ويشرح كل شيء بالتفصيل. الدعم الفني متواجد 24/7 ويحل أي مشكلة تواجهك. أنصح كل من يبحث عن خدمات موثوقة أن يتعامل مع هذا الموقع الرائع.",
-    "تجربتي مع الموقع كانت أكثر من رائعة. من حيث السرعة في التوصيل والدقة في التنفيذ والجودة في الخدمة. فريق العمل محترف ويقدم دعماً فنياً ممتازاً. الأسعار معقولة جداً مقارنة بالجودة المقدمة.",
-    "استخدمت العديد من المواقع المشابهة ولكن هذا الموقع يتميز عن الجميع. الخدمات محدثة دائماً والأسعار منافسة. الدعم الفني سريع الاستجابة ويحل جميع المشاكل باحترافية. أنصح الجميع بتجربة خدماتهم."
-];
-
-const fakeComments = [];
-for(let i = 0; i < 55; i++) {
-    fakeComments.push({
-        name: names[Math.floor(Math.random() * names.length)],
-        text: commentsTexts[Math.floor(Math.random() * commentsTexts.length)],
-        timeAgo: generateRandomTime()
-    });
+.disclaimer-text {
+    line-height: 1.8;
+    margin-bottom: 2rem;
 }
 
-// عرض التعليقات العشوائية
-function displayRandomComments() {
-    const container = document.getElementById('commentsContainer');
-    if (!container) return; // تأكد من وجود العنصر
-
-    container.innerHTML = '';
-    
-    // خلط التعليقات عشوائياً قبل العرض
-    const shuffledComments = [...fakeComments].sort(() => 0.5 - Math.random());
-    const selected = shuffledComments.slice(0, 6); // عرض 6 تعليقات فقط
-
-    selected.forEach(comment => {
-        const commentDiv = document.createElement('div');
-        commentDiv.className = 'comment';
-        commentDiv.innerHTML = `
-            <div class="comment-header">
-                <div class="comment-badge">مشترٍ موثوق</div>
-                <div class="comment-name">${comment.name}</div>
-            </div>
-            <div class="comment-text">"${comment.text}"</div>
-            <div class="comment-stars">⭐⭐⭐⭐⭐</div>
-            <div class="comment-time">${comment.timeAgo}</div>
-        `;
-        container.appendChild(commentDiv);
-    });
+.disclaimer-text p {
+    margin-bottom: 1rem;
+    color: #ccc;
 }
 
-// الأسئلة الشائعة
-const faqData = [
-    {q: "ما هو ShadowHack PRO؟", a: "منصة متقدمة ومتخصصة في تقديم خدمات القرصنة والاختراق بأدوات متطورة وغير قابلة للكشف."},
-    {q: "هل أدواتكم آمنة للاستخدام؟", a: "نعم، أدواتنا آمنة تماماً ومصممة بتقنيات متقدمة تضمن التخفي وعدم الكشف."},
-    {q: "كيف أشتري الخدمات؟", a: "اضغط على أي زر شراء وسيتم توجيهك مباشرة إلى تليجرام للتواصل مع فريق المبيعات."},
-    {q: "ما مدة التفعيل؟", a: "يتم تفعيل معظم الخدمات خلال دقائق بعد تأكيد الدفع."},
-    {q: "هل يوجد ضمان؟", a: "نعم، نقدم ضمان استبدال أو استرجاع في حال عدم عمل الخدمة."},
-    {q: "ما هي طريقة الدفع المتاحة؟", a: "نقبل العملات المشفرة (Bitcoin, USDT) لضمان خصوصيتك التامة."},
-    {q: "هل يمكنني طلب خدمة اختراق غير مذكورة؟", a: "تواصل معنا على تليجرام لطلب خدمات مخصصة، وسنناقش إمكانية تنفيذها."},
-];
-
-// إنشاء الأسئلة الشائعة (والتي تكون مخفية افتراضياً)
-function createFAQ() {
-    const container = document.getElementById('faqContainer');
-    if (!container) return; 
-
-    faqData.forEach((item) => {
-        const faqItem = document.createElement('div');
-        faqItem.className = 'faq-item';
-        faqItem.innerHTML = `
-            <div class="faq-question">
-                ${item.q}
-                <i class="fas fa-chevron-down faq-toggle"></i>
-            </div>
-            <div class="faq-answer">${item.a}</div>
-        `;
-        // إضافة مستمع الحدث (event listener) للنقر لتبديل الحالة
-        faqItem.querySelector('.faq-question').addEventListener('click', function() {
-            faqItem.classList.toggle('active');
-        });
-
-        container.appendChild(faqItem);
-    });
+.disclaimer-text strong {
+    color: var(--primary);
 }
 
-// وظيفة الشراء - توجيه لتليجرام
-function buyService(event) {
-    const serviceCard = event.target.closest('.service-card');
-    const serviceName = serviceCard.getAttribute('data-name');
-    const price = serviceCard.getAttribute('data-price');
-    
-    const telegramUsername = "Armanex";
-    const message = `أريد شراء ${serviceName} بسعر $${price} من ShadowHack PRO v2`;
-    const url = `https://t.me/${telegramUsername}?text=${encodeURIComponent(message)}`;
-    
-    window.open(url, '_blank');
-    
-    // تأثير على الزر
-    const button = event.target;
-    const originalText = button.innerHTML;
-    button.innerHTML = '🚀 جاري التوجيه...';
-    button.style.background = 'linear-gradient(45deg, #0088cc, #ff0088)';
-    button.disabled = true;
-    
-    setTimeout(() => {
-        button.innerHTML = originalText;
-        button.style.background = 'linear-gradient(45deg, var(--accent), var(--secondary))';
-        button.disabled = false;
-    }, 3000);
+.disclaimer-text ul {
+    margin: 1rem 0;
+    padding-right: 1.5rem;
 }
 
-// تفاصيل المميزات
-function showFeatureDetails(title, details) {
-    alert(`🛡️ ${title}\n\n${details}`);
+.disclaimer-text li {
+    margin-bottom: 0.5rem;
+    color: #00ff88;
 }
 
-// التنقل السلس (لروابط التنقل الأخرى غير CTA)
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    // نتجنب زر CTA لأنه مرتبط بوظيفة الإظهار والتشغيل
-    if (anchor.id !== 'ctaButton') {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({ behavior: 'smooth' });
-            }
-        });
-    }
-});
+.modal-content button {
+    background: linear-gradient(45deg, var(--primary), var(--accent));
+    color: var(--dark);
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 25px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
 
-// إظهار نافذة إخلاء المسؤولية عند التحميل
-window.onload = function() {
-    showDisclaimer();
-};
+.modal-content button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px var(--primary);
+}
+
+/* تأثيرات الخلفية المتحركة */
+.matrix-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.1;
+}
+
+/* شريط التنقل */
+.navbar {
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(20px);
+    padding: 1rem 2rem;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 2px solid var(--primary);
+}
+
+.nav-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.logo {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--primary);
+    text-shadow: var(--glow) var(--primary);
+}
+
+.nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+}
+
+.nav-links a {
+    color: var(--light);
+    text-decoration: none;
+    transition: all 0.3s;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+}
+
+.nav-links a:hover {
+    color: var(--primary);
+    background: rgba(0, 255, 136, 0.1); 
+    transform: translateY(-2px);
+}
+
+/* الهيرو المتطور */
+.hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    position: relative;
+    background: radial-gradient(circle at center, rgba(0, 255, 136, 0.1) 0%, transparent 70%);
+}
+
+.hero-content h1 {
+    font-size: 4.5rem;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(45deg, var(--primary), var(--accent), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: var(--glow) var(--primary);
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from { text-shadow: 0 0 20px var(--primary); }
+    to { text-shadow: 0 0 30px var(--accent), 0 0 40px var(--secondary); }
+}
+
+.hero-content p {
+    font-size: 1.8rem;
+    margin-bottom: 3rem;
+    opacity: 0.9;
+    text-shadow: var(--glow) var(--primary);
+}
+
+.cta-button {
+    background: linear-gradient(45deg, var(--primary), var(--accent));
+    color: var(--dark);
+    padding: 1.2rem 3rem;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    text-decoration: none;
+    display: inline-block;
+    box-shadow: 0 0 25px var(--primary);
+}
+
+.cta-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 40px var(--accent);
+    background: linear-gradient(45deg, var(--accent), var(--primary));
+}
+
+/* الخدمات المحسنة */
+.services {
+    padding: 6rem 2rem;
+    background: var(--dark);
+}
+
+.section-title {
+    text-align: center;
+    font-size: 3rem;
+    margin-bottom: 4rem;
+    color: var(--primary);
+    text-shadow: var(--glow) var(--primary);
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.service-card {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+    border: 2px solid var(--primary);
+    border-radius: 20px;
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+}
+
+.service-card:hover {
+    transform: translateY(-15px) scale(1.02);
+    border-color: var(--accent);
+    box-shadow: 0 0 40px var(--primary);
+}
+
+.best-seller {
+    border-color: gold;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2a2a00 100%);
+}
+
+.best-seller-badge {
+    background: linear-gradient(45deg, gold, #ffd700);
+    color: #000;
+    padding: 0.5rem 1.5rem;
+    border-radius: 25px;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    display: inline-block;
+    box-shadow: 0 0 15px gold;
+}
+
+.service-icon {
+    font-size: 3.5rem;
+    color: var(--primary);
+    margin-bottom: 1.5rem;
+    text-shadow: var(--glow) var(--primary);
+}
+
+.service-card h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1.2rem;
+    color: var(--light);
+}
+
+.service-card p {
+    color: var(--light);
+    opacity: 0.8;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+}
+
+.price {
+    color: var(--accent);
+    font-size: 2.2rem;
+    font-weight: bold;
+    margin: 1.5rem 0;
+    text-shadow: var(--glow) var(--accent);
+}
+
+.buy-btn {
+    background: linear-gradient(45deg, var(--accent), var(--secondary));
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+    transition: all 0.4s ease;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.buy-btn:hover {
+    background: linear-gradient(45deg, var(--secondary), var(--accent));
+    box-shadow: 0 0 25px var(--accent);
+    transform: scale(1.05);
+}
+
+/* المميزات المتطورة */
+.features-section {
+    padding: 6rem 2rem;
+    background: var(--darker);
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.feature-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 2.5rem;
+    border-radius: 15px;
+    border: 2px solid transparent;
+    transition: all 0.4s ease;
+    cursor: pointer;
+    text-align: center;
+    backdrop-filter: blur(10px);
+}
+
+.feature-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+}
+
+.feature-card i {
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(45deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.feature-card h3 {
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+    color: var(--light);
+}
+
+.feature-card p {
+    color: #ccc;
+    line-height: 1.6;
+}
+
+/* قسم التعليقات المحسن */
+.comments-section {
+    background: var(--dark);
+    padding: 6rem 2rem;
+    border-top: 3px solid var(--secondary);
+    border-bottom: 3px solid var(--secondary);
+}
+
+.comments-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    max-width: 1300px;
+    margin: 3rem auto;
+}
+
+.comment {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+    padding: 2rem;
+    border-radius: 15px;
+    border: 1px solid #333;
+    text-align: right;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.comment::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 100%;
+    background: var(--primary);
+}
+
+.comment:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary);
+    box-shadow: 0 0 25px rgba(0, 255, 136, 0.2);
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.comment-name {
+    color: var(--primary);
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.comment-badge {
+    background: linear-gradient(45deg, var(--secondary), var(--accent));
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.comment-text {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+    color: #ccc;
+    font-size: 1rem;
+}
+
+.comment-stars {
+    color: gold;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.comment-time {
+    color: #888;
+    font-size: 0.9rem;
+    text-align: left;
+}
+
+.comment-notice {
+    background: linear-gradient(135deg, #102a10, #301030);
+    color: var(--primary);
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin: 2rem auto;
+    border: 2px solid var(--primary);
+    font-size: 1.1rem;
+    max-width: 800px;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+}
+
+/* قسم الأسئلة الشائعة المتطور */
+.faq-section {
+    padding: 6rem 2rem;
+    background: var(--darker);
+}
+
+.faq-container {
+    max-width: 1000px;
+    margin: 3rem auto;
+}
+
+.faq-item {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+    border-radius: 15px;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.faq-item:hover {
+    border-color: var(--primary);
+}
+
+.faq-question {
+    background: rgba(0, 255, 136, 0.1); 
+    color: var(--light);
+    padding: 1.5rem 2rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.faq-question:hover {
+    background: rgba(0, 255, 136, 0.2);
+}
+
+.faq-answer {
+    padding: 0 2rem;
+    color: #ccc;
+    line-height: 1.7;
+    background: rgba(255, 255, 255, 0.02);
+    border-top: 1px solid #333;
+    max-height: 0; 
+    overflow: hidden;
+    transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+}
+
+.faq-item.active .faq-answer {
+    max-height: 500px; 
+    padding: 2rem;
+}
+
+.faq-toggle {
+    color: var(--primary);
+    transition: transform 0.3s ease;
+}
+
+.faq-item.active .faq-toggle {
+    transform: rotate(180deg);
+}
+
+/* الفوتر المحسن */
+.footer {
+    background: var(--dark);
+    padding: 4rem 2rem;
+    text-align: center;
+    border-top: 3px solid var(--primary);
+}
+
+.footer p {
+    color: var(--light);
+    opacity: 0.8;
+    margin-bottom: 1rem;
+}
+
+.telegram-float {
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    background: #0088cc;
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+    box-shadow: 0 0 25px #0088cc;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.telegram-float:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 35px #0088cc;
+}
+
+/* 🟢🔐 التنسيق الأهم: إخفاء جميع الأقسام ما عدا الهيرو عند التحميل */
+.services, .features-section, .comments-section, .faq-section, .footer {
+    opacity: 0; /* اخفاء المحتوى */
+    transition: opacity 1s ease-out; /* إضافة سلاسة للظهور */
+    pointer-events: none; /* منع أي تفاعل بالماوس قبل الظهور */
+}
+
+/* التجاوب للهواتف */
+@media (max-width: 768px) {
+    .hero-content h1 { font-size: 2.8rem; }
+    .nav-links { display: none; }
+    .services-grid { grid-template-columns: 1fr; }
+    .features-grid { grid-template-columns: 1fr; }
+    .comments-container { grid-template-columns: 1fr; }
+    .telegram-float { bottom: 1rem; left: 1rem; padding: 0.8rem 1.2rem; }
+    .modal-content { margin: 1rem; padding: 2rem; }
+}
