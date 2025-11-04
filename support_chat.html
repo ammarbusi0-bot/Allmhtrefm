@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShadowHack PRO v2 - صفحة الدعم المباشر</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css"> <style>
+        /* تنسيقات خاصة لصفحة الدردشة */
+        /* إعادة تعريف المتغيرات التي قد لا تكون متاحة بشكل مباشر */
+        :root {
+            --primary: #00ff88; 
+            --secondary: #ff0088; 
+            --accent: #8800ff; 
+            --darker: #000000;
+            --light: #ffffff;
+        }
+
+        body {
+            background-color: var(--darker);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .chat-container {
+            width: 100%;
+            max-width: 800px;
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border: 3px solid var(--accent);
+            border-radius: 20px;
+            box-shadow: 0 0 50px rgba(136, 0, 255, 0.7);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 80vh;
+            max-height: 95vh;
+        }
+
+        .chat-header {
+            background: linear-gradient(90deg, var(--accent), var(--secondary));
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            max-width: 70%;
+            padding: 10px 15px;
+            border-radius: 15px;
+            line-height: 1.6;
+            animation: fadeIn 0.3s ease-out;
+            word-wrap: break-word; /* لضمان عدم تجاوز الرسائل للحاوية */
+        }
+
+        .user-message {
+            align-self: flex-start;
+            background-color: #333;
+            color: #eee;
+            border-bottom-right-radius: 0;
+        }
+
+        .admin-message {
+            align-self: flex-end;
+            background: var(--primary);
+            color: var(--darker);
+            border-bottom-left-radius: 0;
+            font-weight: 500;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 20px;
+            background: #111;
+            border-top: 1px solid #333;
+        }
+
+        .chat-input input {
+            flex-grow: 1;
+            padding: 15px;
+            border: 2px solid var(--primary);
+            border-radius: 30px;
+            background: #000;
+            color: var(--light);
+            font-size: 1rem;
+            outline: none;
+            margin-right: 10px;
+        }
+
+        .chat-input button {
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            color: var(--darker);
+            border: none;
+            padding: 0 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+
+        .chat-input button:hover {
+            opacity: 0.8;
+            box-shadow: 0 0 15px var(--primary);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* تنسيق زر العودة للرئيسية */
+        .back-to-home {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--secondary);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            z-index: 10;
+        }
+
+    </style>
+</head>
+<body>
+    <canvas class="matrix-bg" id="matrixCanvas"></canvas>
+
+    <a href="index.html" class="back-to-home">
+        <i class="fas fa-chevron-right"></i> العودة للرئيسية
+    </a>
+
+    <div class="chat-container">
+        <div class="chat-header">
+            مركز الدعم المباشر - ShadowHack PRO v2
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="message admin-message">
+                أهلاً بك! أنا المشرف الآلي لـ ShadowHack PRO v2. كيف يمكنني مساعدتك اليوم؟ يرجى كتابة استفسارك...
+            </div>
+            </div>
+        <div class="chat-input">
+            <input type="text" id="messageInput" placeholder="اكتب رسالتك هنا...">
+            <button id="sendMessageButton">
+                <i class="fas fa-paper-plane"></i> إرسال
+            </button>
+        </div>
+    </div>
+
+    <script src="script.js"></script> 
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const input = document.getElementById('messageInput');
+            const button = document.getElementById('sendMessageButton');
+            const messagesContainer = document.getElementById('chatMessages');
+
+            button.addEventListener('click', sendMessage);
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+
+            function sendMessage() {
+                const text = input.value.trim();
+                if (text !== '') {
+                    // إضافة رسالة المستخدم (واجهة أمامية فقط)
+                    const userMsg = document.createElement('div');
+                    userMsg.className = 'message user-message';
+                    userMsg.textContent = text;
+                    messagesContainer.appendChild(userMsg);
+
+                    // التمرير لأسفل لرؤية الرسالة الجديدة
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+                    // مسح حقل الإدخال
+                    input.value = '';
+
+                    // محاكاة رد المشرف الآلي بعد فترة وجيزة (واجهة أمامية فقط)
+                    setTimeout(() => {
+                        const adminResponse = document.createElement('div');
+                        adminResponse.className = 'message admin-message';
+                        adminResponse.textContent = `فهمت: "${text}". سيقوم أحد مشرفينا الحقيقيين بالرد عليك خلال دقائق. شكراً لصبرك.`;
+                        messagesContainer.appendChild(adminResponse);
+                        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                    }, 1500);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
