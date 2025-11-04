@@ -128,6 +128,132 @@ function buyService(event) {
     }, 3000);
 }
 
+// فتح نافذة الدعم الفني
+function openSupport() {
+    const supportWindow = window.open('', '_blank', 'width=400,height=500,scrollbars=yes');
+    supportWindow.document.write(`
+        <!DOCTYPE html>
+        <html lang="ar" dir="rtl">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>الدعم الفني - ShadowHack PRO v2</title>
+            <style>
+                body {
+                    background: #0a0a0a;
+                    color: white;
+                    font-family: Arial, sans-serif;
+                    margin: 0;
+                    padding: 20px;
+                }
+                .chat-container {
+                    max-width: 100%;
+                    margin: 0 auto;
+                    background: #1a1a1a;
+                    border-radius: 10px;
+                    padding: 15px;
+                }
+                .messages {
+                    height: 300px;
+                    overflow-y: auto;
+                    border: 1px solid #333;
+                    padding: 10px;
+                    margin-bottom: 15px;
+                    background: #0f0f0f;
+                }
+                .message {
+                    margin: 8px 0;
+                    padding: 8px;
+                    border-radius: 5px;
+                }
+                .user-message {
+                    background: #0088ff;
+                    text-align: left;
+                }
+                .admin-message {
+                    background: #00aa44;
+                    text-align: right;
+                }
+                .input-area {
+                    display: flex;
+                    gap: 8px;
+                }
+                input, textarea, button {
+                    padding: 8px;
+                    border: none;
+                    border-radius: 5px;
+                }
+                input, textarea {
+                    flex: 1;
+                    background: #2a2a2a;
+                    color: white;
+                }
+                button {
+                    background: #00ff88;
+                    color: black;
+                    cursor: pointer;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="chat-container">
+                <h2>💬 الدعم الفني</h2>
+                <p>مرحباً! اكتب استفسارك وسنرد عليك قريباً.</p>
+                
+                <div class="messages" id="messages">
+                    <div class="message admin-message">
+                        <strong>المشرف:</strong> مرحباً! كيف يمكنني مساعدتك؟
+                    </div>
+                </div>
+                
+                <div class="input-area">
+                    <textarea id="messageInput" placeholder="اكتب رسالتك هنا..." rows="2"></textarea>
+                    <button onclick="sendMessage()">إرسال</button>
+                </div>
+                
+                <button onclick="window.close()" style="margin-top: 15px; background: #ff4444;">إغلاق</button>
+            </div>
+
+            <script>
+                function sendMessage() {
+                    const input = document.getElementById('messageInput');
+                    const messages = document.getElementById('messages');
+                    
+                    if (input.value.trim()) {
+                        // رسالة المستخدم
+                        const userMsg = document.createElement('div');
+                        userMsg.className = 'message user-message';
+                        userMsg.innerHTML = '<strong>أنت:</strong> ' + input.value;
+                        messages.appendChild(userMsg);
+                        
+                        // رد المشرف (محاكاة)
+                        setTimeout(() => {
+                            const adminMsg = document.createElement('div');
+                            adminMsg.className = 'message admin-message';
+                            adminMsg.innerHTML = '<strong>المشرف:</strong> شكراً على رسالتك. سنرد عليك خلال دقائق.';
+                            messages.appendChild(adminMsg);
+                            messages.scrollTop = messages.scrollHeight;
+                        }, 2000);
+                        
+                        input.value = '';
+                        messages.scrollTop = messages.scrollHeight;
+                    }
+                }
+                
+                // إرسال بالزر Enter
+                document.getElementById('messageInput').addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        sendMessage();
+                    }
+                });
+            </script>
+        </body>
+        </html>
+    `);
+    supportWindow.document.close();
+}
+
 // إظهار/إخفاء نافذة إخلاء المسؤولية
 function showDisclaimer() {
     document.getElementById('disclaimerModal').style.display = 'flex';
@@ -186,28 +312,13 @@ if (canvas) {
 // ----------------------------------------------------
 // 💬 قاعدة بيانات التعليقات المحدثة (أكثر واقعية)
 // ----------------------------------------------------
-const generateRealisticTime = () => {
-    const times = [
-        "منذ 5 دقائق", "منذ 15 دقيقة", "منذ 30 دقيقة", "منذ ساعة", 
-        "منذ ساعتين", "منذ 5 ساعات", "منذ 10 ساعات", "منذ يوم", 
-        "منذ يومين", "منذ 3 أيام", "منذ أسبوع", "منذ أسبوعين"
-    ];
-    return times[Math.floor(Math.random() * times.length)];
-};
-
-const names = ["أحمد", "محمد", "سارة", "فاطمة", "خالد", "علي", "نور", "ياسمين", "مريم", "يوسف", "ليلى", "حسن"];
-
 const commentsData = [
     {name: "سارة", text: "أسعار معقولة وجودة ممتازة 👍", time: "منذ يوم", verified: true},
     {name: "أحمد", text: "الخدمة سريعة والنتائج مذهلة! شكراً لفريق الدعم 🚀", time: "منذ ساعتين", verified: true},
-    {name: "محمد", text: "لقد استخدمت العديد من المواقع ولكن هذا الموقع يتميز بالجودة العالية والأسعار المنافسة. الدعم الفني كان سريعاً ومحترفاً في حل جميع استفساراتي.", time: "منذ 5 ساعات", verified: true},
+    {name: "محمد", text: "لقد استخدمت العديد من المواقع ولكن هذا الموقع يتميز بالجودة العالية والأسعار المنافسة.", time: "منذ 5 ساعات", verified: true},
     {name: "فاطمة", text: "تجربة رائعة! الخدمة تعمل بشكل ممتاز دون أي مشاكل.", time: "منذ يوم", verified: false},
     {name: "خالد", text: "أنصح الجميع بهذه الخدمات، احترافية وسريعة!", time: "منذ 3 أيام", verified: true},
-    {name: "علي", text: "الهاك يعمل بسلاسة تامة، لم أواجه أي حظر في اللعبة.", time: "منذ أسبوع", verified: true},
-    {name: "نور", text: "شكراً للفريق على الدعم المستمر والتحديثات الدورية.", time: "منذ يومين", verified: false},
-    {name: "ياسمين", text: "بصراحة، أفضل موقع جربته في مجال الاختراق.", time: "منذ 10 ساعات", verified: true},
-    {name: "مريم", text: "الخدمة تستحق كل دولار، جودة عالية وأداء متميز.", time: "منذ أسبوع", verified: true},
-    {name: "يوسف", text: "تم تفعيل الخدمة خلال دقائق، سرعة لا تُصدق!", time: "منذ 30 دقيقة", verified: true}
+    {name: "علي", text: "الهاك يعمل بسلاسة تامة، لم أواجه أي حظر في اللعبة.", time: "منذ أسبوع", verified: true}
 ];
 
 // عرض التعليقات العشوائية
@@ -219,7 +330,7 @@ function displayRandomComments() {
     
     // ترتيب التعليقات حسب الوقت (الأحدث أولاً)
     const sortedComments = [...commentsData].sort((a, b) => {
-        const timeOrder = {"منذ 5 دقائق": 1, "منذ 15 دقيقة": 2, "منذ 30 دقيقة": 3, "منذ ساعة": 4, "منذ ساعتين": 5, "منذ 5 ساعات": 6, "منذ 10 ساعات": 7, "منذ يوم": 8, "منذ يومين": 9, "منذ 3 أيام": 10, "منذ أسبوع": 11, "منذ أسبوعين": 12};
+        const timeOrder = {"منذ ساعتين": 1, "منذ 5 ساعات": 2, "منذ يوم": 3, "منذ 3 أيام": 4, "منذ أسبوع": 5};
         return timeOrder[a.time] - timeOrder[b.time];
     });
 
