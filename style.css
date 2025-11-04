@@ -24,173 +24,144 @@ body {
     position: relative;
 }
 
-/* 🔒 تنسيقات إخلاء المسؤولية */
-.disclaimer-overlay {
+/* ---------------------------------------------------- */
+/* 🔐 تنسيقات إخلاء المسؤولية (Disclaimer) و Captcha */
+/* ---------------------------------------------------- */
+.disclaimer-overlay, .captcha-modal {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.95);
-    z-index: 9999;
+    backdrop-filter: blur(10px);
+    z-index: 2000;
     display: flex;
     justify-content: center;
     align-items: center;
-    backdrop-filter: blur(10px);
-}
-
-.disclaimer-content {
-    background: #1a1a1a;
-    border: 3px solid var(--primary);
-    border-radius: 15px;
-    padding: 3rem;
-    max-width: 700px;
-    text-align: right;
-    box-shadow: 0 0 50px rgba(0, 255, 136, 0.5);
-    animation: fadeIn 0.5s ease-out;
-}
-
-.disclaimer-content h2 {
-    color: var(--secondary);
-    margin-bottom: 2rem;
     text-align: center;
+    animation: fadeIn 0.5s;
 }
 
-.disclaimer-content p {
-    margin-bottom: 1.5rem;
-    line-height: 1.8;
-    color: #ccc;
-    font-size: 1.1rem;
+.disclaimer-box, .captcha-content {
+    background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+    border: 3px solid var(--accent);
+    border-radius: 25px;
+    padding: 3rem;
+    max-width: 550px;
+    box-shadow: 0 0 50px rgba(136, 0, 255, 0.7);
+    transform: scale(0.9);
+    animation: scaleUp 0.5s forwards;
 }
 
-.disclaimer-content strong {
+.disclaimer-icon {
+    font-size: 3rem;
+    color: var(--secondary);
+    margin-bottom: 1rem;
+    text-shadow: var(--glow) var(--secondary);
+}
+
+.disclaimer-box h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
     color: var(--primary);
 }
 
-.disclaimer-actions {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 2.5rem;
+.disclaimer-box p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    color: #ccc;
 }
 
-.disclaimer-actions button {
+.warning {
+    color: var(--secondary);
+    font-weight: bold;
+    border: 1px dashed var(--secondary);
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+}
+
+.disclaimer-buttons {
+    display: flex;
+    justify-content: space-around;
+    gap: 15px;
+}
+
+.agree-btn, .reject-btn {
     padding: 1rem 2rem;
     border: none;
-    border-radius: 30px;
-    font-size: 1rem;
+    border-radius: 50px;
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s;
+    font-size: 1.1rem;
+    flex-grow: 1;
 }
 
-#agreeDisclaimer {
-    background: linear-gradient(45deg, var(--primary), #00cc55);
+.agree-btn {
+    background: linear-gradient(45deg, var(--primary), var(--accent));
     color: var(--darker);
-    box-shadow: 0 0 20px var(--primary);
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
 }
 
-#rejectDisclaimer {
-    background: linear-gradient(45deg, #cc0055, var(--secondary));
-    color: var(--light);
-    box-shadow: 0 0 20px var(--secondary);
-}
-
-#agreeDisclaimer:hover, #rejectDisclaimer:hover {
+.agree-btn:hover {
     transform: scale(1.05);
+    box-shadow: 0 0 30px var(--primary);
 }
 
-/* إخفاء المحتوى عند التحميل إن لم يوافق المستخدم */
-body.disclaimer-hidden > *:not(.disclaimer-overlay) {
-    display: none;
-}
-body.disclaimer-hidden {
-    overflow: hidden;
+.reject-btn {
+    background: linear-gradient(45deg, var(--secondary), #ff4d4d);
+    color: white;
+    box-shadow: 0 0 20px rgba(255, 0, 136, 0.5);
 }
 
-/* 🔐 تنسيقات نافذة التحقق (Captcha) */
+.reject-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px var(--secondary);
+}
+
+/* تنسيقات Captcha */
 .captcha-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    z-index: 2000;
     display: none; /* مخفي افتراضياً */
-    justify-content: center;
-    align-items: center;
-}
-
-.captcha-content {
-    background: #1a1a1a;
-    border: 3px solid var(--accent);
-    border-radius: 10px;
-    padding: 30px;
-    max-width: 400px;
-    text-align: center;
-    box-shadow: 0 0 30px rgba(136, 0, 255, 0.5);
 }
 
 .captcha-content h3 {
-    color: var(--accent);
-    margin-bottom: 15px;
-}
-
-.captcha-content p {
-    margin-bottom: 20px;
-    color: #ccc;
+    color: var(--primary);
+    font-size: 2rem;
 }
 
 .captcha-code {
-    font-size: 2.5rem;
+    font-size: 3.5rem;
     font-weight: bold;
+    color: var(--accent);
+    margin: 1.5rem 0;
     letter-spacing: 10px;
-    margin: 20px 0;
-    background: linear-gradient(45deg, var(--primary), var(--secondary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 0 0 15px var(--primary);
-    padding: 10px;
-    border: 1px dashed var(--primary);
-    border-radius: 5px;
-    user-select: none; /* منع تحديد النص */
+    text-shadow: var(--glow) var(--accent);
 }
 
 #captchaInput {
-    width: 100%;
     padding: 12px;
-    margin-bottom: 15px;
-    border: 1px solid var(--primary);
-    border-radius: 5px;
+    border: 2px solid var(--primary);
+    border-radius: 10px;
     background: #000;
-    color: var(--primary);
-    font-size: 1.5rem;
+    color: var(--light);
+    font-size: 1.2rem;
     text-align: center;
-    outline: none;
-}
-
-#verifyCaptcha {
-    background: linear-gradient(45deg, var(--accent), var(--secondary));
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 25px;
-    cursor: pointer;
-    font-weight: bold;
     width: 100%;
-    transition: all 0.3s;
-}
-
-#verifyCaptcha:hover {
-    box-shadow: 0 0 20px var(--accent);
-    transform: scale(1.02);
+    max-width: 250px;
+    margin-bottom: 1rem;
 }
 
 #captchaMessage {
-    margin-top: 15px;
+    margin-bottom: 1.5rem;
     font-weight: bold;
-    min-height: 20px;
+    font-size: 1.1rem;
 }
+
+
+/* الأقسام الأخرى - لا تتغير */
 
 /* تأثيرات الخلفية المتحركة */
 .matrix-bg {
@@ -315,20 +286,10 @@ body.disclaimer-hidden {
 .section-title {
     text-align: center;
     font-size: 3rem;
-    margin-bottom: 1.5rem; /* تم تقليل المسافة */
+    margin-bottom: 4rem;
     color: var(--primary);
     text-shadow: var(--glow) var(--primary);
 }
-
-/* تنسيق تاريخ آخر تحديث */
-.last-update {
-    text-align: center;
-    color: #666;
-    font-size: 1rem;
-    margin-bottom: 4rem;
-    font-style: italic;
-}
-
 
 .services-grid {
     display: grid;
@@ -515,7 +476,7 @@ body.disclaimer-hidden {
 
 .comment-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: between;
     align-items: center;
     margin-bottom: 1rem;
 }
@@ -645,12 +606,40 @@ body.disclaimer-hidden {
     margin-bottom: 1rem;
 }
 
+.telegram-float {
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    background: #0088cc;
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+    box-shadow: 0 0 25px #0088cc;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.telegram-float:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 35px #0088cc;
+}
+
 /* 🟢🔐 التنسيق الأهم: إخفاء جميع الأقسام ما عدا الهيرو عند التحميل */
-/* تم تعديله ليظهر فقط بعد الموافقة على إخلاء المسؤولية */
 .services, .features-section, .comments-section, .faq-section, .footer {
     opacity: 0; /* اخفاء المحتوى */
     transition: opacity 1s ease-out; /* إضافة سلاسة للظهور */
     pointer-events: none; /* منع أي تفاعل بالماوس قبل الظهور */
+}
+
+/* حالة اخفاء الجسم عند ظهور الـ Disclaimer */
+body.disclaimer-hidden > *:not(.disclaimer-overlay):not(.matrix-bg) {
+    pointer-events: none !important;
+    opacity: 0.2 !important;
 }
 
 /* التجاوب للهواتف */
@@ -660,4 +649,17 @@ body.disclaimer-hidden {
     .services-grid { grid-template-columns: 1fr; }
     .features-grid { grid-template-columns: 1fr; }
     .comments-container { grid-template-columns: 1fr; }
+    .telegram-float { bottom: 1rem; left: 1rem; padding: 0.8rem 1.2rem; }
+    .disclaimer-box { padding: 2rem; }
+}
+
+/* الحركات */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes scaleUp {
+    from { transform: scale(0.8); }
+    to { transform: scale(1); }
 }
