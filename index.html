@@ -7,174 +7,196 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    
-    <div id="disclaimerModal" class="modal disclaimer-modal show-modal">
-        <div class="modal-content disclaimer-content">
-            <h2>⚠️ إخلاء المسؤولية القانونية والموافقة</h2>
-            <p><strong>تنصل:</strong> نحن منصة ShadowHack PRO نؤكد أن جميع خدماتنا وأدواتنا هي لأغراض اختبار الاختراق والتعليم القانونية الصارمة، والمستخدم يوافق على تحمل المسؤولية الكاملة لاستخدامها. جميع الأنشطة غير القانونية خارجة عن سيطرتنا. نحن لا نتحمل أي عواقب قانونية أو أخلاقية لاستخدام عملائنا لخدماتنا في انتهاك أي قوانين محلية أو دولية. جميع المعاملات نهائية وتتم بخصوصية تامة عبر العملات المشفرة لضمان أمان الطرفين. بدخولك هذا الموقع واستخدامك خدماتنا، فإنك تقر بأنك قرأت هذا البيان وتوافق عليه بالكامل. لا تتحمل المنصة أي مسؤولية تجاه تصرفاتك.</p>
-            <button id="acceptDisclaimerBtn" class="cta-button">أوافق وأدخل الموقع</button>
+<body class="disclaimer-hidden">
+    <div class="disclaimer-overlay" id="disclaimerOverlay">
+        <div class="disclaimer-content">
+            <h2>إخلاء المسؤولية والشروط والأحكام</h2>
+            <p><strong>ملاحظة هامة:</strong> الموقع والخدمات المقدمة لأغراض المحاكاة والتوعية الأمنية فقط. إن استخدام هذه الخدمات لأغراض غير قانونية أو أخلاقية يقع على عاتق المستخدم وحده، وشركة ShadowHack PRO لا تتحمل أي مسؤولية قانونية أو أخلاقية عن أي استخدام خاطئ.</p>
+            <p>بمجرد النقر على "أوافق"، فإنك تقر بأنك قرأت وفهمت هذه الشروط وتوافق عليها بالكامل، وأنك تبلغ من العمر 18 عاماً أو أكثر. عدم الموافقة على هذه الشروط سيمنعك من استخدام الموقع.</p>
+            <div class="disclaimer-actions">
+                <button id="agreeDisclaimer">أوافق على الشروط والأحكام</button>
+                <button id="rejectDisclaimer">أرفض وأغادر</button>
+            </div>
         </div>
     </div>
+    
     <canvas class="matrix-bg" id="matrixCanvas"></canvas>
 
-    <audio id="background-audio" loop>
-        <source src="https://raw.githubusercontent.com/ammarbusi0-bot/Allmhtrefm/main/L2uYY2n7wfA.m4a" type="audio/mp4">
+    <audio id="background-audio" loop autoplay>
+        <source src="n1HqWEafHec (1).m4a" type="audio/mp4">
         المتصفح لا يدعم العنصر الصوتي.
     </audio>
 
-    <a href="chat.html" class="telegram-float" target="_self">
-        <i class="fas fa-comments"></i>
-        غرفة الدردشة
+    <a href="https://t.me/Armanex" class="telegram-float" target="_blank">
+        <i class="fab fa-telegram"></i>
+        تواصل معنا
     </a>
-
-    <div id="mainContent" class="hidden-content">
-        <nav class="navbar">
-            <div class="nav-content">
-                <div class="logo">🌑 ShadowHack PRO v1</div>
-                <ul class="nav-links">
-                    <li><a href="#hero">الرئيسية</a></li>
-                    <li><a href="#services">الخدمات</a></li>
-                    <li><a href="#features">المميزات</a></li>
-                    <li><a href="#comments">آراء العملاء</a></li>
-                    <li><a href="#faq">الأسئلة الشائعة</a></li>
-                </ul>
-            </div>
-        </nav>
-
-        <section class="hero" id="hero">
-            <div class="hero-content">
-                <h1>ShadowHack PRO v1</h1>
-                <p>الإمبراطورية السوداء - اختراق بلا حدود</p>
-                <a href="#services" class="cta-button" id="ctaButton">كشف الخدمات المتطورة 🚀</a>
-            </div>
-        </section>
-
-        <section class="services" id="services">
-            <h2 class="section-title">🛠️ خدماتنا المتطورة</h2>
-            <div class="services-grid">
-                <div class="service-card best-seller" data-name="أداة رشق جميع المواقع" data-price="95">
-                    <div class="best-seller-badge">⚡ ترند جديد</div>
-                    <i class="fas fa-rocket service-icon"></i>
-                    <h3>أداة رشق جميع المواقع</h3>
-                    <p>زيادة متابعين ولايكات ومشاهدات لأي منصة (تيك توك، إنستا، يوتيوب، إلخ)</p>
-                    <div class="price">$95</div>
-                    <button class="buy-btn">اشتري الآن</button>
-                </div>
-
-                <div class="service-card best-seller" data-name="اختراق الهاتف الكامل" data-price="120">
-                    <div class="best-seller-badge">🔥 الأكثر مبيعاً</div>
-                    <i class="fas fa-mobile-alt service-icon"></i>
-                    <h3>اختراق الهاتف الكامل</h3>
-                    <p>سيطرة كاملة على أي هاتف - رسائل، مكالمات، موقع، كاميرا</p>
-                    <div class="price">$120</div>
-                    <button class="buy-btn">اشتري الآن</button>
-                </div>
-
-                <div class="service-card best-seller" data-name="هاك ببجي موبايل" data-price="80">
-                    <div class="best-seller-badge">🎮 الأكثر طلباً</div>
-                    <i class="fas fa-gamepad service-icon"></i>
-                    <h3>هاك ببجي موبايل</h3>
-                    <p>Aimbot, Wallhack, Unlimited UC - غير قابل للكشف</p>
-                    <div class="price">$80</div>
-                    <button class="buy-btn">اشتري الآن</button>
-                </div>
-                
-                <div class="service-card" data-name="هاك ببجي لايت" data-price="60">
-                    <i class="fas fa-bolt service-icon"></i>
-                    <h3>هاك ببجي لايت</h3>
-                    <p>هاك خفيف وسريع للعبة ببجي لايت</p>
-                    <div class="price">$60</div>
-                    <button class="buy-btn">اشتري الآن</button>
-                </div>
-                
-                <div class="service-card" data-name="هاك فري فاير" data-price="70">
-                    <i class="fas fa-fire service-icon"></i>
-                    <h3>هاك فري فاير</h3>
-                    <p>هاك كامل لعبة فري فاير - إمكانيات غير محدودة</p>
-                    <div class="price">$70</div>
-                    <button class="buy-btn">اشتري الآن</button>
-                </div>
-                
-                <div class="service-card" data-name="هاك فيفا موبايل" data-price="65">
-                    <i class="fas fa-futbol service-icon"></i>
-                    <h3>هاك فيفا موبايل</h3>
-                    <p>هاك عملات ولاعبين لفيفا موبايل</p>
-                    <div class="price">$65</div>
-                    <button class="buy-btn">اشتري الآن</button>
-                </div>
-                
-                <div class="service-card" data-name="اختراق فيسبوك" data-price="90">
-                    <i class="fas fa-user-secret service-icon"></i>
-                    <h3>اختراق فيسبوك</h3>
-                    <p>اختراق حسابات فيسبوك بضمان 100%</p>
-                    <div class="price">$90</div>
-                    <button class="buy-btn">اشتري الآن</button>
-                </div>
-                
-                <div class="service-card" data-name="اختراق الكاميرات" data-price="110">
-                    <i class="fas fa-camera service-icon"></i>
-                    <h3>اختراق الكاميرات</h3>
-                    <p>وصول مباشر لكاميرات المراقبة والهواتف</p>
-                    <div class="price">$110</div>
-                    <button class="buy-btn">اشتري الآن</button>
-                </div>
-                
-                <div class="service-card" data-name="اختراق البنوك" data-price="200">
-                    <i class="fas fa-university service-icon"></i>
-                    <h3>اختراق البنوك</h3>
-                    <p>سرقة بيانات مصرفية آمنة</p>
-                    <div class="price">$200</div>
-                    <button class="buy-btn">اشتري الآن</button>
-                </div>
-
-            </div>
-        </section>
-
-        <section class="features-section" id="features">
-            <h2 class="section-title">⚡ مميزات منصتنا</h2>
-            <div class="features-grid">
-                <div class="feature-card" onclick="showFeatureDetails('خصوصية تامة', 'نحن نضمن خصوصية عملائنا بشكل مطلق. يتم تشفير جميع الاتصالات والمعاملات لضمان عدم الكشف عن هويتك تحت أي ظرف.')">
-                    <i class="fas fa-user-secret"></i>
-                    <h3>خصوصية تامة</h3>
-                    <p>حماية كاملة لهويتك وبياناتك</p>
-                </div>
-
-                <div class="feature-card" onclick="showFeatureDetails('تحديثات مستمرة', 'يتم تحديث جميع أدواتنا ومنصاتنا بشكل دوري لضمان تجاوز أحدث الإجراءات الأمنية')">
-                    <i class="fas fa-sync-alt"></i>
-                    <h3>تحديثات مستمرة</h3>
-                    <p>تحديثات دورية لأدوات الاختراق</p>
-                </div>
-
-                <div class="feature-card" onclick="showFeatureDetails('دعم فني 24/7', 'فريقنا متاح على مدار الساعة لتقديم الدعم الفني السريع والمحترف')">
-                    <i class="fas fa-headset"></i>
-                    <h3>دعم فني 24/7</h3>
-                    <p>دعم فني متاح طوال الوقت</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="comments-section" id="comments">
-            <h2 class="section-title">💬 آراء عملائنا المحترفين</h2>
-            
-            <div class="comment-notice">
-                💬 التعليقات أدناه تتجدد بناءً على المشتريين الموثوقين. ✅
-            </div>
-            
-            <div class="comments-container" id="commentsContainer">
-                </div>
-        </section>
-
-        <section class="faq-section" id="faq">
-            <h2 class="section-title">❓ الأسئلة الشائعة</h2>
-            <div class="faq-container" id="faqContainer">
-                </div>
-        </section>
-
-        <footer class="footer">
-            <p>ShadowHack PRO v1 - الإمبراطورية السوداء</p>
-        </footer>
+    
+    <div class="captcha-modal" id="captchaModal">
+        <div class="captcha-content">
+            <h3>تحقق من أنك لست روبوتاً</h3>
+            <p>أدخل الكود المكون من 5 أرقام الذي سيظهر لك:</p>
+            <div id="captchaCode" class="captcha-code"></div>
+            <input type="text" id="captchaInput" maxlength="5" placeholder="أدخل الكود هنا">
+            <button id="verifyCaptcha">تحقق وتابع الشراء</button>
+            <div id="captchaMessage"></div>
+        </div>
     </div>
+
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">🌑 ShadowHack PRO v1</div>
+            <ul class="nav-links">
+                <li><a href="#hero">الرئيسية</a></li>
+                <li><a href="#services">الخدمات</a></li>
+                <li><a href="#features">المميزات</a></li>
+                <li><a href="#comments">آراء العملاء</a></li>
+                <li><a href="#faq">الأسئلة الشائعة</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <h1>ShadowHack PRO v1</h1>
+            <p>الإمبراطورية السوداء - اختراق بلا حدود</p>
+            <a href="#services" class="cta-button" id="ctaButton">اكتشف الخدمات المتطورة 🚀</a>
+        </div>
+    </section>
+
+    <section class="services" id="services">
+        <h2 class="section-title">🛠️ خدماتنا المتطورة</h2>
+        <div class="last-update" id="servicesLastUpdate">آخر تحديث للخدمات: 2025-11-04</div>
+        <div class="services-grid">
+            <div class="service-card best-seller" data-name="اختراق الهاتف الكامل" data-price="90">
+                <div class="best-seller-badge">🔥 الأكثر مبيعاً</div>
+                <i class="fas fa-mobile-alt service-icon"></i>
+                <h3>اختراق الهاتف الكامل</h3>
+                <p>سيطرة كاملة على أي هاتف - رسائل، مكالمات، موقع، كاميرا</p>
+                <div class="price">$90</div>
+                <button class="buy-btn">اشتري الآن</button>
+            </div>
+
+            <div class="service-card best-seller" data-name="هاك ببجي موبايل" data-price="55">
+                <div class="best-seller-badge">🎮 الأكثر طلباً</div>
+                <i class="fas fa-gamepad service-icon"></i>
+                <h3>هاك ببجي موبايل</h3>
+                <p>Aimbot, Wallhack, Unlimited UC - غير قابل للكشف</p>
+                <div class="price">$55</div>
+                <button class="buy-btn">اشتري الآن</button>
+            </div>
+            
+            <div class="service-card" data-name="هاك ببجي لايت" data-price="40">
+                <i class="fas fa-bolt service-icon"></i>
+                <h3>هاك ببجي لايت</h3>
+                <p>هاك خفيف وسريع للعبة ببجي لايت</p>
+                <div class="price">$40</div>
+                <button class="buy-btn">اشتري الآن</button>
+            </div>
+            
+            <div class="service-card" data-name="هاك فري فاير" data-price="45">
+                <i class="fas fa-fire service-icon"></i>
+                <h3>هاك فري فاير</h3>
+                <p>هاك كامل لعبة فري فاير - إمكانيات غير محدودة</p>
+                <div class="price">$45</div>
+                <button class="buy-btn">اشتري الآن</button>
+            </div>
+            
+            <div class="service-card" data-name="هاك فيفا موبايل" data-price="40">
+                <i class="fas fa-futbol service-icon"></i>
+                <h3>هاك فيفا موبايل</h3>
+                <p>هاك عملات ولاعبين لفيفا موبايل</p>
+                <div class="price">$40</div>
+                <button class="buy-btn">اشتري الآن</button>
+            </div>
+
+            <div class="service-card" data-name="أرقام وهمية v2pro" data-price="5">
+                <div class="best-seller-badge">🆕 v2pro</div>
+                <i class="fas fa-mobile service-icon"></i>
+                <h3>أرقام وهمية</h3>
+                <p>للتفعيل الفوري لحسابات التواصل - إصدار v2pro</p>
+                <div class="price">$5</div>
+                <button class="buy-btn">اشتري الآن</button>
+            </div>
+            
+            <div class="service-card" data-name="اختراق فيسبوك" data-price="70">
+                <i class="fas fa-user-secret service-icon"></i>
+                <h3>اختراق فيسبوك</h3>
+                <p>اختراق حسابات فيسبوك بضمان 100%</p>
+                <div class="price">$70</div>
+                <button class="buy-btn">اشتري الآن</button>
+            </div>
+            
+            <div class="service-card" data-name="اختراق الكاميرات" data-price="85">
+                <i class="fas fa-camera service-icon"></i>
+                <h3>اختراق الكاميرات</h3>
+                <p>وصول مباشر لكاميرات المراقبة والهواتف</p>
+                <div class="price">$85</div>
+                <button class="buy-btn">اشتري الآن</button>
+            </div>
+            
+            <div class="service-card" data-name="اختراق البنوك" data-price="150">
+                <i class="fas fa-university service-icon"></i>
+                <h3>اختراق البنوك</h3>
+                <p>سرقة بيانات مصرفية آمنة</p>
+                <div class="price">$150</div>
+                <button class="buy-btn">اشتري الآن</button>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="features-section" id="features">
+        <h2 class="section-title">⚡ مميزات منصتنا</h2>
+        <div class="last-update" id="featuresLastUpdate">آخر تحديث للمميزات: 2025-11-04</div>
+        <div class="features-grid">
+            <div class="feature-card" onclick="showFeatureDetails('خصوصية تامة', 'نحن نضمن خصوصية عملائنا بشكل مطلق. يتم تشفير جميع الاتصالات والمعاملات لضمان عدم الكشف عن هويتك تحت أي ظرف.')">
+                <i class="fas fa-user-secret"></i>
+                <h3>خصوصية تامة</h3>
+                <p>حماية كاملة لهويتك وبياناتك</p>
+            </div>
+
+            <div class="feature-card" onclick="showFeatureDetails('تحديثات مستمرة', 'يتم تحديث جميع أدواتنا ومنصاتنا بشكل دوري لضمان تجاوز أحدث الإجراءات الأمنية')">
+                <i class="fas fa-sync-alt"></i>
+                <h3>تحديثات مستمرة</h3>
+                <p>تحديثات دورية لأدوات الاختراق</p>
+            </div>
+
+            <div class="feature-card" onclick="showFeatureDetails('دعم فني 24/7', 'فريقنا متاح على مدار الساعة لتقديم الدعم الفني السريع والمحترف')">
+                <i class="fas fa-headset"></i>
+                <h3>دعم فني 24/7</h3>
+                <p>دعم فني متاح طوال الوقت</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="comments-section" id="comments">
+        <h2 class="section-title">💬 آراء عملائنا المحترفين</h2>
+        <div class="last-update" id="commentsLastUpdate">آخر تحديث للتعليقات: 2025-11-04</div>
+        
+        <div class="comment-notice">
+            💬 التعليقات أدناه تتجدد بناءً على المشتريين الموثوقين. ✅
+        </div>
+        
+        <div class="comments-container" id="commentsContainer">
+            </div>
+    </section>
+
+    <section class="faq-section" id="faq">
+        <h2 class="section-title">❓ الأسئلة الشائعة</h2>
+        <div class="last-update" id="faqLastUpdate">آخر تحديث للأسئلة: 2025-11-04</div>
+        <div class="faq-container" id="faqContainer">
+            </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="#hero">القائمة الرئيسية</a>
+            <a href="support.html" id="supportLink">صفحة الدعم</a> 
+        </div>
+        <p>ShadowHack PRO v1 - الإمبراطورية السوداء</p>
+    </footer>
+
     <script src="script.js"></script>
 </body>
 </html>
