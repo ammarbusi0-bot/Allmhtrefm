@@ -25,15 +25,31 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         disclaimerOverlay.style.display = 'none';
         body.classList.remove('disclaimer-hidden');
+        // يتم السماح بتشغيل الصوت وإظهار المحتوى بعد الموافقة في الجلسات اللاحقة
+        document.addEventListener('click', playAudioOnFirstInteraction);
+        document.addEventListener('keydown', playAudioOnFirstInteraction);
+        // يجب أن نضمن ظهور الأقسام المخفية عند التحميل إذا تم قبول الشروط
+        setTimeout(() => {
+             hiddenSections.forEach(section => {
+                section.style.opacity = '1';
+                section.style.pointerEvents = 'auto';
+            });
+        }, 100);
     }
 
     agreeDisclaimerButton.addEventListener('click', () => {
         localStorage.setItem('disclaimerAccepted', 'true');
         disclaimerOverlay.style.display = 'none';
         body.classList.remove('disclaimer-hidden');
+        
+        // إظهار الأقسام المخفية فوراً بعد الموافقة
+        hiddenSections.forEach(section => {
+            section.style.opacity = '1';
+            section.style.pointerEvents = 'auto';
+        });
+
         // يتم السماح بتشغيل الصوت وإظهار المحتوى بعد الموافقة
         if (ctaButton) {
-            // يتم إضافة مستمعي التفاعل بعد الموافقة
             document.addEventListener('click', playAudioOnFirstInteraction);
             document.addEventListener('keydown', playAudioOnFirstInteraction);
         }
@@ -49,8 +65,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. منطق تشغيل الموسيقى عند أي تفاعل (نقرة أو ضغطة مفتاح)
     // ----------------------------------------------------
     const playAudioOnFirstInteraction = () => {
-        if (!isDisclaimerAccepted) return; // لا تشغل إلا بعد الموافقة
-
         // نستخدم audio.play() لضمان تشغيلها عند النقرة
         audio.play().catch(error => {
             console.log("Audio play failed initially, error:", error);
@@ -76,12 +90,12 @@ document.addEventListener('DOMContentLoaded', () => {
         ctaButton.addEventListener('click', function (e) {
             e.preventDefault(); 
             
-            // إظهار الأقسام المخفية
+            // إظهار الأقسام المخفية (للتأكد فقط في حال لم تظهر عبر الـ Disclaimer)
             hiddenSections.forEach(section => {
                 section.style.opacity = '1';
                 section.style.pointerEvents = 'auto'; // السماح بالتفاعل
             });
-            console.log("All hidden sections revealed.");
+            console.log("All hidden sections revealed in case CTA clicked.");
 
             // تنفيذ التنقل السلس إلى قسم الخدمات (بما أن التنقل الافتراضي تم منعه)
             const target = document.querySelector(this.getAttribute('href'));
@@ -89,8 +103,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 target.scrollIntoView({ behavior: 'smooth' });
             }
 
-            // إزالة المستمع من زر CTA بعد النقر عليه لضمان التنفيذ مرة واحدة
-            ctaButton.removeEventListener('click', arguments.callee);
         });
     }
 
@@ -99,10 +111,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // ----------------------------------------------------
     const updateLastUpdateDates = () => {
         const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
-        document.getElementById('servicesLastUpdate').textContent = `آخر تحديث للخدمات: ${today}`;
-        document.getElementById('featuresLastUpdate').textContent = `آخر تحديث للمميزات: ${today}`;
-        document.getElementById('commentsLastUpdate').textContent = `آخر تحديث للتعليقات: ${today}`;
-        document.getElementById('faqLastUpdate').textContent = `آخر تحديث للأسئلة: ${today}`;
+        const servicesDate = document.getElementById('servicesLastUpdate');
+        const featuresDate = document.getElementById('featuresLastUpdate');
+        const commentsDate = document.getElementById('commentsLastUpdate');
+        const faqDate = document.getElementById('faqLastUpdate');
+
+        if(servicesDate) servicesDate.textContent = `آخر تحديث للخدمات: ${today}`;
+        if(featuresDate) featuresDate.textContent = `آخر تحديث للمميزات: ${today}`;
+        if(commentsDate) commentsDate.textContent = `آخر تحديث للتعليقات: ${today}`;
+        if(faqDate) faqDate.textContent = `آخر تحديث للأسئلة: ${today}`;
     };
 
     updateLastUpdateDates();
@@ -194,7 +211,7 @@ const commentsTexts = [
     "كل التقدير والاحترام لفريقكم. جربت اختراق الهاتف وما توقعت هالسرعة والدقة! عم بيشتغل كأنه تليفوني أنا. خدمة احترافية بمعنى الكلمة.", // طويل
     "أفضل خدمة اختراق كاميرات استخدمتها على الإطلاق. موثوقية عالية جداً وضمان كامل.", // متوسط
     "استعادة حسابي المفقود تمت بنجاح وبسرعة قياسية. شكراً ShadowHack PRO.", // قصير
-    "موقع احترافي وفريق عمل متجاوب، خدمة الـ Aimbot في ببجي خرافي، وما في أي مشاوف من الباند.", // متوسط
+    "موقع احترافي وفريق عمل متجاوب، خدمة الـ Aimbot في ببجي خرافي، وما في أي مواشوف من الباند.", // متوسط
     "تحديثاتهم المستمرة تخليهم دايمًا متفوقين. أنصح بالتعامل معهم. السعر معقول جداً مقارنة بالجودة والضمان.", // طويل
     "الحمد لله لقيت الموقع الصح. شغل مرتب ومضمون 100%. التزام بالمواعيد ممتاز.", // متوسط
     "اشتريت هاك فيفا موبايل وجبت كل اللعيبة اللي بدي ياهم بدون مشاكل تذكر، عملية سهلة وسريعة جداً.", // متوسط
@@ -253,13 +270,13 @@ function displayRandomComments() {
 
 // الأسئلة الشائعة
 const faqData = [
-    {q: "ما هو ShadowHack PRO؟", a: "منصة متقدمة ومتخصصة في تقديم خدمات القرصنة والاختراق بأدوات متطورة وغير قابلة للكشف."},
+    {q: "ما هو ShadowHack PRO v2؟", a: "منصة متقدمة ومتخصصة في تقديم خدمات القرصنة والاختراق بأدوات متطورة وغير قابلة للكشف."},
     {q: "هل أدواتكم آمنة للاستخدام؟", a: "نعم، أدواتنا آمنة تماماً ومصممة بتقنيات متقدمة تضمن التخفي وعدم الكشف."},
-    {q: "كيف أشتري الخدمات؟", a: "اضغط على أي زر شراء وستظهر لك نافذة للتحقق، وبعدها سيتم توجيهك مباشرة إلى تليجرام للتواصل مع فريق المبيعات."},
+    {q: "كيف أشتري الخدمات؟", a: "اضغط على أي زر شراء وستظهر لك نافذة للتحقق (Captcha)، وبعدها سيتم توجيهك مباشرة إلى تليجرام للتواصل مع فريق المبيعات."},
     {q: "ما مدة التفعيل؟", a: "يتم تفعيل معظم الخدمات خلال دقائق بعد تأكيد الدفع."},
     {q: "هل يوجد ضمان؟", a: "نعم، نقدم ضمان استبدال أو استرجاع في حال عدم عمل الخدمة."},
     {q: "ما هي طريقة الدفع المتاحة؟", a: "نقبل العملات المشفرة (Bitcoin, USDT) لضمان خصوصيتك التامة."},
-    {q: "هل يمكنني طلب خدمة اختراق غير مذكورة؟", a: "تواصل معنا على تليجرام لطلب خدمات مخصصة، وسنناقش إمكانية تنفيذها."},
+    {q: "هل يمكنني طلب خدمة اختراق غير مذكورة؟", a: "تواصل معنا عبر صفحة الدعم الجديدة لطلب خدمات مخصصة، وسنناقش إمكانية تنفيذها."},
 ];
 
 // إنشاء الأسئلة الشائعة (والتي تكون مخفية افتراضياً)
@@ -340,13 +357,11 @@ function buyServiceConfirmed() {
     const { name: serviceName, price } = currentServiceDetails;
     
     const telegramUsername = "Armanex";
-    const message = `أريد شراء ${serviceName} بسعر $${price} من ShadowHack PRO`;
+    const message = `أريد شراء ${serviceName} بسعر $${price} من ShadowHack PRO v2`;
     const url = `https://t.me/${telegramUsername}?text=${encodeURIComponent(message)}`;
     
     window.open(url, '_blank');
     
-    // لإضافة تأثير بسيط على زر الشراء الأصلي، يجب تخزين مرجعه عند triggerCaptcha
-    // هنا لا نستطيع الوصول للزر الأصلي بسهولة، لكن نكتفي بتأثير الكابتشا
     console.log(`User confirmed and is being redirected to Telegram for ${serviceName}`);
 }
 
@@ -368,5 +383,3 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         });
     }
 });
-
-// ملاحظة: تم إزالة دالة buyService الأصلية واستبدالها بـ triggerCaptcha و buyServiceConfirmed
