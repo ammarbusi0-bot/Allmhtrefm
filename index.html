@@ -1,19 +1,120 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>دردشة حصرية</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background: linear-gradient(to bottom, #0f0f23, #1a1a2e, #16213e);
+            color: #e0e0e0;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .chat-window {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 30px;
+            box-shadow: 0 10px 30px rgba(255, 0, 150, 0.3);
+        }
+        
+        #messages {
+            height: 300px;
+            border: 1px solid #444;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: right;
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        input, button {
+            padding: 12px;
+            margin: 5px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        input {
+            width: 70%;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        button {
+            background: #ff0066;
+            color: white;
+            cursor: pointer;
+            width: 25%;
+        }
+        
+        button:hover {
+            background: #cc0055;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h1>مرحباً في عالم الدردشة السري</h1>
+        <h1>🦋 مرحباً في عالم الدردشة السري 🦋</h1>
+        <p>ابدأ محادثة جديدة واستمتع بتجربة فريدة...</p>
+        
         <div class="chat-window">
-            <div id="messages"></div>
-            <input type="text" id="messageInput" placeholder="اكتب رسالتك هنا...">
-            <button onclick="sendMessage()">إرسال</button>
+            <div id="messages">
+                <p>🔮 النظام: أهلاً بك! اكتب رسالة لتبدأ الدردشة...</p>
+            </div>
+            <input type="text" id="messageInput" placeholder="اكتب رسالتك هنا... 💬">
+            <button onclick="sendMessage()">إرسال 🚀</button>
         </div>
     </div>
-    <script src="script.js"></script>
+
+    <script>
+        function sendMessage() {
+            var messageInput = document.getElementById('messageInput');
+            var message = messageInput.value;
+            
+            if (message !== '') {
+                var messagesDiv = document.getElementById('messages');
+                messagesDiv.innerHTML += '<p>👤 <b>أنت:</b> ' + message + '</p>';
+                messageInput.value = '';
+                
+                // رد تلقائي بعد ثانيتين
+                setTimeout(function() {
+                    var responses = [
+                        '🦋 غريب: أحب دردشتنا هذه!',
+                        '🌙 شخص مجهول: هذا مثير للاهتمام...',
+                        '💫 زائر: هل يمكننا التحدث أكثر؟',
+                        '🔮 شخص: أنت رائع/ة في المحادثة!'
+                    ];
+                    var randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                    messagesDiv.innerHTML += '<p>' + randomResponse + '</p>';
+                    
+                    // Scroll to bottom
+                    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                }, 2000);
+                
+                // Scroll to bottom
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            }
+        }
+        
+        // إدخال بالزر Enter
+        document.getElementById('messageInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
 </body>
 </html>
