@@ -95,57 +95,116 @@ body {
 }
 
 /* شاشة الدخول */
-.login-box {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-radius: 25px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-    padding: 3rem;
-    max-width: 500px;
-    width: 90%;
-    margin: 2rem auto;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    position: relative;
-    z-index: 10;
+.login-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 2rem;
 }
 
-.logo-container {
+.login-box {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 25px;
+    padding: 3rem;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.logo-section {
     margin-bottom: 2rem;
 }
 
 .logo-icon {
-    font-size: 3rem;
+    font-size: 4rem;
     background: var(--gradient-2);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-bottom: 1rem;
 }
 
-.btn-join {
-    background: var(--gradient-2);
-    border: none;
-    border-radius: 50px;
-    padding: 15px 30px;
+.app-title {
+    font-size: 2.5rem;
     font-weight: bold;
-    color: white;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
+    background: var(--gradient-2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
 }
 
-.btn-join:hover {
-    transform: translateY(-3px);
+.app-subtitle {
+    color: #666;
+    font-size: 1.2rem;
+}
+
+.login-form {
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-control {
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid rgba(255, 107, 157, 0.2);
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.8);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.1);
+}
+
+.btn-login {
+    width: 100%;
+    padding: 1rem;
+    background: var(--gradient-2);
+    border: none;
+    border-radius: 15px;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-login:hover {
+    transform: translateY(-2px);
     box-shadow: 0 10px 25px rgba(255, 64, 129, 0.3);
 }
 
-.btn-join:active {
-    transform: translateY(-1px);
+.login-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    padding-top: 1rem;
 }
 
-/* الشريط العلوي */
+.online-count {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: #666;
+    font-weight: bold;
+}
+
+/* الواجهة الرئيسية */
+.main-app {
+    min-height: 100vh;
+}
+
 .app-navbar {
     background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(20px);
     padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
@@ -166,35 +225,24 @@ body {
     gap: 1rem;
 }
 
-.nav-btn {
-    background: none;
-    border: none;
-    font-size: 1.2rem;
-    color: var(--dark-color);
-    padding: 0.5rem;
-    border-radius: 50%;
-    transition: all 0.3s ease;
-    position: relative;
-}
-
-.nav-btn:hover {
-    background: rgba(255, 107, 157, 0.1);
-    color: var(--primary-color);
-}
-
-.notification-badge {
-    position: absolute;
-    top: 0;
-    right: 0;
-    background: var(--danger-color);
-    color: white;
-    border-radius: 50%;
-    width: 18px;
-    height: 18px;
-    font-size: 0.7rem;
+.user-wallet {
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 0.5rem;
+    background: rgba(255, 193, 7, 0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    color: #ff9800;
+    font-weight: bold;
+}
+
+.user-level {
+    background: var(--gradient-2);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.9rem;
 }
 
 .user-menu {
@@ -204,6 +252,7 @@ body {
     padding: 0.5rem;
     border-radius: 25px;
     background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
 }
 
 .user-avatar-sm {
@@ -214,54 +263,72 @@ body {
 }
 
 /* المحتوى الرئيسي */
-.main-content {
+.app-content {
     padding: 2rem;
-    margin-top: 1rem;
 }
 
-.sidebar {
+.left-sidebar {
     padding-right: 1rem;
 }
 
 .profile-card {
     background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(20px);
     border-radius: 20px;
     padding: 1.5rem;
-    text-align: center;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     margin-bottom: 2rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.profile-card img {
-    width: 100px;
-    height: 100px;
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.profile-img {
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
     object-fit: cover;
-    border: 4px solid white;
+    border: 3px solid white;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-.user-level {
-    color: var(--primary-color);
+.profile-info {
+    flex: 1;
+}
+
+.profile-name {
+    margin: 0;
+    color: var(--dark-color);
     font-weight: bold;
-    margin-bottom: 1rem;
+}
+
+.profile-uid {
+    margin: 0;
+    color: #666;
+    font-size: 0.9rem;
 }
 
 .profile-stats {
     display: flex;
-    justify-content: space-around;
-    margin-top: 1rem;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    padding: 1rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.stat {
+.stat-item {
     text-align: center;
 }
 
 .stat-number {
     display: block;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: bold;
     color: var(--primary-color);
 }
@@ -271,209 +338,256 @@ body {
     color: #666;
 }
 
-/* قائمة الغرف */
-.rooms-section, .online-users {
+.profile-actions {
+    text-align: center;
+}
+
+.btn-action {
+    background: var(--gradient-3);
+    border: none;
+    border-radius: 15px;
+    padding: 0.75rem 1.5rem;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.btn-action:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+}
+
+/* قائمة التنقل */
+.navigation-menu {
     background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(20px);
     border-radius: 20px;
-    padding: 1.5rem;
-    margin-bottom: 2rem;
+    padding: 1rem;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.room-item {
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
     padding: 1rem;
     margin: 0.5rem 0;
     border-radius: 15px;
     cursor: pointer;
     transition: all 0.3s ease;
-    border: 1px solid transparent;
+    color: #666;
 }
 
-.room-item:hover {
+.nav-item:hover {
     background: rgba(255, 107, 157, 0.1);
-    border-color: var(--primary-color);
-}
-
-.room-item.active {
-    background: var(--gradient-2);
-    color: white;
-}
-
-.room-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 0.5rem;
-}
-
-.room-members {
-    font-size: 0.8rem;
-    color: inherit;
-    opacity: 0.8;
-}
-
-/* منطقة الدردشة الرئيسية */
-.main-chat-area {
-    padding: 0 1rem;
-}
-
-.room-header {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 1.5rem;
-    margin-bottom: 1rem;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.room-info {
-    display: flex;
-    gap: 1rem;
-    margin-top: 0.5rem;
-}
-
-.room-members, .room-topic {
-    font-size: 0.9rem;
-    color: #666;
-}
-
-.chat-container {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    height: calc(100vh - 200px);
-    display: flex;
-    flex-direction: column;
-}
-
-.chat-box {
-    flex: 1;
-    padding: 1.5rem;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.welcome-message {
-    text-align: center;
-    color: #666;
-    padding: 3rem;
-}
-
-.welcome-message i {
-    font-size: 3rem;
-    margin-bottom: 1rem;
     color: var(--primary-color);
 }
 
-/* الرسائل */
-.message {
-    max-width: 70%;
-    padding: 1rem 1.5rem;
-    border-radius: 20px;
-    position: relative;
-    animation: messageSlide 0.3s ease;
-}
-
-@keyframes messageSlide {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.message.own {
-    align-self: flex-end;
+.nav-item.active {
     background: var(--gradient-2);
     color: white;
-    border-bottom-right-radius: 5px;
 }
 
-.message.other {
-    align-self: flex-start;
-    background: rgba(255, 255, 255, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-bottom-left-radius: 5px;
+/* المحتوى الرئيسي */
+.main-content {
+    padding: 0 1rem;
 }
 
-.message.male {
-    border-right: 4px solid var(--info-color);
+.content-section {
+    display: none;
 }
 
-.message.female {
-    border-right: 4px solid var(--primary-color);
+.content-section.active {
+    display: block;
 }
 
-.message-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.section-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.section-header h4 {
+    font-size: 2rem;
+    background: var(--gradient-2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     margin-bottom: 0.5rem;
 }
 
-.message-sender {
-    font-weight: bold;
-    font-size: 0.9rem;
+.section-header p {
+    color: #666;
+    font-size: 1.1rem;
 }
 
-.message-time {
-    font-size: 0.7rem;
-    opacity: 0.7;
+.feature-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
 }
 
-.message-content {
-    line-height: 1.4;
+.feature-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
 }
 
-/* إدخال الرسالة */
-.message-input-container {
-    padding: 1.5rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.3);
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
 }
 
-.input-group {
-    display: flex;
-    gap: 0.5rem;
-}
-
-.message-input-container input {
-    flex: 1;
-    border: none;
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: 25px;
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
-}
-
-.btn-send {
+.feature-icon {
+    width: 80px;
+    height: 80px;
     background: var(--gradient-2);
-    border: none;
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    color: white;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin: 0 auto 1rem;
+    color: white;
+    font-size: 2rem;
 }
 
-.input-hint {
-    text-align: center;
-    margin-top: 0.5rem;
+.feature-card h5 {
+    margin-bottom: 0.5rem;
+    color: var(--dark-color);
 }
 
-.input-hint small {
+.feature-card p {
     color: #666;
+    margin-bottom: 1.5rem;
+}
+
+.btn-feature {
+    background: var(--gradient-2);
+    border: none;
+    border-radius: 15px;
+    padding: 0.75rem 2rem;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-feature:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 64, 129, 0.3);
+}
+
+/* الأصدقاء المقترحين */
+.suggested-friends {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.suggested-friends h5 {
+    margin-bottom: 1.5rem;
+    color: var(--dark-color);
+    font-size: 1.2rem;
+}
+
+.friends-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.friend-card {
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 15px;
+    padding: 1rem;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.friend-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.friend-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 0.5rem;
+    border: 2px solid white;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.friend-name {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: var(--dark-color);
+}
+
+.friend-gender {
+    font-size: 0.8rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.friend-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.btn-follow-small {
+    background: var(--gradient-3);
+    border: none;
+    border-radius: 10px;
+    padding: 0.5rem 1rem;
+    color: white;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-follow-small:hover {
+    transform: translateY(-1px);
+}
+
+.btn-message-small {
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid var(--primary-color);
+    border-radius: 10px;
+    padding: 0.5rem 1rem;
+    color: var(--primary-color);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-message-small:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+.btn-message-small.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-message-small.disabled:hover {
+    background: rgba(255, 255, 255, 0.5);
+    color: var(--primary-color);
 }
 
 /* الشريط الجانبي الأيمن */
@@ -481,9 +595,9 @@ body {
     padding-left: 1rem;
 }
 
-.voice-section, .active-calls, .private-messages {
+.voice-match-card, .active-rooms, .notifications-card {
     background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(20px);
     border-radius: 20px;
     padding: 1.5rem;
     margin-bottom: 2rem;
@@ -491,19 +605,24 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.voice-header {
+.card-header {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     margin-bottom: 1rem;
 }
 
-.voice-header i {
+.card-header i {
     color: var(--primary-color);
     font-size: 1.2rem;
 }
 
-.voice-status {
+.card-header h5 {
+    margin: 0;
+    color: var(--dark-color);
+}
+
+.match-status {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -525,240 +644,353 @@ body {
     background: var(--danger-color);
 }
 
-.status-indicator.away {
-    background: var(--warning-color);
-}
-
 @keyframes pulse {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.5; }
 }
 
-.voice-description {
-    font-size: 0.9rem;
+.status-description {
     color: #666;
-    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
     line-height: 1.4;
 }
 
-.btn-contact-admin {
+.btn-contact {
+    width: 100%;
     background: var(--gradient-3);
     border: none;
-    border-radius: 25px;
-    padding: 0.75rem 1.5rem;
+    border-radius: 15px;
+    padding: 1rem;
     color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-contact:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+}
+
+/* الغرف النشطة */
+.room-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    margin: 0.5rem 0;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.room-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--gradient-2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.room-info {
+    flex: 1;
+}
+
+.room-name {
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+}
+
+.room-members {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+/* النوافذ المنبثقة */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 2rem;
+}
+
+.modal-content {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 25px;
+    width: 100%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.modal-header h4 {
+    margin: 0;
+    color: var(--dark-color);
+}
+
+.btn-close {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: #666;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.btn-close:hover {
+    background: rgba(255, 107, 157, 0.1);
+    color: var(--primary-color);
+}
+
+.modal-body {
+    padding: 2rem;
+}
+
+.rooms-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.room-card {
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 15px;
+    padding: 1.5rem;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.room-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.room-card-icon {
+    width: 60px;
+    height: 60px;
+    background: var(--gradient-2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    margin: 0 auto 1rem;
+}
+
+.room-card h5 {
+    margin-bottom: 0.5rem;
+    color: var(--dark-color);
+}
+
+.room-card p {
+    color: #666;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.room-stats {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.modal-alert {
+    background: rgba(255, 243, 224, 0.8);
+    border: 2px dashed #ff9800;
+    border-radius: 15px;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.modal-alert i {
+    font-size: 2rem;
+    color: #ff9800;
+    margin-bottom: 1rem;
+}
+
+.modal-alert p {
+    color: #e65100;
+    margin-bottom: 1.5rem;
+    font-weight: bold;
+}
+
+.btn-contact-admin {
+    background: var(--gradient-2);
+    border: none;
+    border-radius: 15px;
+    padding: 1rem 2rem;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
     transition: all 0.3s ease;
 }
 
 .btn-contact-admin:hover {
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+    box-shadow: 0 5px 15px rgba(255, 64, 129, 0.3);
 }
 
-/* المكالمات النشطة */
-.call-item {
+/* التوافق الصوتي */
+.voice-match-content {
+    text-align: center;
+}
+
+.match-animation {
+    width: 120px;
+    height: 120px;
+    background: rgba(255, 107, 157, 0.1);
+    border-radius: 50%;
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem;
-    margin: 0.5rem 0;
-    border-radius: 15px;
-    background: rgba(255, 255, 255, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    justify-content: center;
+    margin: 0 auto 2rem;
 }
 
-.call-avatar {
-    width: 40px;
-    height: 40px;
+.match-animation i {
+    font-size: 3rem;
+    color: var(--primary-color);
+}
+
+.voice-match-content h5 {
+    margin-bottom: 1rem;
+    color: var(--dark-color);
+}
+
+.voice-match-content p {
+    color: #666;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+/* الملف الشخصي */
+.profile-view {
+    text-align: center;
+}
+
+.profile-view-img {
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
     object-fit: cover;
-}
-
-.call-info {
-    flex: 1;
-}
-
-.call-participants {
-    font-size: 0.8rem;
-    color: #666;
-}
-
-.call-duration {
-    font-size: 0.7rem;
-    color: #999;
-}
-
-.call-active {
-    color: var(--success-color);
-    animation: pulse 2s infinite;
-}
-
-/* الرسائل الخاصة */
-.pm-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    border: 5px solid white;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     margin-bottom: 1rem;
 }
 
-.pm-badge {
-    background: var(--primary-color);
-    color: white;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    font-size: 0.7rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.profile-view h4 {
+    margin-bottom: 0.5rem;
+    color: var(--dark-color);
 }
 
-.pm-item {
+.profile-view-uid {
+    color: #666;
+    margin-bottom: 2rem;
+}
+
+.profile-actions-view {
     display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem;
-    margin: 0.5rem 0;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.btn-follow, .btn-message {
+    padding: 1rem 2rem;
+    border: none;
     border-radius: 15px;
+    font-weight: bold;
     cursor: pointer;
     transition: all 0.3s ease;
+}
+
+.btn-follow {
+    background: var(--gradient-3);
+    color: white;
+}
+
+.btn-follow:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+}
+
+.btn-message {
     background: rgba(255, 255, 255, 0.5);
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
 }
 
-.pm-item:hover {
-    background: rgba(255, 107, 157, 0.1);
-}
-
-.pm-item.unread {
-    background: rgba(255, 107, 157, 0.2);
-    border-right: 3px solid var(--primary-color);
-}
-
-.pm-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-.pm-preview {
-    flex: 1;
-}
-
-.pm-sender {
-    font-weight: bold;
-    font-size: 0.9rem;
-}
-
-.pm-text {
-    font-size: 0.8rem;
-    color: #666;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.pm-time {
-    font-size: 0.7rem;
-    color: #999;
-}
-
-/* نافذة الرسائل الخاصة */
-.pm-window {
-    position: fixed;
-    bottom: 2rem;
-    left: 2rem;
-    width: 350px;
-    height: 500px;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    display: flex;
-    flex-direction: column;
-    z-index: 1000;
-}
-
-.pm-header {
-    padding: 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.btn-close-pm {
-    background: none;
-    border: none;
-    color: #666;
-    cursor: pointer;
-}
-
-.pm-chat-box {
-    flex: 1;
-    padding: 1rem;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.pm-message {
-    max-width: 80%;
-    padding: 0.75rem 1rem;
-    border-radius: 15px;
-    font-size: 0.9rem;
-}
-
-.pm-message.own {
-    align-self: flex-end;
-    background: var(--gradient-2);
+.btn-message:hover:not(.disabled) {
+    background: var(--primary-color);
     color: white;
+    transform: translateY(-2px);
 }
 
-.pm-message.other {
-    align-self: flex-start;
-    background: rgba(255, 255, 255, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+.btn-message.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
-.pm-input-container {
-    padding: 1rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.3);
+.profile-stats-view {
     display: flex;
-    gap: 0.5rem;
-}
-
-.pm-input-container input {
-    flex: 1;
-    border: none;
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: 20px;
-    padding: 0.5rem 1rem;
-    font-size: 0.9rem;
-}
-
-.btn-send-pm {
-    background: var(--gradient-2);
-    border: none;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    color: white;
-    display: flex;
-    align-items: center;
     justify-content: center;
+    gap: 3rem;
+    padding: 2rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-/* الإشعارات */
+.stat-view {
+    text-align: center;
+}
+
+.stat-view .stat-number {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.stat-view .stat-label {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* الإشعارات العائمة */
 .notification-toast {
     position: fixed;
     top: 2rem;
     right: 2rem;
     background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(20px);
     border-radius: 15px;
     padding: 1rem 1.5rem;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
@@ -784,78 +1016,29 @@ body {
 
 /* التكيف مع الأجهزة المحمولة */
 @media (max-width: 768px) {
-    .main-content {
+    .app-content {
         padding: 1rem;
     }
     
-    .sidebar, .right-sidebar {
+    .left-sidebar, .right-sidebar {
         display: none;
     }
     
-    .main-chat-area {
+    .main-content {
         padding: 0;
     }
     
-    .message {
-        max-width: 85%;
+    .feature-cards {
+        grid-template-columns: 1fr;
     }
     
-    .pm-window {
-        width: calc(100vw - 2rem);
-        height: 70vh;
-        left: 1rem;
-        right: 1rem;
+    .friends-list {
+        grid-template-columns: 1fr;
     }
-}
-
-/* الوضع الليلي */
-body.dark-mode {
-    background: linear-gradient(-45deg, #2c3e50, #34495e, #16a085, #27ae60);
-    color: var(--light-color);
-}
-
-body.dark-mode .login-box,
-body.dark-mode .profile-card,
-body.dark-mode .rooms-section,
-body.dark-mode .online-users,
-body.dark-mode .room-header,
-body.dark-mode .chat-container,
-body.dark-mode .voice-section,
-body.dark-mode .active-calls,
-body.dark-mode .private-messages,
-body.dark-mode .app-navbar {
-    background: rgba(44, 62, 80, 0.95);
-    color: var(--light-color);
-}
-
-body.dark-mode .message.other {
-    background: rgba(52, 73, 94, 0.8);
-    color: var(--light-color);
-}
-
-body.dark-mode input,
-body.dark-mode .pm-message.other {
-    background: rgba(52, 73, 94, 0.8);
-    color: var(--light-color);
-}
-
-/* الرسوم المتحركة */
-.fade-in {
-    animation: fadeIn 0.5s ease;
-}
-
-.slide-in-right {
-    animation: slideInRight 0.5s ease;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes slideInRight {
-    from { transform: translateX(100%); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
+    
+    .modal-content {
+        margin: 1rem;
+    }
 }
 
 .hidden {
