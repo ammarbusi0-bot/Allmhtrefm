@@ -1,120 +1,230 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>دردشة حصرية</title>
-    <style>
-        body {
-            background: linear-gradient(to bottom, #0f0f23, #1a1a2e, #16213e);
-            color: #e0e0e0;
-            font-family: 'Arial', sans-serif;
-            text-align: center;
-            margin: 0;
-            padding: 20px;
-        }
-        
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        .chat-window {
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 20px;
-            padding: 30px;
-            margin-top: 30px;
-            box-shadow: 0 10px 30px rgba(255, 0, 150, 0.3);
-        }
-        
-        #messages {
-            height: 300px;
-            border: 1px solid #444;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 20px;
-            text-align: right;
-            overflow-y: auto;
-            background: rgba(255, 255, 255, 0.1);
-        }
-        
-        input, button {
-            padding: 12px;
-            margin: 5px;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-        }
-        
-        input {
-            width: 70%;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-        }
-        
-        button {
-            background: #ff0066;
-            color: white;
-            cursor: pointer;
-            width: 25%;
-        }
-        
-        button:hover {
-            background: #cc0055;
-        }
-    </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>بوتجة حلبية - مجتمع حلب الافتراضي</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>🦋 مرحباً في عالم الدردشة السري 🦋</h1>
-        <p>ابدأ محادثة جديدة واستمتع بتجربة فريدة...</p>
+    <!-- الخلفية المتحركة -->
+    <div class="animated-bg">
+        <div class="shape shape1"></div>
+        <div class="shape shape2"></div>
+        <div class="shape shape3"></div>
+        <div class="shape shape4"></div>
+    </div>
+
+    <!-- شاشة الدخول -->
+    <div class="login-box text-center fade-in" id="loginBox">
+        <div class="logo-container">
+            <i class="fas fa-heart logo-icon"></i>
+            <h2 class="mb-4">بوتجة حلبية</h2>
+        </div>
+        <p class="text-muted mb-4">ادخل اسمك عشان تدخل عالم البوتجة الحلبية!</p>
+        <div class="mb-3">
+            <input type="text" id="userName" class="form-control form-control-lg text-center" placeholder="اسمك الحلو..." />
+        </div>
+        <div class="mb-3">
+            <select id="userGender" class="form-select text-center">
+                <option value="male">شب</option>
+                <option value="female">بنوتة</option>
+            </select>
+        </div>
+        <button class="btn btn-primary btn-lg btn-join w-100" onclick="enterApp()">
+            دخول البوتجة <i class="fas fa-arrow-left"></i>
+        </button>
         
-        <div class="chat-window">
-            <div id="messages">
-                <p>🔮 النظام: أهلاً بك! اكتب رسالة لتبدأ الدردشة...</p>
-            </div>
-            <input type="text" id="messageInput" placeholder="اكتب رسالتك هنا... 💬">
-            <button onclick="sendMessage()">إرسال 🚀</button>
+        <div class="mt-4">
+            <small class="text-muted">بالدخول، انت موافق على <a href="#" onclick="showTerms()">شروط الاستخدام</a></small>
         </div>
     </div>
 
-    <script>
-        function sendMessage() {
-            var messageInput = document.getElementById('messageInput');
-            var message = messageInput.value;
-            
-            if (message !== '') {
-                var messagesDiv = document.getElementById('messages');
-                messagesDiv.innerHTML += '<p>👤 <b>أنت:</b> ' + message + '</p>';
-                messageInput.value = '';
-                
-                // رد تلقائي بعد ثانيتين
-                setTimeout(function() {
-                    var responses = [
-                        '🦋 غريب: أحب دردشتنا هذه!',
-                        '🌙 شخص مجهول: هذا مثير للاهتمام...',
-                        '💫 زائر: هل يمكننا التحدث أكثر؟',
-                        '🔮 شخص: أنت رائع/ة في المحادثة!'
-                    ];
-                    var randomResponse = responses[Math.floor(Math.random() * responses.length)];
-                    messagesDiv.innerHTML += '<p>' + randomResponse + '</p>';
-                    
-                    // Scroll to bottom
-                    messagesDiv.scrollTop = messagesDiv.scrollHeight;
-                }, 2000);
-                
-                // Scroll to bottom
-                messagesDiv.scrollTop = messagesDiv.scrollHeight;
-            }
-        }
-        
-        // إدخال بالزر Enter
-        document.getElementById('messageInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
-        });
-    </script>
+    <!-- الواجهة الرئيسية -->
+    <div class="main-container hidden slide-in-right" id="mainApp">
+        <!-- الشريط العلوي -->
+        <nav class="app-navbar">
+            <div class="nav-brand">
+                <i class="fas fa-heart"></i>
+                بوتجة حلبية
+            </div>
+            <div class="nav-controls">
+                <button class="nav-btn" onclick="toggleDarkMode()">
+                    <i class="fas fa-moon" id="darkModeIcon"></i>
+                </button>
+                <button class="nav-btn" onclick="showNotifications()">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge" id="notificationCount">0</span>
+                </button>
+                <div class="user-menu">
+                    <img id="navUserAvatar" src="" alt="avatar" class="user-avatar-sm">
+                    <span id="navUserName"></span>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container-fluid main-content">
+            <div class="row">
+                <!-- القائمة الجانبية -->
+                <div class="col-md-3 sidebar">
+                    <!-- الملف الشخصي -->
+                    <div class="profile-card">
+                        <img id="profileAvatar" src="" alt="المستخدم"/>
+                        <h5 id="profileName" class="mt-3">...</h5>
+                        <p class="user-level" id="userLevel">عضو جديد</p>
+                        <div class="profile-stats">
+                            <div class="stat">
+                                <span class="stat-number" id="messageCount">0</span>
+                                <span class="stat-label">رسالة</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number" id="roomCount">0</span>
+                                <span class="stat-label">غرفة</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- قائمة الغرف -->
+                    <div class="rooms-section">
+                        <h6><i class="fas fa-door-open"></i> غرف الدردشة</h6>
+                        <div class="rooms-list" id="roomsList">
+                            <!-- الغرف تُضاف هنا -->
+                        </div>
+                    </div>
+
+                    <!-- المستخدمين المتصلين -->
+                    <div class="online-users">
+                        <h6><i class="fas fa-users"></i> المتصلين الآن <span id="onlineCount">(0)</span></h6>
+                        <div class="users-list" id="onlineUsersList">
+                            <!-- المستخدمين يُضافون هنا -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- المنطقة الرئيسية -->
+                <div class="col-md-6 main-chat-area">
+                    <!-- رأس الغرفة -->
+                    <div class="room-header">
+                        <h4 id="currentRoomName">اختر غرفة للدردشة</h4>
+                        <div class="room-info">
+                            <span class="room-members" id="roomMembers">0 متصل</span>
+                            <span class="room-topic" id="roomTopic">موضوع النقاش</span>
+                        </div>
+                    </div>
+
+                    <!-- منطقة الدردشة -->
+                    <div class="chat-container">
+                        <div class="chat-box" id="chatBox">
+                            <div class="welcome-message" id="welcomeMessage">
+                                <i class="fas fa-comments"></i>
+                                <h5>أهلاً وسهلاً في البوتجة الحلبية!</h5>
+                                <p>اختر غرفة من القائمة لتبدأ الدردشة</p>
+                            </div>
+                        </div>
+
+                        <!-- مؤشر الكتابة -->
+                        <div class="typing-indicator" id="typingIndicator">
+                            <span id="typingUsers"></span> <span class="typing-dots">...</span>
+                        </div>
+
+                        <!-- إدخال الرسالة -->
+                        <div class="message-input-container">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="messageInput" 
+                                       placeholder="اكتب رسالتك هنا..." 
+                                       onkeypress="handleMessageKeyPress(event)">
+                                <button class="btn btn-send" onclick="sendMessage()">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                            <div class="input-hint">
+                                <small>للمشاركة في النقاش، تواصل مع المشرف أولاً</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- الشريط الجانبي الأيمن -->
+                <div class="col-md-3 right-sidebar">
+                    <!-- التوافق الصوتي -->
+                    <div class="voice-section">
+                        <div class="voice-header">
+                            <i class="fas fa-microphone"></i>
+                            <h6>التوافق الصوتي</h6>
+                        </div>
+                        <div class="voice-status">
+                            <div class="status-indicator offline"></div>
+                            <span>الخدمة متوقفة</span>
+                        </div>
+                        <p class="voice-description">
+                            خدمة التوافق الصوتي حالياً معطلة. للمشاركة في المكالمات الصوتية، 
+                            تواصل مع المشرف على تيليجرام
+                        </p>
+                        <button class="btn btn-contact-admin" onclick="contactAdmin()">
+                            <i class="fab fa-telegram-plane"></i>
+                            تواصل مع المشرف
+                        </button>
+                    </div>
+
+                    <!-- المكالمات النشطة -->
+                    <div class="active-calls">
+                        <h6><i class="fas fa-phone-alt"></i> مكالمات جارية</h6>
+                        <div class="calls-list" id="activeCallsList">
+                            <!-- المكالمات النشطة -->
+                        </div>
+                    </div>
+
+                    <!-- الرسائل الخاصة -->
+                    <div class="private-messages">
+                        <div class="pm-header">
+                            <h6><i class="fas fa-lock"></i> الرسائل الخاصة</h6>
+                            <span class="pm-badge" id="pmCount">0</span>
+                        </div>
+                        <div class="pm-list" id="privateMessagesList">
+                            <!-- الرسائل الخاصة -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- النوافذ المنبثقة -->
+    <div class="modal-overlay hidden" id="modalOverlay"></div>
+
+    <!-- نافذة الرسائل الخاصة -->
+    <div class="pm-window hidden" id="pmWindow">
+        <div class="pm-header">
+            <h6>محادثة خاصة مع <span id="pmUserName"></span></h6>
+            <button class="btn-close-pm" onclick="closePmWindow()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="pm-chat-box" id="pmChatBox">
+            <!-- محادثة خاصة -->
+        </div>
+        <div class="pm-input-container">
+            <input type="text" id="pmMessageInput" placeholder="اكتب رسالة خاصة..." 
+                   onkeypress="handlePmKeyPress(event)">
+            <button class="btn btn-send-pm" onclick="sendPrivateMessage()">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- الإشعارات -->
+    <div class="notification-toast" id="notificationToast">
+        <div class="toast-content">
+            <i class="fas fa-bell"></i>
+            <span id="toastMessage"></span>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="data.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
