@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // العناصر الأساسية (تم اختصارها هنا للإيجاز، لكنها تحتاج لوجودها في الكود الحقيقي)
+    // ... (اختصار للعناصر الأساسية) ...
     const surahsListContainer = document.getElementById('surahs-list');
     const loadingScreen = document.getElementById('loading-screen');
     const themeToggle = document.getElementById('theme-toggle');
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalSurahInfo = document.getElementById('modal-surah-info');
     const ayahsContainer = document.getElementById('ayahs-container');
     const filteredCount = document.getElementById('filtered-count');
-    // ... (بقية المتغيرات) ...
+
 
     // المتغيرات العامة
     let allSurahs = [];
@@ -39,11 +39,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const TOTAL_AYAHS_QURAN = 6236; 
 
     // روابط الـ API
-    // الرابط المُؤمَّن الجديد لضمان عمل المصحف بشكل فوري
+    // الرابط المُؤمَّن للقرآن
     const QURAN_JSON_URL = 'https://unpkg.com/quran-json@1.0.1/json/quran.json'; 
     
-    const GEOLOCATION_API_URL = 'https://ip-api.com/json/'; // تم تغييرها إلى HTTPS لضمان العمل
-    const PRAYER_API_BASE = 'https://api.aladhan.com/v1/timings/today'; // تم تغييرها إلى HTTPS لضمان العمل
+    // تم تغيير الروابط إلى HTTPS لضمان عدم الحظر
+    const GEOLOCATION_API_URL = 'https://ip-api.com/json/'; 
+    const PRAYER_API_BASE = 'https://api.aladhan.com/v1/timings/today'; 
     const PRAYER_CALC_METHOD = 3; 
 
     // === وظائف التهيئة ===
@@ -54,7 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function setupEventListeners() {
-        // ... (أحداث الأزرار والفلاتر) ...
         themeToggle.addEventListener('click', toggleTheme);
         backToTopBtn.addEventListener('click', scrollToTop);
         window.addEventListener('scroll', toggleBackToTopButton);
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
         goToLastReadBtn.addEventListener('click', goToLastRead);
     }
 
-    // === جلب البيانات وعرضها (تم تعديل رسالة الخطأ لتكون أكثر وضوحاً) ===
+    // === جلب البيانات وعرضها ===
     async function fetchQuranData() {
         try {
             const response = await fetch(QURAN_JSON_URL);
@@ -83,25 +83,24 @@ document.addEventListener('DOMContentLoaded', () => {
             updateStatistics();
             updateProgressTracking();
             renderSurahs();
-            fetchPrayerTimes(); 
+            await fetchPrayerTimes(); // انتظار اكتمال جلب أوقات الصلاة قبل إخفاء شاشة التحميل
 
-            setTimeout(() => { loadingScreen.classList.add('fade-out'); }, 1000);
+            // إخفاء شاشة التحميل بعد اكتمال كل شيء
+            setTimeout(() => { loadingScreen.classList.add('fade-out'); }, 500);
             
         } catch (error) {
             console.error('حدث خطأ فادح في تحميل البيانات:', error);
             surahsListContainer.innerHTML = `
                 <div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
-                    <p style="color: red; font-size: 1.2em;">❌ فشل تحميل المصحف. (Error: ${error.message})<br> يرجى التحقق من رابط CDN في ملف script.js أو اتصالك بالإنترنت.</p>
+                    <p style="color: red; font-size: 1.2em;">❌ فشل تحميل المصحف الأساسي. (Error: ${error.message})<br> قد تكون مشكلة في الإنترنت أو أن رابط البيانات غير متاح مؤقتاً.</p>
                 </div>
             `;
-            loadingScreen.classList.remove('fade-out'); // لتبقى الشاشة ظاهرة بالخطأ
-            loadingScreen.style.backgroundColor = 'var(--dark-bg)'; // لتوضيح الخطأ
+            // إخفاء شاشة التحميل للسماح برؤية رسالة الخطأ
+            setTimeout(() => { loadingScreen.classList.add('fade-out'); }, 500);
         }
     }
-
-    // ... (بقية وظائف الموقع لم تتغير) ...
-    // تم إضافة جميع الوظائف التي تم اختصارها سابقاً هنا ليكون الملف كاملاً
-
+    
+    // ... (بقية وظائف renderSurahs, handleSearch, filterSurahs, sortSurahs, applyCurrentSort) ...
     function renderSurahs() {
         surahsListContainer.innerHTML = '';
         if (filteredSurahs.length === 0) {
@@ -164,7 +163,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         renderSurahs();
     }
-    
+
+    // === وظيفة أوقات الصلاة (تم التأمين) ===
     async function fetchPrayerTimes() {
         try {
             autoLocationSpan.textContent = 'جاري تحديد موقع الـ IP...';
@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
             renderPrayerTimes(prayerData.data.timings);
 
         } catch (error) {
-            console.error('فشل في جلب الموقع أو مواقيت الصلاة:', error);
+            console.error('فشل في جلب الموقع أو مواقيت الصلاة (سيتم استخدام مكة):', error);
             autoLocationSpan.textContent = `فشل التحديد. (سيتم استخدام موقع بديل)`;
             fetchPrayerTimesFallback(); 
         }
@@ -211,7 +211,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function renderPrayerTimes(timings) {
-        // ... (منطق عرض أوقات الصلاة) ...
         const prayerTimesContainer = document.getElementById('prayer-times-container');
         prayerTimesContainer.innerHTML = '';
         const prayerNames = { Fajr: 'الفجر', Sunrise: 'الشروق', Dhuhr: 'الظهر', Asr: 'العصر', Maghrib: 'المغرب', Isha: 'العشاء' };
@@ -252,9 +251,9 @@ document.addEventListener('DOMContentLoaded', () => {
              nextPrayerSpan.textContent = `لم يتم تحديد الصلاة القادمة بعد.`;
         }
     }
-    
+
+    // ... (بقية وظائف تتبع الحفظ والعمليات) ...
     function updateProgressTracking() {
-        // ... (منطق تحديث تتبع التقدم) ...
         const lastRead = JSON.parse(localStorage.getItem('lastRead')) || null;
         let totalMemorized = 0;
         let memorizedMeccan = 0;
@@ -324,7 +323,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function showSurahDetails(surah) {
-        // ... (منطق عرض تفاصيل السورة) ...
         currentSurah = surah;
         modalSurahName.textContent = `${surah.number}. ${surah.name}`;
         modalSurahInfo.innerHTML = `<p>${surah.englishName} - ${surah.englishNameTranslation}</p><p>${surah.revelationType === 'Meccan' ? 'مكية' : 'مدنية'} - ${surah.numberOfAyahs} آية</p>`;
