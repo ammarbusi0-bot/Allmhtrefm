@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🕌 المصحف الشريف المُطوّر والمُتحدي</title>
+    <title>🕌 المصحف الشريف المُطوّر</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,12 +15,11 @@
             <div class="quran-icon">🕌</div>
             <h2>المصحف الشريف</h2>
             <div class="loading-spinner"></div>
-            <p>جارٍ تحميل بيانات التحدي...</p>
+            <p>جارٍ تحميل البيانات...</p>
         </div>
     </div>
 
     <button id="theme-toggle" class="theme-btn">🌙</button>
-
     <button id="back-to-top" class="back-to-top">↑</button>
 
     <header>
@@ -28,8 +27,8 @@
             <div class="header-decoration">
                 <div class="islamic-pattern"></div>
             </div>
-            <h1>🕌 المصحف الشريف المُتحدي 📖</h1>
-            <p class="subtitle">قراءة وتدبر وتتبع الإنجاز بذكاء</p>
+            <h1>🕌 المصحف الشريف 📖</h1>
+            <p class="subtitle">قراءة وتدبر وتتبع الإنجاز</p>
         </div>
     </header>
 
@@ -45,32 +44,6 @@
             </p>
         </section>
         
-        <section id="progress-tracking" class="widget-section">
-            <h2 class="section-title">تتبع إنجازي التفصيلي 📊</h2>
-            <div class="progress-container">
-                <div class="progress-card last-read">
-                    <h3>📚 آخر مكان وصول</h3>
-                    <p id="last-read-location">لم تبدأ القراءة بعد.</p>
-                    <button class="action-btn small-btn" id="go-to-last-read">اذهب للقراءة</button>
-                </div>
-                
-                <div class="progress-card individual-stats">
-                    <h3>⭐ إحصائيات الحفظ الفردية</h3>
-                    <p>السور المحفوظة: <strong id="total-memorized-surahs">0</strong> سورة</p>
-                    <p>نسبة المكيات: <strong id="meccan-ratio">0%</strong></p>
-                    <p>نسبة المدنيات: <strong id="medinan-ratio">0%</strong></p>
-                </div>
-                
-                <div class="progress-card memorization-progress">
-                    <h3>🌟 تقدم الحفظ الكلي</h3>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar" id="memorization-bar"></div>
-                    </div>
-                    <p id="memorization-status">0% من المصحف محفوظ</p>
-                </div>
-            </div>
-        </section>
-
         <section id="controls">
             <div class="controls-container">
                 <div class="search-box">
@@ -101,7 +74,8 @@
 
         <section id="surahs-section">
             <div id="surahs-list" class="grid-container">
-                </div>
+                <!-- سيتم ملؤه بالجافاسكريبت -->
+            </div>
         </section>
 
         <section id="statistics">
@@ -140,11 +114,7 @@
                 <div class="surah-info" id="modal-surah-info"></div>
             </div>
             <div class="ayahs-container" id="ayahs-container">
-                </div>
-            <div class="modal-actions">
-                <button id="mark-surah-memorized-btn" class="action-btn">✅ تم حفظ السورة كاملة</button>
-                <button id="bookmark-btn" class="action-btn">🔖 وضع إشارة</button>
-                <button id="share-btn" class="action-btn">📤 مشاركة</button>
+                <!-- سيتم ملؤه بالجافاسكريبت -->
             </div>
         </div>
     </div>
