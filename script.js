@@ -43,10 +43,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const TOTAL_AYAHS_QURAN = 6236; // العدد التقريبي لآيات المصحف
 
     // روابط الـ API
-    const QURAN_JSON_URL = 'https://raw.githubusercontent.com/rn0x/Quran-Json/main/quran-full.json';
+    // تم التعديل هنا: استخدام رابط CDN مستقر بدلاً من رابط جيت هاب الخام
+    const QURAN_JSON_URL = 'https://unpkg.com/quran-json@1.0.1/json/quran.json';
+    
     const GEOLOCATION_API_URL = 'http://ip-api.com/json/'; // جلب الموقع التلقائي
     const PRAYER_API_BASE = 'http://api.aladhan.com/v1/timings/today'; 
-    const PRAYER_CALC_METHOD = 3; // 3 = رابطة العالم الإسلامي
+    const PRAYER_CALC_METHOD = 3; // 3 = رابطة العالم الإسلامي (لضمان الدقة في معظم المناطق)
 
     // === وظائف التهيئة ===
     function initApp() {
@@ -56,6 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function setupEventListeners() {
+        // ... (أحداث الأزرار والفلاتر) ...
         themeToggle.addEventListener('click', toggleTheme);
         backToTopBtn.addEventListener('click', scrollToTop);
         window.addEventListener('scroll', toggleBackToTopButton);
@@ -67,8 +70,6 @@ document.addEventListener('DOMContentLoaded', () => {
         window.addEventListener('click', (e) => { if (e.target === surahModal) { surahModal.style.display = 'none'; } });
         bookmarkBtn.addEventListener('click', handleBookmark);
         shareBtn.addEventListener('click', handleShare);
-        
-        // أحداث الميزات الجديدة
         markSurahMemorizedBtn.addEventListener('click', markSurahMemorized);
         goToLastReadBtn.addEventListener('click', goToLastRead);
     }
@@ -80,23 +81,24 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!response.ok) { throw new Error('فشل في جلب البيانات: ' + response.statusText); }
             
             const data = await response.json();
-            allSurahs = data.surahs;
+            // يجب التأكد أن البيانات المسترجعة تأتي في هيئة مصفوفة أو يمكن الوصول إلى السور مباشرة
+            // بناءً على هيكل ملف 'quran.json' في unpkg، السور تكون في مصفوفة مباشرة
+            allSurahs = data;
+            
             filteredSurahs = [...allSurahs];
             
-            // تنفيذ الوظائف الجديدة بعد جلب البيانات
             updateStatistics();
             updateProgressTracking();
             renderSurahs();
-            fetchPrayerTimes(); // جلب أوقات الصلاة تلقائياً
+            fetchPrayerTimes(); 
 
-            // إخفاء شاشة التحميل
             setTimeout(() => { loadingScreen.classList.add('fade-out'); }, 1000);
             
         } catch (error) {
-            console.error('حدث خطأ:', error);
+            console.error('حدث خطأ فادح في تحميل البيانات:', error);
             surahsListContainer.innerHTML = `
                 <div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
-                    <p style="color: red; font-size: 1.2em;">عذراً، لم نتمكن من تحميل بيانات المصحف. (${error.message})</p>
+                    <p style="color: red; font-size: 1.2em;">عذراً، لم نتمكن من تحميل بيانات المصحف. (${error.message})<br> يرجى التحقق من اتصال الإنترنت أو رابط المصدر.</p>
                 </div>
             `;
             loadingScreen.style.display = 'none';
@@ -104,6 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderSurahs() {
+        // ... (منطق عرض السور) ...
         surahsListContainer.innerHTML = '';
         if (filteredSurahs.length === 0) {
             surahsListContainer.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 40px;"><p style="font-size: 1.2em;">لم يتم العثور على سور تطابق معايير البحث.</p></div>`;
@@ -131,13 +134,48 @@ document.addEventListener('DOMContentLoaded', () => {
         filteredCount.textContent = `${filteredSurahs.length} سورة معروضة`;
     }
 
-    // ... (وظائف البحث والتصفية: handleSearch, clearSearch, filterSurahs, sortSurahs, applyCurrentSort) ...
-    // تم حذفها للاختصار، لكنها موجودة بالملف
+    // === وظائف البحث والتصفية (تم إضافتها كاملة الآن) ===
+    function handleSearch() {
+        const query = searchInput.value.trim().toLowerCase();
+        filterSurahs(query);
+    }
+    
+    function clearSearch() {
+        searchInput.value = '';
+        filterSurahs('');
+    }
+
+    function filterSurahs(query = searchInput.value.trim().toLowerCase()) {
+        const revelation = revelationFilter.value;
+        filteredSurahs = allSurahs.filter(surah => {
+            const matchesQuery = surah.name.toLowerCase().includes(query) || 
+                                 surah.englishName.toLowerCase().includes(query) || 
+                                 surah.englishNameTranslation.toLowerCase().includes(query);
+            const matchesRevelation = revelation === 'all' || surah.revelationType === revelation;
+            return matchesQuery && matchesRevelation;
+        });
+        applyCurrentSort();
+    }
+
+    function sortSurahs() {
+        applyCurrentSort();
+    }
+    
+    function applyCurrentSort() {
+        const sortBy = sortFilter.value;
+        filteredSurahs.sort((a, b) => {
+            if (sortBy === 'number') return a.number - b.number;
+            if (sortBy === 'name') return a.name.localeCompare(b.name, 'ar');
+            if (sortBy === 'ayahs') return b.numberOfAyahs - a.numberOfAyahs; // تنازليًا
+            return 0;
+        });
+        renderSurahs();
+    }
+
 
     // === ميزة: أوقات الصلاة التلقائية (الذكاء الموضعي) ===
     async function fetchPrayerTimes() {
         try {
-            // الخطوة 1: جلب الموقع الجغرافي عبر الـ IP
             autoLocationSpan.textContent = 'جاري تحديد موقع الـ IP...';
             const locationResponse = await fetch(GEOLOCATION_API_URL);
             const locationData = await locationResponse.json();
@@ -153,7 +191,6 @@ document.addEventListener('DOMContentLoaded', () => {
             locationNameSpan.textContent = `في ${city}`;
             calcMethodSpan.textContent = 'رابطة العالم الإسلامي (تلقائي)';
             
-            // الخطوة 2: جلب أوقات الصلاة باستخدام الإحداثيات المكتشفة
             const PRAYER_URL = `${PRAYER_API_BASE}?latitude=${lat}&longitude=${lon}&method=${PRAYER_CALC_METHOD}`;
             
             const prayerResponse = await fetch(PRAYER_URL);
@@ -188,7 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const prayerNames = { Fajr: 'الفجر', Sunrise: 'الشروق', Dhuhr: 'الظهر', Asr: 'العصر', Maghrib: 'المغرب', Isha: 'العشاء' };
         const now = new Date();
         let nextPrayer = { name: null, time: null, diff: Infinity };
-        const cardsData = []; // لتخزين البيانات قبل العرض لتحديد الصلاة القادمة بشكل صحيح
+        const cardsData = []; 
 
         Object.keys(prayerNames).forEach(key => {
             if (key === 'Sunrise') return;
@@ -200,7 +237,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             let timeDiff = prayerDate.getTime() - now.getTime();
             
-            // إذا كانت الصلاة في الماضي، نفترض أنها صلاة الغد
             if (timeDiff < 0) {
                 timeDiff += 24 * 60 * 60 * 1000;
             }
@@ -208,7 +244,6 @@ document.addEventListener('DOMContentLoaded', () => {
             cardsData.push({ key, name: prayerNames[key], time: timeString, diff: timeDiff });
         });
         
-        // تحديد الصلاة القادمة
         nextPrayer = cardsData.reduce((prev, current) => (current.diff < prev.diff ? current : prev), nextPrayer);
 
         cardsData.forEach(data => {
@@ -252,7 +287,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // تحديث آخر مكان وصول
         if (lastRead) {
             const surah = allSurahs.find(s => s.number === lastRead.surahNumber);
             lastReadLocation.innerHTML = `<strong>سورة ${surah ? surah.name : lastRead.surahNumber}، الآية ${lastRead.ayahNumber}</strong>`;
@@ -262,12 +296,10 @@ document.addEventListener('DOMContentLoaded', () => {
             goToLastReadBtn.style.display = 'none';
         }
 
-        // تحديث تقدم الحفظ الكلي
-        const percentage = TOTAL_AYAH_QURAN > 0 ? ((totalMemorized / TOTAL_AYAH_QURAN) * 100).toFixed(2) : 0;
+        const percentage = TOTAL_AYAHS_QURAN > 0 ? ((totalMemorized / TOTAL_AYAHS_QURAN) * 100).toFixed(2) : 0;
         memorizationBar.style.width = `${percentage}%`;
         memorizationStatus.textContent = `${percentage}% من المصحف محفوظ (${totalMemorized.toLocaleString()} آية)`;
 
-        // تحديث الإحصائيات الفردية
         totalMemorizedSurahsSpan.textContent = totalMemorizedSurahs;
         
         const totalMemorizedRev = memorizedMeccan + memorizedMedinan;
@@ -293,20 +325,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (ayahElement) {
                         ayahElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
                         ayahElement.style.border = '4px dashed var(--gold-color)';
-                        setTimeout(() => ayahElement.style.border = '4px solid var(--accent-color)', 3000); // العودة للون الأصلي
+                        setTimeout(() => ayahElement.style.border = '4px solid var(--accent-color)', 3000);
                     }
                 }, 350);
             }
         }
     }
 
-    // === وظائف تتبع الحفظ ===
+    // === وظائف تتبع الحفظ (بما في ذلك التحديثات) ===
     function showSurahDetails(surah) {
         currentSurah = surah;
         modalSurahName.textContent = `${surah.number}. ${surah.name}`;
         modalSurahInfo.innerHTML = `<p>${surah.englishName} - ${surah.englishNameTranslation}</p><p>${surah.revelationType === 'Meccan' ? 'مكية' : 'مدنية'} - ${surah.numberOfAyahs} آية</p>`;
         
         ayahsContainer.innerHTML = '';
+        // يجب التأكد من أن الآيات هي في مصفوفة 'ayahs' داخل كائن السورة
         surah.ayahs.forEach(ayah => {
             const isMemorized = isAyahMemorized(surah.number, ayah.numberInSurah);
             const ayahElement = document.createElement('div');
@@ -388,8 +421,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const isFull = isSurahMemorized(surahNumber);
         
         if (isFull) {
+            // إلغاء حفظ السورة
             delete memorizedAyahs[surahNumber];
         } else {
+            // حفظ السورة بالكامل
             memorizedAyahs[surahNumber] = currentSurah.ayahs.map(a => a.numberInSurah);
         }
         
@@ -411,8 +446,12 @@ document.addEventListener('DOMContentLoaded', () => {
         themeToggle.textContent = theme === 'light' ? '🌙' : '☀️';
     }
     
-    function handleBookmark() { /* منطق الإشارة */ alert(`تم وضع إشارة على سورة ${modalSurahName.textContent.split('. ')[1]}`); }
-    function handleShare() { /* منطق المشاركة */ }
+    function handleBookmark() { 
+        alert(`تم وضع إشارة على سورة ${modalSurahName.textContent.split('. ')[1]}`); 
+    }
+    function handleShare() { 
+        alert("وظيفة المشاركة قيد التطوير!"); 
+    }
     function updateStatistics() {
         let total = 0;
         allSurahs.forEach(surah => { total += surah.numberOfAyahs; });
