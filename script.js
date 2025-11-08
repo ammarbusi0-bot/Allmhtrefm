@@ -29,7 +29,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const ayahsContainer = document.getElementById('ayahs-container');
     const filteredCount = document.getElementById('filtered-count');
 
-
     // المتغيرات العامة
     let allSurahs = [];
     let filteredSurahs = [];
@@ -39,11 +38,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const TOTAL_AYAHS_QURAN = 6236; 
 
     // روابط الـ API
-    // الرابط المُؤمَّن للقرآن
-    const QURAN_JSON_URL = 'https://unpkg.com/quran-json@1.0.1/json/quran.json'; 
+    // الحل الحاسم: استخدام API موثوق لبيانات القرآن بدلاً من ملف JSON مباشر
+    const QURAN_API_URL = 'https://api.alquran.cloud/v1/meta'; 
     
-    // تم تغيير الروابط إلى HTTPS لضمان عدم الحظر
-    const GEOLOCATION_API_URL = 'https://ip-api.com/json/'; 
+    // روابط الصلاة
     const PRAYER_API_BASE = 'https://api.aladhan.com/v1/timings/today'; 
     const PRAYER_CALC_METHOD = 3; 
 
@@ -55,6 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function setupEventListeners() {
+        // ... (أحداث الأزرار والفلاتر) ...
         themeToggle.addEventListener('click', toggleTheme);
         backToTopBtn.addEventListener('click', scrollToTop);
         window.addEventListener('scroll', toggleBackToTopButton);
@@ -69,38 +68,47 @@ document.addEventListener('DOMContentLoaded', () => {
         goToLastReadBtn.addEventListener('click', goToLastRead);
     }
 
-    // === جلب البيانات وعرضها ===
+    // === جلب البيانات وعرضها (تم التحديث لاستخدام API أحدث) ===
     async function fetchQuranData() {
         try {
-            const response = await fetch(QURAN_JSON_URL);
+            const response = await fetch(QURAN_API_URL);
             if (!response.ok) { throw new Error('فشل في جلب بيانات القرآن (HTTP Status ' + response.status + ')'); }
             
             const data = await response.json();
-            allSurahs = data;
+            // تعديل لاستخراج بيانات السور من API الجديد
+            allSurahs = data.data.surahs.references.map(s => ({
+                number: s.number,
+                name: s.name,
+                englishName: s.englishName,
+                englishNameTranslation: s.englishNameTranslation,
+                revelationType: s.revelationType,
+                numberOfAyahs: s.numberOfAyahs
+            }));
             
             filteredSurahs = [...allSurahs];
             
             updateStatistics();
             updateProgressTracking();
             renderSurahs();
-            await fetchPrayerTimes(); // انتظار اكتمال جلب أوقات الصلاة قبل إخفاء شاشة التحميل
+            // طلب الموقع لتحديد أوقات الصلاة (الخطوة الجديدة)
+            await requestUserLocationAndPrayerTimes(); 
 
-            // إخفاء شاشة التحميل بعد اكتمال كل شيء
+            // إخفاء شاشة التحميل
             setTimeout(() => { loadingScreen.classList.add('fade-out'); }, 500);
             
         } catch (error) {
             console.error('حدث خطأ فادح في تحميل البيانات:', error);
             surahsListContainer.innerHTML = `
                 <div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
-                    <p style="color: red; font-size: 1.2em;">❌ فشل تحميل المصحف الأساسي. (Error: ${error.message})<br> قد تكون مشكلة في الإنترنت أو أن رابط البيانات غير متاح مؤقتاً.</p>
+                    <p style="color: red; font-size: 1.2em;">❌ فشل تحميل المصحف الأساسي. (Error: ${error.message})<br> يرجى التحقق من الاتصال أو رابط API (api.alquran.cloud).</p>
                 </div>
             `;
-            // إخفاء شاشة التحميل للسماح برؤية رسالة الخطأ
             setTimeout(() => { loadingScreen.classList.add('fade-out'); }, 500);
         }
     }
     
-    // ... (بقية وظائف renderSurahs, handleSearch, filterSurahs, sortSurahs, applyCurrentSort) ...
+    // ... (بقية وظائف renderSurahs, handleSearch, filterSurahs, sortSurahs, applyCurrentSort كما هي) ...
+
     function renderSurahs() {
         surahsListContainer.innerHTML = '';
         if (filteredSurahs.length === 0) {
@@ -163,38 +171,52 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         renderSurahs();
     }
+    
+    // === ميزة: طلب الموقع وأوقات الصلاة (الحل الجديد) ===
+    async function requestUserLocationAndPrayerTimes() {
+        autoLocationSpan.textContent = 'يُرجى السماح بتحديد الموقع لأوقات الصلاة...';
+        locationNameSpan.textContent = ''; 
 
-    // === وظيفة أوقات الصلاة (تم التأمين) ===
-    async function fetchPrayerTimes() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    // لا يمكننا جلب اسم المدينة مباشرة بدون API آخر، لذا سنعتمد على الإحداثيات
+                    autoLocationSpan.textContent = `تم تحديد الموقع (خط العرض: ${lat.toFixed(2)})`;
+                    fetchPrayerTimes(lat, lon);
+                },
+                (error) => {
+                    console.error('فشل طلب تحديد الموقع:', error);
+                    autoLocationSpan.textContent = `تم رفض تحديد الموقع. (سيتم استخدام مكة)`;
+                    fetchPrayerTimesFallback();
+                },
+                { timeout: 10000, enableHighAccuracy: true }
+            );
+        } else {
+            autoLocationSpan.textContent = `المتصفح لا يدعم تحديد الموقع. (سيتم استخدام مكة)`;
+            fetchPrayerTimesFallback();
+        }
+    }
+    
+    async function fetchPrayerTimes(lat, lon) {
         try {
-            autoLocationSpan.textContent = 'جاري تحديد موقع الـ IP...';
-            const locationResponse = await fetch(GEOLOCATION_API_URL);
-            const locationData = await locationResponse.json();
-
-            if (locationData.status !== 'success') { throw new Error('فشل تحديد الموقع التلقائي.'); }
-
-            const lat = locationData.lat;
-            const lon = locationData.lon;
-            const city = locationData.city || 'غير محدد';
-            const country = locationData.country || '';
-            
-            autoLocationSpan.textContent = `${city}, ${country}`;
-            locationNameSpan.textContent = `في ${city}`;
-            calcMethodSpan.textContent = 'رابطة العالم الإسلامي (تلقائي)';
-            
             const PRAYER_URL = `${PRAYER_API_BASE}?latitude=${lat}&longitude=${lon}&method=${PRAYER_CALC_METHOD}`;
-            
             const prayerResponse = await fetch(PRAYER_URL);
             const prayerData = await prayerResponse.json();
             
             if (prayerData.code !== 200) { throw new Error('فشل جلب أوقات الصلاة من API.'); }
+            
+            // محاولة استخراج المدينة من الـ API إذا أمكن
+            const city = prayerData.data.meta.timezone.split('/')[1] || 'موقعك';
+            locationNameSpan.textContent = `في ${city.replace('_', ' ')}`;
 
             renderPrayerTimes(prayerData.data.timings);
 
         } catch (error) {
-            console.error('فشل في جلب الموقع أو مواقيت الصلاة (سيتم استخدام مكة):', error);
-            autoLocationSpan.textContent = `فشل التحديد. (سيتم استخدام موقع بديل)`;
-            fetchPrayerTimesFallback(); 
+            console.error('فشل في جلب مواقيت الصلاة عبر الإحداثيات:', error);
+            autoLocationSpan.textContent = `حدث خطأ في جلب الأوقات. (سنستخدم مكة)`;
+            fetchPrayerTimesFallback();
         }
     }
 
@@ -206,7 +228,6 @@ document.addEventListener('DOMContentLoaded', () => {
              renderPrayerTimes(data.data.timings);
              locationNameSpan.textContent = 'في مكة المكرمة (افتراضي)';
              calcMethodSpan.textContent = 'رابطة العالم الإسلامي (افتراضي)';
-             autoLocationSpan.textContent = 'تم استخدام موقع بديل';
          }
     }
     
@@ -252,7 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // ... (بقية وظائف تتبع الحفظ والعمليات) ...
+    // ... (بقية وظائف الحفظ والتتبع كما هي) ...
     function updateProgressTracking() {
         const lastRead = JSON.parse(localStorage.getItem('lastRead')) || null;
         let totalMemorized = 0;
@@ -322,38 +343,54 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function showSurahDetails(surah) {
+    // يجب تعديل هذه الوظيفة لجلب الآيات من API جديد
+    async function showSurahDetails(surah) {
         currentSurah = surah;
         modalSurahName.textContent = `${surah.number}. ${surah.name}`;
         modalSurahInfo.innerHTML = `<p>${surah.englishName} - ${surah.englishNameTranslation}</p><p>${surah.revelationType === 'Meccan' ? 'مكية' : 'مدنية'} - ${surah.numberOfAyahs} آية</p>`;
         
-        ayahsContainer.innerHTML = '';
-        surah.ayahs.forEach(ayah => {
-            const isMemorized = isAyahMemorized(surah.number, ayah.numberInSurah);
-            const ayahElement = document.createElement('div');
-            ayahElement.className = 'ayah';
-            ayahElement.id = `ayah-${ayah.numberInSurah}`;
+        ayahsContainer.innerHTML = '<h2>جارٍ تحميل آيات سورة ${surah.name}...</h2>';
 
-            const ayahText = document.createElement('p');
-            ayahText.className = 'ayah-text';
-            ayahText.innerHTML = `<span class="ayah-number">${ayah.numberInSurah}</span> ${ayah.text}`;
-            ayahElement.appendChild(ayahText);
+        // === الخطوة الإضافية: جلب الآيات الفعلي من API جديد ===
+        try {
+            const AYAH_API_URL = `https://api.alquran.cloud/v1/surah/${surah.number}/ar.uthmani`;
+            const response = await fetch(AYAH_API_URL);
+            const data = await response.json();
+            const ayahs = data.data.ayahs;
+            
+            ayahsContainer.innerHTML = '';
+            ayahs.forEach(ayah => {
+                const isMemorized = isAyahMemorized(surah.number, ayah.numberInSurah);
+                const ayahElement = document.createElement('div');
+                ayahElement.className = 'ayah';
+                ayahElement.id = `ayah-${ayah.numberInSurah}`;
 
-            const memorizeBtn = document.createElement('button');
-            memorizeBtn.className = 'memorize-btn';
-            memorizeBtn.textContent = isMemorized ? '✔ محفوظ' : 'حفظ';
-            memorizeBtn.classList.toggle('memorized', isMemorized);
-            memorizeBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleAyahMemorization(surah.number, ayah.numberInSurah, memorizeBtn); });
-            ayahElement.appendChild(memorizeBtn);
+                const ayahText = document.createElement('p');
+                ayahText.className = 'ayah-text';
+                ayahText.innerHTML = `<span class="ayah-number">${ayah.numberInSurah}</span> ${ayah.text}`;
+                ayahElement.appendChild(ayahText);
 
-            ayahElement.addEventListener('click', () => saveLastRead(surah.number, ayah.numberInSurah));
+                const memorizeBtn = document.createElement('button');
+                memorizeBtn.className = 'memorize-btn';
+                memorizeBtn.textContent = isMemorized ? '✔ محفوظ' : 'حفظ';
+                memorizeBtn.classList.toggle('memorized', isMemorized);
+                memorizeBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleAyahMemorization(surah.number, ayah.numberInSurah, memorizeBtn); });
+                ayahElement.appendChild(memorizeBtn);
 
-            ayahsContainer.appendChild(ayahElement);
-        });
+                ayahElement.addEventListener('click', () => saveLastRead(surah.number, ayah.numberInSurah));
+
+                ayahsContainer.appendChild(ayahElement);
+            });
+            
+        } catch (error) {
+            ayahsContainer.innerHTML = `<p style="color: red;">❌ فشل تحميل الآيات: ${error.message}</p>`;
+        }
         
         updateSurahMemorizedBtn(surah.number);
         surahModal.style.display = 'block';
     }
+
+    // ... (بقية الوظائف كما هي) ...
 
     function saveLastRead(surahNumber, ayahNumber) {
         const lastRead = { surahNumber, ayahNumber };
@@ -411,7 +448,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isFull) {
             delete memorizedAyahs[surahNumber];
         } else {
-            memorizedAyahs[surahNumber] = currentSurah.ayahs.map(a => a.numberInSurah);
+            // بما أننا نستخدم API جديد، يجب أن نعتمد على عدد الآيات المعلن في بيانات السورة المبدئية
+            // (هذا ليس مثالياً ولكن يعمل مع هيكل الـ API الحالي)
+             for (let i = 1; i <= currentSurah.numberOfAyahs; i++) {
+                if (!memorizedAyahs[surahNumber]) memorizedAyahs[surahNumber] = [];
+                if (!memorizedAyahs[surahNumber].includes(i)) {
+                    memorizedAyahs[surahNumber].push(i);
+                }
+            }
         }
         
         localStorage.setItem('memorizedAyahs', JSON.stringify(memorizedAyahs));
