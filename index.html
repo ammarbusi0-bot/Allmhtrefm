@@ -1,385 +1,957 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>بوتجة حلبية - SoulChill</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet"/>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>موسوعة القرآن الكريم والأذكار | الإصدار الفاخر والذكي</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=El+Messiri:wght@400;500;600;700&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0d3b1e;
+            --secondary-color: #d4af37;
+            --accent-color: #1e5631;
+            --light-color: #f8f8f8;
+            --dark-color: #0a2916;
+            --text-color: #2c3e2d;
+            --card-bg: white;
+            --bg-body: linear-gradient(135deg, #f5f7fa 0%, #e4efe9 100%);
+            --gold-light: #f7e8c6;
+            --gold-dark: #b8941f;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --gradient: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            --gold-gradient: linear-gradient(135deg, var(--secondary-color) 0%, var(--gold-dark) 100%);
+        }
+
+        /* Dark Mode Variables */
+        body.dark-mode {
+            --primary-color: #225735;
+            --secondary-color: #f7d05e;
+            --accent-color: #1a422a;
+            --light-color: #121212;
+            --dark-color: #f8f8f8;
+            --text-color: #e0e0e0;
+            --card-bg: #1e1e1e;
+            --bg-body: #0d0d0d;
+            --shadow: 0 10px 30px rgba(255, 255, 255, 0.05);
+            --gradient: linear-gradient(135deg, #0a2916 0%, #1e1e1e 100%);
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'El Messiri', 'Amiri', 'Scheherazade New', serif;
+            line-height: 1.8;
+            color: var(--text-color);
+            background: var(--bg-body);
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background 0.6s, color 0.6s;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 25px;
+        }
+
+        /* Header Styles */
+        header {
+            background: var(--gradient);
+            color: white;
+            padding: 1.2rem 0;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--secondary-color);
+            transition: var(--transition);
+        }
+        
+        /* Dark Mode Header Fix */
+        body.dark-mode header {
+             background: #0a2916; /* لون ثابت في الوضع الداكن */
+             box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo i {
+            font-size: 2.8rem;
+            color: var(--secondary-color);
+            filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.5));
+            animation: glow 3s infinite alternate;
+        }
+
+        @keyframes glow {
+            0% { filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.5)); }
+            100% { filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.8)); }
+        }
+
+        .logo-text h1 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo-text p {
+            font-size: 1rem;
+            opacity: 0.9;
+            letter-spacing: 1px;
+            color: white; /* تأكيد اللون الأبيض داخل الهيدر */
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            padding: 10px 20px;
+            border-radius: 50px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+
+        nav a:hover::before, nav a.active::before {
+            width: 100%;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+        
+        /* Dark Mode Toggle Button */
+        .mode-toggle {
+            background: none;
+            border: 2px solid white;
+            color: white;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+        
+        .mode-toggle:hover {
+            border-color: var(--secondary-color);
+            color: var(--secondary-color);
+            transform: rotate(360deg);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: 
+                linear-gradient(var(--primary-color), var(--primary-color)),
+                url('https://images.unsplash.com/photo-1544830291-3ad80ac8d175?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            background-blend-mode: overlay;
+            height: 85vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        body.dark-mode .hero {
+             background: 
+                linear-gradient(#0a2916, #0a2916),
+                url('https://images.unsplash.com/photo-1544830291-3ad80ac8d175?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            background-blend-mode: overlay;
+        }
+
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23d4af37' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            color: white;
+            max-width: 900px;
+            text-align: center;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .hero h2 {
+            font-family: 'Scheherazade New', serif;
+            font-size: 3.8rem;
+            margin-bottom: 25px;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+            line-height: 1.3;
+        }
+        
+        .hero .typing-text {
+            display: inline-block;
+            overflow: hidden; /* تخفي النص قبل الكتابة */
+            border-right: .15em solid var(--secondary-color); /* مؤشر الكتابة */
+            white-space: nowrap; 
+            margin: 0 auto;
+            letter-spacing: .1em; 
+            animation: 
+                typing 3.5s steps(30, end),
+                blink-caret .75s step-end infinite;
+            width: 0; /* يبدأ بصفر */
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--secondary-color); }
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--gold-gradient);
+            color: var(--dark-color);
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 1.1rem;
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.6);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+            padding-bottom: 25px;
+        }
+
+        .section-title h2 {
+            font-size: 2.8rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        body.dark-mode .section-title h2 {
+            color: var(--secondary-color);
+        }
+
+        .section-title p {
+            color: var(--text-color);
+            opacity: 0.8;
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Quran Section */
+        .quran-section {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+            margin-bottom: 60px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            transition: var(--transition);
+        }
+        
+        .quran-controls {
+            background: var(--bg-body);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid #eee;
+            transition: var(--transition);
+        }
+
+        .quran-display {
+            font-family: 'Scheherazade New', serif; /* استخدام خط قرآني واضح */
+            background: 
+                linear-gradient(135deg, var(--gold-light) 0%, #f2ebd0 100%);
+            border: 1px solid #e8e0c7;
+            padding: 35px;
+            font-size: 1.7rem;
+            /* بقية الستايلات كما هي */
+        }
+        
+        body.dark-mode .quran-display {
+            background: #0f1f1a;
+            border-color: #3b3b3b;
+        }
+
+        .quran-verse {
+             /* بقية الستايلات كما هي */
+             background: var(--card-bg);
+        }
+        
+        body.dark-mode .quran-verse {
+            background: #2b2b2b;
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.05);
+        }
+
+        .verse-number {
+             /* بقية الستايلات كما هي */
+             color: var(--dark-color);
+        }
+
+        /* Azkar Section */
+        .azkar-tabs {
+            background: var(--card-bg);
+            box-shadow: var(--shadow);
+        }
+
+        .azkar-item {
+            background: var(--card-bg);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        
+        body.dark-mode .azkar-item {
+            background: #1e1e1e;
+            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.05);
+            color: var(--text-color);
+        }
+
+        .azkar-text {
+            color: var(--dark-color);
+        }
+        
+        body.dark-mode .azkar-text {
+            color: var(--text-color);
+        }
+        
+        .azkar-info {
+            color: var(--text-color);
+        }
+        
+        /* New: Benefit Toggle Button */
+        .benefit-toggle {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+        
+        .benefit-toggle:hover {
+            background: var(--accent-color);
+        }
+
+        .benefit {
+            flex: 1;
+            padding-right: 20px;
+            font-style: italic;
+            line-height: 1.6;
+            transition: height 0.3s ease-out, opacity 0.3s ease-out;
+            overflow: hidden;
+            opacity: 1;
+            height: auto;
+        }
+        
+        .benefit.hidden {
+            height: 0;
+            opacity: 0;
+            margin-top: -20px; /* لتقليل المساحة الفارغة */
+        }
+
+        .counter {
+            background: var(--bg-body);
+        }
+        
+        body.dark-mode .counter {
+            background: #333;
+        }
+
+        /* Features Section */
+        .feature-card {
+            background: var(--card-bg);
+            box-shadow: var(--shadow);
+        }
+        
+        body.dark-mode .feature-card {
+            background: #1e1e1e;
+            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.05);
+        }
+        
+        .feature-card h3 {
+            color: var(--primary-color);
+        }
+        
+        body.dark-mode .feature-card h3 {
+            color: var(--secondary-color);
+        }
+
+        .feature-card p {
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--gradient);
+        }
+        
+        body.dark-mode footer {
+            background: #0a2916;
+        }
+        
+        .footer-links a {
+            color: #e0e0e0;
+        }
+        
+        /* Responsive Fixes */
+        @media (max-width: 768px) {
+            .azkar-info {
+                flex-direction: column;
+                gap: 20px;
+                align-items: flex-start;
+            }
+            
+            .repeat-count {
+                order: 2;
+            }
+            
+            .benefit {
+                order: 3;
+                padding-right: 0;
+            }
+            
+            .benefit-toggle-container {
+                order: 1;
+                margin-bottom: 10px;
+            }
+            
+            .hero h2 {
+                font-size: 2.4rem;
+            }
+            
+            .hero .typing-text {
+                font-size: 2.2rem;
+            }
+        }
+        
+    </style>
 </head>
 <body>
-    <!-- الخلفية المتحركة -->
-    <div class="animated-bg">
-        <div class="shape shape1"></div>
-        <div class="shape shape2"></div>
-        <div class="shape shape3"></div>
-        <div class="shape shape4"></div>
-    </div>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-quran"></i>
+                    <div class="logo-text">
+                        <h1>موسوعة القرآن الكريم والأذكار</h1>
+                        <p>الإصدار الفاخر | تصميم ذكي</p>
+                    </div>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#" class="active">الرئيسية</a></li>
+                        <li><a href="#quran">القرآن الكريم</a></li>
+                        <li><a href="#azkar">الأذكار</a></li>
+                        <li><a href="#features">المميزات</a></li>
+                        <li><a href="#contact">اتصل بنا</a></li>
+                    </ul>
+                </nav>
+                <button class="mode-toggle" id="mode-toggle" title="تبديل وضع القراءة">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
 
-    <!-- شاشة الدخول -->
-    <div class="login-container" id="loginBox">
-        <div class="login-box">
-            <div class="logo-section">
-                <i class="fas fa-heart logo-icon"></i>
-                <h1 class="app-title">SoulChill</h1>
-                <p class="app-subtitle">بوتجة حلبية</p>
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h2><span class="typing-text">أفخم تصميم لموقع القرآن الكريم والأذكار</span></h2>
+                <p>استكشف القرآن الكريم كاملاً بأعلى جودة، وتابع أذكارك اليومية بتصميم فاخر ومتطور</p>
+                <a href="#quran" class="btn">ابدأ الرحلة الروحانية</a>
+            </div>
+        </div>
+    </section>
+
+    <main class="main-content">
+        <div class="container">
+            <section id="quran" class="quran-section">
+                <div class="section-title">
+                    <h2>القرآن الكريم</h2>
+                    <p>اقرأ وتدبر كلام الله تعالى بأعلى جودة وتصميم فاخر</p>
+                </div>
+                
+                <div class="quran-controls">
+                    <select class="surah-select">
+                        <option value="">اختر السورة</option>
+                        <option value="1">سورة الفاتحة</option>
+                        <option value="2">سورة البقرة</option>
+                        <option value="36">سورة يس</option>
+                        <option value="55">سورة الرحمن</option>
+                        <option value="67">سورة الملك</option>
+                        <option value="112">سورة الإخلاص</option>
+                    </select>
+                    
+                    <input type="text" class="search-input" placeholder="ابحث في القرآن الكريم...">
+                    
+                    <button class="btn">عرض الآيات</button>
+                </div>
+                
+                <div class="quran-display">
+                    <div class="quran-verse">
+                        <span class="verse-number">1</span>
+                        بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+                    </div>
+                    <div class="quran-verse">
+                        <span class="verse-number">2</span>
+                        الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ
+                    </div>
+                    <div class="quran-verse">
+                        <span class="verse-number">3</span>
+                        الرَّحْمَٰنِ الرَّحِيمِ
+                    </div>
+                    <div class="quran-verse">
+                        <span class="verse-number">4</span>
+                        مَالِكِ يَوْمِ الدِّينِ
+                    </div>
+                    <div class="quran-verse">
+                        <span class="verse-number">5</span>
+                        إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ
+                    </div>
+                    <div class="quran-verse">
+                        <span class="verse-number">6</span>
+                        اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ
+                    </div>
+                    <div class="quran-verse">
+                        <span class="verse-number">7</span>
+                        صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ
+                    </div>
+                </div>
+            </section>
+
+            <section id="azkar" class="azkar-section">
+                <div class="section-title">
+                    <h2>الأذكار</h2>
+                    <p>أذكار الصباح والمساء والأذكار العامة بتصميم فاخر</p>
+                    <div class="benefit-toggle-container">
+                        <button class="benefit-toggle" id="toggle-benefits">إخفاء الفوائد</button>
+                    </div>
+                </div>
+                
+                <div class="azkar-tabs">
+                    <button class="azkar-tab active" data-tab="morning">
+                        <span><i class="fas fa-sun"></i> أذكار الصباح</span>
+                    </button>
+                    <button class="azkar-tab" data-tab="evening">
+                        <span><i class="fas fa-moon"></i> أذكار المساء</span>
+                    </button>
+                    <button class="azkar-tab" data-tab="sleep">
+                        <span><i class="fas fa-bed"></i> أذكار النوم</span>
+                    </button>
+                    <button class="azkar-tab" data-tab="prayer">
+                        <span><i class="fas fa-pray"></i> أذكار الصلاة</span>
+                    </button>
+                </div>
+                
+                <div class="azkar-content active" id="morning-content">
+                    <div class="azkar-item">
+                        <div class="azkar-text">
+                            أَعُوذُ بِاللهِ مِنْ الشَّيْطَانِ الرَّجِيمِ<br>
+                            اللّهُ لاَ إِلَـهَ إِلاَّ هُوَ الْحَيُّ الْقَيُّومُ لاَ تَأْخُذُهُ سِنَةٌ وَلاَ نَوْمٌ لَّهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الأَرْضِ مَن ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلاَّ بِإِذْنِهِ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ وَلاَ يُحِيطُونَ بِشَيْءٍ مِّنْ عِلْمِهِ إِلاَّ بِمَا شَاء وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالأَرْضِ وَلاَ يَؤُودُهُ حِفْظُهُمَا وَهُوَ الْعَلِيُّ الْعَظِيمُ. [آية الكرسى - البقرة 255].
+                        </div>
+                        <div class="azkar-info">
+                            <div class="repeat-count">
+                                <span>عدد المرات:</span>
+                                <div class="counter">
+                                    <button class="counter-btn">-</button>
+                                    <span class="count">1</span>
+                                    <button class="counter-btn">+</button>
+                                </div>
+                            </div>
+                            <div class="benefit">
+                                من قالها حين يصبح أجير من الجن حتى يمسى ومن قالها حين يمسى أجير من الجن حتى يصبح.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="azkar-item">
+                        <div class="azkar-text">
+                            بِسْمِ اللهِ الرَّحْمنِ الرَّحِيم<br>
+                            قُلْ هُوَ ٱللَّهُ أَحَدٌ، ٱللَّهُ ٱلصَّمَدُ، لَمْ يَلِدْ وَلَمْ يُولَدْ، وَلَمْ يَكُن لَّهُۥ كُفُوًا أَحَدٌۢ.
+                        </div>
+                        <div class="azkar-info">
+                            <div class="repeat-count">
+                                <span>عدد المرات:</span>
+                                <div class="counter">
+                                    <button class="counter-btn">-</button>
+                                    <span class="count">3</span>
+                                    <button class="counter-btn">+</button>
+                                </div>
+                            </div>
+                            <div class="benefit">
+                                من قالها حين يصبح وحين يمسى كفته من كل شىء (الإخلاص والمعوذتين).
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="azkar-item">
+                        <div class="azkar-text">
+                            بِسْمِ اللهِ الرَّحْمنِ الرَّحِيم<br>
+                            قُلْ أَعُوذُ بِرَبِّ ٱلْفَلَقِ، مِن شَرِّ مَا خَلَقَ، وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ، وَمِن شَرِّ ٱلنَّفَّٰثَٰتِ فِى ٱلْعُقَدِ، وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ.
+                        </div>
+                        <div class="azkar-info">
+                            <div class="repeat-count">
+                                <span>عدد المرات:</span>
+                                <div class="counter">
+                                    <button class="counter-btn">-</button>
+                                    <span class="count">3</span>
+                                    <button class="counter-btn">+</button>
+                                </div>
+                            </div>
+                            <div class="benefit">
+                                من قالها حين يصبح وحين يمسى كفته من كل شىء (الإخلاص والمعوذتين).
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="azkar-content" id="evening-content">
+                    <div class="azkar-item">
+                        <div class="azkar-text">
+                            أذكار المساء ستظهر هنا عند النقر على تبويب أذكار المساء
+                        </div>
+                        <div class="azkar-info">
+                            <div class="repeat-count">
+                                <span>عدد المرات:</span>
+                                <div class="counter">
+                                    <button class="counter-btn">-</button>
+                                    <span class="count">1</span>
+                                    <button class="counter-btn">+</button>
+                                </div>
+                            </div>
+                            <div class="benefit">
+                                فضل الذكر
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="features" class="features-section">
+                <div class="section-title">
+                    <h2>مميزات التصميم الذكي</h2>
+                    <p>اكتشف المميزات الفريدة التي تجعل هذا التصميم الأفضل والأكثر تطوراً</p>
+                </div>
+                
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-adjust"></i> </div>
+                        <h3>الوضع الليلي الذكي</h3>
+                        <p>تبديل فوري ومريح بين وضع النهار والوضع الداكن (Dark Mode) لحماية العين مع الحفظ التلقائي لاختيارك.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-search-dollar"></i> </div>
+                        <h3>تصفح فائق السرعة</h3>
+                        <p>تحميل سريع وأداء ممتاز بفضل التحسين الشامل لملفات CSS و JavaScript.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-layer-group"></i> </div>
+                        <h3>هيكلية جاهزة للمحتوى</h3>
+                        <p>كود نظيف ومهيأ لإضافة محتوى القرآن كاملاً مع التلاوات والتفاسير بسهولة فائقة.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-magic"></i> </div>
+                        <h3>تأثيرات حركية فاخرة</h3>
+                        <p>تأثيرات حركية جذابة (Fade-in-up) على الأقسام وتأثير كتابة آلي في شاشة البداية.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>عن الموسوعة</h3>
+                    <p>موسوعة إسلامية شاملة تقدم القرآن الكريم كاملاً مع التلاوات، والأذكار اليومية، والمزيد من المحتوى الإسلامي المفيد بتصميم فاخر ومتطور.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>روابط سريعة</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-chevron-left"></i> الرئيسية</a></li>
+                        <li><a href="#quran"><i class="fas fa-chevron-left"></i> القرآن الكريم</a></li>
+                        <li><a href="#azkar"><i class="fas fa-chevron-left"></i> الأذكار</a></li>
+                        <li><a href="#features"><i class="fas fa-chevron-left"></i> المميزات</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>مصادرنا</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-chevron-left"></i> مستودع القرآن على GitHub</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-left"></i> كتب الحديث</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-left"></i> التفاسير المعتمدة</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-left"></i> الموسوعة الفقهية</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>اتصل بنا</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-envelope"></i> info@quran-encyclopedia.com</a></li>
+                        <li><a href="#"><i class="fas fa-phone"></i> +966 123 456 789</a></li>
+                        <li><a href="#"><i class="fas fa-map-marker-alt"></i> المملكة العربية السعودية</a></li>
+                    </ul>
+                </div>
             </div>
             
-            <div class="login-form">
-                <div class="form-group">
-                    <input type="text" id="userName" class="form-control" placeholder="ادخل اسمك..." />
-                </div>
-                <div class="form-group">
-                    <select id="userGender" class="form-control">
-                        <option value="male">شب</option>
-                        <option value="female">بنوتة</option>
-                    </select>
-                </div>
-                <button class="btn-login" onclick="enterApp()">
-                    دخول الجلسة
-                </button>
-            </div>
-
-            <div class="login-footer">
-                <div class="online-count">
-                    <i class="fas fa-users"></i>
-                    <span id="totalOnline">722,539</span> مستخدم أونلاين
-                </div>
+            <div class="copyright">
+                <p>جميع الحقوق محفوظة &copy; 2023 موسوعة القرآن الكريم والأذكار | الإصدار الفاخر والذكي</p>
             </div>
         </div>
+    </footer>
+
+    <div class="scroll-to-top">
+        <i class="fas fa-chevron-up"></i>
     </div>
 
-    <!-- الواجهة الرئيسية -->
-    <div class="main-app hidden" id="mainApp">
-        <!-- الشريط العلوي -->
-        <nav class="app-navbar">
-            <div class="nav-brand">
-                <i class="fas fa-heart"></i>
-                SoulChill
-            </div>
-            <div class="nav-controls">
-                <div class="user-wallet">
-                    <i class="fas fa-coins"></i>
-                    <span>60</span>
-                </div>
-                <div class="user-level">SVIP</div>
-                <div class="user-menu">
-                    <img id="navUserAvatar" src="" alt="avatar" class="user-avatar-sm">
-                    <span id="navUserName"></span>
-                </div>
-            </div>
-        </nav>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // =======================================================
+            // 1. Dark Mode Toggle with Local Storage
+            // =======================================================
+            const modeToggle = document.getElementById('mode-toggle');
+            const body = document.body;
 
-        <div class="app-content">
-            <div class="container-fluid">
-                <div class="row">
-                    <!-- الشريط الجانبي الأيسر -->
-                    <div class="col-md-3 left-sidebar">
-                        <!-- الملف الشخصي -->
-                        <div class="profile-card">
-                            <div class="profile-header">
-                                <img id="profileAvatar" src="" alt="المستخدم" class="profile-img"/>
-                                <div class="profile-info">
-                                    <h5 id="profileName" class="profile-name">...</h5>
-                                    <p class="profile-uid">UID: <span id="userUID">00000000</span></p>
-                                </div>
-                            </div>
-                            
-                            <div class="profile-stats">
-                                <div class="stat-item">
-                                    <span class="stat-number" id="followersCount">69</span>
-                                    <span class="stat-label">المتابعين</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-number" id="followingCount">1</span>
-                                    <span class="stat-label">يتبع</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-number" id="visitorsCount">0</span>
-                                    <span class="stat-label">الزوار</span>
-                                </div>
-                            </div>
+            // Load saved preference
+            const savedMode = localStorage.getItem('theme');
+            if (savedMode === 'dark') {
+                body.classList.add('dark-mode');
+                modeToggle.querySelector('i').className = 'fas fa-sun';
+            }
 
-                            <div class="profile-actions">
-                                <button class="btn-action" onclick="showEditProfile()">
-                                    <i class="fas fa-edit"></i> تعديل الملف
-                                </button>
-                            </div>
-                        </div>
+            modeToggle.addEventListener('click', () => {
+                body.classList.toggle('dark-mode');
+                
+                const isDarkMode = body.classList.contains('dark-mode');
+                
+                // Update button icon
+                modeToggle.querySelector('i').className = isDarkMode ? 'fas fa-sun' : 'fas fa-moon';
+                
+                // Save preference to Local Storage
+                localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+            });
 
-                        <!-- قائمة التنقل -->
-                        <div class="navigation-menu">
-                            <div class="nav-item active" onclick="showSection('friends')">
-                                <i class="fas fa-users"></i>
-                                <span>الأصدقاء</span>
-                            </div>
-                            <div class="nav-item" onclick="showSection('empire')">
-                                <i class="fas fa-crown"></i>
-                                <span>الإمبراطورية</span>
-                            </div>
-                            <div class="nav-item" onclick="showSection('store')">
-                                <i class="fas fa-store"></i>
-                                <span>المتجر</span>
-                            </div>
-                            <div class="nav-item" onclick="showSection('rewards')">
-                                <i class="fas fa-gift"></i>
-                                <span>المكافآت</span>
-                            </div>
-                            <div class="nav-item" onclick="showSection('planet')">
-                                <i class="fas fa-globe"></i>
-                                <span>الكوكب</span>
-                            </div>
-                        </div>
-                    </div>
+            // =======================================================
+            // 2. Azkar Tabs and Counter Logic (Refined)
+            // =======================================================
+            const azkarTabs = document.querySelectorAll('.azkar-tab');
+            const azkarContents = document.querySelectorAll('.azkar-content');
+            const counterBtns = document.querySelectorAll('.counter-btn');
 
-                    <!-- المحتوى الرئيسي -->
-                    <div class="col-md-6 main-content">
-                        <!-- قسم الأصدقاء -->
-                        <div class="content-section active" id="friendsSection">
-                            <div class="section-header">
-                                <h4>رفيق الروح</h4>
-                                <p>تحدث مع من يفهمك</p>
-                            </div>
-
-                            <!-- غرف الدردشة -->
-                            <div class="feature-cards">
-                                <div class="feature-card">
-                                    <div class="feature-icon">
-                                        <i class="fas fa-comments"></i>
-                                    </div>
-                                    <h5>غرف الدردشة</h5>
-                                    <p>مجموعة دردشة صوتية</p>
-                                    <button class="btn-feature" onclick="showChatRooms()">
-                                        ادخل
-                                    </button>
-                                </div>
-
-                                <div class="feature-card">
-                                    <div class="feature-icon">
-                                        <i class="fas fa-phone-alt"></i>
-                                    </div>
-                                    <h5>مكالمة صوتية</h5>
-                                    <p>توأم روحك أوتلاين</p>
-                                    <button class="btn-feature" onclick="showVoiceMatch()">
-                                        ابدأ
-                                    </button>
-                                </div>
-
-                                <div class="feature-card">
-                                    <div class="feature-icon">
-                                        <i class="fas fa-video"></i>
-                                    </div>
-                                    <h5>غرف الفيديو</h5>
-                                    <p>شارك مشوراتك الرائعة</p>
-                                    <button class="btn-feature" onclick="showVideoRooms()">
-                                        ادخل
-                                    </button>
-                                </div>
-                            </div>
-
-                            <!-- الأصدقاء المقترحين -->
-                            <div class="suggested-friends">
-                                <h5>أصدقاء مقترحون</h5>
-                                <div class="friends-list" id="suggestedFriends">
-                                    <!-- سيتم إضافة الأصدقاء المقترحين هنا -->
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- قسم الإمبراطورية -->
-                        <div class="content-section" id="empireSection">
-                            <div class="section-header">
-                                <h4>الإمبراطورية</h4>
-                                <p>انضم إلى إمبراطورية وتكون صداقات</p>
-                            </div>
-                            <div class="empire-content">
-                                <p>هذه الخدمة تحت التطوير. تواصل مع الإدارة للمزيد من المعلومات.</p>
-                            </div>
-                        </div>
-
-                        <!-- قسم المتجر -->
-                        <div class="content-section" id="storeSection">
-                            <div class="section-header">
-                                <h4>المتجر</h4>
-                                <p>اشترِ النقاط والاكسسوارات</p>
-                            </div>
-                            <div class="store-content">
-                                <p>هذه الخدمة تحت التطوير. تواصل مع الإدارة للمزيد من المعلومات.</p>
-                            </div>
-                        </div>
-
-                        <!-- قسم المكافآت -->
-                        <div class="content-section" id="rewardsSection">
-                            <div class="section-header">
-                                <h4>المكافآت</h4>
-                                <p>اكمل المهام واكسب المكافآت</p>
-                            </div>
-                            <div class="rewards-content">
-                                <p>هذه الخدمة تحت التطوير. تواصل مع الإدارة للمزيد من المعلومات.</p>
-                            </div>
-                        </div>
-
-                        <!-- قسم الكوكب -->
-                        <div class="content-section" id="planetSection">
-                            <div class="section-header">
-                                <h4>الكوكب</h4>
-                                <p>شارك مشوراتك الرائعة</p>
-                            </div>
-                            <div class="planet-content">
-                                <p>هذه الخدمة تحت التطوير. تواصل مع الإدارة للمزيد من المعلومات.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- الشريط الجانبي الأيمن -->
-                    <div class="col-md-3 right-sidebar">
-                        <!-- التوافق الصوتي -->
-                        <div class="voice-match-card">
-                            <div class="card-header">
-                                <i class="fas fa-microphone"></i>
-                                <h5>التوافق الصوتي</h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="match-status">
-                                    <div class="status-indicator offline"></div>
-                                    <span>الخدمة متوقفة</span>
-                                </div>
-                                <p class="status-description">
-                                    خدمة التوافق الصوتي حالياً معطلة. للمشاركة في المكالمات الصوتية، 
-                                    تواصل مع المشرف على تيليجرام
-                                </p>
-                                <button class="btn-contact" onclick="contactAdmin('voice')">
-                                    <i class="fab fa-telegram-plane"></i>
-                                    تواصل لتفعيل الصوتي
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- غرف الدردشة النشطة -->
-                        <div class="active-rooms">
-                            <h5>غرف دردشة نشطة</h5>
-                            <div class="rooms-list" id="activeRoomsList">
-                                <!-- سيتم إضافة الغرف النشطة هنا -->
-                            </div>
-                        </div>
-
-                        <!-- الإشعارات -->
-                        <div class="notifications-card">
-                            <h5>الإشعارات</h5>
-                            <div class="notifications-list" id="notificationsList">
-                                <div class="notification-item">
-                                    <i class="fas fa-info-circle"></i>
-                                    <span>مرحباً بك في SoulChill!</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- نافذة غرف الدردشة -->
-    <div class="modal-overlay hidden" id="chatRoomsModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4>غرف الدردشة</h4>
-                <button class="btn-close" onclick="closeModal('chatRoomsModal')">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="rooms-grid" id="roomsGrid">
-                    <!-- سيتم إضافة الغرف هنا -->
-                </div>
-                <div class="modal-alert">
-                    <i class="fas fa-info-circle"></i>
-                    <p>للمشاركة في الدردشة، يجب التواصل مع الإدارة أولاً على تيليجرام</p>
-                    <button class="btn-contact-admin" onclick="contactAdmin('chat')">
-                        <i class="fab fa-telegram-plane"></i>
-                        تواصل مع الإدارة
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- نافذة التوافق الصوتي -->
-    <div class="modal-overlay hidden" id="voiceMatchModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4>التوافق الصوتي</h4>
-                <button class="btn-close" onclick="closeModal('voiceMatchModal')">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="voice-match-content">
-                    <div class="match-animation">
-                        <i class="fas fa-microphone-slash"></i>
-                    </div>
-                    <h5>الخدمة غير مفعلة</h5>
-                    <p>لتفعيل خدمة التوافق الصوتي والمكالمات، يجب التواصل مع الإدارة على تيليجرام</p>
-                    <button class="btn-contact-admin" onclick="contactAdmin('voice')">
-                        <i class="fab fa-telegram-plane"></i>
-                        تواصل لتفعيل الصوتي
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- نافذة الملف الشخصي -->
-    <div class="modal-overlay hidden" id="profileModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4>الملف الشخصي</h4>
-                <button class="btn-close" onclick="closeModal('profileModal')">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="profile-view">
-                    <img id="viewProfileAvatar" src="" alt="" class="profile-view-img"/>
-                    <h4 id="viewProfileName">...</h4>
-                    <p class="profile-view-uid">UID: <span id="viewProfileUID">00000000</span></p>
+            azkarTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.getAttribute('data-tab');
                     
-                    <div class="profile-actions-view">
-                        <button class="btn-follow" onclick="followUser()">
-                            <i class="fas fa-user-plus"></i> متابعة
-                        </button>
-                        <button class="btn-message disabled" onclick="requestMessageAccess()">
-                            <i class="fas fa-comment"></i> رسالة
-                        </button>
-                    </div>
+                    azkarTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
                     
-                    <div class="profile-stats-view">
-                        <div class="stat-view">
-                            <span class="stat-number" id="viewFollowers">0</span>
-                            <span class="stat-label">متابعين</span>
-                        </div>
-                        <div class="stat-view">
-                            <span class="stat-number" id="viewFollowing">0</span>
-                            <span class="stat-label">يتبع</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                    azkarContents.forEach(c => c.classList.remove('active'));
+                    const targetContent = document.getElementById(`${tabId}-content`);
+                    if (targetContent) {
+                         targetContent.classList.add('active');
+                    }
+                });
+            });
+            
+            counterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const counter = btn.parentElement.querySelector('.count');
+                    let count = parseInt(counter.textContent);
+                    
+                    if (btn.textContent === '+') {
+                        count++;
+                    } else if (btn.textContent === '-' && count > 0) {
+                        count--;
+                    }
+                    
+                    counter.textContent = count;
+                });
+            });
+            
+            // =======================================================
+            // 3. Toggle Benefit Info
+            // =======================================================
+            const toggleBenefitsBtn = document.getElementById('toggle-benefits');
+            const benefits = document.querySelectorAll('.benefit');
+            
+            toggleBenefitsBtn.addEventListener('click', () => {
+                const isHidden = benefits[0].classList.contains('hidden');
+                
+                benefits.forEach(benefit => {
+                    benefit.classList.toggle('hidden');
+                });
+                
+                toggleBenefitsBtn.textContent = isHidden ? 'إخفاء الفوائد' : 'إظهار الفوائد';
+            });
 
-    <!-- الإشعارات العائمة -->
-    <div class="notification-toast hidden" id="notificationToast">
-        <div class="toast-content">
-            <i class="fas fa-bell"></i>
-            <span id="toastMessage"></span>
-        </div>
-    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="data.js"></script>
-    <script src="script.js"></script>
+            // =======================================================
+            // 4. Smooth Scrolling (Optimized)
+            // =======================================================
+            document.querySelectorAll('nav a, .btn[href^="#"], .scroll-to-top').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    const targetId = this.getAttribute('href') || '#';
+                    if (targetId === '#') {
+                        e.preventDefault();
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        return;
+                    }
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        e.preventDefault();
+                        const headerHeight = document.querySelector('header').offsetHeight;
+                        const targetPosition = targetElement.offsetTop - headerHeight - 20; // إضافة مسافة
+                        
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // =======================================================
+            // 5. Scroll to Top Button (Optimized)
+            // =======================================================
+            const scrollToTopBtn = document.querySelector('.scroll-to-top');
+            
+            window.addEventListener('scroll', () => {
+                scrollToTopBtn.classList.toggle('active', window.pageYOffset > 300);
+            });
+            
+            // =======================================================
+            // 6. Animations on Scroll (Refined)
+            // =======================================================
+            const animateOnScroll = () => {
+                const elements = document.querySelectorAll('.feature-card, .azkar-item, .quran-verse');
+                
+                elements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    const elementVisible = 150;
+                    
+                    if (elementTop < window.innerHeight - elementVisible) {
+                        element.style.opacity = "1";
+                        element.style.transform = "translateY(0)";
+                    }
+                });
+            };
+            
+            // Set initial state for animated elements
+            document.querySelectorAll('.feature-card, .azkar-item, .quran-verse').forEach(el => {
+                el.style.opacity = "0";
+                el.style.transform = "translateY(20px)";
+                el.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+            });
+            
+            window.addEventListener('scroll', animateOnScroll);
+            // Trigger once on load
+            animateOnScroll();
+        });
+    </script>
 </body>
 </html>
