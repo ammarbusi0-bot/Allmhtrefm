@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>قُلوب - تعارف وصداقة</title>
+    <title>قُلوب - شحن الرصيد وتعارف</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -15,13 +15,13 @@
         </header>
 
         <div class="grid">
-            <!-- البطاقة الأولى: التوافق الصوتي -->
+            <!-- البطاقة الأولى: شحن الرصيد -->
             <div class="card">
-                <i class="fas fa-microphone-alt icon"></i>
-                <h2>توافق صوتي</h2>
-                <p>خدمة التوافق الصوتي المميزة للتواصل مع الآخرين</p>
-                <p class="price">السعر: 10$</p>
-                <button class="btn" onclick="redirectToTelegram()">شراء الخدمة</button>
+                <i class="fas fa-wallet icon"></i>
+                <h2>شحن الرصيد</h2>
+                <p>شحن رصيدك للاستمتاع بجميع المميزات</p>
+                <p class="price">تبدأ من 10$</p>
+                <button class="btn" onclick="redirectToTelegram()">شحن الرصيد</button>
             </div>
 
             <!-- البطاقة الثانية: الدردشة -->
@@ -32,12 +32,12 @@
                 <button class="btn" onclick="openChat()">الدخول إلى الدردشة</button>
             </div>
 
-            <!-- البطاقة الثالثة: التعارف -->
+            <!-- البطاقة الثالثة: الهدايا -->
             <div class="card">
-                <i class="fas fa-heart icon"></i>
-                <h2>التعارف</h2>
-                <p>تعرف على أصدقاء جدد وابنِ علاقات جميلة</p>
-                <button class="btn" onclick="openUsers()">عرض الأعضاء</button>
+                <i class="fas fa-gift icon"></i>
+                <h2>الهدايا الرومانسية</h2>
+                <p>أرسل هدايا رومانسية للأصدقاء</p>
+                <button class="btn" onclick="openGifts()">عرض الهدايا</button>
             </div>
 
             <!-- البطاقة الرابعة: الملف الشخصي -->
@@ -62,13 +62,13 @@
     <div id="chatModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeChat()">&times;</span>
-            <h2>الدردشة العامة 💬</h2>
+            <h2>الدردشة العامة 💬 <span id="onlineCount" class="online-count">🟢 25 متصل</span></h2>
             <div class="chat-container" id="chatMessages">
-                <!-- سيتم إضافة الرسائل هنا بواسطة JavaScript -->
+                <!-- سيتم إضافة الرسائل هنا -->
             </div>
             <div class="chat-notice">
                 <p>💝 شارك في الدردشة وتعرف على أصدقاء جدد</p>
-                <button class="btn" onclick="redirectToAdmin()">التحدث مع المشرف</button>
+                <button class="btn" onclick="redirectToAdmin()">شحن الرصيد مع المشرف</button>
             </div>
         </div>
     </div>
@@ -79,11 +79,11 @@
             <span class="close" onclick="closePrivateChat()">&times;</span>
             <h2 id="privateChatTitle">الدردشة الخاصة 💕</h2>
             <div class="chat-container" id="privateChatMessages">
-                <!-- سيتم إضافة الرسائل هنا بواسطة JavaScript -->
+                <!-- سيتم إضافة الرسائل هنا -->
             </div>
             <div class="chat-notice">
                 <p>💌 استمتع بمحادثة خاصة مع الأصدقاء</p>
-                <button class="btn" onclick="redirectToAdmin()">التحدث مع المشرف</button>
+                <button class="btn" onclick="redirectToAdmin()">شحن الرصيد مع المشرف</button>
             </div>
         </div>
     </div>
@@ -92,9 +92,9 @@
     <div id="usersModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeUsers()">&times;</span>
-            <h2>الأعضاء النشطون 👥</h2>
+            <h2>الأعضاء النشطون 👥 <span class="online-count">🟢 25 متصل</span></h2>
             <div class="users-grid" id="usersGrid">
-                <!-- سيتم إضافة الأعضاء هنا بواسطة JavaScript -->
+                <!-- سيتم إضافة الأعضاء هنا -->
             </div>
         </div>
     </div>
@@ -112,11 +112,14 @@
                     <h3 id="userName">المستخدم</h3>
                     <p id="userId">ID: 12345</p>
                     <p id="userGender">الجنس: </p>
-                    <p id="userInterest">المهتم بـ: </p>
+                    <p id="userNationality">الجنسية: </p>
+                    <p id="userBirthdate">تاريخ الميلاد: </p>
+                    <p id="userBalance" class="balance">الرصيد: <span>0</span> نقطة 💰</p>
                 </div>
             </div>
             <div class="profile-actions">
                 <button class="btn" onclick="editProfile()">تعديل الملف الشخصي</button>
+                <button class="btn" onclick="redirectToAdmin()" style="margin-top: 10px;">شحن الرصيد</button>
             </div>
         </div>
     </div>
@@ -133,6 +136,21 @@
                 <div class="form-group">
                     <label for="birthdate">تاريخ الميلاد:</label>
                     <input type="date" id="birthdate" required>
+                    <small id="ageError" style="color: red; display: none;">يجب أن يكون عمرك 18 سنة أو أكثر</small>
+                </div>
+                <div class="form-group">
+                    <label for="nationality">الجنسية:</label>
+                    <select id="nationality" required>
+                        <option value="">اختر الجنسية</option>
+                        <option value="سوري">سوري</option>
+                        <option value="مصري">مصري</option>
+                        <option value="سعودي">سعودي</option>
+                        <option value="أردني">أردني</option>
+                        <option value="لبناني">لبناني</option>
+                        <option value="فلسطيني">فلسطيني</option>
+                        <option value="عراقي">عراقي</option>
+                        <option value="آخر">آخر</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="gender">الجنس:</label>
@@ -162,6 +180,40 @@
             <span class="close" onclick="closeUserProfile()">&times;</span>
             <div id="userProfileContent">
                 <!-- سيتم إضافة محتوى الملف الشخصي للمستخدم هنا -->
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة الهدايا -->
+    <div id="giftsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeGifts()">&times;</span>
+            <h2>الهدايا الرومانسية 🎁</h2>
+            <div class="gifts-grid">
+                <div class="gift-card">
+                    <i class="fas fa-heart gift-icon"></i>
+                    <h3>قلب حب</h3>
+                    <p>10 نقطة</p>
+                    <button class="btn btn-small">إرسال</button>
+                </div>
+                <div class="gift-card">
+                    <i class="fas fa-rose gift-icon"></i>
+                    <h3>وردة حمراء</h3>
+                    <p>20 نقطة</p>
+                    <button class="btn btn-small">إرسال</button>
+                </div>
+                <div class="gift-card">
+                    <i class="fas fa-gem gift-icon"></i>
+                    <h3>الماس</h3>
+                    <p>50 نقطة</p>
+                    <button class="btn btn-small">إرسال</button>
+                </div>
+                <div class="gift-card">
+                    <i class="fas fa-crown gift-icon"></i>
+                    <h3>تاج الملكة</h3>
+                    <p>100 نقطة</p>
+                    <button class="btn btn-small">إرسال</button>
+                </div>
             </div>
         </div>
     </div>
