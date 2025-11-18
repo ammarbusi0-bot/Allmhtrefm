@@ -3,122 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🕌 المصحف الشريف المُطوّر</title>
+    <title>موقع التواصل الاجتماعي</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Reem+Kufi&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div id="loading-screen">
-        <div class="loading-content">
-            <div class="quran-icon">🕌</div>
-            <h2>المصحف الشريف</h2>
-            <div class="loading-spinner"></div>
-            <p>جارٍ تحميل البيانات...</p>
+    <div class="container">
+        <header>
+            <h1>موقع التواصل الاجتماعي</h1>
+            <p>استمتع بتجربة فريدة من التواصل والترفيه</p>
+        </header>
+
+        <div class="grid">
+            <!-- البطاقة الأولى: التوافق الصوتي -->
+            <div class="card">
+                <i class="fas fa-microphone-alt icon"></i>
+                <h2>توافق صوتي</h2>
+                <p>خدمة التوافق الصوتي المميزة للتواصل مع الآخرين</p>
+                <p class="price">السعر: 10$</p>
+                <button class="btn" onclick="redirectToTelegram()">شراء الخدمة</button>
+            </div>
+
+            <!-- البطاقة الثانية: الدردشة -->
+            <div class="card">
+                <i class="fas fa-comments icon"></i>
+                <h2>دردشة</h2>
+                <p>انضم إلى مجتمعنا وتواصل مع الآخرين في بيئة ممتعة</p>
+                <button class="btn" onclick="openChat()">الدخول إلى الدردشة</button>
+            </div>
+
+            <!-- البطاقة الثالثة: لعبة النرد -->
+            <div class="card">
+                <i class="fas fa-dice icon"></i>
+                <h2>لعبة النرد</h2>
+                <p>استمتع بلعب النرد مع أصدقائك الافتراضيين</p>
+                <button class="btn" onclick="openGame()">بدء اللعبة</button>
+            </div>
+
+            <!-- البطاقة الرابعة: الملف الشخصي -->
+            <div class="card">
+                <i class="fas fa-user icon"></i>
+                <h2>الملف الشخصي</h2>
+                <p>إدارة ملفك الشخصي ومتابعة إحصائياتك</p>
+                <button class="btn" onclick="openProfile()">عرض الملف الشخصي</button>
+            </div>
+        </div>
+
+        <!-- قسم فتح المميزات -->
+        <div class="features-section">
+            <h2>فتح المميزات</h2>
+            <p>أدخل الكود الخاص لفتح جميع مميزات الموقع</p>
+            <input type="text" id="featureCode" placeholder="أدخل الكود هنا">
+            <button class="btn" onclick="activateFeatures()">تفعيل</button>
         </div>
     </div>
 
-    <button id="theme-toggle" class="theme-btn">🌙</button>
-    <button id="back-to-top" class="back-to-top">↑</button>
-
-    <header>
-        <div class="header-content">
-            <div class="header-decoration">
-                <div class="islamic-pattern"></div>
-            </div>
-            <h1>🕌 المصحف الشريف 📖</h1>
-            <p class="subtitle">قراءة وتدبر وتتبع الإنجاز</p>
-        </div>
-    </header>
-
-    <main>
-        <section id="prayer-times" class="widget-section">
-            <h2 class="section-title">مواقيت الصلاة اليوم <span id="location-name">...</span></h2>
-            <p class="location-details">الموقع التلقائي: <span id="auto-location">جارٍ التحديد...</span></p>
-            <div id="prayer-times-container" class="prayer-grid">
-                <p>جارٍ جلب موقعك وأوقات الصلاة...</p>
-            </div>
-            <p class="prayer-note">
-                <span id="next-prayer"></span> - طريقة الحساب: <span id="calc-method">رابطة العالم الإسلامي</span>
-            </p>
-        </section>
-        
-        <section id="controls">
-            <div class="controls-container">
-                <div class="search-box">
-                    <input type="text" id="search-input" placeholder="🔍 ابحث عن سورة أو آية...">
-                    <button id="clear-search" class="clear-btn">✕</button>
-                </div>
-                
-                <div class="filters">
-                    <select id="revelation-filter">
-                        <option value="all">جميع السور</option>
-                        <option value="Meccan">مكية</option>
-                        <option value="Medinan">مدنية</option>
-                    </select>
-                    
-                    <select id="sort-filter">
-                        <option value="number">ترتيب المصحف</option>
-                        <option value="name">حسب الأسم</option>
-                        <option value="ayahs">حسب عدد الآيات</option>
-                    </select>
-                </div>
-            </div>
-            
-            <div class="stats-bar">
-                <span id="surah-count">114 سورة</span>
-                <span id="filtered-count">114 سورة معروضة</span>
-            </div>
-        </section>
-
-        <section id="surahs-section">
-            <div id="surahs-list" class="grid-container">
-                <!-- سيتم ملؤه بالجافاسكريبت -->
-            </div>
-        </section>
-
-        <section id="statistics">
-            <div class="stats-container">
-                <div class="stat-card">
-                    <div class="stat-number" id="total-ayahs">0</div>
-                    <div class="stat-label">آية كريمة</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">114</div>
-                    <div class="stat-label">سورة</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">30</div>
-                    <div class="stat-label">جزء</div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="footer-content">
-            <div class="footer-decoration">
-                <div class="islamic-pattern"></div>
-            </div>
-            <p>📖 مصحف رقمي فاخر - بيانات من مستودع rn0x/Quran-Json</p>
-            <p class="copyright">جميع الحقوق محفوظة © 2024</p>
-        </div>
-    </footer>
-
-    <div id="surah-modal" class="modal">
+    <!-- نافذة الدردشة -->
+    <div id="chatModal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
-            <div class="modal-header">
-                <h2 id="modal-surah-name"></h2>
-                <div class="surah-info" id="modal-surah-info"></div>
+            <span class="close" onclick="closeChat()">&times;</span>
+            <h2>الدردشة العامة</h2>
+            <div class="chat-container" id="chatMessages">
+                <!-- سيتم إضافة الرسائل هنا بواسطة JavaScript -->
             </div>
-            <div class="ayahs-container" id="ayahs-container">
-                <!-- سيتم ملؤه بالجافاسكريبت -->
+            <div class="chat-notice">
+                <p>هذه الخدمة ليست متوفرة للاعضاء الجدد. يجب التحدث مع المشرفين</p>
+                <button class="btn" onclick="redirectToAdmin()">التحدث مع المشرف @Mariyemqp</button>
             </div>
         </div>
     </div>
 
+    <!-- نافذة الدردشة الخاصة -->
+    <div id="privateChatModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closePrivateChat()">&times;</span>
+            <h2 id="privateChatTitle">الدردشة مع سارة</h2>
+            <div class="chat-container" id="privateChatMessages">
+                <!-- سيتم إضافة الرسائل هنا بواسطة JavaScript -->
+            </div>
+            <div class="chat-notice">
+                <p>أنت جديد يجب التواصل مع المشرف @Mariyemqp لفتح مميزات الموقع</p>
+                <button class="btn" onclick="redirectToAdmin()">التحدث مع المشرف</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة لعبة النرد -->
+    <div id="gameModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeGame()">&times;</span>
+            <h2>لعبة النرد</h2>
+            <div class="game-board" id="gameBoard">
+                <!-- سيتم إضافة محتوى اللعبة هنا بواسطة JavaScript -->
+            </div>
+            <button class="btn" id="rollDiceBtn" onclick="rollDice()">رمي النرد</button>
+            <div id="gameResult" class="game-result"></div>
+        </div>
+    </div>
+
+    <!-- نافذة الملف الشخصي -->
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeProfile()">&times;</span>
+            <h2>الملف الشخصي</h2>
+            <div class="profile-grid">
+                <div>
+                    <img src="https://via.placeholder.com/150" alt="صورة المستخدم" class="profile-pic">
+                </div>
+                <div class="profile-info">
+                    <h3 id="userName">المستخدم</h3>
+                    <p id="userId">ID: 12345</p>
+                    <p id="userGender">الجنس: </p>
+                </div>
+            </div>
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-value" id="followersCount">150</div>
+                    <div>المتابعون</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="followingCount">89</div>
+                    <div>يتابع</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة إنشاء الحساب -->
+    <div id="signupModal" class="modal" style="display: flex;">
+        <div class="modal-content">
+            <h2>إنشاء حساب جديد</h2>
+            <form id="signupForm">
+                <div class="form-group">
+                    <label for="name">الاسم:</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="birthdate">تاريخ الميلاد:</label>
+                    <input type="date" id="birthdate" required>
+                </div>
+                <div class="form-group">
+                    <label for="gender">الجنس:</label>
+                    <select id="gender" required>
+                        <option value="">اختر الجنس</option>
+                        <option value="male">ذكر</option>
+                        <option value="female">أنثى</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="interest">أبحث عن:</label>
+                    <select id="interest" required>
+                        <option value="">اختر الاهتمام</option>
+                        <option value="male">شباب</option>
+                        <option value="female">بنات</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn">إنشاء الحساب</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- نافذة ملفات المستخدمين -->
+    <div id="userProfileModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeUserProfile()">&times;</span>
+            <div id="userProfileContent">
+                <!-- سيتم إضافة محتوى الملف الشخصي للمستخدم هنا -->
+            </div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
