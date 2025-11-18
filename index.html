@@ -3,218 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>قُلوب - شحن الرصيد وتعارف</title>
+    <title>HeartLink - منصة التعارف المميزة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>قُلوب 💖</h1>
-            <p>مكان اللقاءات الجميلة والصداقات الرائعة</p>
+            <h1>HeartLink 💖</h1>
+            <p>اعثر على شريكك المثالي. الآن مع وصول حصري للمميزات الماسية.</p>
         </header>
 
+        <h2 style="text-align: center; margin-bottom: 20px; color: var(--accent-color);">💎 خطط العضوية المميزة</h2>
         <div class="grid">
-            <!-- البطاقة الأولى: شحن الرصيد -->
+            
             <div class="card">
-                <i class="fas fa-wallet icon"></i>
-                <h2>شحن الرصيد</h2>
-                <p>شحن رصيدك للاستمتاع بجميع المميزات</p>
-                <p class="price">تبدأ من 10$</p>
-                <button class="btn" onclick="redirectToTelegram()">شحن الرصيد</button>
+                <div class="icon"><i class="fas fa-crown"></i></div>
+                <h2>العضوية الذهبية</h2>
+                <p>تصفح بدون إعلانات وإمكانية إرسال 50 رسالة يومياً.</p>
+                <div class="price">25 $ / شهر</div>
+                <button class="btn btn-small" onclick="document.getElementById('modal-features').style.display='flex'">شراء العضوية</button>
             </div>
 
-            <!-- البطاقة الثانية: الدردشة -->
             <div class="card">
-                <i class="fas fa-comments icon"></i>
-                <h2>دردشة رومانسية</h2>
-                <p>انضم إلى مجتمعنا وتواصل مع الآخرين في بيئة ممتعة</p>
-                <button class="btn" onclick="openChat()">الدخول إلى الدردشة</button>
+                <div class="icon"><i class="fas fa-gem"></i></div>
+                <h2>العضوية البلاتينية</h2>
+                <p>رسائل غير محدودة، وضع الشبح، ورؤية من شاهد ملفك.</p>
+                <div class="price">49 $ / شهر</div>
+                <button class="btn btn-small" onclick="document.getElementById('modal-features').style.display='flex'">شراء العضوية</button>
             </div>
 
-            <!-- البطاقة الثالثة: الهدايا -->
             <div class="card">
-                <i class="fas fa-gift icon"></i>
-                <h2>الهدايا الرومانسية</h2>
-                <p>أرسل هدايا رومانسية للأصدقاء</p>
-                <button class="btn" onclick="openGifts()">عرض الهدايا</button>
-            </div>
-
-            <!-- البطاقة الرابعة: الملف الشخصي -->
-            <div class="card">
-                <i class="fas fa-user icon"></i>
-                <h2>الملف الشخصي</h2>
-                <p>إدارة ملفك الشخصي وتحديث معلوماتك</p>
-                <button class="btn" onclick="openProfile()">عرض الملف الشخصي</button>
+                <div class="icon"><i class="fas fa-comments"></i></div>
+                <h2>الدردشة المباشرة</h2>
+                <p>تواصل فوري مع المستخدمين المميزين القريبين منك الآن.</p>
+                <div class="price">مجاني (لأعضاء VIP)</div>
+                <a href="chat_page.html" class="btn btn-small">ابدأ التصفح</a>
             </div>
         </div>
 
-        <!-- قسم فتح المميزات -->
         <div class="features-section">
-            <h2>فتح المميزات</h2>
-            <p>أدخل الكود الخاص لفتح جميع مميزات الموقع</p>
-            <input type="text" id="featureCode" placeholder="أدخل الكود هنا">
-            <button class="btn" onclick="activateFeatures()">تفعيل</button>
+            <h2>هل لديك رمز تفعيل؟ 🔑</h2>
+            <p>أدخل رمز التفعيل الخاص بك (مثل: **ammar**) للحصول على الميزات الماسية مجاناً الآن!</p>
+            <div class="form-group" style="max-width: 400px; margin: 20px auto;">
+                <input type="text" id="activation-code" placeholder="أدخل رمز التفعيل هنا..." required>
+            </div>
+            <button class="btn" id="activate-btn">تفعيل رمز **ammar** الآن 🚀</button>
+            <p id="activation-message" style="margin-top: 15px; font-weight: bold;"></p>
         </div>
+        
+        <h2 style="text-align: center; margin-bottom: 20px; margin-top: 40px; color: var(--light-color);">👤 المستخدمون المتواجدون الآن (345)</h2>
+        <div class="users-grid">
+            <div class="user-card">
+                <div class="online-indicator"></div>
+                <img src="avatar-1.jpg" alt="صورة المستخدم" class="user-avatar" style="background-color: #f8bbd9;">
+                <div class="user-name">ليلى</div>
+                <div class="user-age">24 سنة</div>
+                <div class="user-gender">أنثى</div>
+            </div>
+            <div class="user-card">
+                <div class="online-indicator" style="background: grey;"></div>
+                <img src="avatar-2.jpg" alt="صورة المستخدم" class="user-avatar" style="background-color: #e91e63;">
+                <div class="user-name">خالد</div>
+                <div class="user-age">30 سنة</div>
+                <div class="user-gender">ذكر</div>
+            </div>
+            <div class="user-card">
+                <div class="online-indicator"></div>
+                <img src="avatar-3.jpg" alt="صورة المستخدم" class="user-avatar" style="background-color: #ff4081;">
+                <div class="user-name">نور</div>
+                <div class="user-age">28 سنة</div>
+                <div class="user-gender">أنثى</div>
+            </div>
+            <div class="user-card"><div class="online-indicator"></div><img class="user-avatar" style="background-color: #fff;" src="avatar-4.jpg"><div class="user-name">فرح</div><div class="user-age">22 سنة</div><div class="user-gender">أنثى</div></div>
+            <div class="user-card"><div class="online-indicator"></div><img class="user-avatar" style="background-color: #e0e0e0;" src="avatar-5.jpg"><div class="user-name">سامر</div><div class="user-age">26 سنة</div><div class="user-gender">ذكر</div></div>
+            <div class="user-card"><div class="online-indicator"></div><img class="user-avatar" style="background-color: #ff00ff;" src="avatar-6.jpg"><div class="user-name">ياسمين</div><div class="user-age">29 سنة</div><div class="user-gender">أنثى</div></div>
+            <div class="user-card"><div class="online-indicator"></div><img class="user-avatar" style="background-color: #00ffff;" src="avatar-7.jpg"><div class="user-name">أيهم</div><div class="user-age">33 سنة</div><div class="user-gender">ذكر</div></div>
+            <div class="user-card"><div class="online-indicator"></div><img class="user-avatar" style="background-color: #ffa500;" src="avatar-8.jpg"><div class="user-name">سارة</div><div class="user-age">21 سنة</div><div class="user-gender">أنثى</div></div>
+            <div class="user-card"><div class="online-indicator"></div><img class="user-avatar" style="background-color: #800080;" src="avatar-9.jpg"><div class="user-name">علي</div><div class="user-age">35 سنة</div><div class="user-gender">ذكر</div></div>
+        </div>
+
     </div>
 
-    <!-- نافذة الدردشة -->
-    <div id="chatModal" class="modal">
+    <div id="modal-features" class="modal" onclick="if(event.target.id === 'modal-features') this.style.display='none'">
         <div class="modal-content">
-            <span class="close" onclick="closeChat()">&times;</span>
-            <h2>الدردشة العامة 💬 <span id="onlineCount" class="online-count">🟢 25 متصل</span></h2>
-            <div class="chat-container" id="chatMessages">
-                <!-- سيتم إضافة الرسائل هنا -->
-            </div>
-            <div class="chat-notice">
-                <p>💝 شارك في الدردشة وتعرف على أصدقاء جدد</p>
-                <button class="btn" onclick="redirectToAdmin()">شحن الرصيد مع المشرف</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- نافذة الدردشة الخاصة -->
-    <div id="privateChatModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closePrivateChat()">&times;</span>
-            <h2 id="privateChatTitle">الدردشة الخاصة 💕</h2>
-            <div class="chat-container" id="privateChatMessages">
-                <!-- سيتم إضافة الرسائل هنا -->
-            </div>
-            <div class="chat-notice">
-                <p>💌 استمتع بمحادثة خاصة مع الأصدقاء</p>
-                <button class="btn" onclick="redirectToAdmin()">شحن الرصيد مع المشرف</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- نافذة الأعضاء -->
-    <div id="usersModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeUsers()">&times;</span>
-            <h2>الأعضاء النشطون 👥 <span class="online-count">🟢 25 متصل</span></h2>
-            <div class="users-grid" id="usersGrid">
-                <!-- سيتم إضافة الأعضاء هنا -->
-            </div>
-        </div>
-    </div>
-
-    <!-- نافذة الملف الشخصي -->
-    <div id="profileModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeProfile()">&times;</span>
-            <h2>الملف الشخصي 👤</h2>
-            <div class="profile-grid">
-                <div>
-                    <img src="https://via.placeholder.com/150" alt="صورة المستخدم" class="profile-pic">
-                </div>
-                <div class="profile-info">
-                    <h3 id="userName">المستخدم</h3>
-                    <p id="userId">ID: 12345</p>
-                    <p id="userGender">الجنس: </p>
-                    <p id="userNationality">الجنسية: </p>
-                    <p id="userBirthdate">تاريخ الميلاد: </p>
-                    <p id="userBalance" class="balance">الرصيد: <span>0</span> نقطة 💰</p>
-                </div>
-            </div>
-            <div class="profile-actions">
-                <button class="btn" onclick="editProfile()">تعديل الملف الشخصي</button>
-                <button class="btn" onclick="redirectToAdmin()" style="margin-top: 10px;">شحن الرصيد</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- نافذة إنشاء الحساب -->
-    <div id="signupModal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <h2>إنشاء حساب جديد 💫</h2>
-            <form id="signupForm">
-                <div class="form-group">
-                    <label for="name">الاسم:</label>
-                    <input type="text" id="name" required placeholder="أدخل اسمك">
-                </div>
-                <div class="form-group">
-                    <label for="birthdate">تاريخ الميلاد:</label>
-                    <input type="date" id="birthdate" required>
-                    <small id="ageError" style="color: red; display: none;">يجب أن يكون عمرك 18 سنة أو أكثر</small>
-                </div>
-                <div class="form-group">
-                    <label for="nationality">الجنسية:</label>
-                    <select id="nationality" required>
-                        <option value="">اختر الجنسية</option>
-                        <option value="سوري">سوري</option>
-                        <option value="مصري">مصري</option>
-                        <option value="سعودي">سعودي</option>
-                        <option value="أردني">أردني</option>
-                        <option value="لبناني">لبناني</option>
-                        <option value="فلسطيني">فلسطيني</option>
-                        <option value="عراقي">عراقي</option>
-                        <option value="آخر">آخر</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="gender">الجنس:</label>
-                    <select id="gender" required>
-                        <option value="">اختر الجنس</option>
-                        <option value="male">ذكر</option>
-                        <option value="female">أنثى</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="interest">أبحث عن:</label>
-                    <select id="interest" required>
-                        <option value="">اختر الاهتمام</option>
-                        <option value="friendship">صداقة</option>
-                        <option value="relationship">علاقة</option>
-                        <option value="marriage">زواج</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn">إنشاء الحساب</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- نافذة ملفات المستخدمين -->
-    <div id="userProfileModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeUserProfile()">&times;</span>
-            <div id="userProfileContent">
-                <!-- سيتم إضافة محتوى الملف الشخصي للمستخدم هنا -->
-            </div>
-        </div>
-    </div>
-
-    <!-- نافذة الهدايا -->
-    <div id="giftsModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeGifts()">&times;</span>
-            <h2>الهدايا الرومانسية 🎁</h2>
-            <div class="gifts-grid">
-                <div class="gift-card">
-                    <i class="fas fa-heart gift-icon"></i>
-                    <h3>قلب حب</h3>
-                    <p>10 نقطة</p>
-                    <button class="btn btn-small">إرسال</button>
-                </div>
-                <div class="gift-card">
-                    <i class="fas fa-rose gift-icon"></i>
-                    <h3>وردة حمراء</h3>
-                    <p>20 نقطة</p>
-                    <button class="btn btn-small">إرسال</button>
-                </div>
-                <div class="gift-card">
-                    <i class="fas fa-gem gift-icon"></i>
-                    <h3>الماس</h3>
-                    <p>50 نقطة</p>
-                    <button class="btn btn-small">إرسال</button>
-                </div>
-                <div class="gift-card">
-                    <i class="fas fa-crown gift-icon"></i>
-                    <h3>تاج الملكة</h3>
-                    <p>100 نقطة</p>
-                    <button class="btn btn-small">إرسال</button>
-                </div>
-            </div>
+            <span class="close" onclick="document.getElementById('modal-features').style.display='none'">&times;</span>
+            <h2>شراء العضوية</h2>
+            <p>هنا ستكون عملية الدفع الوهمية. شكراً لاهتمامك بميزاتنا الماسية!</p>
+            <button class="btn">تأكيد الدفع الوهمي</button>
         </div>
     </div>
 
