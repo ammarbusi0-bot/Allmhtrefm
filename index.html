@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>موقع التواصل الاجتماعي</title>
+    <title>قُلوب - تعارف وصداقة</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>موقع التواصل الاجتماعي</h1>
-            <p>استمتع بتجربة فريدة من التواصل والترفيه</p>
+            <h1>قُلوب 💖</h1>
+            <p>مكان اللقاءات الجميلة والصداقات الرائعة</p>
         </header>
 
         <div class="grid">
@@ -27,24 +27,24 @@
             <!-- البطاقة الثانية: الدردشة -->
             <div class="card">
                 <i class="fas fa-comments icon"></i>
-                <h2>دردشة</h2>
+                <h2>دردشة رومانسية</h2>
                 <p>انضم إلى مجتمعنا وتواصل مع الآخرين في بيئة ممتعة</p>
                 <button class="btn" onclick="openChat()">الدخول إلى الدردشة</button>
             </div>
 
-            <!-- البطاقة الثالثة: لعبة النرد -->
+            <!-- البطاقة الثالثة: التعارف -->
             <div class="card">
-                <i class="fas fa-dice icon"></i>
-                <h2>لعبة النرد</h2>
-                <p>استمتع بلعب النرد مع أصدقائك الافتراضيين</p>
-                <button class="btn" onclick="openGame()">بدء اللعبة</button>
+                <i class="fas fa-heart icon"></i>
+                <h2>التعارف</h2>
+                <p>تعرف على أصدقاء جدد وابنِ علاقات جميلة</p>
+                <button class="btn" onclick="openUsers()">عرض الأعضاء</button>
             </div>
 
             <!-- البطاقة الرابعة: الملف الشخصي -->
             <div class="card">
                 <i class="fas fa-user icon"></i>
                 <h2>الملف الشخصي</h2>
-                <p>إدارة ملفك الشخصي ومتابعة إحصائياتك</p>
+                <p>إدارة ملفك الشخصي وتحديث معلوماتك</p>
                 <button class="btn" onclick="openProfile()">عرض الملف الشخصي</button>
             </div>
         </div>
@@ -62,13 +62,13 @@
     <div id="chatModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeChat()">&times;</span>
-            <h2>الدردشة العامة</h2>
+            <h2>الدردشة العامة 💬</h2>
             <div class="chat-container" id="chatMessages">
                 <!-- سيتم إضافة الرسائل هنا بواسطة JavaScript -->
             </div>
             <div class="chat-notice">
-                <p>هذه الخدمة ليست متوفرة للاعضاء الجدد. يجب التحدث مع المشرفين</p>
-                <button class="btn" onclick="redirectToAdmin()">التحدث مع المشرف @Mariyemqp</button>
+                <p>💝 شارك في الدردشة وتعرف على أصدقاء جدد</p>
+                <button class="btn" onclick="redirectToAdmin()">التحدث مع المشرف</button>
             </div>
         </div>
     </div>
@@ -77,27 +77,25 @@
     <div id="privateChatModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closePrivateChat()">&times;</span>
-            <h2 id="privateChatTitle">الدردشة مع سارة</h2>
+            <h2 id="privateChatTitle">الدردشة الخاصة 💕</h2>
             <div class="chat-container" id="privateChatMessages">
                 <!-- سيتم إضافة الرسائل هنا بواسطة JavaScript -->
             </div>
             <div class="chat-notice">
-                <p>أنت جديد يجب التواصل مع المشرف @Mariyemqp لفتح مميزات الموقع</p>
+                <p>💌 استمتع بمحادثة خاصة مع الأصدقاء</p>
                 <button class="btn" onclick="redirectToAdmin()">التحدث مع المشرف</button>
             </div>
         </div>
     </div>
 
-    <!-- نافذة لعبة النرد -->
-    <div id="gameModal" class="modal">
+    <!-- نافذة الأعضاء -->
+    <div id="usersModal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closeGame()">&times;</span>
-            <h2>لعبة النرد</h2>
-            <div class="game-board" id="gameBoard">
-                <!-- سيتم إضافة محتوى اللعبة هنا بواسطة JavaScript -->
+            <span class="close" onclick="closeUsers()">&times;</span>
+            <h2>الأعضاء النشطون 👥</h2>
+            <div class="users-grid" id="usersGrid">
+                <!-- سيتم إضافة الأعضاء هنا بواسطة JavaScript -->
             </div>
-            <button class="btn" id="rollDiceBtn" onclick="rollDice()">رمي النرد</button>
-            <div id="gameResult" class="game-result"></div>
         </div>
     </div>
 
@@ -105,7 +103,7 @@
     <div id="profileModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeProfile()">&times;</span>
-            <h2>الملف الشخصي</h2>
+            <h2>الملف الشخصي 👤</h2>
             <div class="profile-grid">
                 <div>
                     <img src="https://via.placeholder.com/150" alt="صورة المستخدم" class="profile-pic">
@@ -114,29 +112,23 @@
                     <h3 id="userName">المستخدم</h3>
                     <p id="userId">ID: 12345</p>
                     <p id="userGender">الجنس: </p>
+                    <p id="userInterest">المهتم بـ: </p>
                 </div>
             </div>
-            <div class="stats">
-                <div class="stat">
-                    <div class="stat-value" id="followersCount">150</div>
-                    <div>المتابعون</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-value" id="followingCount">89</div>
-                    <div>يتابع</div>
-                </div>
+            <div class="profile-actions">
+                <button class="btn" onclick="editProfile()">تعديل الملف الشخصي</button>
             </div>
         </div>
     </div>
 
     <!-- نافذة إنشاء الحساب -->
-    <div id="signupModal" class="modal" style="display: flex;">
+    <div id="signupModal" class="modal" style="display: none;">
         <div class="modal-content">
-            <h2>إنشاء حساب جديد</h2>
+            <h2>إنشاء حساب جديد 💫</h2>
             <form id="signupForm">
                 <div class="form-group">
                     <label for="name">الاسم:</label>
-                    <input type="text" id="name" required>
+                    <input type="text" id="name" required placeholder="أدخل اسمك">
                 </div>
                 <div class="form-group">
                     <label for="birthdate">تاريخ الميلاد:</label>
@@ -154,8 +146,9 @@
                     <label for="interest">أبحث عن:</label>
                     <select id="interest" required>
                         <option value="">اختر الاهتمام</option>
-                        <option value="male">شباب</option>
-                        <option value="female">بنات</option>
+                        <option value="friendship">صداقة</option>
+                        <option value="relationship">علاقة</option>
+                        <option value="marriage">زواج</option>
                     </select>
                 </div>
                 <button type="submit" class="btn">إنشاء الحساب</button>
