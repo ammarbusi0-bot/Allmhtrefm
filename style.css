@@ -12,6 +12,8 @@
     --premium-gradient: linear-gradient(135deg, #ffd700, #ff6b00);
     --success-color: #4CAF50;
     --warning-color: #ff9800;
+    --message-boy: #4a4a4a;
+    --message-girl: #4a4a4a;
 }
 
 * {
@@ -27,7 +29,6 @@ body {
     min-height: 100vh;
     padding: 20px;
     line-height: 1.6;
-    position: relative;
 }
 
 .container {
@@ -35,7 +36,6 @@ body {
     margin: 0 auto;
 }
 
-/* الهيدر المحسن */
 header {
     text-align: center;
     margin-bottom: 30px;
@@ -44,18 +44,6 @@ header {
     border-radius: 20px;
     box-shadow: 0 8px 25px rgba(233, 30, 99, 0.3);
     border: 1px solid var(--light-color);
-    position: relative;
-    overflow: hidden;
-}
-
-header::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="hearts" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><path fill="rgba(255,255,255,0.1)" d="M10,6 C12,2 16,2 18,6 C20,10 16,14 10,20 C4,14 0,10 2,6 C4,2 8,2 10,6 Z"/></pattern></defs><rect fill="url(%23hearts)" width="100" height="100"/></svg>');
 }
 
 h1 {
@@ -65,28 +53,11 @@ h1 {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    position: relative;
 }
 
 .header-subtitle {
     font-size: 1.2rem;
     opacity: 0.9;
-    margin-bottom: 15px;
-}
-
-.header-stats {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    margin-top: 15px;
-    flex-wrap: wrap;
-}
-
-.stat-item {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 10px 20px;
-    border-radius: 15px;
-    backdrop-filter: blur(10px);
 }
 
 .grid {
@@ -222,104 +193,6 @@ h2 {
     box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
 }
 
-/* مشغل الموسيقى */
-.music-player {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    background: rgba(45, 45, 45, 0.95);
-    border-radius: 15px;
-    padding: 15px;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(233, 30, 99, 0.3);
-    z-index: 1000;
-    min-width: 250px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-}
-
-.music-controls {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.music-btn, .volume-btn {
-    background: var(--primary-color);
-    border: none;
-    color: white;
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-}
-
-.music-btn:hover, .volume-btn:hover {
-    background: var(--accent-color);
-    transform: scale(1.1);
-}
-
-.music-info {
-    flex: 1;
-    min-width: 0;
-}
-
-.current-track {
-    font-size: 0.8rem;
-    color: var(--light-color);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: block;
-}
-
-.music-progress {
-    width: 100%;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 2px;
-    margin-top: 5px;
-    overflow: hidden;
-}
-
-.progress-bar {
-    height: 100%;
-    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
-    width: 30%;
-    border-radius: 2px;
-    animation: progressAnimation 3s infinite alternate;
-}
-
-@keyframes progressAnimation {
-    0% { width: 30%; }
-    100% { width: 70%; }
-}
-
-.music-notification {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-    color: white;
-    padding: 15px 20px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    z-index: 10000;
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.music-notification.show {
-    transform: translateX(0);
-}
-
-/* المودال المحسن */
 .modal {
     display: none;
     position: fixed;
@@ -385,16 +258,6 @@ h2 {
     color: var(--accent-color);
 }
 
-.chat-status {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 15px;
-    padding: 10px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    font-size: 0.9rem;
-}
-
 .chat-container {
     height: 400px;
     overflow-y: auto;
@@ -408,7 +271,6 @@ h2 {
     gap: 15px;
 }
 
-/* شريط التمرير المخصص */
 .chat-container::-webkit-scrollbar {
     width: 6px;
 }
@@ -450,14 +312,15 @@ h2 {
 }
 
 .received {
-    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    background: linear-gradient(135deg, var(--message-girl), #3a3a3a);
     margin-right: auto;
     border-bottom-right-radius: 5px;
-    box-shadow: 0 4px 15px rgba(233, 30, 99, 0.3);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .sent {
-    background: linear-gradient(135deg, #4a4a4a, #2d2d2d);
+    background: linear-gradient(135deg, var(--message-boy), #3a3a3a);
     margin-left: auto;
     border-bottom-left-radius: 5px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
@@ -482,6 +345,21 @@ h2 {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+/* تاغات الردود */
+.reply-tag {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 8px 12px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    border-right: 3px solid var(--primary-color);
+    font-size: 0.85rem;
+    opacity: 0.8;
+}
+
+.reply-tag strong {
+    color: var(--light-color);
 }
 
 /* مؤشر الكتابة */
@@ -709,16 +587,15 @@ h2 {
     background: linear-gradient(135deg, #f44336, #d32f2f);
 }
 
-/* عدادات متحركة */
-.counter {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: var(--light-color);
-}
-
-@keyframes countUp {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+/* معاينة الصورة */
+.avatar-preview {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 3px solid var(--primary-color);
+    margin: 10px auto;
+    background-size: cover;
+    background-position: center;
 }
 
 @media (max-width: 768px) {
@@ -757,28 +634,6 @@ h2 {
         max-width: 90%;
         padding: 10px 15px;
     }
-    
-    .chat-status {
-        flex-direction: column;
-        gap: 5px;
-        text-align: center;
-    }
-    
-    .music-player {
-        left: 50%;
-        transform: translateX(-50%);
-        bottom: 10px;
-        min-width: 280px;
-    }
-    
-    .header-stats {
-        gap: 15px;
-    }
-    
-    .stat-item {
-        padding: 8px 15px;
-        font-size: 0.9rem;
-    }
 }
 
 @media (max-width: 480px) {
@@ -810,10 +665,5 @@ h2 {
     .btn {
         padding: 12px 20px;
         font-size: 0.95rem;
-    }
-    
-    .music-player {
-        min-width: 250px;
-        padding: 12px;
     }
 }
