@@ -13,17 +13,6 @@
         <header>
             <h1>قُلوب 💖</h1>
             <p class="header-subtitle">مكان اللقاءات الجميلة والصداقات الرائعة</p>
-            <div class="header-stats">
-                <div class="stat-item">
-                    <span class="counter">2,847</span> عضو نشط
-                </div>
-                <div class="stat-item">
-                    <span class="counter">156</span> محادثة الآن
-                </div>
-                <div class="stat-item">
-                    <span class="counter">89</span> لقاء ناجح
-                </div>
-            </div>
         </header>
 
         <!-- شبكة البطاقات المحسنة -->
@@ -82,25 +71,6 @@
                 💡 الأكواد المتاحة: حب, رومانسية, عشق, غرام, قمر
             </p>
         </div>
-
-        <!-- قسم الإحصائيات -->
-        <div class="features-section">
-            <h2>📊 إحصائيات حية</h2>
-            <div class="header-stats">
-                <div class="stat-item">
-                    <i class="fas fa-users"></i>
-                    <span class="counter">3,241</span> عضو مسجل
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-comment-dots"></i>
-                    <span class="counter">127</span> محادثة نشطة
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-heart"></i>
-                    <span class="counter">643</span> علاقة ناجحة
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- نافذة الدردشة المحسنة -->
@@ -108,11 +78,6 @@
         <div class="modal-content">
             <span class="close" onclick="closeChat()">&times;</span>
             <h2>💝 الدردشة الرومانسية</h2>
-            <div class="chat-status">
-                <span class="online-count">🟢 24 متصل الآن</span>
-                <span class="premium-count">👑 15 مشترك مميز</span>
-                <span class="active-count">💬 32 في محادثة</span>
-            </div>
             <div class="chat-container" id="chatMessages">
                 <!-- الرسائل تضاف هنا -->
             </div>
@@ -132,15 +97,14 @@
             <h2>👤 الملف الشخصي</h2>
             <div class="profile-grid">
                 <div>
-                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&h=150&fit=crop&crop=face" 
-                         alt="صورة المستخدم" class="profile-pic">
+                    <div id="avatarPreview" class="avatar-preview"></div>
                 </div>
                 <div class="profile-info">
                     <h3 id="userName">المستخدم</h3>
                     <p id="userId">ID: 12345</p>
                     <p id="userGender">الجنس: </p>
                     <p id="userInterest">المهتم بـ: </p>
-                    <p id="userJoinDate">تاريخ الانضمام: </p>
+                    <p id="userAge">العمر: </p>
                     <div class="membership-status">
                         <span class="free-badge">🆓 حساب مجاني</span>
                     </div>
@@ -168,6 +132,19 @@
                     <input type="date" id="birthdate" required>
                 </div>
                 <div class="form-group">
+                    <label for="avatar">الصورة الشخصية:</label>
+                    <select id="avatar" required onchange="updateAvatarPreview()">
+                        <option value="">اختر صورتك</option>
+                        <option value="boy1">👦 شاب 1</option>
+                        <option value="boy2">👨 شاب 2</option>
+                        <option value="boy3">🧔 شاب 3</option>
+                        <option value="girl1">👧 بنت 1</option>
+                        <option value="girl2">👩 بنت 2</option>
+                        <option value="girl3">🧕 بنت 3</option>
+                    </select>
+                    <div id="avatarPreview" class="avatar-preview"></div>
+                </div>
+                <div class="form-group">
                     <label for="gender">الجنس:</label>
                     <select id="gender" required>
                         <option value="">اختر الجنس</option>
@@ -193,7 +170,6 @@
 
     <!-- الروابط لملفات الجافاسكريبت -->
     <script src="data.js"></script>
-    <script src="music.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
