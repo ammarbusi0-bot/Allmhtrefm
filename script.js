@@ -2,7 +2,7 @@
 let userData = JSON.parse(localStorage.getItem('userData'));
 let featuresActivated = localStorage.getItem('featuresActivated') === 'true';
 let chatInterval;
-let privateChatInterval;
+let usedNames = new Set();
 
 // فحص إذا كان المستخدم مسجل الدخول
 function checkUserLogin() {
@@ -47,7 +47,8 @@ document.getElementById('signupForm').addEventListener('submit', function(e) {
         gender: gender,
         interest: interest,
         id: Math.floor(10000 + Math.random() * 90000),
-        joinDate: new Date().toISOString().split('T')[0]
+        joinDate: new Date().toISOString().split('T')[0],
+        isPremium: false
     };
     
     localStorage.setItem('userData', JSON.stringify(userData));
@@ -77,6 +78,14 @@ function updateProfileData() {
             default: interestText = userData.interest;
         }
         document.getElementById('userInterest').textContent = `المهتم بـ: ${interestText}`;
+        
+        // تحديث حالة العضوية
+        const membershipElement = document.querySelector('.membership-status');
+        if (userData.isPremium) {
+            membershipElement.innerHTML = '<span class="premium-badge">👑 عضو مميز</span>';
+        } else {
+            membershipElement.innerHTML = '<span class="free-badge">🆓 حساب مجاني</span>';
+        }
     }
 }
 
@@ -85,16 +94,12 @@ function redirectToTelegram() {
     window.location.href = "https://t.me/Mariyemqp";
 }
 
-// إعادة التوجيه إلى المشرف
-function redirectToAdmin() {
-    window.location.href = "https://t.me/Mariyemqp";
-}
-
 // فتح نافذة الدردشة العامة
 function openChat() {
     if (!checkUserLogin()) return;
     
     document.getElementById('chatModal').style.display = 'flex';
+    usedNames.clear(); // مسح الأسماء المستخدمة
     startChatSimulation();
 }
 
@@ -104,110 +109,85 @@ function closeChat() {
     clearInterval(chatInterval);
 }
 
+// الحصول على اسم عشوائي لم يستخدم من قبل
+function getRandomName() {
+    const allUsers = [...chatData.boys, ...chatData.girls];
+    const availableNames = allUsers.filter(user => !usedNames.has(user.name));
+    
+    if (availableNames.length === 0) {
+        usedNames.clear(); // إعادة تعيين إذا نفذت الأسماء
+        return allUsers[Math.floor(Math.random() * allUsers.length)];
+    }
+    
+    const randomUser = availableNames[Math.floor(Math.random() * availableNames.length)];
+    usedNames.add(randomUser.name);
+    return randomUser;
+}
+
 // محاكاة الدردشة العامة
 function startChatSimulation() {
     const chatContainer = document.getElementById('chatMessages');
     chatContainer.innerHTML = '';
     
     // إضافة رسائل أولية
-    addMessage("سارة", "يا جماعة شو أخبار الحب عندكم؟ 💖", true);
-    addMessage("أحمد", "الحمدلله، الحب عم يزيد يوم بعد يوم 😍", false);
-    addMessage("ليلى", "وينكم ياحلوين؟ تعالو نحكي شوي 💕", true);
-    addMessage("محمد", "يا قمر أنتِ يلي حلوة 🌹", false);
+    addMessage("أحمد 👑", "يا جماعة في بنت حلوة بدي أتعرف عليها 💖", true, true);
+    addMessage("سارة 👑", "ما بضيف حدا على السناب شات 🙅‍♀️", false, true);
+    addMessage("محمد", "بدي أضيف بنت على الإنستغرام 📸", true, false);
+    addMessage("ليلى", "بدي أتعرف أكثر قبل ما أضيف أحد 👀", false, false);
     
-    // محاكاة الدردشة كل 3 ثواني
+    // محاكاة الدردشة كل 3-5 ثواني
     chatInterval = setInterval(() => {
-        const randomUser = chatData.fakeUsers[Math.floor(Math.random() * chatData.fakeUsers.length)];
-        const randomMessage = chatData.messages[Math.floor(Math.random() * chatData.messages.length)];
-        addMessage(randomUser.name, randomMessage, randomUser.gender === "female");
-    }, 3000);
+        const randomUser = getRandomName();
+        const isBoy = chatData.boys.some(boy => boy.name === randomUser.name);
+        
+        let randomMessage;
+        if (isBoy) {
+            // رسائل شباب
+            randomMessage = chatData.boysMessages[Math.floor(Math.random() * chatData.boysMessages.length)];
+            
+            // 30% فرصة لإضافة حساب اجتماعي
+            if (Math.random() < 0.3) {
+                const socialAccount = chatData.socialAccounts[Math.floor(Math.random() * chatData.socialAccounts.length)];
+                randomMessage += `\n${socialAccount}`;
+            }
+        } else {
+            // رسائل بنات
+            randomMessage = chatData.girlsMessages[Math.floor(Math.random() * chatData.girlsMessages.length)];
+        }
+        
+        // 20% فرصة لرسالة تفاعلية
+        if (Math.random() < 0.2) {
+            randomMessage = chatData.interactiveMessages[Math.floor(Math.random() * chatData.interactiveMessages.length)];
+        }
+        
+        // 10% فرصة لموضوع نقاشي
+        if (Math.random() < 0.1) {
+            randomMessage = chatData.discussionTopics[Math.floor(Math.random() * chatData.discussionTopics.length)];
+        }
+        
+        addMessage(
+            `${randomUser.name} ${randomUser.premium ? '👑' : ''}`,
+            randomMessage,
+            isBoy,
+            randomUser.premium
+        );
+    }, 3000 + Math.random() * 2000); // بين 3-5 ثواني
 }
 
 // إضافة رسالة إلى الدردشة
-function addMessage(user, message, isReceived) {
+function addMessage(user, message, isBoy, isPremium = false) {
     const chatContainer = document.getElementById('chatMessages');
     const messageDiv = document.createElement('div');
-    messageDiv.className = `message ${isReceived ? 'received' : 'sent'}`;
-    messageDiv.innerHTML = `<strong>${user}:</strong> ${message}`;
-    chatContainer.appendChild(messageDiv);
-    chatContainer.scrollTop = chatContainer.scrollHeight;
-}
-
-// فتح نافذة الدردشة الخاصة
-function openPrivateChat(userId) {
-    if (!checkUserLogin()) return;
     
-    const user = chatData.fakeUsers.find(u => u.id === userId);
-    if (user) {
-        document.getElementById('privateChatTitle').textContent = `الدردشة مع ${user.name} 💕`;
-        document.getElementById('privateChatModal').style.display = 'flex';
-        startPrivateChatSimulation(user);
+    let messageClass = `message ${isBoy ? 'sent' : 'received'}`;
+    if (isPremium) {
+        messageClass += ' message-premium';
     }
-}
-
-// إغلاق نافذة الدردشة الخاصة
-function closePrivateChat() {
-    document.getElementById('privateChatModal').style.display = 'none';
-    clearInterval(privateChatInterval);
-}
-
-// محاكاة الدردشة الخاصة
-function startPrivateChatSimulation(user) {
-    const chatContainer = document.getElementById('privateChatMessages');
-    chatContainer.innerHTML = '';
     
-    // إضافة رسائل أولية
-    addPrivateMessage(user.name, `مرحبا ${userData.name}!
-شو أخبارك ياقمر؟ 💫`, true);
-    
-    // محاكاة الدردشة كل 3 ثواني
-    privateChatInterval = setInterval(() => {
-        const randomMessage = chatData.messages[Math.floor(Math.random() * chatData.messages.length)];
-        addPrivateMessage(user.name, randomMessage, true);
-    }, 3000);
-}
-
-// إضافة رسالة إلى الدردشة الخاصة
-function addPrivateMessage(user, message, isReceived) {
-    const chatContainer = document.getElementById('privateChatMessages');
-    const messageDiv = document.createElement('div');
-    messageDiv.className = `message ${isReceived ? 'received' : 'sent'}`;
+    messageDiv.className = messageClass;
     messageDiv.innerHTML = `<strong>${user}:</strong> ${message}`;
     chatContainer.appendChild(messageDiv);
     chatContainer.scrollTop = chatContainer.scrollHeight;
-}
-
-// فتح نافذة الأعضاء
-function openUsers() {
-    if (!checkUserLogin()) return;
-    
-    document.getElementById('usersModal').style.display = 'flex';
-    loadUsersList();
-}
-
-// إغلاق نافذة الأعضاء
-function closeUsers() {
-    document.getElementById('usersModal').style.display = 'none';
-}
-
-// تحميل قائمة الأعضاء
-function loadUsersList() {
-    const usersGrid = document.getElementById('usersGrid');
-    usersGrid.innerHTML = '';
-    
-    chatData.fakeUsers.forEach(user => {
-        const userCard = document.createElement('div');
-        userCard.className = 'user-card';
-        userCard.onclick = () => openUserProfile(user.id);
-        userCard.innerHTML = `
-            <div class="online-indicator"></div>
-            <img src="https://via.placeholder.com/80" alt="${user.name}" class="user-avatar">
-            <div class="user-name">${user.name}</div>
-            <div class="user-age">${user.age} سنة</div>
-            <div class="user-gender">${user.gender === 'female' ? '👩' : '👨'} ${user.city}</div>
-        `;
-        usersGrid.appendChild(userCard);
-    });
 }
 
 // فتح نافذة الملف الشخصي
@@ -223,52 +203,6 @@ function closeProfile() {
     document.getElementById('profileModal').style.display = 'none';
 }
 
-// فتح نافذة ملف مستخدم
-function openUserProfile(userId) {
-    const user = chatData.fakeUsers.find(u => u.id === userId);
-    if (user) {
-        const userProfileContent = document.getElementById('userProfileContent');
-        userProfileContent.innerHTML = `
-            <h2>الملف الشخصي لـ ${user.name} 👤</h2>
-            <div class="profile-grid">
-                <div>
-                    <img src="https://via.placeholder.com/150" alt="صورة ${user.name}" class="profile-pic">
-                </div>
-                <div class="profile-info">
-                    <h3>${user.name}</h3>
-                    <p>العمر: ${user.age} سنة</p>
-                    <p>المدينة: ${user.city}</p>
-                    <p>الجنس: ${user.gender === 'female' ? 'أنثى' : 'ذكر'}</p>
-                    <p>الحالة: متصل(ة) الآن</p>
-                </div>
-            </div>
-            <button class="btn" onclick="openPrivateChat('${user.id}')">💌 دردش مع ${user.name}</button>
-        `;
-        document.getElementById('userProfileModal').style.display = 'flex';
-    }
-}
-
-// إغلاق نافذة ملف المستخدم
-function closeUserProfile() {
-    document.getElementById('userProfileModal').style.display = 'none';
-}
-
-// تعديل الملف الشخصي
-function editProfile() {
-    if (confirm('هل تريد تعديل ملفك الشخصي؟')) {
-        document.getElementById('profileModal').style.display = 'none';
-        document.getElementById('signupModal').style.display = 'flex';
-        
-        // تعبئة البيانات الحالية في النموذج
-        if (userData) {
-            document.getElementById('name').value = userData.name;
-            document.getElementById('birthdate').value = userData.birthdate;
-            document.getElementById('gender').value = userData.gender;
-            document.getElementById('interest').value = userData.interest;
-        }
-    }
-}
-
 // تفعيل المميزات
 function activateFeatures() {
     const codeInput = document.getElementById('featureCode');
@@ -276,14 +210,26 @@ function activateFeatures() {
     
     if (chatData.featureCodes[code]) {
         featuresActivated = true;
+        userData.isPremium = true;
+        localStorage.setItem('userData', JSON.stringify(userData));
         localStorage.setItem('featuresActivated', 'true');
         codeInput.value = '';
+        updateProfileData();
         alert('🎉 تم تفعيل المميزات بنجاح! يمكنك الآن استخدام جميع خصائص الموقع.');
     } else {
         alert('❌ الكود غير صحيح. يرجى المحاولة مرة أخرى.');
         codeInput.value = '';
         codeInput.focus();
     }
+}
+
+// تحديث عداد المتصلين
+function updateOnlineCounters() {
+    const onlineCount = Math.floor(Math.random() * 10) + 20; // 20-30 متصل
+    const premiumCount = Math.floor(Math.random() * 5) + 10; // 10-15 مشترك مميز
+    
+    document.querySelector('.online-count').textContent = `🟢 ${onlineCount} متصل الآن`;
+    document.querySelector('.premium-count').textContent = `👑 ${premiumCount} مشترك مميز`;
 }
 
 // إضافة تأثيرات عند التمرير
@@ -296,3 +242,7 @@ window.addEventListener('scroll', function() {
         card.style.transform = `translateY(${rate * (index + 1) * 0.1}px)`;
     });
 });
+
+// تحديث العدادات كل 10 ثواني
+setInterval(updateOnlineCounters, 10000);
+updateOnlineCounters(); // التشغيل الأولي
