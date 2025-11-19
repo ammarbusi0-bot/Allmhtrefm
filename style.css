@@ -316,16 +316,6 @@ h2 {
     font-size: 1rem;
 }
 
-.balance {
-    color: var(--light-color) !important;
-    font-weight: bold;
-    font-size: 1.1rem;
-}
-
-.balance span {
-    color: gold;
-}
-
 .profile-actions {
     margin-top: 20px;
     text-align: center;
@@ -463,16 +453,6 @@ h2 {
 .user-gender {
     color: var(--primary-color);
     font-size: 0.9rem;
-    margin-bottom: 5px;
-}
-
-.user-telegram {
-    color: #0088cc;
-    font-size: 0.8rem;
-    background: rgba(0, 136, 204, 0.1);
-    padding: 3px 8px;
-    border-radius: 10px;
-    margin-top: 5px;
 }
 
 .online-indicator {
@@ -484,55 +464,6 @@ h2 {
     background: #4CAF50;
     border-radius: 50%;
     border: 2px solid var(--card-bg);
-}
-
-.online-count {
-    background: rgba(76, 175, 80, 0.2);
-    padding: 5px 12px;
-    border-radius: 15px;
-    font-size: 0.9rem;
-    color: #4CAF50;
-    border: 1px solid rgba(76, 175, 80, 0.3);
-}
-
-.gifts-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 15px;
-    margin: 20px 0;
-}
-
-.gift-card {
-    background: linear-gradient(145deg, var(--card-bg), #3a3a3a);
-    border-radius: 15px;
-    padding: 20px 15px;
-    text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.3s ease;
-}
-
-.gift-card:hover {
-    transform: translateY(-5px);
-    border-color: var(--primary-color);
-    box-shadow: 0 8px 25px rgba(233, 30, 99, 0.3);
-}
-
-.gift-icon {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-    color: var(--light-color);
-}
-
-.gift-card h3 {
-    color: var(--light-color);
-    margin-bottom: 8px;
-    font-size: 1.1rem;
-}
-
-.gift-card p {
-    color: #e0e0e0;
-    margin-bottom: 12px;
-    font-size: 0.9rem;
 }
 
 @media (max-width: 768px) {
@@ -576,10 +507,6 @@ h2 {
         max-width: 90%;
         padding: 10px 15px;
     }
-    
-    .gifts-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
 }
 
 @media (max-width: 480px) {
@@ -615,9 +542,5 @@ h2 {
     .btn {
         padding: 12px 20px;
         font-size: 0.95rem;
-    }
-    
-    .gifts-grid {
-        grid-template-columns: 1fr;
     }
 }
