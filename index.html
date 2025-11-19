@@ -32,20 +32,20 @@
                 <button class="btn" onclick="openChat()">الدخول إلى الدردشة</button>
             </div>
 
-            <!-- البطاقة الثالثة: التعارف -->
-            <div class="card">
-                <i class="fas fa-heart icon"></i>
-                <h2>التعارف</h2>
-                <p>تعرف على أصدقاء جدد وابنِ علاقات جميلة</p>
-                <button class="btn" onclick="openUsers()">عرض الأعضاء</button>
-            </div>
-
-            <!-- البطاقة الرابعة: الملف الشخصي -->
+            <!-- البطاقة الثالثة: الملف الشخصي -->
             <div class="card">
                 <i class="fas fa-user icon"></i>
                 <h2>الملف الشخصي</h2>
                 <p>إدارة ملفك الشخصي وتحديث معلوماتك</p>
                 <button class="btn" onclick="openProfile()">عرض الملف الشخصي</button>
+            </div>
+
+            <!-- البطاقة الرابعة: الإشتراكات -->
+            <div class="card">
+                <i class="fas fa-crown icon"></i>
+                <h2>العضويات المميزة</h2>
+                <p>احصل على عضوية مميزة للوصول لجميع الميزات</p>
+                <button class="btn" onclick="redirectToTelegram()">اشترك الآن</button>
             </div>
         </div>
 
@@ -63,38 +63,16 @@
         <div class="modal-content">
             <span class="close" onclick="closeChat()">&times;</span>
             <h2>الدردشة العامة 💬</h2>
+            <div class="chat-status">
+                <span class="online-count">🟢 24 متصل الآن</span>
+                <span class="premium-count">👑 15 مشترك مميز</span>
+            </div>
             <div class="chat-container" id="chatMessages">
                 <!-- سيتم إضافة الرسائل هنا بواسطة JavaScript -->
             </div>
             <div class="chat-notice">
-                <p>💝 شارك في الدردشة وتعرف على أصدقاء جدد</p>
-                <button class="btn" onclick="redirectToAdmin()">التحدث مع المشرف</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- نافذة الدردشة الخاصة -->
-    <div id="privateChatModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closePrivateChat()">&times;</span>
-            <h2 id="privateChatTitle">الدردشة الخاصة 💕</h2>
-            <div class="chat-container" id="privateChatMessages">
-                <!-- سيتم إضافة الرسائل هنا بواسطة JavaScript -->
-            </div>
-            <div class="chat-notice">
-                <p>💌 استمتع بمحادثة خاصة مع الأصدقاء</p>
-                <button class="btn" onclick="redirectToAdmin()">التحدث مع المشرف</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- نافذة الأعضاء -->
-    <div id="usersModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeUsers()">&times;</span>
-            <h2>الأعضاء النشطون 👥</h2>
-            <div class="users-grid" id="usersGrid">
-                <!-- سيتم إضافة الأعضاء هنا بواسطة JavaScript -->
+                <p>💝 للتواصل المباشر مع الأعضاء، اشترك في العضوية المميزة</p>
+                <button class="btn" onclick="redirectToTelegram()">💎 اشترك الآن</button>
             </div>
         </div>
     </div>
@@ -113,10 +91,13 @@
                     <p id="userId">ID: 12345</p>
                     <p id="userGender">الجنس: </p>
                     <p id="userInterest">المهتم بـ: </p>
+                    <div class="membership-status">
+                        <span class="free-badge">🆓 حساب مجاني</span>
+                    </div>
                 </div>
             </div>
             <div class="profile-actions">
-                <button class="btn" onclick="editProfile()">تعديل الملف الشخصي</button>
+                <button class="btn" onclick="redirectToTelegram()">💎 ترقية لعضوية مميزة</button>
             </div>
         </div>
     </div>
@@ -153,16 +134,6 @@
                 </div>
                 <button type="submit" class="btn">إنشاء الحساب</button>
             </form>
-        </div>
-    </div>
-
-    <!-- نافذة ملفات المستخدمين -->
-    <div id="userProfileModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeUserProfile()">&times;</span>
-            <div id="userProfileContent">
-                <!-- سيتم إضافة محتوى الملف الشخصي للمستخدم هنا -->
-            </div>
         </div>
     </div>
 
