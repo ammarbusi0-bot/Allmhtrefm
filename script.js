@@ -4,6 +4,30 @@ let featuresActivated = localStorage.getItem('featuresActivated') === 'true';
 let chatInterval;
 let usedNames = new Set();
 let messageCount = 0;
+let currentConversation = [];
+
+// صور أفترارية
+const avatars = {
+    boy1: "👦",
+    boy2: "👨", 
+    boy3: "🧔",
+    girl1: "👧",
+    girl2: "👩",
+    girl3: "🧕"
+};
+
+// تحديث معاينة الصورة
+function updateAvatarPreview() {
+    const avatarSelect = document.getElementById('avatar');
+    const preview = document.getElementById('avatarPreview');
+    if (avatarSelect.value && avatars[avatarSelect.value]) {
+        preview.textContent = avatars[avatarSelect.value];
+        preview.style.fontSize = '80px';
+        preview.style.display = 'flex';
+        preview.style.alignItems = 'center';
+        preview.style.justifyContent = 'center';
+    }
+}
 
 // فحص إذا كان المستخدم مسجل الدخول
 function checkUserLogin() {
@@ -17,18 +41,14 @@ function checkUserLogin() {
 
 // عند تحميل الصفحة
 window.onload = function() {
-    updateCounters();
     if (userData) {
         updateProfileData();
-        showNotification(`مرحباً بعودتك ${userData.name}! 💖`, 'success');
-    }
-    
-    // فتح نافذة التسجيل بعد ثانية إذا لم يكن المستخدم مسجلاً
-    setTimeout(() => {
-        if (!userData) {
+    } else {
+        // فتح نافذة التسجيل بعد ثانية إذا لم يكن المستخدم مسجلاً
+        setTimeout(() => {
             document.getElementById('signupModal').style.display = 'flex';
-        }
-    }, 1500);
+        }, 1000);
+    }
 };
 
 // إظهار الإشعارات
@@ -48,37 +68,17 @@ function showNotification(message, type = 'success') {
     }, 4000);
 }
 
-// تحديث العدادات
-function updateCounters() {
-    const counters = document.querySelectorAll('.counter');
-    counters.forEach(counter => {
-        const target = parseInt(counter.textContent);
-        let current = 0;
-        const increment = target / 50;
-        
-        const updateCounter = () => {
-            if (current < target) {
-                current += increment;
-                counter.textContent = Math.ceil(current);
-                setTimeout(updateCounter, 30);
-            } else {
-                counter.textContent = target;
-            }
-        };
-        updateCounter();
-    });
-}
-
 // إرسال نموذج إنشاء الحساب
 document.getElementById('signupForm').addEventListener('submit', function(e) {
     e.preventDefault();
     
     const name = document.getElementById('name').value;
     const birthdate = document.getElementById('birthdate').value;
+    const avatar = document.getElementById('avatar').value;
     const gender = document.getElementById('gender').value;
     const interest = document.getElementById('interest').value;
     
-    if (!name || !birthdate || !gender || !interest) {
+    if (!name || !birthdate || !avatar || !gender || !interest) {
         showNotification('يرجى ملء جميع الحقول المطلوبة', 'error');
         return;
     }
@@ -97,6 +97,7 @@ document.getElementById('signupForm').addEventListener('submit', function(e) {
         name: name,
         birthdate: birthdate,
         age: age,
+        avatar: avatar,
         gender: gender,
         interest: interest,
         id: Math.floor(10000 + Math.random() * 90000),
@@ -115,11 +116,6 @@ document.getElementById('signupForm').addEventListener('submit', function(e) {
     // إظهار رسالة ترحيب
     setTimeout(() => {
         showNotification(`مرحباً ${name}! 😊 تم إنشاء حسابك بنجاح. استمتع بتجربتك في قُلوب 💖`);
-        
-        // تشغيل الموسيقى إذا كانت متاحة
-        if (window.musicSystem && !window.musicSystem.isPlaying) {
-            setTimeout(() => window.musicSystem.play(), 1000);
-        }
     }, 500);
 });
 
@@ -129,6 +125,7 @@ function updateProfileData() {
         document.getElementById('userName').textContent = userData.name;
         document.getElementById('userId').textContent = `ID: ${userData.id}`;
         document.getElementById('userGender').textContent = `الجنس: ${userData.gender === 'male' ? 'ذكر' : 'أنثى'}`;
+        document.getElementById('userAge').textContent = `العمر: ${userData.age} سنة`;
         
         let interestText = '';
         switch(userData.interest) {
@@ -138,7 +135,16 @@ function updateProfileData() {
             default: interestText = userData.interest;
         }
         document.getElementById('userInterest').textContent = `المهتم بـ: ${interestText}`;
-        document.getElementById('userJoinDate').textContent = `تاريخ الانضمام: ${userData.joinDate}`;
+        
+        // تحديث الصورة الشخصية
+        const avatarPreview = document.querySelector('#profileModal .avatar-preview');
+        if (avatarPreview && avatars[userData.avatar]) {
+            avatarPreview.textContent = avatars[userData.avatar];
+            avatarPreview.style.fontSize = '80px';
+            avatarPreview.style.display = 'flex';
+            avatarPreview.style.alignItems = 'center';
+            avatarPreview.style.justifyContent = 'center';
+        }
         
         // تحديث حالة العضوية
         const membershipElement = document.querySelector('.membership-status');
@@ -165,10 +171,8 @@ function openChat() {
     document.getElementById('chatModal').style.display = 'flex';
     usedNames.clear();
     messageCount = 0;
+    currentConversation = [];
     startChatSimulation();
-    
-    // تحديث إحصائيات الدردشة
-    updateChatStats();
 }
 
 // إغلاق نافذة الدردشة العامة
@@ -177,21 +181,10 @@ function closeChat() {
     clearInterval(chatInterval);
     
     // إزالة مؤشر الكتابة إذا كان موجوداً
-    const typingIndicator = document.getElementById('typing-indicator');
+    const typingIndicator = document.querySelector('.typing-indicator');
     if (typingIndicator) {
         typingIndicator.remove();
     }
-}
-
-// تحديث إحصائيات الدردشة
-function updateChatStats() {
-    const onlineCount = Math.floor(Math.random() * 15) + 20;
-    const premiumCount = Math.floor(Math.random() * 8) + 12;
-    const activeCount = Math.floor(Math.random() * 20) + 25;
-    
-    document.querySelector('.online-count').textContent = `🟢 ${onlineCount} متصل الآن`;
-    document.querySelector('.premium-count').textContent = `👑 ${premiumCount} مشترك مميز`;
-    document.querySelector('.active-count').textContent = `💬 ${activeCount} في محادثة`;
 }
 
 // الحصول على اسم عشوائي لم يستخدم من قبل
@@ -209,82 +202,176 @@ function getRandomName() {
     return randomUser;
 }
 
-// محاكاة الدردشة العامة بشكل واقعي
+// إنشاء محادثة عشوائية
+function generateRandomConversation() {
+    const conversation = [];
+    const numMessages = Math.floor(Math.random() * 6) + 5; // 5-10 رسائل
+    
+    let lastUser = null;
+    let replyChain = null;
+    
+    for (let i = 0; i < numMessages; i++) {
+        const user = getRandomName();
+        const isBoy = chatData.boys.some(boy => boy.name === user.name);
+        
+        let message;
+        let replyTo = null;
+        
+        // 30% فرصة للرد على رسالة سابقة
+        if (conversation.length > 0 && Math.random() < 0.3 && !replyChain) {
+            const randomPrevious = conversation[Math.floor(Math.random() * conversation.length)];
+            replyTo = randomPrevious;
+            replyChain = user.name;
+            
+            const replies = isBoy ? 
+                chatData.interactiveMessages.filter(msg => msg.includes('شو') || msg.includes('بدي')) :
+                chatData.girlsMessages.filter(msg => msg.includes('بدي') || msg.includes('شو'));
+            
+            message = replies[Math.floor(Math.random() * replies.length)];
+        } else if (replyChain === user.name) {
+            // استمرار سلسلة الردود
+            const replies = isBoy ? chatData.boysMessages : chatData.girlsMessages;
+            message = replies[Math.floor(Math.random() * replies.length)];
+        } else {
+            // رسالة عادية
+            const messageType = Math.random();
+            if (messageType < 0.6) {
+                message = isBoy ? 
+                    chatData.boysMessages[Math.floor(Math.random() * chatData.boysMessages.length)] :
+                    chatData.girlsMessages[Math.floor(Math.random() * chatData.girlsMessages.length)];
+            } else if (messageType < 0.8) {
+                message = chatData.interactiveMessages[Math.floor(Math.random() * chatData.interactiveMessages.length)];
+            } else {
+                message = chatData.discussionTopics[Math.floor(Math.random() * chatData.discussionTopics.length)];
+            }
+            replyChain = null;
+        }
+        
+        conversation.push({
+            user: user,
+            message: message,
+            isBoy: isBoy,
+            replyTo: replyTo,
+            timestamp: new Date().getTime() + i * 60000
+        });
+        
+        lastUser = user;
+    }
+    
+    return conversation;
+}
+
+// محاكاة الدردشة بشكل واقعي
 function startChatSimulation() {
     const chatContainer = document.getElementById('chatMessages');
     chatContainer.innerHTML = '';
     
-    // إضافة رسائل أولية واقعية
-    addMessage("أحمد 👑", "مساء الخير يا جماعة 💖 في بنت حابة تتعرف على شاب جاد؟", true, true);
-    setTimeout(() => {
-        addMessage("سارة 👑", "مساء النور 🌹 أنا مهتمة بالتعرف على أشخاص محترمين", false, true);
-    }, 2000);
+    // إنشاء محادثة عشوائية جديدة
+    currentConversation = generateRandomConversation();
     
-    setTimeout(() => {
-        addMessage("محمد", "بدي أتعرف على بنت من حلب للزواج 👰", true, false);
-    }, 4000);
+    // عرض المحادثة مع تأثيرات متتالية
+    displayConversationWithEffects();
     
-    setTimeout(() => {
-        addMessage("ليلى", "أنا من حلب 🌸 بدي أتعرف أكثر قبل أي خطوة", false, false);
-    }, 6000);
-
-    // بدء المحاكاة بعد الرسائل الأولية
-    setTimeout(() => {
-        chatInterval = setInterval(generateRandomMessage, 3000 + Math.random() * 4000);
-    }, 8000);
+    // بدء إضافة رسائل جديدة بشكل عشوائي
+    chatInterval = setInterval(() => {
+        if (messageCount >= 25) {
+            clearInterval(chatInterval);
+            addMessage("النظام", "💝 هذه نهاية المحادثة التجريبية. اشترك في العضوية المميزة للوصول إلى محادثات حقيقية!", false, false);
+            return;
+        }
+        
+        addRandomMessage();
+    }, 4000 + Math.random() * 6000);
 }
 
-// توليد رسالة عشوائية
-function generateRandomMessage() {
-    if (messageCount >= 50) {
-        clearInterval(chatInterval);
-        addMessage("النظام", "💝 هذه نهاية المحادثة التجريبية. اشترك في العضوية المميزة للوصول إلى محادثات حقيقية!", false, false);
-        return;
-    }
+// عرض المحادثة مع تأثيرات
+function displayConversationWithEffects() {
+    currentConversation.forEach((msg, index) => {
+        setTimeout(() => {
+            displayMessage(msg);
+            messageCount++;
+        }, index * 1200);
+    });
+}
 
-    const randomUser = getRandomName();
-    const isBoy = chatData.boys.some(boy => boy.name === randomUser.name);
+// عرض رسالة مع التاغات
+function displayMessage(msg) {
+    const chatContainer = document.getElementById('chatMessages');
+    const messageDiv = document.createElement('div');
+    
+    let messageClass = `message ${msg.isBoy ? 'sent' : 'received'}`;
+    if (msg.user.premium) {
+        messageClass += ' message-premium';
+    }
+    
+    let messageContent = '';
+    
+    // إضافة تاغ الرد إذا كان هناك رد
+    if (msg.replyTo) {
+        messageContent += `
+            <div class="reply-tag">
+                ↳ رد على <strong>${msg.replyTo.user.name}</strong>: ${msg.replyTo.message.substring(0, 30)}...
+            </div>
+        `;
+    }
+    
+    messageContent += `<strong>${msg.user.name} ${msg.user.premium ? '👑' : ''}</strong> ${msg.message}`;
+    
+    messageDiv.className = messageClass;
+    messageDiv.innerHTML = messageContent;
+    chatContainer.appendChild(messageDiv);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+
+// إضافة رسالة عشوائية جديدة
+function addRandomMessage() {
+    const user = getRandomName();
+    const isBoy = chatData.boys.some(boy => boy.name === user.name);
+    
+    let message;
+    let replyTo = null;
+    
+    // 40% فرصة للرد على رسالة سابقة من المحادثة الحالية
+    if (currentConversation.length > 0 && Math.random() < 0.4) {
+        const randomPrevious = currentConversation[Math.floor(Math.random() * currentConversation.length)];
+        replyTo = randomPrevious;
+        
+        const replies = isBoy ? 
+            chatData.interactiveMessages.filter(msg => msg.includes('شو') || msg.includes('بدي')) :
+            chatData.girlsMessages.filter(msg => msg.includes('بدي') || msg.includes('شو'));
+        
+        message = replies[Math.floor(Math.random() * replies.length)];
+    } else {
+        // رسالة عادية
+        const messageType = Math.random();
+        if (messageType < 0.6) {
+            message = isBoy ? 
+                chatData.boysMessages[Math.floor(Math.random() * chatData.boysMessages.length)] :
+                chatData.girlsMessages[Math.floor(Math.random() * chatData.girlsMessages.length)];
+        } else if (messageType < 0.8) {
+            message = chatData.interactiveMessages[Math.floor(Math.random() * chatData.interactiveMessages.length)];
+        } else {
+            message = chatData.discussionTopics[Math.floor(Math.random() * chatData.discussionTopics.length)];
+        }
+    }
+    
+    const newMessage = {
+        user: user,
+        message: message,
+        isBoy: isBoy,
+        replyTo: replyTo,
+        timestamp: new Date().getTime()
+    };
+    
+    currentConversation.push(newMessage);
     
     // مؤشر الكتابة
-    showTypingIndicator(randomUser);
+    showTypingIndicator(user);
     
-    // تأخير قبل إظهار الرسالة
     setTimeout(() => {
-        removeTypingIndicator(randomUser.name);
-        
-        let randomMessage;
-        const messageType = Math.random();
-        
-        if (messageType < 0.4) {
-            // رسائل عادية
-            randomMessage = isBoy ? 
-                chatData.boysMessages[Math.floor(Math.random() * chatData.boysMessages.length)] :
-                chatData.girlsMessages[Math.floor(Math.random() * chatData.girlsMessages.length)];
-        } else if (messageType < 0.7) {
-            // رسائل تفاعلية
-            randomMessage = chatData.interactiveMessages[Math.floor(Math.random() * chatData.interactiveMessages.length)];
-        } else if (messageType < 0.85) {
-            // مواضيع نقاشية
-            randomMessage = chatData.discussionTopics[Math.floor(Math.random() * chatData.discussionTopics.length)];
-        } else {
-            // رسائل مع حسابات اجتماعية
-            const baseMessage = isBoy ? 
-                chatData.boysMessages[Math.floor(Math.random() * chatData.boysMessages.length)] :
-                chatData.girlsMessages[Math.floor(Math.random() * chatData.girlsMessages.length)];
-            const socialAccount = chatData.socialAccounts[Math.floor(Math.random() * chatData.socialAccounts.length)];
-            randomMessage = `${baseMessage}\n${socialAccount}`;
-        }
-
-        addMessage(
-            `${randomUser.name} ${randomUser.premium ? '👑' : ''}`,
-            randomMessage,
-            isBoy,
-            randomUser.premium
-        );
-        
+        removeTypingIndicator(user.name);
+        displayMessage(newMessage);
         messageCount++;
-        updateChatStats();
-        
     }, 1500 + Math.random() * 2000);
 }
 
@@ -312,22 +399,6 @@ function removeTypingIndicator(userName) {
     if (typingIndicator) {
         typingIndicator.remove();
     }
-}
-
-// إضافة رسالة إلى الدردشة
-function addMessage(user, message, isBoy, isPremium = false) {
-    const chatContainer = document.getElementById('chatMessages');
-    const messageDiv = document.createElement('div');
-    
-    let messageClass = `message ${isBoy ? 'sent' : 'received'}`;
-    if (isPremium) {
-        messageClass += ' message-premium';
-    }
-    
-    messageDiv.className = messageClass;
-    messageDiv.innerHTML = `<strong>${user}:</strong> ${message}`;
-    chatContainer.appendChild(messageDiv);
-    chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
 // فتح نافذة الملف الشخصي
@@ -369,9 +440,6 @@ function activateFeatures() {
     }
 }
 
-// تحديث عداد المتصلين كل 15 ثانية
-setInterval(updateChatStats, 15000);
-
 // تأثيرات التمرير
 window.addEventListener('scroll', function() {
     const cards = document.querySelectorAll('.card');
@@ -382,6 +450,3 @@ window.addEventListener('scroll', function() {
         card.style.transform = `translateY(${rate * (index + 1) * 0.1}px)`;
     });
 });
-
-// تحديث العدادات أول مرة
-updateChatStats();
