@@ -3,113 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>قُلوب - تعارف وصداقة</title>
+    <title>قُلوب 💖 - تعارف وصداقة</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
+        <!-- الهيدر المحسن -->
         <header>
             <h1>قُلوب 💖</h1>
-            <p>مكان اللقاءات الجميلة والصداقات الرائعة</p>
+            <p class="header-subtitle">مكان اللقاءات الجميلة والصداقات الرائعة</p>
+            <div class="header-stats">
+                <div class="stat-item">
+                    <span class="counter">2,847</span> عضو نشط
+                </div>
+                <div class="stat-item">
+                    <span class="counter">156</span> محادثة الآن
+                </div>
+                <div class="stat-item">
+                    <span class="counter">89</span> لقاء ناجح
+                </div>
+            </div>
         </header>
 
+        <!-- شبكة البطاقات المحسنة -->
         <div class="grid">
-            <!-- البطاقة الأولى: التوافق الصوتي -->
-            <div class="card">
+            <!-- البطاقة الأولى: التوافق الصوتي المميز -->
+            <div class="card card-premium">
                 <i class="fas fa-microphone-alt icon"></i>
-                <h2>توافق صوتي</h2>
-                <p>خدمة التوافق الصوتي المميزة للتواصل مع الآخرين</p>
-                <p class="price">السعر: 10$</p>
-                <button class="btn" onclick="redirectToTelegram()">شراء الخدمة</button>
+                <h2>التوافق الصوتي المميز 🎤</h2>
+                <p>تحدث مع أشخاص متوافقين معك عبر المكالمات الصوتية. خدمة حصرية للأعضاء المميزين</p>
+                <p class="price price-premium">السعر: 15$</p>
+                <button class="btn btn-premium" onclick="redirectToTelegram()">
+                    <i class="fas fa-crown"></i> اشترك الآن
+                </button>
             </div>
 
-            <!-- البطاقة الثانية: الدردشة -->
+            <!-- البطاقة الثانية: الدردشة الرومانسية -->
             <div class="card">
                 <i class="fas fa-comments icon"></i>
-                <h2>دردشة رومانسية</h2>
-                <p>انضم إلى مجتمعنا وتواصل مع الآخرين في بيئة ممتعة</p>
-                <button class="btn" onclick="openChat()">الدخول إلى الدردشة</button>
+                <h2>الدردشة الرومانسية 💬</h2>
+                <p>انضم إلى مجتمعنا الرومانسي وتواصل مع أشخاص يشاركونك نفس الاهتمامات</p>
+                <button class="btn" onclick="openChat()">
+                    <i class="fas fa-heart"></i> الدخول إلى الدردشة
+                </button>
             </div>
 
             <!-- البطاقة الثالثة: الملف الشخصي -->
             <div class="card">
                 <i class="fas fa-user icon"></i>
-                <h2>الملف الشخصي</h2>
-                <p>إدارة ملفك الشخصي وتحديث معلوماتك</p>
-                <button class="btn" onclick="openProfile()">عرض الملف الشخصي</button>
+                <h2>الملف الشخصي 👤</h2>
+                <p>إدارة ملفك الشخصي، تحديث معلوماتك، ومشاهدة إحصائياتك</p>
+                <button class="btn" onclick="openProfile()">
+                    <i class="fas fa-id-card"></i> عرض الملف الشخصي
+                </button>
             </div>
 
-            <!-- البطاقة الرابعة: الإشتراكات -->
-            <div class="card">
-                <i class="fas fa-crown icon"></i>
-                <h2>العضويات المميزة</h2>
-                <p>احصل على عضوية مميزة للوصول لجميع الميزات</p>
-                <button class="btn" onclick="redirectToTelegram()">اشترك الآن</button>
+            <!-- البطاقة الرابعة: الإشتراكات المميزة -->
+            <div class="card card-premium">
+                <i class="fas fa-gem icon"></i>
+                <h2>العضوية الماسية 💎</h2>
+                <p>احصل على عضوية مميزة للوصول لجميع الميزات الحصرية والأولوية في الظهور</p>
+                <button class="btn btn-premium" onclick="redirectToTelegram()">
+                    <i class="fas fa-star"></i> ترقية الآن
+                </button>
             </div>
         </div>
 
-        <!-- قسم فتح المميزات -->
+        <!-- قسم المميزات -->
         <div class="features-section">
-            <h2>فتح المميزات</h2>
-            <p>أدخل الكود الخاص لفتح جميع مميزات الموقع</p>
-            <input type="text" id="featureCode" placeholder="أدخل الكود هنا">
-            <button class="btn" onclick="activateFeatures()">تفعيل</button>
+            <h2>🔓 فتح المميزات الحصرية</h2>
+            <p>أدخل الكود السري لتفعيل جميع مميزات الموقع مجاناً!</p>
+            <input type="text" id="featureCode" placeholder="أدخل الكود السري هنا...">
+            <button class="btn" onclick="activateFeatures()">
+                <i class="fas fa-key"></i> تفعيل المميزات
+            </button>
+            <p style="margin-top: 15px; font-size: 0.9rem; opacity: 0.8;">
+                💡 الأكواد المتاحة: حب, رومانسية, عشق, غرام, قمر
+            </p>
+        </div>
+
+        <!-- قسم الإحصائيات -->
+        <div class="features-section">
+            <h2>📊 إحصائيات حية</h2>
+            <div class="header-stats">
+                <div class="stat-item">
+                    <i class="fas fa-users"></i>
+                    <span class="counter">3,241</span> عضو مسجل
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-comment-dots"></i>
+                    <span class="counter">127</span> محادثة نشطة
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-heart"></i>
+                    <span class="counter">643</span> علاقة ناجحة
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- نافذة الدردشة -->
+    <!-- نافذة الدردشة المحسنة -->
     <div id="chatModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeChat()">&times;</span>
-            <h2>الدردشة العامة 💬</h2>
+            <h2>💝 الدردشة الرومانسية</h2>
             <div class="chat-status">
                 <span class="online-count">🟢 24 متصل الآن</span>
                 <span class="premium-count">👑 15 مشترك مميز</span>
+                <span class="active-count">💬 32 في محادثة</span>
             </div>
             <div class="chat-container" id="chatMessages">
-                <!-- سيتم إضافة الرسائل هنا بواسطة JavaScript -->
+                <!-- الرسائل تضاف هنا -->
             </div>
             <div class="chat-notice">
-                <p>💝 للتواصل المباشر مع الأعضاء، اشترك في العضوية المميزة</p>
-                <button class="btn" onclick="redirectToTelegram()">💎 اشترك الآن</button>
+                <p>💎 للوصول إلى جميع الميزات والتحكم الكامل، اشترك في العضوية المميزة</p>
+                <button class="btn btn-premium" onclick="redirectToTelegram()">
+                    <i class="fas fa-crown"></i> ترقية إلى مميز
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- نافذة الملف الشخصي -->
+    <!-- نافذة الملف الشخصي المحسن -->
     <div id="profileModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeProfile()">&times;</span>
-            <h2>الملف الشخصي 👤</h2>
+            <h2>👤 الملف الشخصي</h2>
             <div class="profile-grid">
                 <div>
-                    <img src="https://via.placeholder.com/150" alt="صورة المستخدم" class="profile-pic">
+                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&h=150&fit=crop&crop=face" 
+                         alt="صورة المستخدم" class="profile-pic">
                 </div>
                 <div class="profile-info">
                     <h3 id="userName">المستخدم</h3>
                     <p id="userId">ID: 12345</p>
                     <p id="userGender">الجنس: </p>
                     <p id="userInterest">المهتم بـ: </p>
+                    <p id="userJoinDate">تاريخ الانضمام: </p>
                     <div class="membership-status">
                         <span class="free-badge">🆓 حساب مجاني</span>
                     </div>
                 </div>
             </div>
             <div class="profile-actions">
-                <button class="btn" onclick="redirectToTelegram()">💎 ترقية لعضوية مميزة</button>
+                <button class="btn btn-premium" onclick="redirectToTelegram()">
+                    <i class="fas fa-crown"></i> ترقية إلى عضوية مميزة
+                </button>
             </div>
         </div>
     </div>
 
     <!-- نافذة إنشاء الحساب -->
-    <div id="signupModal" class="modal" style="display: none;">
+    <div id="signupModal" class="modal">
         <div class="modal-content">
-            <h2>إنشاء حساب جديد 💫</h2>
+            <h2>💫 إنشاء حساب جديد</h2>
             <form id="signupForm">
                 <div class="form-group">
-                    <label for="name">الاسم:</label>
-                    <input type="text" id="name" required placeholder="أدخل اسمك">
+                    <label for="name">الاسم الكامل:</label>
+                    <input type="text" id="name" required placeholder="أدخل اسمك الكامل">
                 </div>
                 <div class="form-group">
                     <label for="birthdate">تاريخ الميلاد:</label>
@@ -132,12 +184,16 @@
                         <option value="marriage">زواج</option>
                     </select>
                 </div>
-                <button type="submit" class="btn">إنشاء الحساب</button>
+                <button type="submit" class="btn">
+                    <i class="fas fa-user-plus"></i> إنشاء الحساب
+                </button>
             </form>
         </div>
     </div>
 
+    <!-- الروابط لملفات الجافاسكريبت -->
     <script src="data.js"></script>
+    <script src="music.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
