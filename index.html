@@ -3,170 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>قُلوب 💖 - تعارف وصداقة</title>
+    <title>قُلوب 💎 - منصة التعارف الراقية</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
-        <!-- الهيدر المحسن -->
-        <header>
-            <h1>قُلوب 💖</h1>
-            <p class="header-subtitle">مكان اللقاءات الجميلة والصداقات الرائعة</p>
-        </header>
-
-        <!-- شبكة البطاقات المحسنة -->
-        <div class="grid">
-            <!-- البطاقة الأولى: التوافق الصوتي المميز -->
-            <div class="card card-premium">
-                <i class="fas fa-microphone-alt icon"></i>
-                <h2>التوافق الصوتي المميز 🎤</h2>
-                <p>تحدث مع أشخاص متوافقين معك عبر المكالمات الصوتية. خدمة حصرية للأعضاء المميزين</p>
-                <p class="price price-premium">السعر: 15$</p>
-                <button class="btn btn-premium" onclick="redirectToTelegram()">
-                    <i class="fas fa-crown"></i> اشترك الآن
-                </button>
-            </div>
-
-            <!-- البطاقة الثانية: الدردشة الرومانسية -->
-            <div class="card">
-                <i class="fas fa-comments icon"></i>
-                <h2>الدردشة الرومانسية 💬</h2>
-                <p>انضم إلى مجتمعنا الرومانسي وتواصل مع أشخاص يشاركونك نفس الاهتمامات</p>
-                <button class="btn" onclick="openChat()">
-                    <i class="fas fa-heart"></i> الدخول إلى الدردشة
-                </button>
-            </div>
-
-            <!-- البطاقة الثالثة: الملف الشخصي -->
-            <div class="card">
-                <i class="fas fa-user icon"></i>
-                <h2>الملف الشخصي 👤</h2>
-                <p>إدارة ملفك الشخصي، تحديث معلوماتك، ومشاهدة إحصائياتك</p>
-                <button class="btn" onclick="openProfile()">
-                    <i class="fas fa-id-card"></i> عرض الملف الشخصي
-                </button>
-            </div>
-
-            <!-- البطاقة الرابعة: الإشتراكات المميزة -->
-            <div class="card card-premium">
-                <i class="fas fa-gem icon"></i>
-                <h2>العضوية الماسية 💎</h2>
-                <p>احصل على عضوية مميزة للوصول لجميع الميزات الحصرية والأولوية في الظهور</p>
-                <button class="btn btn-premium" onclick="redirectToTelegram()">
-                    <i class="fas fa-star"></i> ترقية الآن
-                </button>
-            </div>
-        </div>
-
-        <!-- قسم المميزات -->
-        <div class="features-section">
-            <h2>🔓 فتح المميزات الحصرية</h2>
-            <p>أدخل الكود السري لتفعيل جميع مميزات الموقع مجاناً!</p>
-            <input type="text" id="featureCode" placeholder="أدخل الكود السري هنا...">
-            <button class="btn" onclick="activateFeatures()">
-                <i class="fas fa-key"></i> تفعيل المميزات
-            </button>
-            <p style="margin-top: 15px; font-size: 0.9rem; opacity: 0.8;">
-                💡 الأكواد المتاحة: حب, رومانسية, عشق, غرام, قمر
-            </p>
-        </div>
-    </div>
-
-    <!-- نافذة الدردشة المحسنة -->
-    <div id="chatModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeChat()">&times;</span>
-            <h2>💝 الدردشة الرومانسية</h2>
-            <div class="chat-container" id="chatMessages">
-                <!-- الرسائل تضاف هنا -->
-            </div>
-            <div class="chat-notice">
-                <p>💎 للوصول إلى جميع الميزات والتحكم الكامل، اشترك في العضوية المميزة</p>
-                <button class="btn btn-premium" onclick="redirectToTelegram()">
-                    <i class="fas fa-crown"></i> ترقية إلى مميز
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- نافذة الملف الشخصي المحسن -->
-    <div id="profileModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeProfile()">&times;</span>
-            <h2>👤 الملف الشخصي</h2>
-            <div class="profile-grid">
-                <div>
-                    <div id="avatarPreview" class="avatar-preview"></div>
-                </div>
-                <div class="profile-info">
-                    <h3 id="userName">المستخدم</h3>
-                    <p id="userId">ID: 12345</p>
-                    <p id="userGender">الجنس: </p>
-                    <p id="userInterest">المهتم بـ: </p>
-                    <p id="userAge">العمر: </p>
-                    <div class="membership-status">
-                        <span class="free-badge">🆓 حساب مجاني</span>
+        <!-- الهيدر الفاخر -->
+        <header class="premium-header">
+            <div class="header-content">
+                <h1>قُلوب <span class="diamond">💎</span></h1>
+                <p class="header-subtitle">منصة التعارف الحصرية للنخبة - حيث تبدأ القصص الجميلة</p>
+                <div class="header-stats">
+                    <div class="stat">
+                        <span class="stat-number">12,847</span>
+                        <span class="stat-label">عضواً نشطاً</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">3,492</span>
+                        <span class="stat-label">قصة نجاح</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">98%</span>
+                        <span class="stat-label">رضى العملاء</span>
                     </div>
                 </div>
             </div>
-            <div class="profile-actions">
-                <button class="btn btn-premium" onclick="redirectToTelegram()">
-                    <i class="fas fa-crown"></i> ترقية إلى عضوية مميزة
+        </header>
+
+        <!-- شبكة البطاقات الفاخرة -->
+        <div class="grid">
+            <!-- البطاقة الأولى: الدردشة الحصرية -->
+            <div class="card card-vip">
+                <div class="card-badge">الأكثر طلباً</div>
+                <i class="fas fa-gem icon"></i>
+                <h2>الدردشة الحصرية 💬</h2>
+                <p>انضم إلى مجتمع النخبة وتواصل مع أشخاص مميزين يشاركونك طموحاتك واهتماماتك في بيئة راقية وآمنة</p>
+                <div class="price-section">
+                    <span class="price-old">50$</span>
+                    <span class="price-new">25$</span>
+                    <span class="price-discount">خصم 50%</span>
+                </div>
+                <button class="btn btn-vip" onclick="redirectToTelegram('diamond_chat')">
+                    <i class="fas fa-crown"></i> اشترك الآن
                 </button>
+                <div class="card-features">
+                    <span><i class="fas fa-check"></i> دردشة فورية</span>
+                    <span><i class="fas fa-check"></i> أعضاء موثوقون</span>
+                    <span><i class="fas fa-check"></i> خصوصية تامة</span>
+                </div>
+            </div>
+
+            <!-- البطاقة الثانية: التعارف المميز -->
+            <div class="card card-premium">
+                <div class="card-badge">حصري</div>
+                <i class="fas fa-heart icon"></i>
+                <h2>التعارف المميز 💖</h2>
+                <p>ابحث عن شريك حياتك أو صداقات مميزة من خلال نظام مطابق ذكي يضمن توافق الشخصيات والاهتمامات</p>
+                <div class="price-section">
+                    <span class="price-old">35$</span>
+                    <span class="price-new">17$</span>
+                    <span class="price-discount">خصم 51%</span>
+                </div>
+                <button class="btn btn-premium" onclick="redirectToTelegram('premium_match')">
+                    <i class="fas fa-star"></i> ابدأ الرحلة
+                </button>
+                <div class="card-features">
+                    <span><i class="fas fa-check"></i> مطابقة ذكية</span>
+                    <span><i class="fas fa-check"></i> تشكيلة حصرية</span>
+                    <span><i class="fas fa-check"></i> نتائج مضمونة</span>
+                </div>
+            </div>
+
+            <!-- البطاقة الثالثة: الاستشارات -->
+            <div class="card card-elite">
+                <div class="card-badge">جديد</div>
+                <i class="fas fa-user-tie icon"></i>
+                <h2>استشارات العلاقات 👔</h2>
+                <p>احصل على إرشادات من مختصين في العلاقات لتطوير مهاراتك الاجتماعية وبناء علاقات ناجحة ومستدامة</p>
+                <div class="price-section">
+                    <span class="price-old">75$</span>
+                    <span class="price-new">37$</span>
+                    <span class="price-discount">خصم 50%</span>
+                </div>
+                <button class="btn btn-elite" onclick="redirectToTelegram('elite_consult')">
+                    <i class="fas fa-award"></i> احجز جلسة
+                </button>
+                <div class="card-features">
+                    <span><i class="fas fa-check"></i> مختصون معتمدون</span>
+                    <span><i class="fas fa-check"></i> جلسات خاصة</span>
+                    <span><i class="fas fa-check"></i> متابعة مستمرة</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- قسم التوصيات -->
+        <div class="testimonials-section">
+            <h2>📣 ماذا يقول أعضاؤنا؟</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        "منصة قُلوب غيرت حياتي! خلال أسبوع واحد فقط تعرفت على شريك حياتي. الخدمة تستحق كل قرش!"
+                    </div>
+                    <div class="testimonial-author">
+                        <strong>أحمد س.</strong>
+                        <span>منذ 3 أشهر</span>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        "جودة الأعضاء مذهلة! كلهم مثقفون وطموحون. أشكر فريق قُلوب على هذه البيئة الراقية."
+                    </div>
+                    <div class="testimonial-author">
+                        <strong>فاطمة ع.</strong>
+                        <span>منذ شهرين</span>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        "الخصوصية والأمان كانا هدفي الرئيسي، وقُلوب وفرا لي ذلك بكفاءة عالية. أنصح الجميع!"
+                    </div>
+                    <div class="testimonial-author">
+                        <strong>محمد ر.</strong>
+                        <span>منذ 5 أشهر</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- قسم الأسئلة الشائعة -->
+        <div class="faq-section">
+            <h2>❓ الأسئلة الشائعة</h2>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h3>هل الخدمة آمنة ومضمونة؟</h3>
+                    <p>نعم! نعمل بأعلى معايير الأمان والخصوصية. جميع الأعضاء يتم التحقق منهم بدقة.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>كم تستغرق عملية التسجيل؟</h3>
+                    <p>أقل من دقيقتين! فقط اضغط على أي خدمة وسيتم توجيهك مباشرة إلى قناتنا على تليجرام.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>هل هناك ضمان استعادة الأموال؟</h3>
+                    <p>نعم! نقدم ضمان استعادة الأموال خلال 24 ساعة إذا لم تكن راضياً عن الخدمة.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- قسم تفعيل المميزات -->
+        <div class="features-section">
+            <div class="features-content">
+                <h2>🎁 احصل على خصم إضافي 10%!</h2>
+                <p>أدخل الكود السري لتحصل على خصم حصري على جميع الباقات</p>
+                <div class="code-input-container">
+                    <input type="text" id="featureCode" placeholder="أدخل الكود السري هنا...">
+                    <button class="btn btn-discount" onclick="activateFeatures()">
+                        <i class="fas fa-gift"></i> تفعيل الخصم
+                    </button>
+                </div>
+                <p class="code-hint">💡 الأكواد المتاحة: حب, رومانسية, عشق, غرام, قمر</p>
             </div>
         </div>
     </div>
 
-    <!-- نافذة إنشاء الحساب -->
-    <div id="signupModal" class="modal">
-        <div class="modal-content">
-            <h2>💫 إنشاء حساب جديد</h2>
-            <form id="signupForm">
-                <div class="form-group">
-                    <label for="name">الاسم الكامل:</label>
-                    <input type="text" id="name" required placeholder="أدخل اسمك الكامل">
+    <!-- الفوتر -->
+    <footer class="premium-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>قُلوب 💎</h3>
+                <p>منصة التعارف الراقية منذ 2020</p>
+            </div>
+            <div class="footer-section">
+                <h4>روابط سريعة</h4>
+                <a href="#" onclick="redirectToTelegram('support')">الدعم الفني</a>
+                <a href="#" onclick="redirectToTelegram('terms')">الشروط والأحكام</a>
+                <a href="#" onclick="redirectToTelegram('privacy')">الخصوصية</a>
+            </div>
+            <div class="footer-section">
+                <h4>التواصل</h4>
+                <p>متاح 24/7 للاستفسارات</p>
+                <div class="social-links">
+                    <span>@Quloob_Platform</span>
                 </div>
-                <div class="form-group">
-                    <label for="birthdate">تاريخ الميلاد:</label>
-                    <input type="date" id="birthdate" required>
-                </div>
-                <div class="form-group">
-                    <label for="avatar">الصورة الشخصية:</label>
-                    <select id="avatar" required onchange="updateAvatarPreview()">
-                        <option value="">اختر صورتك</option>
-                        <option value="boy1">👦 شاب 1</option>
-                        <option value="boy2">👨 شاب 2</option>
-                        <option value="boy3">🧔 شاب 3</option>
-                        <option value="girl1">👧 بنت 1</option>
-                        <option value="girl2">👩 بنت 2</option>
-                        <option value="girl3">🧕 بنت 3</option>
-                    </select>
-                    <div id="avatarPreview" class="avatar-preview"></div>
-                </div>
-                <div class="form-group">
-                    <label for="gender">الجنس:</label>
-                    <select id="gender" required>
-                        <option value="">اختر الجنس</option>
-                        <option value="male">ذكر</option>
-                        <option value="female">أنثى</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="interest">أبحث عن:</label>
-                    <select id="interest" required>
-                        <option value="">اختر الاهتمام</option>
-                        <option value="friendship">صداقة</option>
-                        <option value="relationship">علاقة</option>
-                        <option value="marriage">زواج</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn">
-                    <i class="fas fa-user-plus"></i> إنشاء الحساب
-                </button>
-            </form>
+            </div>
         </div>
-    </div>
+        <div class="footer-bottom">
+            <p>© 2024 قُلوب. جميع الحقوق محفوظة. | مصمم بحب 💖 لأجلكم</p>
+        </div>
+    </footer>
 
     <!-- الروابط لملفات الجافاسكريبت -->
     <script src="data.js"></script>
