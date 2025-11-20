@@ -49,6 +49,37 @@ window.onload = function() {
             document.getElementById('signupModal').style.display = 'flex';
         }, 1000);
     }
+    
+    // تأثيرات عند التحميل
+    const cards = document.querySelectorAll('.card');
+    cards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(30px)';
+        
+        setTimeout(() => {
+            card.style.transition = 'all 0.6s ease';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, index * 200);
+    });
+    
+    // تأثير العداد
+    const stats = document.querySelectorAll('.stat-number');
+    stats.forEach(stat => {
+        const target = parseInt(stat.textContent.replace(/,/g, ''));
+        const duration = 2000;
+        const step = target / (duration / 16);
+        let current = 0;
+        
+        const timer = setInterval(() => {
+            current += step;
+            if (current >= target) {
+                current = target;
+                clearInterval(timer);
+            }
+            stat.textContent = Math.floor(current).toLocaleString();
+        }, 16);
+    });
 };
 
 // إظهار الإشعارات
@@ -156,13 +187,87 @@ function updateProfileData() {
     }
 }
 
-// إعادة التوجيه إلى تلجرام
-function redirectToTelegram() {
-    showNotification('جاري التوجيه إلى قناة الاشتراك...', 'success');
+// إعادة التوجيه إلى تلجرام مع نوع الخدمة
+function redirectToTelegram(serviceType) {
+    const serviceNames = {
+        'diamond_chat': 'الدردشة الماسية',
+        'premium_match': 'التعارف المميز', 
+        'elite_consult': 'استشارات النخبة',
+        'support': 'الدعم الفني',
+        'terms': 'الشروط والأحكام',
+        'privacy': 'الخصوصية'
+    };
+    
+    const serviceName = serviceNames[serviceType] || 'الخدمة';
+    
+    showNotification(`جاري توجيهك إلى ${serviceName}... 🚀`, 'success');
+    
     setTimeout(() => {
         window.location.href = "https://t.me/Mariyemqp";
-    }, 1500);
+    }, 2000);
 }
+
+// تفعيل المميزات والأكواد
+function activateFeatures() {
+    const codeInput = document.getElementById('featureCode');
+    const code = codeInput.value.trim();
+    
+    const validCodes = {
+        'حب': 'خصم 10% على جميع الباقات! 💖',
+        'رومانسية': 'خصم 15% حصري! 🌹',
+        'عشق': 'خصم 20% لمدة محدودة! 🔥',
+        'غرام': 'خصم 25% واحصل على جلسة استشارية مجانية! 💫',
+        'قمر': 'خصم 30% مع عضوية مجانية لشهر! 🌙'
+    };
+    
+    if (validCodes[code]) {
+        featuresActivated = true;
+        localStorage.setItem('featuresActivated', 'true');
+        
+        showNotification(`🎉 ${validCodes[code]}`, 'success');
+        
+        // تأثير خاص للتفعيل
+        document.querySelectorAll('.card').forEach(card => {
+            card.style.transform = 'scale(1.05)';
+            setTimeout(() => card.style.transform = '', 1000);
+        });
+        
+        codeInput.value = '';
+    } else {
+        showNotification('❌ الكود غير صحيح. جرب أحد الأكواد التالية: حب, رومانسية, عشق, غرام, قمر', 'error');
+        codeInput.value = '';
+        codeInput.focus();
+    }
+}
+
+// تأثيرات التمرير
+window.addEventListener('scroll', function() {
+    const cards = document.querySelectorAll('.card');
+    const scrolled = window.pageYOffset;
+    
+    cards.forEach((card, index) => {
+        const rate = scrolled * -0.5;
+        card.style.transform = `translateY(${rate * (index + 1) * 0.1}px)`;
+    });
+});
+
+// إضافة تفاعل مع الأكواد عند الضغط على Enter
+document.getElementById('featureCode').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        activateFeatures();
+    }
+});
+
+// تأثيرات hover إضافية
+document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('mouseenter', function() {
+        this.style.zIndex = '10';
+    });
+    
+    card.addEventListener('mouseleave', function() {
+        this.style.zIndex = '1';
+    });
+});
 
 // فتح نافذة الدردشة العامة
 function openChat() {
@@ -414,39 +519,15 @@ function closeProfile() {
     document.getElementById('profileModal').style.display = 'none';
 }
 
-// تفعيل المميزات
-function activateFeatures() {
-    const codeInput = document.getElementById('featureCode');
-    const code = codeInput.value.trim();
+// إضافة رسالة مباشرة (للاستخدام في نهاية المحادثة)
+function addMessage(sender, text, isBoy, isPremium) {
+    const chatContainer = document.getElementById('chatMessages');
+    const messageDiv = document.createElement('div');
     
-    if (chatData.featureCodes[code]) {
-        featuresActivated = true;
-        userData.isPremium = true;
-        localStorage.setItem('userData', JSON.stringify(userData));
-        localStorage.setItem('featuresActivated', 'true');
-        codeInput.value = '';
-        updateProfileData();
-        showNotification('🎉 تم تفعيل المميزات بنجاح! يمكنك الآن استخدام جميع خصائص الموقع.');
-        
-        // تأثير خاص للتفعيل
-        document.querySelectorAll('.card').forEach(card => {
-            card.style.transform = 'scale(1.05)';
-            setTimeout(() => card.style.transform = '', 500);
-        });
-    } else {
-        showNotification('❌ الكود غير صحيح. يرجى المحاولة مرة أخرى.', 'error');
-        codeInput.value = '';
-        codeInput.focus();
-    }
+    const messageClass = `message ${isBoy ? 'sent' : 'received'} ${isPremium ? 'message-premium' : ''}`;
+    
+    messageDiv.className = messageClass;
+    messageDiv.innerHTML = `<strong>${sender} ${isPremium ? '👑' : ''}</strong> ${text}`;
+    chatContainer.appendChild(messageDiv);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
 }
-
-// تأثيرات التمرير
-window.addEventListener('scroll', function() {
-    const cards = document.querySelectorAll('.card');
-    const scrolled = window.pageYOffset;
-    const rate = scrolled * -0.3;
-    
-    cards.forEach((card, index) => {
-        card.style.transform = `translateY(${rate * (index + 1) * 0.1}px)`;
-    });
-});
