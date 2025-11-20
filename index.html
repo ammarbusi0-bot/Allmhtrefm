@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قُلوب 💖 - تعارف وصداقة</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>قُلوب 💖</h1>
+            <p class="header-subtitle">مكان اللقاءات الجميلة والصداقات الرائعة</p>
+            
+            <div class="visitors-counter">
+                <i class="fas fa-users"></i>
+                <span id="activeVisitors">2000</span>
+                <span class="online-text">شخص في الموقع حالياً</span>
+            </div>
+        </header>
+
+        <div class="grid">
+            <div class="card card-premium">
+                <i class="fas fa-microphone-alt icon"></i>
+                <h2>التوافق الصوتي المميز 🎤</h2>
+                <p>تحدث مع أشخاص متوافقين معك عبر المكالمات الصوتية. خدمة حصرية للأعضاء المميزين</p>
+                <p class="price price-premium">السعر: 15$</p>
+                <button class="btn btn-premium" onclick="redirectToTelegram()">
+                    <i class="fas fa-crown"></i> اشترك الآن
+                </button>
+            </div>
+
+            <div class="card" onclick="openChat()">
+                <i class="fas fa-comments icon"></i>
+                <h2>الدردشة الرومانسية 💬</h2>
+                <p>ادخل مجتمع الدردشة وشاهد الرسائل الواردة من الأعضاء المميزين</p>
+                <p class="price">متاح تجريبياً</p>
+                <button class="btn">
+                    <i class="fas fa-sign-in-alt"></i> ابدأ الدردشة
+                </button>
+            </div>
+
+            <div class="card" onclick="openProfile()">
+                <i class="fas fa-user icon"></i>
+                <h2>الملف الشخصي 👤</h2>
+                <p>إدارة ملفك الشخصي وعرض الإحصائيات وحالة عضويتك</p>
+                <p class="price">مجاني</p>
+                <button class="btn">
+                    <i class="fas fa-eye"></i> عرض الملف
+                </button>
+            </div>
+
+            <div class="card card-premium">
+                <i class="fas fa-gem icon"></i>
+                <h2>العضوية الماسية 💎</h2>
+                <p>وصول لجميع الميزات الحصرية، أولوية في الظهور، ودردشة غير محدودة</p>
+                <p class="price price-premium">الأفضل</p>
+                <button class="btn btn-premium" onclick="redirectToTelegram()">
+                    <i class="fas fa-star"></i> الترقية
+                </button>
+            </div>
+        </div>
+
+        <div class="features-section">
+            <h2>تفعيل المميزات الحصرية مجاناً!</h2>
+            <p>أدخل الكود السري الخاص بك لتفعيل جميع مميزات الموقع مجاناً.</p>
+            <input type="text" id="featureCode" placeholder="أدخل الكود السري هنا...">
+            <button class="btn" onclick="activateFeatures()">تفعيل</button>
+            <p style="margin-top: 15px; font-size: 0.9rem; opacity: 0.7;">الأكواد المتاحة: حب، رومانسية، عشق، غرام، قمر</p>
+        </div>
+
+        <footer>
+            <a href="terms.html">شروط الخدمة وسياسات الاستخدام</a>
+        </footer>
+    </div>
+
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="document.getElementById('signupModal').style.display='none'"><i class="fas fa-times"></i></span>
+            <h2>إنشاء حساب جديد</h2>
+            <p>يرجى إدخال بياناتك للمتابعة. يجب أن يكون عمرك 18 سنة أو أكثر.</p>
+            <form id="signupForm">
+                <div class="form-group">
+                    <label for="name">الاسم:</label>
+                    <input type="text" id="name" required placeholder="اسم المستخدم">
+                </div>
+                <div class="form-group">
+                    <label for="birthdate">تاريخ الميلاد:</label>
+                    <input type="date" id="birthdate" required>
+                </div>
+                <div class="form-group">
+                    <label for="avatar">اختر صورتك الشخصية:</label>
+                    <select id="avatar" onchange="updateAvatarPreview()" required>
+                        <option value="">اختر صورة أفتر</option>
+                        <option value="boy1">👦 شاب 1</option>
+                        <option value="boy2">👨 شاب 2</option>
+                        <option value="boy3">🧔 شاب 3</option>
+                        <option value="girl1">👧 بنت 1</option>
+                        <option value="girl2">👩 بنت 2</option>
+                        <option value="girl3">🧕 بنت 3</option>
+                    </select>
+                    <div id="avatarPreview" class="avatar-preview"></div>
+                </div>
+                <div class="form-group">
+                    <label for="gender">الجنس:</label>
+                    <select id="gender" required>
+                        <option value="">اختر الجنس</option>
+                        <option value="male">ذكر</option>
+                        <option value="female">أنثى</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="interest">أبحث عن:</label>
+                    <select id="interest" required>
+                        <option value="">اختر الاهتمام</option>
+                        <option value="friendship">صداقة</option>
+                        <option value="relationship">علاقة</option>
+                        <option value="marriage">زواج</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn">
+                    <i class="fas fa-user-plus"></i> إنشاء الحساب
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div id="chatModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeChat()"><i class="fas fa-times"></i></span>
+            <h2>الدردشة الرومانسية المباشرة 💬</h2>
+            <div id="chatMessages" class="chat-container">
+                </div>
+            <div class="chat-notice">
+                <p>ملاحظة: هذه الدردشة هي محاكاة تجريبية. للاشتراك في الدردشات الحقيقية والمحادثات المباشرة:</p>
+                <button class="btn btn-premium" onclick="redirectToTelegram()">
+                    <i class="fas fa-gem"></i> ترقية العضوية الماسية الآن
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeProfile()"><i class="fas fa-times"></i></span>
+            <h2>ملفك الشخصي</h2>
+            <div class="profile-grid">
+                <div class="avatar-preview profile-pic" id="profileAvatarPreview"></div>
+                <div class="profile-info">
+                    <h3 id="userName">الاسم</h3>
+                    <p id="userId">ID: 00000</p>
+                    <p id="userGender">الجنس: غير محدد</p>
+                    <p id="userAge">العمر: غير محدد</p>
+                    <p id="userInterest">المهتم بـ: غير محدد</p>
+                    <div class="membership-status">
+                        </div>
+                </div>
+            </div>
+            <div class="profile-actions">
+                <p style="color: #e91e63; font-weight: bold; margin-bottom: 10px;">انضممت في: <span id="userJoinDate"></span></p>
+                <button class="btn btn-premium" onclick="redirectToTelegram()">
+                    <i class="fas fa-crown"></i> إدارة الاشتراك
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
