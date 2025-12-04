@@ -1,59 +1,104 @@
-/* ملف style.css: تنسيقات عامة واتجاه النص من اليمين لليسار */
-@import url('https://fonts.googleapis.com/css2?family=Cairo&display=swap');
+/* أساسيات التنسيق */
+* { margin: 0; padding: 0; box-sizing: border-box; }
 body {
-    margin: 0;
-    padding: 0;
-    direction: rtl;              /* دعم RTL5 */
-    font-family: 'Cairo', sans-serif;
-    background: #f7f7f7;
+    font-family: 'Amiri', serif;
+    line-height: 1.8;
+    color: #2c3e50;
+    background-color: #f8f5f1;
+    text-align: right;
 }
-h1 {
-    text-align: center;
-    padding: 20px 0;
-    background-color: #333;
-    color: #fff;
-    margin: 0;
+/* الهيدر والتنقل */
+.main-header { background: linear-gradient(135deg, #1a5f7a 0%, #2a9d8f 100%); color: white; }
+.navbar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1rem 5%; flex-wrap: wrap;
 }
-/* تخطيط شبكة للبطاقات */
-.cards-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 15px;
-    padding: 20px;
+.logo { font-family: 'Scheherazade New', serif; font-size: 2rem; font-weight: bold; }
+.nav-links { list-style: none; display: flex; flex-wrap: wrap; }
+.nav-links li { margin-right: 1.5rem; }
+.nav-links a {
+    color: white; text-decoration: none; font-weight: bold;
+    padding: 0.5rem; transition: color 0.3s;
 }
-/* تنسيق البطاقات: خلفية بيضاء مع ظل وبوردر مدور */
-.card {
-    background: #fff;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* تصميم بظلال حديث6 */
+.nav-links a:hover { color: #ffd166; }
+/* قسم البطل */
+.hero {
+    padding: 4rem 5%; text-align: center;
 }
+.hero h1 {
+    font-family: 'Scheherazade New', serif; font-size: 3.5rem; margin-bottom: 1rem;
+}
+.tagline { font-size: 1.5rem; margin-bottom: 2rem; opacity: 0.9; }
+.cta-button {
+    display: inline-block; background-color: #e76f51; color: white;
+    padding: 0.8rem 2rem; border-radius: 50px; text-decoration: none;
+    font-weight: bold; transition: background-color 0.3s;
+}
+.cta-button:hover { background-color: #d65b3d; }
+/* الأقسام الرئيسية */
+main { padding: 3rem 5%; }
+section { margin-bottom: 3rem; }
+h2 {
+    font-family: 'Scheherazade New', serif; color: #1a5f7a;
+    margin-bottom: 1.5rem; padding-bottom: 0.5rem;
+    border-bottom: 2px solid #2a9d8f;
+}
+/* بطاقات المميزات والروابط */
+.features-grid, .link-cards, .azkar-container {
+    display: grid; gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+.feature-card, .link-card, .zekr-card {
+    background: white; padding: 1.5rem; border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.feature-card:hover, .link-card:hover, .zekr-card:hover {
+    transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+.feature-card h3 { color: #e76f51; margin-bottom: 0.8rem; }
+.link-card {
+    text-decoration: none; color: inherit; display: block;
+}
+.link-card.morning { border-top: 5px solid #f4a261; }
+.link-card.evening { border-top: 5px solid #2a9d8f; }
+.link-card.fortress { border-top: 5px solid #e9c46a; }
+.link-card h3 { color: #264653; }
+/* تصميم بطاقات الذكر */
+.zekr-card { border-right: 5px solid #2a9d8f; }
 .zekr-text {
-    font-size: 1.1em;
-    white-space: pre-wrap; /* للحفاظ على فواصل الأسطر */
+    font-size: 1.4rem; line-height: 2; color: #1a3c4d;
+    margin-bottom: 1rem;
 }
-.zekr-ref {
-    font-size: 0.9em;
-    color: #555;
-    margin-top: 10px;
+.zekr-reference { color: #666; font-style: italic; margin-bottom: 1rem; }
+.counter {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed #ddd;
 }
-.card-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
+.count-display { font-weight: bold; color: #1a5f7a; }
+.counter-btn {
+    background-color: #8ab6d6; color: white; border: none;
+    padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer;
 }
-.card-actions button {
-    flex: 1;
-    padding: 8px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+.counter-btn:hover { background-color: #6a9bc0; }
+.reset-btn {
+    background-color: #eee; color: #555; border: none;
+    padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer;
 }
-.copy-btn {
-    background: #4CAF50;
-    color: #fff;
+/* الفوتر */
+footer {
+    background-color: #264653; color: #ddd; text-align: center;
+    padding: 2rem 5%; margin-top: 2rem;
 }
-.play-btn {
-    background: #2196F3;
-    color: #fff;
+footer a { color: #8ab6d6; }
+.footer-note { margin-top: 1rem; font-size: 0.9rem; color: #aaa; }
+/* التجاوب مع الهواتف */
+@media (max-width: 768px) {
+    .navbar { flex-direction: column; }
+    .nav-links { margin-top: 1rem; }
+    .nav-links li { margin: 0.5rem; }
+    .hero h1 { font-size: 2.5rem; }
+    .features-grid, .link-cards {
+        grid-template-columns: 1fr;
+    }
 }
