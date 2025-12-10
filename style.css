@@ -1,104 +1,177 @@
-/* أساسيات التنسيق */
-* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+    /* الوضع الافتراضي (الوضع المظلم) */
+    --color-background: #121212;
+    --color-text: #E0E0E0;
+    --color-card-bg: #1e1e1e;
+    --color-card-shadow: rgba(0, 0, 0, 0.4);
+    --color-primary: #81c784; /* لون أخضر مريح */
+    --color-secondary: #BDBDBD;
+    --base-font-size: 24px; /* حجم خط كبير افتراضي */
+}
+
+/* الوضع الفاتح (يتم تفعيله عبر JavaScript) */
+body.light-mode {
+    --color-background: #f7f7f7;
+    --color-text: #212121;
+    --color-card-bg: #ffffff;
+    --color-card-shadow: rgba(0, 0, 0, 0.1);
+    --color-primary: #4CAF50;
+    --color-secondary: #757575;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 body {
-    font-family: 'Amiri', serif;
+    font-family: 'Noto Kufi Arabic', sans-serif;
+    background-color: var(--color-background);
+    color: var(--color-text);
+    padding: 20px;
+    transition: background-color 0.3s, color 0.3s;
     line-height: 1.8;
-    color: #2c3e50;
-    background-color: #f8f5f1;
-    text-align: right;
 }
-/* الهيدر والتنقل */
-.main-header { background: linear-gradient(135deg, #1a5f7a 0%, #2a9d8f 100%); color: white; }
-.navbar {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 1rem 5%; flex-wrap: wrap;
+
+/* الهيدر وعناصر التحكم */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 3px solid var(--color-primary);
+    margin-bottom: 30px;
 }
-.logo { font-family: 'Scheherazade New', serif; font-size: 2rem; font-weight: bold; }
-.nav-links { list-style: none; display: flex; flex-wrap: wrap; }
-.nav-links li { margin-right: 1.5rem; }
-.nav-links a {
-    color: white; text-decoration: none; font-weight: bold;
-    padding: 0.5rem; transition: color 0.3s;
+
+.page-title {
+    font-size: 2.5rem;
+    color: var(--color-primary);
+    font-weight: 700;
 }
-.nav-links a:hover { color: #ffd166; }
-/* قسم البطل */
-.hero {
-    padding: 4rem 5%; text-align: center;
+
+.controls button {
+    background-color: var(--color-card-bg);
+    color: var(--color-text);
+    border: 1px solid var(--color-secondary);
+    border-radius: 8px;
+    padding: 10px 15px;
+    margin-right: 10px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: background-color 0.2s, transform 0.1s;
 }
-.hero h1 {
-    font-family: 'Scheherazade New', serif; font-size: 3.5rem; margin-bottom: 1rem;
+
+.controls button:hover {
+    background-color: var(--color-primary);
+    color: var(--color-background);
 }
-.tagline { font-size: 1.5rem; margin-bottom: 2rem; opacity: 0.9; }
-.cta-button {
-    display: inline-block; background-color: #e76f51; color: white;
-    padding: 0.8rem 2rem; border-radius: 50px; text-decoration: none;
-    font-weight: bold; transition: background-color 0.3s;
-}
-.cta-button:hover { background-color: #d65b3d; }
-/* الأقسام الرئيسية */
-main { padding: 3rem 5%; }
-section { margin-bottom: 3rem; }
-h2 {
-    font-family: 'Scheherazade New', serif; color: #1a5f7a;
-    margin-bottom: 1.5rem; padding-bottom: 0.5rem;
-    border-bottom: 2px solid #2a9d8f;
-}
-/* بطاقات المميزات والروابط */
-.features-grid, .link-cards, .azkar-container {
-    display: grid; gap: 1.5rem;
+
+/* بطاقات الأذكار (التصميم الفخم) */
+#azkar-container {
+    display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
-.feature-card, .link-card, .zekr-card {
-    background: white; padding: 1.5rem; border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-    transition: transform 0.3s, box-shadow 0.3s;
+
+.azkar-card {
+    background-color: var(--color-card-bg);
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px var(--color-card-shadow);
+    border-right: 5px solid var(--color-primary);
+    transition: box-shadow 0.3s, transform 0.3s;
 }
-.feature-card:hover, .link-card:hover, .zekr-card:hover {
-    transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+
+.azkar-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px var(--color-card-shadow);
 }
-.feature-card h3 { color: #e76f51; margin-bottom: 0.8rem; }
-.link-card {
-    text-decoration: none; color: inherit; display: block;
+
+.azkar-number {
+    font-size: 1.5rem;
+    color: var(--color-primary);
+    margin-bottom: 10px;
+    font-weight: 700;
 }
-.link-card.morning { border-top: 5px solid #f4a261; }
-.link-card.evening { border-top: 5px solid #2a9d8f; }
-.link-card.fortress { border-top: 5px solid #e9c46a; }
-.link-card h3 { color: #264653; }
-/* تصميم بطاقات الذكر */
-.zekr-card { border-right: 5px solid #2a9d8f; }
-.zekr-text {
-    font-size: 1.4rem; line-height: 2; color: #1a3c4d;
-    margin-bottom: 1rem;
+
+.azkar-text {
+    font-size: var(--base-font-size);
+    font-weight: 400;
+    margin-bottom: 20px;
+    border-bottom: 1px dashed var(--color-secondary);
+    padding-bottom: 15px;
 }
-.zekr-reference { color: #666; font-style: italic; margin-bottom: 1rem; }
-.counter {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed #ddd;
+
+.azkar-fadil {
+    font-size: 1rem;
+    color: var(--color-secondary);
+    margin-bottom: 15px;
+    font-style: italic;
 }
-.count-display { font-weight: bold; color: #1a5f7a; }
-.counter-btn {
-    background-color: #8ab6d6; color: white; border: none;
-    padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer;
+
+/* عداد التكرار */
+.count-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--color-background);
+    border-radius: 10px;
+    padding: 10px;
 }
-.counter-btn:hover { background-color: #6a9bc0; }
-.reset-btn {
-    background-color: #eee; color: #555; border: none;
-    padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer;
+
+.required-count, .current-count {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--color-primary);
 }
+
+.count-button {
+    background-color: var(--color-primary);
+    color: var(--color-background);
+    border: none;
+    padding: 8px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.2s;
+}
+
+.count-button:hover {
+    background-color: #66bb6a;
+}
+
+/* حالة الاكتمال */
+.completed .azkar-card {
+    opacity: 0.7;
+    border-right: 5px solid #ffb300; /* لون مختلف عند الانتهاء */
+}
+
 /* الفوتر */
 footer {
-    background-color: #264653; color: #ddd; text-align: center;
-    padding: 2rem 5%; margin-top: 2rem;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 40px;
+    border-top: 1px solid var(--color-secondary);
+    font-size: 0.9rem;
+    color: var(--color-secondary);
 }
-footer a { color: #8ab6d6; }
-.footer-note { margin-top: 1rem; font-size: 0.9rem; color: #aaa; }
-/* التجاوب مع الهواتف */
-@media (max-width: 768px) {
-    .navbar { flex-direction: column; }
-    .nav-links { margin-top: 1rem; }
-    .nav-links li { margin: 0.5rem; }
-    .hero h1 { font-size: 2.5rem; }
-    .features-grid, .link-cards {
-        grid-template-columns: 1fr;
+
+/* استجابة الشاشات الصغيرة */
+@media (max-width: 600px) {
+    .page-title {
+        font-size: 2rem;
+    }
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .controls {
+        margin-top: 15px;
+    }
+    .azkar-text {
+        font-size: calc(var(--base-font-size) * 0.9);
     }
 }
