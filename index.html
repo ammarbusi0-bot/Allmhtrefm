@@ -3,73 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مستذكر - أذكار المسلم</title>
+    <title>أذكار المساء الفخمة - Sunnah Azkar</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header class="main-header">
-        <nav class="navbar">
-            <div class="logo">مستذكر</div>
-            <ul class="nav-links">
-                <li><a href="index.html">الرئيسية</a></li>
-                <li><a href="morning.html">أذكار الصباح</a></li>
-                <li><a href="evening.html">أذكار المساء</a></li>
-                <li><a href="fortress.html">الحصن</a></li>
-                <li><a href="about.html">عن الموقع</a></li>
-            </ul>
-        </nav>
-        <div class="hero">
-            <h1>مستذكر</h1>
-            <p class="tagline">وَذَكِّرْ فَإِنَّ الذِّكْرَىٰ تَنفَعُ الْمُؤْمِنِينَ</p>
-            <a href="#content-start" class="cta-button">ابدأ ذكرك</a>
+    <header>
+        <h1 class="page-title">🕋 أذكار المساء 🌙</h1>
+        <div class="controls">
+            <button id="theme-toggle" aria-label="تبديل الوضع الليلي/النهاري">
+                <span class="icon">☀️</span>
+            </button>
+            <button id="increase-font" aria-label="تكبير حجم الخط">+</button>
+            <button id="decrease-font" aria-label="تصغير حجم الخط">-</button>
         </div>
     </header>
-    <main id="content-start">
-        <section class="intro">
-            <h2>رفيقك في الذكر والدعاء</h2>
-            <p>موقع مستذكر هو منصة بسيطة وموثوقة تقدم لك أذكار الصباح والمساء الثابتة عن النبي محمد صلى الله عليه وسلم، مصممة لتجربة قراءة مريحة وتفاعلية.</p>
-        </section>
-        <section class="features">
-            <h2>مميزات الموقع</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <h3>📖 مصدر موثوق</h3>
-                    <p>جميع الأذكار مأخوذة من كتب حديثية معتمدة لدى أهل السنة والجماعة.</p>
-                </div>
-                <div class="feature-card">
-                    <h3>📱 تصميم عصري</h3>
-                    <p>تصميم متجاوب يسهل القراءة والاستخدام على الجوال والحاسوب.</p>
-                </div>
-                <div class="feature-card">
-                    <h3>⚡ تفاعل بسيط</h3>
-                    <p>مسبحة إلكترونية لتتبع عدد التسبيح، وتصميم يريح العين.</p>
-                </div>
-            </div>
-        </section>
-        <section class="quick-links">
-            <h2>اذهب مباشرة إلى</h2>
-            <div class="link-cards">
-                <a href="morning.html" class="link-card morning">
-                    <h3>أذكار الصباح</h3>
-                    <p>حصن نفسك مع شروق الشمس.</p>
-                </a>
-                <a href="evening.html" class="link-card evening">
-                    <h3>أذكار المساء</h3>
-                    <p>استودع الله عند نهاية النهار.</p>
-                </a>
-                <a href="fortress.html" class="link-card fortress">
-                    <h3>حصن المسلم</h3>
-                    <p>أدعية وأذكار لأوقات مختلفة.</p>
-                </a>
-            </div>
-        </section>
+
+    <main id="azkar-container">
+        <p class="loading-message">يتم تحميل الأذكار...</p>
     </main>
+
     <footer>
-        <p>© 2025 مستذكر. جميع الحقوق محفوظة. | <a href="about.html">عن الموقع ومصادر الأذكار</a></p>
-        <p class="footer-note">"اللهم اجعلنا من الذاكرين الشاكرين"</p>
+        <p>&copy; مشروع الأذكار (Github Pages) - بتصميم فخم ومناسب لأهل السنة والجماعة.</p>
     </footer>
+
     <script src="script.js"></script>
 </body>
 </html>
