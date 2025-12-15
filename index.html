@@ -1,40 +1,0 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الموسوعة الشاملة للأذكار الموثقة</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;700&display=swap" rel="stylesheet">
-</head>
-<body>
-    <header>
-        <h1 class="page-title">🕋 الموسوعة الشاملة للأذكار 🌙</h1>
-        <div class="controls">
-            <button id="theme-toggle" aria-label="تبديل الوضع الليلي/النهاري">
-                <span class="icon">☀️</span>
-            </button>
-            <button id="increase-font" aria-label="تكبير حجم الخط">+</button>
-            <button id="decrease-font" aria-label="تصغير حجم الخط">-</button>
-        </div>
-    </header>
-
-    <nav class="azkar-nav">
-        <button class="nav-button active" data-category="masa">أذكار المساء</button>
-        <button class="nav-button" data-category="sabah">أذكار الصباح</button>
-        <button class="nav-button" data-category="nawm">أذكار النوم</button>
-        <button class="nav-button" data-category="salat">أذكار بعد الصلاة</button>
-        <button class="nav-button" data-category="mutafarriqa">أذكار أخرى</button>
-    </nav>
-    
-    <main id="azkar-container">
-        <p class="loading-message">يتم تحميل الأذكار...</p>
-    </main>
-
-    <footer>
-        <p>هذا الموقع صدقة جارية، وجميع الأذكار مأخوذة من كتب أهل السنة والجماعة الموثقة.</p>
-    </footer>
-
-    <script src="script.js"></script>
-</body>
-</html>
